@@ -2,101 +2,286 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>경주말 방언 사전</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>경주지역어 대사전 검색 서비스</title>
     <style>
-        :root { --point: #a33b3b; --bg: #fdfaf6; }
-        body { display: flex; margin: 0; background: var(--bg); font-family: sans-serif; height: 100vh; }
-        
-        /* 왼쪽: 검색 및 결과 */
-        .main-panel { width: 65%; padding: 30px; overflow-y: auto; border-right: 1px solid #ddd; }
-        .search-area { display: flex; gap: 15px; margin-bottom: 30px; }
-        .input-group { flex: 1; }
-        input { width: 100%; padding: 12px; border: 2px solid #ccc; border-radius: 5px; box-sizing: border-box; }
-        
-        .result-card { background: white; padding: 25px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        .word-title { font-size: 32px; color: var(--point); font-weight: bold; }
-        .pron { color: #666; font-size: 18px; margin-left: 10px; }
-        .pos-badge { background: #eee; padding: 2px 8px; border-radius: 4px; font-size: 14px; vertical-align: middle; }
-        .def-text { font-size: 18px; margin: 20px 0; line-height: 1.6; border-left: 4px solid var(--point); padding-left: 15px; }
-        
-        .ex-item { margin-bottom: 15px; padding: 10px; background: #f9f9f9; border-radius: 5px; }
-        .ex-dia { font-weight: bold; color: #333; }
-        .ex-std { color: #666; display: block; margin-top: 5px; }
+        :root {
+            --primary: #8e44ad;
+            --accent: #e67e22;
+            --bg: #fdfaf6;
+            --text: #2c3e50;
+            --border: #dcdde1;
+        }
 
-        /* 오른쪽: 추천 단어 */
-        .side-panel { width: 35%; padding: 30px; }
-        .rec-box { background: white; padding: 20px; border-radius: 10px; }
+        body {
+            font-family: 'Malgun Gothic', sans-serif;
+            margin: 0;
+            display: flex;
+            height: 100vh;
+            background-color: var(--bg);
+            color: var(--text);
+        }
+
+        /* 왼쪽 검색 영역 */
+        .main-panel {
+            width: 65%;
+            padding: 40px;
+            overflow-y: auto;
+            border-right: 1px solid var(--border);
+            box-sizing: border-box;
+        }
+
+        .search-container {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        .input-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: var(--primary);
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 16px;
+            transition: 0.3s;
+            box-sizing: border-box;
+        }
+
+        input:focus {
+            border-color: var(--primary);
+            outline: none;
+        }
+
+        /* 상세 정보 카드 */
+        #detail-view {
+            display: none;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .word-header {
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+
+        .word-title {
+            font-size: 36px;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .word-pron {
+            font-size: 20px;
+            color: #7f8c8d;
+            margin-left: 10px;
+        }
+
+        .pos-symbol {
+            display: inline-block;
+            background: #eee;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 14px;
+            margin-left: 10px;
+        }
+
+        .definition-box {
+            font-size: 18px;
+            line-height: 1.8;
+            margin-bottom: 25px;
+            white-space: pre-wrap;
+        }
+
+        .example-section h4 {
+            color: var(--accent);
+            border-left: 4px solid var(--accent);
+            padding-left: 10px;
+            margin-bottom: 15px;
+        }
+
+        .example-item {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .ex-dia { font-weight: bold; font-size: 1.1em; }
+        .ex-pron { color: #666; font-size: 0.9em; margin: 5px 0; }
+        .ex-std { color: var(--primary); }
+
+        /* 오른쪽 추천 영역 */
+        .side-panel {
+            width: 35%;
+            padding: 40px;
+            box-sizing: border-box;
+            background: #fff;
+        }
+
+        .recommend-title {
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 30px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--text);
+        }
+
+        .rec-item {
+            margin-bottom: 25px;
+            cursor: pointer;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #eee;
+            transition: 0.2s;
+        }
+
+        .rec-item:hover {
+            border-color: var(--primary);
+            background: #fdfaf6;
+        }
+
+        .rec-tag {
+            font-size: 12px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: white;
+            margin-bottom: 8px;
+            display: inline-block;
+        }
+        .tag-v { background: #e67e22; } /* 동사/형용사 */
+        .tag-n { background: #27ae60; } /* 명사류 */
+        .tag-a { background: #2980b9; } /* 접사/어미 */
     </style>
 </head>
 <body>
 
-<div class="main-panel">
-    <div class="search-area">
-        <div class="input-group">
-            <label>경주말 표제어 검색</label>
-            <input type="text" id="diaSearch" placeholder="경주말 입력...">
-        </div>
-        <div class="input-group">
-            <label>서울말(표준어) 입력</label>
-            <input type="text" id="stdSearch" placeholder="표준어 뜻풀이 검색...">
-        </div>
-    </div>
-
-    <div id="resultContent" style="display:none;">
-        <div class="result-card">
-            <div>
-                <span class="word-title" id="v-word">가2</span>
-                <span class="pron" id="v-pron">[가아′]</span>
-                <span class="pos-badge" id="v-pos">󰃃</span>
+    <div class="main-panel">
+        <div class="search-container">
+            <div class="input-group">
+                <label>📍 경주말 표제어 검색</label>
+                <input type="text" id="diaSearch" placeholder="예: 가1, 정구지, 단디">
             </div>
-            <div class="def-text" id="v-def">가(邊). 넓이를 가진 물건의 가장 바깥쪽 부분...</div>
-            <div id="v-examples">
-                </div>
+            <div class="input-group">
+                <label>🔍 서울말(뜻풀이) 검색</label>
+                <input type="text" id="stdSearch" placeholder="뜻풀이에 포함된 단어를 입력하세요...">
+            </div>
+        </div>
+
+        <div id="detail-view">
+            <div class="word-header">
+                <span class="word-title" id="v-word">-</span>
+                <span class="word-pron" id="v-pron">[]</span>
+                <span class="pos-symbol" id="v-pos">󰃃</span>
+            </div>
+            <div class="definition-box" id="v-def">
+                뜻풀이 정보가 표시됩니다.
+            </div>
+            <div class="example-section">
+                <h4>예문 (대역)</h4>
+                <div id="v-examples"></div>
+            </div>
         </div>
     </div>
-</div>
 
-<div class="side-panel">
-    <div class="rec-box">
-        <h3>📅 오늘의 추천 단어</h3>
-        <div id="recommendList"></div>
+    <div class="side-panel">
+        <div class="recommend-title">📅 오늘의 추천 경주말</div>
+        <div id="recommend-list"></div>
     </div>
-</div>
 
-<script>
-let dictData = []; // 파이썬으로 변환한 JSON 데이터가 들어갈 자리
+    <script>
+        let dictionary = [];
 
-// 검색 로직
-function updateView(item) {
-    if(!item) return;
-    document.getElementById('resultContent').style.display = 'block';
-    document.getElementById('v-word').innerText = item.word;
-    document.getElementById('v-pron').innerText = `[${item.pron}]`;
-    document.getElementById('v-pos').innerText = item.pos_mark;
-    document.getElementById('v-def').innerText = item.definition;
-    
-    const exDiv = document.getElementById('v-examples');
-    exDiv.innerHTML = '<strong>예문</strong><hr>';
-    item.examples.forEach(ex => {
-        exDiv.innerHTML += `
-            <div class="ex-item">
-                <div class="ex-dia">¶ ${ex.dialect} <small style="color:#999">[${ex.pron}]</small></div>
-                <div class="ex-std">&lt;${ex.standard}&gt;</div>
-            </div>`;
-    });
-}
+        // 데이터 로드 (파이썬으로 생성한 gyeongju_dict.json 파일)
+        fetch('gyeongju_dict.json')
+            .then(res => res.json())
+            .then(data => {
+                dictionary = data;
+                initRecommendations();
+            });
 
-// 두 검색창 이벤트 연결
-document.getElementById('diaSearch').addEventListener('input', (e) => {
-    const res = dictData.find(i => i.word_pure === e.target.value);
-    if(res) updateView(res);
-});
+        const diaInput = document.getElementById('diaSearch');
+        const stdInput = document.getElementById('stdSearch');
+        const detailView = document.getElementById('detail-view');
 
-document.getElementById('stdSearch').addEventListener('input', (e) => {
-    const res = dictData.find(i => i.definition.includes(e.target.value));
-    if(res) updateView(res);
-});
-</script>
+        // 검색 기능
+        function findWord(type, query) {
+            if (!query) { detailView.style.display = 'none'; return; }
+            
+            const result = dictionary.find(item => 
+                type === 'dia' ? (item.word === query || item.word_pure === query) 
+                               : item.definition.includes(query)
+            );
 
+            if (result) showDetail(result);
+        }
+
+        function showDetail(item) {
+            detailView.style.display = 'block';
+            document.getElementById('v-word').innerText = item.word;
+            document.getElementById('v-pron').innerText = `[${item.pronunciation}]`;
+            document.getElementById('v-pos').innerText = item.pos_symbol;
+            document.getElementById('v-def').innerText = item.definition;
+
+            const exContainer = document.getElementById('v-examples');
+            exContainer.innerHTML = '';
+
+            item.examples.forEach(ex => {
+                const div = document.createElement('div');
+                div.className = 'example-item';
+                div.innerHTML = `
+                    <div class="ex-dia">¶ ${ex.dialect}</div>
+                    <div class="ex-pron">[${ex.pron}]</div>
+                    <div class="ex-std">&lt;${ex.standard}&gt;</div>
+                `;
+                exContainer.appendChild(div);
+            });
+        }
+
+        diaInput.addEventListener('input', (e) => { stdInput.value = ''; findWord('dia', e.target.value); });
+        stdInput.addEventListener('input', (e) => { diaInput.value = ''; findWord('std', e.target.value); });
+
+        // 오늘의 추천 단어 (랜덤 3개)
+        function initRecommendations() {
+            const list = document.getElementById('recommend-list');
+            // 임의의 카테고리 분류 (기호 기준 예시)
+            const categories = [
+                { type: '󰂿', label: '동사/형용사', class: 'tag-v' },
+                { type: '󰃃', label: '명사류', class: 'tag-n' },
+                { type: '󰂴', label: '접사/어미', class: 'tag-a' }
+            ];
+
+            categories.forEach(cat => {
+                const pool = dictionary.filter(i => i.pos_symbol === cat.type);
+                const targetPool = pool.length > 0 ? pool : dictionary; // 없으면 전체에서
+                const randomItem = targetPool[Math.floor(Math.random() * targetPool.length)];
+
+                const div = document.createElement('div');
+                div.className = 'rec-item';
+                div.innerHTML = `
+                    <span class="rec-tag ${cat.class}">${cat.label}</span>
+                    <div style="font-size:20px; font-weight:bold;">${randomItem.word}</div>
+                    <div style="color:#666; font-size:14px; margin-top:5px;">${randomItem.definition.substring(0, 30)}...</div>
+                `;
+                div.onclick = () => showDetail(randomItem);
+                list.appendChild(div);
+            });
+        }
+    </script>
 </body>
 </html>
