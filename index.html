@@ -7,35 +7,34 @@
     <style>
         :root { --point: #a33b3b; --bg: #fdfaf6; }
         body { background: var(--bg); margin: 0; padding: 20px; font-family: 'Malgun Gothic', sans-serif; display: flex; flex-direction: column; align-items: center; }
-        
         .container { width: 100%; max-width: 800px; }
         
         /* 검색창 섹션 */
-        .search-section { background: white; padding: 25px; border-radius: 15px; shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 20px; }
+        .search-section { background: white; padding: 25px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 20px; }
         .input-group { margin-bottom: 15px; }
         label { display: block; margin-bottom: 8px; font-weight: bold; color: #444; }
-        input { width: 100%; padding: 15px; border: 2px solid #ddd; border-radius: 10px; font-size: 16px; box-sizing: border-box; transition: 0.3s; }
+        input { width: 100%; padding: 15px; border: 2px solid #ddd; border-radius: 10px; font-size: 16px; box-sizing: border-box; }
         input:focus { border-color: var(--point); outline: none; box-shadow: 0 0 8px rgba(163,59,59,0.2); }
 
-        /* 오늘의 추천어 섹션 */
-        .recommend-section { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px; }
-        .rec-card { background: #fff; padding: 15px; border-radius: 12px; text-align: center; cursor: pointer; border: 1px solid #eee; transition: 0.2s; }
-        .rec-card:hover { transform: translateY(-3px); border-color: var(--point); }
-        .rec-tag { font-size: 11px; color: white; background: var(--point); padding: 2px 6px; border-radius: 4px; display: inline-block; margin-bottom: 5px; }
+        /* 검색 결과 목록 (다중 검색 시) */
+        #searchList { margin-bottom: 20px; display: none; background: #fff; border-radius: 12px; border: 1px solid #ddd; overflow: hidden; }
+        .list-item { padding: 12px 20px; border-bottom: 1px solid #eee; cursor: pointer; transition: 0.2s; }
+        .list-item:hover { background: #fff5f5; color: var(--point); }
+        .list-item:last-child { border: none; }
+        .list-count { padding: 10px 20px; font-size: 14px; background: #f0f0f0; color: #666; }
 
-        /* 결과 표시 섹션 (Flexible) */
-        #resultView { width: 100%; display: none; } /* 결과가 있을 때만 표시 */
-        .result-card { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.08); min-height: 100px; height: auto; overflow: hidden; }
+        /* 오늘의 추천어 */
+        .recommend-section { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px; }
+        .rec-card { background: #fff; padding: 15px; border-radius: 12px; text-align: center; cursor: pointer; border: 1px solid #eee; }
+
+        /* 결과 상세 표시 (Flexible) */
+        #resultView { width: 100%; display: none; margin-top: 10px; }
+        .result-card { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.08); height: auto; }
         .word-header { border-bottom: 2px solid var(--point); padding-bottom: 15px; margin-bottom: 20px; }
         .word-title { font-size: 32px; font-weight: bold; color: var(--point); }
-        .word-pron { font-size: 18px; color: #666; margin-left: 10px; }
-        
         .def-area { font-size: 18px; line-height: 1.7; margin-bottom: 25px; white-space: pre-wrap; }
         .ex-area { background: #f9f9f9; padding: 20px; border-radius: 10px; }
         .ex-item { margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
-        .ex-item:last-child { border: none; }
-        .ex-dia { font-weight: bold; color: #333; display: block; margin-bottom: 5px; }
-        .ex-std { color: #666; font-style: italic; }
     </style>
 </head>
 <body>
@@ -44,27 +43,29 @@
     <div class="search-section">
         <div class="input-group">
             <label>🔍 경주말 표제어 검색</label>
-            <input type="text" id="diaSearch" placeholder="경주말을 입력하세요 (예: 가이)">
+            <input type="text" id="diaSearch" placeholder="경주말 입력...">
         </div>
         <div class="input-group">
             <label>📖 표준어/뜻풀이 검색</label>
-            <input type="text" id="stdSearch" placeholder="표준어 의미로 찾기 (예: 강아지)">
+            <input type="text" id="stdSearch" placeholder="뜻풀이 키워드 입력 (예: 강아지, 무지개)">
         </div>
     </div>
 
-    <div class="recommend-section" id="recommendList">
-        </div>
+    <div id="searchList">
+        <div class="list-count" id="resCount">검색 결과 0건</div>
+        <div id="listItems"></div>
+    </div>
+
+    <div class="recommend-section" id="recommendList"></div>
 
     <div id="resultView">
         <div class="result-card">
             <div class="word-header">
                 <span class="word-title" id="v-word">-</span>
-                <span class="word-pron" id="v-pron">[-]</span>
-                <span id="v-pos" style="font-size:14px; color:#888;"></span>
+                <span id="v-pron" style="font-size:18px; color:#666; margin-left:10px;">[-]</span>
+                <span id="v-pos" style="font-size:14px; color:#888; margin-left:10px;"></span>
             </div>
-            <div class="def-area" id="v-def">
-                뜻풀이가 여기에 나타납니다.
-            </div>
+            <div class="def-area" id="v-def"></div>
             <div class="ex-area" id="v-ex">
                 <strong>예문</strong>
                 <div id="ex-list"></div>
@@ -76,20 +77,75 @@
 <script>
     let dictData = [];
 
-    // 데이터 로드 (4만 건의 경우 로딩 시간이 걸릴 수 있음)
+    // 데이터 로드
     fetch('gyeongju_dict.json')
         .then(res => res.json())
         .then(data => {
             dictData = data;
             initRecommendations();
-        })
-        .catch(err => console.error("데이터를 불러오지 못했습니다. 파일명을 확인하세요."));
+        });
 
-    const vView = document.getElementById('resultView');
+    const diaSearch = document.getElementById('diaSearch');
+    const stdSearch = document.getElementById('stdSearch');
+    const searchList = document.getElementById('searchList');
+    const listItems = document.getElementById('listItems');
+    const resCount = document.getElementById('resCount');
+    const resultView = document.getElementById('resultView');
 
-    function updateDisplay(item) {
-        if(!item) return;
-        vView.style.display = 'block';
+    // 검색 실행 (필터링 로직)
+    function performSearch(type, query) {
+        if (query.length < 1) {
+            searchList.style.display = 'none';
+            resultView.style.display = 'none';
+            return;
+        }
+
+        let filtered = [];
+        if (type === 'dia') {
+            filtered = dictData.filter(i => i.word_pure === query || i.word === query);
+        } else {
+            // 뜻풀이(definition) 내 키워드 포함 여부 확인
+            filtered = dictData.filter(i => i.definition.includes(query));
+        }
+
+        if (filtered.length > 0) {
+            if (filtered.length === 1) {
+                // 결과가 하나면 바로 표시
+                searchList.style.display = 'none';
+                displayDetail(filtered[0]);
+            } else {
+                // 결과가 여러 개면 목록 표시
+                displayList(filtered);
+            }
+        } else {
+            searchList.style.display = 'none';
+            resultView.style.display = 'none';
+        }
+    }
+
+    // 결과 목록 표시
+    function displayList(items) {
+        searchList.style.display = 'block';
+        resultView.style.display = 'none';
+        resCount.innerText = `검색 결과 ${items.length}건 (클릭하면 상세 내용을 봅니다)`;
+        
+        listItems.innerHTML = '';
+        // 너무 많은 결과 방지를 위해 상위 50개만 표시 (성능 최적화)
+        items.slice(0, 50).forEach(item => {
+            const div = document.createElement('div');
+            div.className = 'list-item';
+            div.innerHTML = `<strong>${item.word}</strong> <small>[${item.pronunciation}]</small> - ${item.definition.substring(0, 40)}...`;
+            div.onclick = () => {
+                displayDetail(item);
+                searchList.style.display = 'none';
+            };
+            listItems.appendChild(div);
+        });
+    }
+
+    // 상세 내용 표시
+    function displayDetail(item) {
+        resultView.style.display = 'block';
         document.getElementById('v-word').innerText = item.word;
         document.getElementById('v-pron').innerText = `[${item.pronunciation}]`;
         document.getElementById('v-pos').innerText = item.pos_symbol;
@@ -97,51 +153,34 @@
 
         const exList = document.getElementById('ex-list');
         exList.innerHTML = '';
-        item.examples.forEach(ex => {
-            exList.innerHTML += `
-                <div class="ex-item">
-                    <span class="ex-dia">¶ ${ex.dialect}</span>
-                    <span class="ex-std">< ${ex.standard} ></span>
-                </div>
-            `;
-        });
-        
-        // 검색 후 결과창으로 부드럽게 스크롤
-        vView.scrollIntoView({ behavior: 'smooth' });
+        if (item.examples && item.examples.length > 0) {
+            item.examples.forEach(ex => {
+                exList.innerHTML += `
+                    <div class="ex-item">
+                        <span class="ex-dia">¶ ${ex.dialect}</span>
+                        <span class="ex-std">< ${ex.standard} ></span>
+                    </div>`;
+            });
+        } else {
+            exList.innerHTML = '등록된 예문이 없습니다.';
+        }
+        resultView.scrollIntoView({ behavior: 'smooth' });
     }
 
-    // 경주말 검색 (숫자 제외 검색 지원)
-    document.getElementById('diaSearch').addEventListener('input', (e) => {
-        const val = e.target.value.trim();
-        if(val.length < 1) { vView.style.display = 'none'; return; }
-        const found = dictData.find(i => i.word_pure === val || i.word === val);
-        if(found) updateDisplay(found);
-    });
+    diaSearch.addEventListener('input', (e) => { stdSearch.value = ''; performSearch('dia', e.target.value.trim()); });
+    stdSearch.addEventListener('input', (e) => { diaSearch.value = ''; performSearch('std', e.target.value.trim()); });
 
-    // 표준어 검색
-    document.getElementById('stdSearch').addEventListener('input', (e) => {
-        const val = e.target.value.trim();
-        if(val.length < 1) { vView.style.display = 'none'; return; }
-        const found = dictData.find(i => i.definition.includes(val));
-        if(found) updateDisplay(found);
-    });
-
-    // 추천 단어 초기화
     function initRecommendations() {
         const list = document.getElementById('recommendList');
-        // 임의로 3개 추출
         const shuffled = [...dictData].sort(() => 0.5 - Math.random());
-        const selected = shuffled.slice(0, 3);
-
-        selected.forEach(item => {
+        shuffled.slice(0, 3).forEach(item => {
             const div = document.createElement('div');
             div.className = 'rec-card';
-            div.innerHTML = `<span class="rec-tag">추천</span><br><strong>${item.word_pure}</strong>`;
-            div.onclick = () => updateDisplay(item);
+            div.innerHTML = `<small style="color:var(--point)">오늘의 단어</small><br><strong>${item.word_pure}</strong>`;
+            div.onclick = () => displayDetail(item);
             list.appendChild(div);
         });
     }
 </script>
-
 </body>
 </html>
