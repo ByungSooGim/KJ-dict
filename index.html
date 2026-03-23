@@ -3,285 +3,145 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>경주지역어 대사전 검색 서비스</title>
+    <title>경주말 방언 사전</title>
     <style>
-        :root {
-            --primary: #8e44ad;
-            --accent: #e67e22;
-            --bg: #fdfaf6;
-            --text: #2c3e50;
-            --border: #dcdde1;
-        }
+        :root { --point: #a33b3b; --bg: #fdfaf6; }
+        body { background: var(--bg); margin: 0; padding: 20px; font-family: 'Malgun Gothic', sans-serif; display: flex; flex-direction: column; align-items: center; }
+        
+        .container { width: 100%; max-width: 800px; }
+        
+        /* 검색창 섹션 */
+        .search-section { background: white; padding: 25px; border-radius: 15px; shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 20px; }
+        .input-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 8px; font-weight: bold; color: #444; }
+        input { width: 100%; padding: 15px; border: 2px solid #ddd; border-radius: 10px; font-size: 16px; box-sizing: border-box; transition: 0.3s; }
+        input:focus { border-color: var(--point); outline: none; box-shadow: 0 0 8px rgba(163,59,59,0.2); }
 
-        body {
-            font-family: 'Malgun Gothic', sans-serif;
-            margin: 0;
-            display: flex;
-            height: 100vh;
-            background-color: var(--bg);
-            color: var(--text);
-        }
+        /* 오늘의 추천어 섹션 */
+        .recommend-section { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px; }
+        .rec-card { background: #fff; padding: 15px; border-radius: 12px; text-align: center; cursor: pointer; border: 1px solid #eee; transition: 0.2s; }
+        .rec-card:hover { transform: translateY(-3px); border-color: var(--point); }
+        .rec-tag { font-size: 11px; color: white; background: var(--point); padding: 2px 6px; border-radius: 4px; display: inline-block; margin-bottom: 5px; }
 
-        /* 왼쪽 검색 영역 */
-        .main-panel {
-            width: 65%;
-            padding: 40px;
-            overflow-y: auto;
-            border-right: 1px solid var(--border);
-            box-sizing: border-box;
-        }
-
-        .search-container {
-            background: white;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            margin-bottom: 30px;
-        }
-
-        .input-group {
-            margin-bottom: 15px;
-        }
-
-        .input-group label {
-            display: block;
-            font-weight: bold;
-            margin-bottom: 8px;
-            color: var(--primary);
-        }
-
-        input {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid var(--border);
-            border-radius: 8px;
-            font-size: 16px;
-            transition: 0.3s;
-            box-sizing: border-box;
-        }
-
-        input:focus {
-            border-color: var(--primary);
-            outline: none;
-        }
-
-        /* 상세 정보 카드 */
-        #detail-view {
-            display: none;
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-        }
-
-        .word-header {
-            border-bottom: 2px solid var(--primary);
-            padding-bottom: 15px;
-            margin-bottom: 20px;
-        }
-
-        .word-title {
-            font-size: 36px;
-            font-weight: bold;
-            color: var(--primary);
-        }
-
-        .word-pron {
-            font-size: 20px;
-            color: #7f8c8d;
-            margin-left: 10px;
-        }
-
-        .pos-symbol {
-            display: inline-block;
-            background: #eee;
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-size: 14px;
-            margin-left: 10px;
-        }
-
-        .definition-box {
-            font-size: 18px;
-            line-height: 1.8;
-            margin-bottom: 25px;
-            white-space: pre-wrap;
-        }
-
-        .example-section h4 {
-            color: var(--accent);
-            border-left: 4px solid var(--accent);
-            padding-left: 10px;
-            margin-bottom: 15px;
-        }
-
-        .example-item {
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 10px;
-        }
-
-        .ex-dia { font-weight: bold; font-size: 1.1em; }
-        .ex-pron { color: #666; font-size: 0.9em; margin: 5px 0; }
-        .ex-std { color: var(--primary); }
-
-        /* 오른쪽 추천 영역 */
-        .side-panel {
-            width: 35%;
-            padding: 40px;
-            box-sizing: border-box;
-            background: #fff;
-        }
-
-        .recommend-title {
-            font-size: 22px;
-            font-weight: bold;
-            margin-bottom: 30px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid var(--text);
-        }
-
-        .rec-item {
-            margin-bottom: 25px;
-            cursor: pointer;
-            padding: 15px;
-            border-radius: 8px;
-            border: 1px solid #eee;
-            transition: 0.2s;
-        }
-
-        .rec-item:hover {
-            border-color: var(--primary);
-            background: #fdfaf6;
-        }
-
-        .rec-tag {
-            font-size: 12px;
-            padding: 2px 6px;
-            border-radius: 4px;
-            color: white;
-            margin-bottom: 8px;
-            display: inline-block;
-        }
-        .tag-v { background: #e67e22; } /* 동사/형용사 */
-        .tag-n { background: #27ae60; } /* 명사류 */
-        .tag-a { background: #2980b9; } /* 접사/어미 */
+        /* 결과 표시 섹션 (Flexible) */
+        #resultView { width: 100%; display: none; } /* 결과가 있을 때만 표시 */
+        .result-card { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.08); min-height: 100px; height: auto; overflow: hidden; }
+        .word-header { border-bottom: 2px solid var(--point); padding-bottom: 15px; margin-bottom: 20px; }
+        .word-title { font-size: 32px; font-weight: bold; color: var(--point); }
+        .word-pron { font-size: 18px; color: #666; margin-left: 10px; }
+        
+        .def-area { font-size: 18px; line-height: 1.7; margin-bottom: 25px; white-space: pre-wrap; }
+        .ex-area { background: #f9f9f9; padding: 20px; border-radius: 10px; }
+        .ex-item { margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+        .ex-item:last-child { border: none; }
+        .ex-dia { font-weight: bold; color: #333; display: block; margin-bottom: 5px; }
+        .ex-std { color: #666; font-style: italic; }
     </style>
 </head>
 <body>
 
-    <div class="main-panel">
-        <div class="search-container">
-            <div class="input-group">
-                <label>📍 경주말 표제어 검색</label>
-                <input type="text" id="diaSearch" placeholder="예: 가1, 정구지, 단디">
-            </div>
-            <div class="input-group">
-                <label>🔍 서울말(뜻풀이) 검색</label>
-                <input type="text" id="stdSearch" placeholder="뜻풀이에 포함된 단어를 입력하세요...">
-            </div>
+<div class="container">
+    <div class="search-section">
+        <div class="input-group">
+            <label>🔍 경주말 표제어 검색</label>
+            <input type="text" id="diaSearch" placeholder="경주말을 입력하세요 (예: 가이)">
+        </div>
+        <div class="input-group">
+            <label>📖 표준어/뜻풀이 검색</label>
+            <input type="text" id="stdSearch" placeholder="표준어 의미로 찾기 (예: 강아지)">
+        </div>
+    </div>
+
+    <div class="recommend-section" id="recommendList">
         </div>
 
-        <div id="detail-view">
+    <div id="resultView">
+        <div class="result-card">
             <div class="word-header">
                 <span class="word-title" id="v-word">-</span>
-                <span class="word-pron" id="v-pron">[]</span>
-                <span class="pos-symbol" id="v-pos">󰃃</span>
+                <span class="word-pron" id="v-pron">[-]</span>
+                <span id="v-pos" style="font-size:14px; color:#888;"></span>
             </div>
-            <div class="definition-box" id="v-def">
-                뜻풀이 정보가 표시됩니다.
+            <div class="def-area" id="v-def">
+                뜻풀이가 여기에 나타납니다.
             </div>
-            <div class="example-section">
-                <h4>예문 (대역)</h4>
-                <div id="v-examples"></div>
+            <div class="ex-area" id="v-ex">
+                <strong>예문</strong>
+                <div id="ex-list"></div>
             </div>
         </div>
     </div>
+</div>
 
-    <div class="side-panel">
-        <div class="recommend-title">📅 오늘의 추천 경주말</div>
-        <div id="recommend-list"></div>
-    </div>
+<script>
+    let dictData = [];
 
-    <script>
-        let dictionary = [];
+    // 데이터 로드 (4만 건의 경우 로딩 시간이 걸릴 수 있음)
+    fetch('gyeongju_dict.json')
+        .then(res => res.json())
+        .then(data => {
+            dictData = data;
+            initRecommendations();
+        })
+        .catch(err => console.error("데이터를 불러오지 못했습니다. 파일명을 확인하세요."));
 
-        // 데이터 로드 (파이썬으로 생성한 gyeongju_dict.json 파일)
-        fetch('gyeongju_dict.json')
-            .then(res => res.json())
-            .then(data => {
-                dictionary = data;
-                initRecommendations();
-            });
+    const vView = document.getElementById('resultView');
 
-        const diaInput = document.getElementById('diaSearch');
-        const stdInput = document.getElementById('stdSearch');
-        const detailView = document.getElementById('detail-view');
+    function updateDisplay(item) {
+        if(!item) return;
+        vView.style.display = 'block';
+        document.getElementById('v-word').innerText = item.word;
+        document.getElementById('v-pron').innerText = `[${item.pronunciation}]`;
+        document.getElementById('v-pos').innerText = item.pos_symbol;
+        document.getElementById('v-def').innerText = item.definition;
 
-        // 검색 기능
-        function findWord(type, query) {
-            if (!query) { detailView.style.display = 'none'; return; }
-            
-            const result = dictionary.find(item => 
-                type === 'dia' ? (item.word === query || item.word_pure === query) 
-                               : item.definition.includes(query)
-            );
+        const exList = document.getElementById('ex-list');
+        exList.innerHTML = '';
+        item.examples.forEach(ex => {
+            exList.innerHTML += `
+                <div class="ex-item">
+                    <span class="ex-dia">¶ ${ex.dialect}</span>
+                    <span class="ex-std">< ${ex.standard} ></span>
+                </div>
+            `;
+        });
+        
+        // 검색 후 결과창으로 부드럽게 스크롤
+        vView.scrollIntoView({ behavior: 'smooth' });
+    }
 
-            if (result) showDetail(result);
-        }
+    // 경주말 검색 (숫자 제외 검색 지원)
+    document.getElementById('diaSearch').addEventListener('input', (e) => {
+        const val = e.target.value.trim();
+        if(val.length < 1) { vView.style.display = 'none'; return; }
+        const found = dictData.find(i => i.word_pure === val || i.word === val);
+        if(found) updateDisplay(found);
+    });
 
-        function showDetail(item) {
-            detailView.style.display = 'block';
-            document.getElementById('v-word').innerText = item.word;
-            document.getElementById('v-pron').innerText = `[${item.pronunciation}]`;
-            document.getElementById('v-pos').innerText = item.pos_symbol;
-            document.getElementById('v-def').innerText = item.definition;
+    // 표준어 검색
+    document.getElementById('stdSearch').addEventListener('input', (e) => {
+        const val = e.target.value.trim();
+        if(val.length < 1) { vView.style.display = 'none'; return; }
+        const found = dictData.find(i => i.definition.includes(val));
+        if(found) updateDisplay(found);
+    });
 
-            const exContainer = document.getElementById('v-examples');
-            exContainer.innerHTML = '';
+    // 추천 단어 초기화
+    function initRecommendations() {
+        const list = document.getElementById('recommendList');
+        // 임의로 3개 추출
+        const shuffled = [...dictData].sort(() => 0.5 - Math.random());
+        const selected = shuffled.slice(0, 3);
 
-            item.examples.forEach(ex => {
-                const div = document.createElement('div');
-                div.className = 'example-item';
-                div.innerHTML = `
-                    <div class="ex-dia">¶ ${ex.dialect}</div>
-                    <div class="ex-pron">[${ex.pron}]</div>
-                    <div class="ex-std">&lt;${ex.standard}&gt;</div>
-                `;
-                exContainer.appendChild(div);
-            });
-        }
+        selected.forEach(item => {
+            const div = document.createElement('div');
+            div.className = 'rec-card';
+            div.innerHTML = `<span class="rec-tag">추천</span><br><strong>${item.word_pure}</strong>`;
+            div.onclick = () => updateDisplay(item);
+            list.appendChild(div);
+        });
+    }
+</script>
 
-        diaInput.addEventListener('input', (e) => { stdInput.value = ''; findWord('dia', e.target.value); });
-        stdInput.addEventListener('input', (e) => { diaInput.value = ''; findWord('std', e.target.value); });
-
-        // 오늘의 추천 단어 (랜덤 3개)
-        function initRecommendations() {
-            const list = document.getElementById('recommend-list');
-            // 임의의 카테고리 분류 (기호 기준 예시)
-            const categories = [
-                { type: '󰂿', label: '동사/형용사', class: 'tag-v' },
-                { type: '󰃃', label: '명사류', class: 'tag-n' },
-                { type: '󰂴', label: '접사/어미', class: 'tag-a' }
-            ];
-
-            categories.forEach(cat => {
-                const pool = dictionary.filter(i => i.pos_symbol === cat.type);
-                const targetPool = pool.length > 0 ? pool : dictionary; // 없으면 전체에서
-                const randomItem = targetPool[Math.floor(Math.random() * targetPool.length)];
-
-                const div = document.createElement('div');
-                div.className = 'rec-item';
-                div.innerHTML = `
-                    <span class="rec-tag ${cat.class}">${cat.label}</span>
-                    <div style="font-size:20px; font-weight:bold;">${randomItem.word}</div>
-                    <div style="color:#666; font-size:14px; margin-top:5px;">${randomItem.definition.substring(0, 30)}...</div>
-                `;
-                div.onclick = () => showDetail(randomItem);
-                list.appendChild(div);
-            });
-        }
-    </script>
 </body>
 </html>
