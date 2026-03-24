@@ -9,66 +9,67 @@
         body { background: var(--bg); margin: 0; padding: 20px; font-family: 'Malgun Gothic', sans-serif; display: flex; flex-direction: column; align-items: center; }
         .container { width: 100%; max-width: 800px; }
         
+        /* 로딩 레이어 */
+        #loadingOverlay { position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(255,255,255,0.9); 
+                          display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 9999; }
+        .spinner { border: 4px solid #f3f3f3; border-top: 4px solid var(--point); border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin-bottom: 10px; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
         /* 검색창 섹션 */
         .search-section { background: white; padding: 25px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 20px; }
-        .input-group { margin-bottom: 15px; }
-        label { display: block; margin-bottom: 8px; font-weight: bold; color: #444; }
-        input { width: 100%; padding: 15px; border: 2px solid #ddd; border-radius: 10px; font-size: 16px; box-sizing: border-box; }
-        input:focus { border-color: var(--point); outline: none; box-shadow: 0 0 8px rgba(163,59,59,0.2); }
-
-        /* 검색 결과 목록 (다중 검색 시) */
+        input { width: 100%; padding: 15px; border: 2px solid #ddd; border-radius: 10px; font-size: 16px; box-sizing: border-box; margin-top: 8px; }
+        
+        /* 검색 결과 목록 */
         #searchList { margin-bottom: 20px; display: none; background: #fff; border-radius: 12px; border: 1px solid #ddd; overflow: hidden; }
-        .list-item { padding: 12px 20px; border-bottom: 1px solid #eee; cursor: pointer; transition: 0.2s; }
+        .list-item { padding: 12px 20px; border-bottom: 1px solid #eee; cursor: pointer; }
         .list-item:hover { background: #fff5f5; color: var(--point); }
-        .list-item:last-child { border: none; }
-        .list-count { padding: 10px 20px; font-size: 14px; background: #f0f0f0; color: #666; }
 
-        /* 오늘의 추천어 */
-        .recommend-section { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px; }
-        .rec-card { background: #fff; padding: 15px; border-radius: 12px; text-align: center; cursor: pointer; border: 1px solid #eee; }
-
-        /* 결과 상세 표시 (Flexible) */
+        /* 결과 상세 표시 */
         #resultView { width: 100%; display: none; margin-top: 10px; }
-        .result-card { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.08); height: auto; }
-        .word-header { border-bottom: 2px solid var(--point); padding-bottom: 15px; margin-bottom: 20px; }
-        .word-title { font-size: 32px; font-weight: bold; color: var(--point); }
+        .result-card { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.08); }
+        
+        /* 자동 링크 스타일 */
+        .dict-link { color: var(--point); text-decoration: underline; cursor: pointer; font-weight: bold; }
+        .dict-link:hover { color: #000; }
+
         .def-area { font-size: 18px; line-height: 1.7; margin-bottom: 25px; white-space: pre-wrap; }
-        .ex-area { background: #f9f9f9; padding: 20px; border-radius: 10px; }
-        .ex-item { margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+        .ex-area { background: #f9f9f9; padding: 20px; border-radius: 10px; font-size: 15px; }
     </style>
 </head>
 <body>
 
+<div id="loadingOverlay">
+    <div class="spinner"></div>
+    <div id="loadingText">사전 데이터를 불러오는 중입니다...</div>
+</div>
+
 <div class="container">
     <div class="search-section">
-        <div class="input-group">
+        <div>
             <label>🔍 경주말 표제어 검색</label>
-            <input type="text" id="diaSearch" placeholder="경주말 입력...">
+            <input type="text" id="diaSearch" placeholder="경주말 입력 (예: 가이)">
         </div>
-        <div class="input-group">
+        <div style="margin-top:15px;">
             <label>📖 표준어/뜻풀이 검색</label>
-            <input type="text" id="stdSearch" placeholder="뜻풀이 키워드 입력 (예: 강아지, 무지개)">
+            <input type="text" id="stdSearch" placeholder="뜻풀이 키워드 입력 (예: 강아지)">
         </div>
     </div>
 
     <div id="searchList">
-        <div class="list-count" id="resCount">검색 결과 0건</div>
+        <div id="resCount" style="padding:10px 20px; font-size:14px; background:#f0f0f0;"></div>
         <div id="listItems"></div>
     </div>
 
-    <div class="recommend-section" id="recommendList"></div>
-
     <div id="resultView">
         <div class="result-card">
-            <div class="word-header">
-                <span class="word-title" id="v-word">-</span>
-                <span id="v-pron" style="font-size:18px; color:#666; margin-left:10px;">[-]</span>
-                <span id="v-pos" style="font-size:14px; color:#888; margin-left:10px;"></span>
+            <div style="border-bottom: 2px solid var(--point); padding-bottom:15px; margin-bottom:20px;">
+                <span id="v-word" style="font-size:32px; font-weight:bold; color:var(--point);"></span>
+                <span id="v-pron" style="font-size:18px; color:#666; margin-left:10px;"></span>
             </div>
             <div class="def-area" id="v-def"></div>
-            <div class="ex-area" id="v-ex">
+            <div class="ex-area">
                 <strong>예문</strong>
-                <div id="ex-list"></div>
+                <div id="ex-list" style="margin-top:10px;"></div>
             </div>
         </div>
     </div>
@@ -76,111 +77,102 @@
 
 <script>
     let dictData = [];
+    let allWords = []; // 링크 생성을 위한 표제어 목록
 
-    // 데이터 로드
+    // 1. 데이터 로드 및 로딩 메시지 제어
+    const loadingOverlay = document.getElementById('loadingOverlay');
+    
     fetch('gyeongju_dict.json')
         .then(res => res.json())
         .then(data => {
             dictData = data;
-            initRecommendations();
+            // 검색 최적화를 위해 표제어만 따로 추출 (2글자 이상 단어만 링크 대상)
+            allWords = data.map(i => i.word_pure).filter(w => w.length >= 2);
+            loadingOverlay.style.display = 'none'; // 로딩 완료 시 숨김
+        })
+        .catch(err => {
+            document.getElementById('loadingText').innerText = "데이터 로딩 실패. 파일명을 확인하세요.";
+            console.error(err);
         });
 
-    const diaSearch = document.getElementById('diaSearch');
-    const stdSearch = document.getElementById('stdSearch');
-    const searchList = document.getElementById('searchList');
-    const listItems = document.getElementById('listItems');
-    const resCount = document.getElementById('resCount');
     const resultView = document.getElementById('resultView');
+    const searchList = document.getElementById('searchList');
 
-    // 검색 실행 (필터링 로직)
+    // 2. 자동 링크 생성 함수
+    function linkify(text) {
+        if (!text) return "";
+        // 뜻풀이 내에 존재하는 표제어를 찾아 <span> 태그로 변경
+        // 성능을 위해 현재 뜻풀이에 포함된 단어들만 체크
+        let linkedText = text;
+        
+        // 4만개 전체를 돌면 느려지므로, 현재 텍스트에 포함된 단어만 추출 시도
+        // 실제 운영 시에는 자주 참조되는 주요 표제어 리스트만 사용하거나 정규식을 최적화해야 함
+        allWords.forEach(word => {
+            if (text.includes(word)) {
+                const regex = new RegExp(`(${word})`, 'g');
+                linkedText = linkedText.replace(regex, `<span class="dict-link" onclick="handleLinkClick('$1')">$1</span>`);
+            }
+        });
+        return linkedText;
+    }
+
+    // 링크 클릭 시 해당 단어로 재검색
+    function handleLinkClick(word) {
+        document.getElementById('diaSearch').value = word;
+        performSearch('dia', word);
+    }
+
     function performSearch(type, query) {
-        if (query.length < 1) {
-            searchList.style.display = 'none';
-            resultView.style.display = 'none';
-            return;
-        }
+        if (query.length < 1) { searchList.style.display = 'none'; resultView.style.display = 'none'; return; }
 
-        let filtered = [];
-        if (type === 'dia') {
-            filtered = dictData.filter(i => i.word_pure === query || i.word === query);
-        } else {
-            // 뜻풀이(definition) 내 키워드 포함 여부 확인
-            filtered = dictData.filter(i => i.definition.includes(query));
-        }
+        let filtered = (type === 'dia') 
+            ? dictData.filter(i => i.word_pure === query || i.word === query)
+            : dictData.filter(i => i.definition.includes(query));
 
         if (filtered.length > 0) {
             if (filtered.length === 1) {
-                // 결과가 하나면 바로 표시
                 searchList.style.display = 'none';
                 displayDetail(filtered[0]);
             } else {
-                // 결과가 여러 개면 목록 표시
                 displayList(filtered);
             }
-        } else {
-            searchList.style.display = 'none';
-            resultView.style.display = 'none';
         }
     }
 
-    // 결과 목록 표시
     function displayList(items) {
         searchList.style.display = 'block';
         resultView.style.display = 'none';
-        resCount.innerText = `검색 결과 ${items.length}건 (클릭하면 상세 내용을 봅니다)`;
-        
+        document.getElementById('resCount').innerText = `검색 결과 ${items.length}건`;
+        const listItems = document.getElementById('listItems');
         listItems.innerHTML = '';
-        // 너무 많은 결과 방지를 위해 상위 50개만 표시 (성능 최적화)
         items.slice(0, 50).forEach(item => {
             const div = document.createElement('div');
             div.className = 'list-item';
-            div.innerHTML = `<strong>${item.word}</strong> <small>[${item.pronunciation}]</small> - ${item.definition.substring(0, 40)}...`;
-            div.onclick = () => {
-                displayDetail(item);
-                searchList.style.display = 'none';
-            };
+            div.innerHTML = `<strong>${item.word}</strong> - ${item.definition.substring(0, 30)}...`;
+            div.onclick = () => { displayDetail(item); searchList.style.display = 'none'; };
             listItems.appendChild(div);
         });
     }
 
-    // 상세 내용 표시
     function displayDetail(item) {
         resultView.style.display = 'block';
         document.getElementById('v-word').innerText = item.word;
         document.getElementById('v-pron').innerText = `[${item.pronunciation}]`;
-        document.getElementById('v-pos').innerText = item.pos_symbol;
-        document.getElementById('v-def').innerText = item.definition;
+        
+        // 뜻풀이에 자동 링크 적용
+        document.getElementById('v-def').innerHTML = linkify(item.definition);
 
         const exList = document.getElementById('ex-list');
         exList.innerHTML = '';
-        if (item.examples && item.examples.length > 0) {
-            item.examples.forEach(ex => {
-                exList.innerHTML += `
-                    <div class="ex-item">
-                        <span class="ex-dia">¶ ${ex.dialect}</span>
-                        <span class="ex-std">< ${ex.standard} ></span>
-                    </div>`;
-            });
-        } else {
-            exList.innerHTML = '등록된 예문이 없습니다.';
-        }
+        item.examples.forEach(ex => {
+            exList.innerHTML += `<div style="margin-bottom:10px;"><b>¶ ${ex.dialect}</b><br><small>< ${ex.standard} ></small></div>`;
+        });
         resultView.scrollIntoView({ behavior: 'smooth' });
     }
 
-    diaSearch.addEventListener('input', (e) => { stdSearch.value = ''; performSearch('dia', e.target.value.trim()); });
-    stdSearch.addEventListener('input', (e) => { diaSearch.value = ''; performSearch('std', e.target.value.trim()); });
-
-    function initRecommendations() {
-        const list = document.getElementById('recommendList');
-        const shuffled = [...dictData].sort(() => 0.5 - Math.random());
-        shuffled.slice(0, 3).forEach(item => {
-            const div = document.createElement('div');
-            div.className = 'rec-card';
-            div.innerHTML = `<small style="color:var(--point)">오늘의 단어</small><br><strong>${item.word_pure}</strong>`;
-            div.onclick = () => displayDetail(item);
-            list.appendChild(div);
-        });
-    }
+    document.getElementById('diaSearch').addEventListener('input', (e) => performSearch('dia', e.target.value.trim()));
+    document.getElementById('stdSearch').addEventListener('input', (e) => performSearch('std', e.target.value.trim()));
 </script>
+
 </body>
 </html>
