@@ -136,4 +136,87 @@
             }
         } else {
             searchList.style.display = 'none';
-            resultView.style.
+            resultView.style.display = 'none';
+        }
+    }
+
+    // 3. 목록 표시
+    function displayList(items) {
+        searchList.style.display = 'block';
+        resultView.style.display = 'none';
+        document.getElementById('resCount').innerText = `검색 결과 ${items.length}건 (목록에서 선택하세요)`;
+        const listItems = document.getElementById('listItems');
+        listItems.innerHTML = '';
+        items.slice(0, 60).forEach(item => {
+            const div = document.createElement('div');
+            div.className = 'list-item';
+            div.innerHTML = `<strong>${item.word}</strong> <small style="color:#999">[${item.pronunciation}]</small> - ${item.definition.substring(0, 35)}...`;
+            div.onclick = () => { displayDetail(item); searchList.style.display = 'none'; };
+            listItems.appendChild(div);
+        });
+    }
+
+    // 4. 상세 표시 및 링크화
+    function displayDetail(item) {
+        resultView.style.display = 'block';
+        document.getElementById('v-word').innerText = item.word;
+        document.getElementById('v-pron').innerText = `[${item.pronunciation}]`;
+        document.getElementById('v-pos').innerText = item.pos_symbol || "";
+        
+        // 뜻풀이 자동 링크 적용
+        document.getElementById('v-def').innerHTML = linkify(item.definition);
+
+        const exList = document.getElementById('ex-list');
+        exList.innerHTML = '';
+        if(item.examples && item.examples.length > 0) {
+            item.examples.forEach(ex => {
+                const exDiv = document.createElement('div');
+                exDiv.style.marginBottom = "12px";
+                exDiv.innerHTML = `<div style="color:#333; font-weight:bold;">¶ ${ex.dialect}</div>
+                                   <div style="color:#777; font-size:0.9em;">&lt; ${ex.standard} &gt;</div>`;
+                exList.appendChild(exDiv);
+            });
+        } else {
+            exList.innerHTML = "<span style='color:#ccc'>등록된 예문이 없습니다.</span>";
+        }
+        resultView.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // 5. 상호 참조 링크 생성 (현재 텍스트에 포함된 단어만 정규식으로 치환)
+    function linkify(text) {
+        if (!text) return "";
+        let linkedText = text;
+        // 성능을 위해 현재 텍스트 길이에 따라 유동적으로 처리
+        const possibleWords = allWords.filter(w => text.includes(w));
+        possibleWords.forEach(word => {
+            const regex = new RegExp(`(${word})(?!")`, 'g'); // 따옴표 안의 단어 제외 등 기초 방어
+            linkedText = linkedText.replace(regex, `<span class="dict-link" onclick="handleLinkClick('$1')">$1</span>`);
+        });
+        return linkedText;
+    }
+
+    function handleLinkClick(word) {
+        diaSearch.value = word;
+        performSearch('dia', word);
+    }
+
+    // 6. 오늘의 추천 단어
+    function initRecommendations() {
+        const list = document.getElementById('recommendList');
+        const shuffled = [...dictData].sort(() => 0.5 - Math.random());
+        shuffled.slice(0, 3).forEach(item => {
+            const div = document.createElement('div');
+            div.className = 'rec-card';
+            div.innerHTML = `<span class="rec-word">${item.word_pure}</span>
+                             <span class="rec-std">${item.definition.substring(0,15)}...</span>`;
+            div.onclick = () => displayDetail(item);
+            list.appendChild(div);
+        });
+    }
+
+    diaSearch.addEventListener('input', (e) => { stdSearch.value = ''; performSearch('dia', e.target.value.trim()); });
+    stdSearch.addEventListener('input', (e) => { diaSearch.value = ''; performSearch('std', e.target.value.trim()); });
+</script>
+
+</body>
+</html>
