@@ -192,7 +192,7 @@
     // 추천어 로직 (가시나, 가장, 가리다 등)
     function initRecommendations() {
         const container = document.getElementById('recommendList');
-        const samples = ["가시나", "가장", "가리다"];
+        const samples = [];
         let recs = dictData.filter(i => samples.includes(i.word_pure)).slice(0, 3);
         if(recs.length < 3) recs = [...dictData].sort(() => 0.5 - Math.random()).slice(0, 3);
 
