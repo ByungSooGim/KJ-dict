@@ -1,6 +1,7 @@
 [
     {
         "word": "가1",
+        "word_clean": "가1",
         "word_pure": "가",
         "pronunciation": "가아′",
         "pos_symbol": "󰂴",
@@ -15,6 +16,7 @@
     },
     {
         "word": "가2",
+        "word_clean": "가2",
         "word_pure": "가",
         "pronunciation": "가아′",
         "pos_symbol": "󰃃",
@@ -37,6 +39,7 @@
     },
     {
         "word": "가3",
+        "word_clean": "가3",
         "word_pure": "가",
         "pronunciation": "가아′",
         "pos_symbol": "󰃃",
@@ -55,7 +58,8 @@
     },
     {
         "word": "-가",
-        "word_pure": "-가",
+        "word_clean": "가",
+        "word_pure": "가",
         "pronunciation": "가′",
         "pos_symbol": "󰃥",
         "definition": "-가(哥). 해당 성씨나 성씨 소유자 표시 접미사. 성씨(姓氏)〛＿.",
@@ -77,6 +81,7 @@
     },
     {
         "word": "가가예문",
+        "word_clean": "가가예문",
         "word_pure": "가가예문",
         "pronunciation": "가가′예에′문′",
         "pos_symbol": "󰃃",
@@ -91,6 +96,7 @@
     },
     {
         "word": "가간",
+        "word_clean": "가간",
         "word_pure": "가간",
         "pronunciation": "가아′간′",
         "pos_symbol": "󰃃",
@@ -100,6 +106,7 @@
     },
     {
         "word": "가게",
+        "word_clean": "가게",
         "word_pure": "가게",
         "pronunciation": "가아′게′",
         "pos_symbol": "󰃃",
@@ -122,6 +129,7 @@
     },
     {
         "word": "가겟방",
+        "word_clean": "가겟방",
         "word_pure": "가겟방",
         "pronunciation": "가아′겝′빵/가겝빵′",
         "pos_symbol": "󰃃",
@@ -131,6 +139,7 @@
     },
     {
         "word": "가겟집",
+        "word_clean": "가겟집",
         "word_pure": "가겟집",
         "pronunciation": "가아′겓′찝/가겓찝′",
         "pos_symbol": "󰃃",
@@ -140,7 +149,8 @@
     },
     {
         "word": "가관(可觀)",
-        "word_pure": "가관(可觀)",
+        "word_clean": "가관",
+        "word_pure": "가관",
         "pronunciation": "가아′관′",
         "pos_symbol": "󰃃",
         "definition": "가관. ① 꼴이 볼 만함(남의 언행이나 어떤 상태를 비웃는 뜻으로 이르는 말). ② 경치 따위가 꽤 볼 만함. 흔).",
@@ -167,6 +177,7 @@
     },
     {
         "word": "가관시럽다",
+        "word_clean": "가관시럽다",
         "word_pure": "가관시럽다",
         "pronunciation": "가아′관′시럽따",
         "pos_symbol": "󰃰",
@@ -181,6 +192,7 @@
     },
     {
         "word": "가구1",
+        "word_clean": "가구1",
         "word_pure": "가구",
         "pronunciation": "가구′",
         "pos_symbol": "󰃃",
@@ -198,7 +210,18 @@
         "idioms": []
     },
     {
+        "word": "가구2(家口)",
+        "word_clean": "가구2",
+        "word_pure": "가구",
+        "pronunciation": "가구′",
+        "pos_symbol": "󰃃",
+        "definition": "가구. 집안 식구. 집안의 사람 수효.",
+        "examples": [],
+        "idioms": []
+    },
+    {
         "word": "가구3",
+        "word_clean": "가구3",
         "word_pure": "가구",
         "pronunciation": "가구′",
         "pos_symbol": "󰃃",
@@ -213,6 +236,7 @@
     },
     {
         "word": "가근방",
+        "word_clean": "가근방",
         "word_pure": "가근방",
         "pronunciation": "가′근방",
         "pos_symbol": "󰃃",
@@ -235,6 +259,7 @@
     },
     {
         "word": "가깝아지다",
+        "word_clean": "가깝아지다",
         "word_pure": "가깝아지다",
         "pronunciation": "가까′바지다",
         "pos_symbol": "󰂿",
@@ -244,6 +269,7 @@
     },
     {
         "word": "가깝어지다",
+        "word_clean": "가깝어지다",
         "word_pure": "가깝어지다",
         "pronunciation": "가까′버지다",
         "pos_symbol": "󰂿",
@@ -262,6 +288,7 @@
     },
     {
         "word": "가깝하다",
+        "word_clean": "가깝하다",
         "word_pure": "가깝하다",
         "pronunciation": "가깝{하′>파′}다",
         "pos_symbol": "󰃰",
@@ -280,6 +307,7 @@
     },
     {
         "word": "가꾸리1",
+        "word_clean": "가꾸리1",
         "word_pure": "가꾸리",
         "pronunciation": "가꾸′리",
         "pos_symbol": "󰃃",
@@ -289,6 +317,7 @@
     },
     {
         "word": "가꾸리2",
+        "word_clean": "가꾸리2",
         "word_pure": "가꾸리",
         "pronunciation": "가꾸리′",
         "pos_symbol": "󰃌",
@@ -298,6 +327,7 @@
     },
     {
         "word": "가꾸우다",
+        "word_clean": "가꾸우다",
         "word_pure": "가꾸우다",
         "pronunciation": "가꾸′운다, 가꾸′우고, 가꾸′우지, 가꾸′우더라, 가{꽈′/까′}아도, 가{꽈′/까′}아가′아, 가{꽈′/까′}아라, 가꾸′우머",
         "pos_symbol": "󰂿",
@@ -332,6 +362,7 @@
     },
     {
         "word": "가꿀로",
+        "word_clean": "가꿀로",
         "word_pure": "가꿀로",
         "pronunciation": "가꿀로′",
         "pos_symbol": "󰃌",
@@ -346,6 +377,7 @@
     },
     {
         "word": "가꿈",
+        "word_clean": "가꿈",
         "word_pure": "가꿈",
         "pronunciation": "가아′꿈′",
         "pos_symbol": "󰃌",
@@ -360,6 +392,7 @@
     },
     {
         "word": "가꿈가다가",
+        "word_clean": "가꿈가다가",
         "word_pure": "가꿈가다가",
         "pronunciation": "가아′꿍′가다′가",
         "pos_symbol": "󰃌",
@@ -369,6 +402,7 @@
     },
     {
         "word": "가꿈석",
+        "word_clean": "가꿈석",
         "word_pure": "가꿈석",
         "pronunciation": "가아′꿈′석",
         "pos_symbol": "󰃌",
@@ -387,6 +421,7 @@
     },
     {
         "word": "가꿉다",
+        "word_clean": "가꿉다",
         "word_pure": "가꿉다",
         "pronunciation": "가꿉′따",
         "pos_symbol": "󰃰",
@@ -405,6 +440,7 @@
     },
     {
         "word": "가꿉증",
+        "word_clean": "가꿉증",
         "word_pure": "가꿉증",
         "pronunciation": "가꿉′쯩",
         "pos_symbol": "󰃃",
@@ -419,6 +455,7 @@
     },
     {
         "word": "가꿉하다",
+        "word_clean": "가꿉하다",
         "word_pure": "가꿉하다",
         "pronunciation": "가꿉{하′>파′}다",
         "pos_symbol": "󰃰",
@@ -437,7 +474,8 @@
     },
     {
         "word": "가꾸{ㅎ-우}다",
-        "word_pure": "가꾸{ㅎ-우}다",
+        "word_clean": "가꾸ㅎ우다",
+        "word_pure": "가꾸ㅎ우다",
         "pronunciation": "가꾼는′다, 가꾸′코, 가꾸′치, 가꾸터′라, 가{꽈′/까′}아도, 가{꽈′/까′}아가′아, 가{꽈′/까′}아라, 가꾸′우머",
         "pos_symbol": "󰂿",
         "definition": "가꾸다. ① 식물이나 그것을 기르는 장소 따위를 손질하고 보살피다. ② 몸을 잘 매만지거나 꾸미다. ③ 좋은 상태로 만들려고 보살피고 꾸려 가다. 󰃫 ㉠ 가꿓-:  〛CY. ㉡ 가꾸우-:    〛VY. ☞가꾸다.",
@@ -446,6 +484,7 @@
     },
     {
         "word": "가끄이",
+        "word_clean": "가끄이",
         "word_pure": "가끄이",
         "pronunciation": "가끄′이",
         "pos_symbol": "󰃌",
@@ -464,6 +503,7 @@
     },
     {
         "word": "가끄이하다",
+        "word_clean": "가끄이하다",
         "word_pure": "가끄이하다",
         "pronunciation": "가끄′이하다",
         "pos_symbol": "󰃰",
@@ -482,6 +522,7 @@
     },
     {
         "word": "가끈시럽다",
+        "word_clean": "가끈시럽다",
         "word_pure": "가끈시럽다",
         "pronunciation": "가끈시′럽따",
         "pos_symbol": "󰃰",
@@ -491,6 +532,7 @@
     },
     {
         "word": "가끈하다",
+        "word_clean": "가끈하다",
         "word_pure": "가끈하다",
         "pronunciation": "가아′끈′하′다",
         "pos_symbol": "󰃰",
@@ -509,6 +551,7 @@
     },
     {
         "word": "가끊다",
+        "word_clean": "가끊다",
         "word_pure": "가끊다",
         "pronunciation": "가끈′타, 가끙′코, 가끈′치, 가끈터′라, 가끄′너도, 가끄′너가아, 가끄′느머",
         "pos_symbol": "󰃰",
@@ -527,6 +570,7 @@
     },
     {
         "word": "가나오나",
+        "word_clean": "가나오나",
         "word_pure": "가나오나",
         "pronunciation": "가′나(아)오′나",
         "pos_symbol": "󰃌",
@@ -541,6 +585,7 @@
     },
     {
         "word": "가난",
+        "word_clean": "가난",
         "word_pure": "가난",
         "pronunciation": "가나′이, 가나′늘, 가나′네, 가난′도, 가남′마",
         "pos_symbol": "󰃃",
@@ -559,6 +604,7 @@
     },
     {
         "word": "가난배이",
+        "word_clean": "가난배이",
         "word_pure": "가난배이",
         "pronunciation": "가남배′이",
         "pos_symbol": "󰃃",
@@ -568,6 +614,7 @@
     },
     {
         "word": "가난하다",
+        "word_clean": "가난하다",
         "word_pure": "가난하다",
         "pronunciation": "가난하′다, 가난하′고, 가난하′지, 가난하더′라, 가나′너도, 가나′너가′아, 가나′느머",
         "pos_symbol": "󰃰",
@@ -586,6 +633,7 @@
     },
     {
         "word": "가낞다",
+        "word_clean": "가낞다",
         "word_pure": "가낞다",
         "pronunciation": "가난′타, 가낭′코, 가난′치, 가난터′라, 가나′너도, 가나′너가′아, 가나′느머",
         "pos_symbol": "󰃰",
@@ -612,6 +660,7 @@
     },
     {
         "word": "가날",
+        "word_clean": "가날",
         "word_pure": "가날",
         "pronunciation": "가아′날′",
         "pos_symbol": "󰃃",
@@ -635,6 +684,7 @@
     },
     {
         "word": "가내보다",
+        "word_clean": "가내보다",
         "word_pure": "가내보다",
         "pronunciation": "가′내보′다",
         "pos_symbol": "󰂿",
@@ -657,6 +707,7 @@
     },
     {
         "word": "가너보다",
+        "word_clean": "가너보다",
         "word_pure": "가너보다",
         "pronunciation": "가′너보다",
         "pos_symbol": "󰂿",
@@ -675,6 +726,7 @@
     },
     {
         "word": "가누다",
+        "word_clean": "가누다",
         "word_pure": "가누다",
         "pronunciation": "가누′운다, 가누′우고, 가누′우지, 가누′우더라, 가나′아도, 가나′아가′아, 가누′우머",
         "pos_symbol": "󰂿",
@@ -693,6 +745,7 @@
     },
     {
         "word": "가누수룸하다",
+        "word_clean": "가누수룸하다",
         "word_pure": "가누수룸하다",
         "pronunciation": "가누수루움′하′다",
         "pos_symbol": "󰃰",
@@ -702,6 +755,7 @@
     },
     {
         "word": "가눟다",
+        "word_clean": "가눟다",
         "word_pure": "가눟다",
         "pronunciation": "가눈는′다, 가누′코, 가누′치, 가누터′라, 가나′아도, 가나′아가′아, 가누′우머",
         "pos_symbol": "󰂿",
@@ -720,6 +774,7 @@
     },
     {
         "word": "가느드리하다",
+        "word_clean": "가느드리하다",
         "word_pure": "가느드리하다",
         "pronunciation": "가느드리이′하′다",
         "pos_symbol": "󰃰",
@@ -729,6 +784,7 @@
     },
     {
         "word": "가느리하다",
+        "word_clean": "가느리하다",
         "word_pure": "가느리하다",
         "pronunciation": "가느리이′하′다",
         "pos_symbol": "󰃰",
@@ -747,6 +803,7 @@
     },
     {
         "word": "가느수룸하다",
+        "word_clean": "가느수룸하다",
         "word_pure": "가느수룸하다",
         "pronunciation": "가느수루움′하′다",
         "pos_symbol": "󰃰",
@@ -765,6 +822,7 @@
     },
     {
         "word": "가느시리하다",
+        "word_clean": "가느시리하다",
         "word_pure": "가느시리하다",
         "pronunciation": "가느시리이′하′다",
         "pos_symbol": "󰃰",
@@ -774,6 +832,7 @@
     },
     {
         "word": "가는귀",
+        "word_clean": "가는귀",
         "word_pure": "가는귀",
         "pronunciation": "가′능′귀",
         "pos_symbol": "󰃃",
@@ -783,6 +842,7 @@
     },
     {
         "word": "가는귀먹다",
+        "word_clean": "가는귀먹다",
         "word_pure": "가는귀먹다",
         "pronunciation": "가′능′귀먹′따",
         "pos_symbol": "󰂿",
@@ -801,6 +861,7 @@
     },
     {
         "word": "가는눈",
+        "word_clean": "가는눈",
         "word_pure": "가는눈",
         "pronunciation": "가′는′눈",
         "pos_symbol": "󰃃",
@@ -810,6 +871,7 @@
     },
     {
         "word": "가는니",
+        "word_clean": "가는니",
         "word_pure": "가는니",
         "pronunciation": "가는′니",
         "pos_symbol": "󰃃",
@@ -824,6 +886,7 @@
     },
     {
         "word": "가는베",
+        "word_clean": "가는베",
         "word_pure": "가는베",
         "pronunciation": "{가′/가}늠′베",
         "pos_symbol": "󰃃",
@@ -843,6 +906,7 @@
     },
     {
         "word": "가는비1",
+        "word_clean": "가는비1",
         "word_pure": "가는비",
         "pronunciation": "가′늠′비/가늠′비",
         "pos_symbol": "󰃃",
@@ -852,6 +916,7 @@
     },
     {
         "word": "가는비2",
+        "word_clean": "가는비2",
         "word_pure": "가는비",
         "pronunciation": "가′늠′비",
         "pos_symbol": "󰃃",
@@ -861,6 +926,7 @@
     },
     {
         "word": "가는허리",
+        "word_clean": "가는허리",
         "word_pure": "가는허리",
         "pronunciation": "가′는′허리",
         "pos_symbol": "󰃃",
@@ -870,6 +936,7 @@
     },
     {
         "word": "가늘다",
+        "word_clean": "가늘다",
         "word_pure": "가늘다",
         "pronunciation": "가′{늘′/느′}다, 가′{늘′/느′}고, 가′{늘′/느′}지, 가′{늘′/느′}더라, 가′느′러도, 가′느′러가′아, 가′{늘′/느′}머",
         "pos_symbol": "󰃰",
@@ -888,6 +955,7 @@
     },
     {
         "word": "가늠",
+        "word_clean": "가늠",
         "word_pure": "가늠",
         "pronunciation": "가늠′",
         "pos_symbol": "󰃃",
@@ -897,6 +965,7 @@
     },
     {
         "word": "가늠하다",
+        "word_clean": "가늠하다",
         "word_pure": "가늠하다",
         "pronunciation": "가늠하′다",
         "pos_symbol": "󰂿",
@@ -906,6 +975,7 @@
     },
     {
         "word": "가다",
+        "word_clean": "가다",
         "word_pure": "가다",
         "pronunciation": "간′다′, 가′고, 가′지, 가′더′라, 가′도′, 가′가′아, {가′/가′}라}/가′}거′라/가′}{나′/너′}라/간′{나′/너′}라, 가′머",
         "pos_symbol": "󰂿",
@@ -964,6 +1034,7 @@
     },
     {
         "word": "가다듬다",
+        "word_clean": "가다듬다",
         "word_pure": "가다듬다",
         "pronunciation": "가다듬′따",
         "pos_symbol": "󰂿",
@@ -982,6 +1053,7 @@
     },
     {
         "word": "가다루다",
+        "word_clean": "가다루다",
         "word_pure": "가다루다",
         "pronunciation": "가아′다′루운다, 가아′다′루우고, 가아′다′루우지, 가아′다′루우더라, 가아′다′라아도, 가아′다′라아가′아, 가아′다′루우머",
         "pos_symbol": "󰂿",
@@ -1004,7 +1076,8 @@
     },
     {
         "word": "가다루{ㅎ-우}다",
-        "word_pure": "가다루{ㅎ-우}다",
+        "word_clean": "가다루ㅎ우다",
+        "word_pure": "가다루ㅎ우다",
         "pronunciation": "가아다룬는′다, 가아다루′코, 가아다루′치, 가아다루터′라, 가아′다′라아도, 가아′다′라아가′아, 가아′다′루우머",
         "pos_symbol": "󰂿",
         "definition": "가다루{ㅎ-우}다: 가다루다. 논밭을 갈아서 작물을 심기 좋도록 다루다. 논밭을 갈아서 다루다. 󰃫 ㉠ 가다뤃-:  〛CY. ㉡ 가다루우-:    〛VY. 흔).",
@@ -1018,6 +1091,7 @@
     },
     {
         "word": "가다오다",
+        "word_clean": "가다오다",
         "word_pure": "가다오다",
         "pronunciation": "가′다′아오′다",
         "pos_symbol": "󰃌",
@@ -1027,6 +1101,7 @@
     },
     {
         "word": "가다주다",
+        "word_clean": "가다주다",
         "word_pure": "가다주다",
         "pronunciation": "가다′아주다",
         "pos_symbol": "󰂿",
@@ -1049,6 +1124,7 @@
     },
     {
         "word": "가다케다",
+        "word_clean": "가다케다",
         "word_pure": "가다케다",
         "pronunciation": "가다케′에다",
         "pos_symbol": "󰂿",
@@ -1067,6 +1143,7 @@
     },
     {
         "word": "가다키다",
+        "word_clean": "가다키다",
         "word_pure": "가다키다",
         "pronunciation": "가다키′이다",
         "pos_symbol": "󰂿",
@@ -1081,6 +1158,7 @@
     },
     {
         "word": "가닥",
+        "word_clean": "가닥",
         "word_pure": "가닥",
         "pronunciation": "가닥′",
         "pos_symbol": "󰃃",
@@ -1095,6 +1173,7 @@
     },
     {
         "word": "가닥가닥",
+        "word_clean": "가닥가닥",
         "word_pure": "가닥가닥",
         "pronunciation": "가닥′까닥′",
         "pos_symbol": "󰃃",
@@ -1109,6 +1188,7 @@
     },
     {
         "word": "가담1",
+        "word_clean": "가담1",
         "word_pure": "가담",
         "pronunciation": "가담′",
         "pos_symbol": "󰃃",
@@ -1122,7 +1202,18 @@
         "idioms": []
     },
     {
+        "word": "가담2(加擔)",
+        "word_clean": "가담2",
+        "word_pure": "가담",
+        "pronunciation": "가담′",
+        "pos_symbol": "󰃃",
+        "definition": "가담. (여럿이 하는 부정적인 일에) 끼어들어 함께 꾀하거나 행하는 것.",
+        "examples": [],
+        "idioms": []
+    },
+    {
         "word": "가담하다1",
+        "word_clean": "가담하다1",
         "word_pure": "가담하다",
         "pronunciation": "가담한′다′, 가담하′고, 가담하′지, 가담하더′라, 가담′해′애′도, 가담′해′애′가′아, 가담하′머",
         "pos_symbol": "󰂿",
@@ -1139,7 +1230,18 @@
             {
                 "dialect": "새 이름 공모에 함 가담해 볼라캐도 일이 생각잖게 너무 에럽네요.",
                 "standard": "새 이름 공모에 한 번 참여해 보려고 해도 일이 생각잖게 너무 어렵네요."
-            },
+            }
+        ],
+        "idioms": []
+    },
+    {
+        "word": "가담하다2(加擔-)",
+        "word_clean": "가담하다2",
+        "word_pure": "가담하다",
+        "pronunciation": "가담하′다",
+        "pos_symbol": "󰂿",
+        "definition": "가담하다.",
+        "examples": [
             {
                 "dialect": "나도 그날 공격에는 가담햇지.",
                 "standard": "나도 그날 공격에는 가담했지."
@@ -1153,6 +1255,7 @@
     },
     {
         "word": "가당찮다",
+        "word_clean": "가당찮다",
         "word_pure": "가당찮다",
         "pronunciation": "가아′당찬′타/가아′당′찬타",
         "pos_symbol": "󰃰",
@@ -1171,6 +1274,7 @@
     },
     {
         "word": "가당케다",
+        "word_clean": "가당케다",
         "word_pure": "가당케다",
         "pronunciation": "가당케′에다",
         "pos_symbol": "󰂿",
@@ -1180,6 +1284,7 @@
     },
     {
         "word": "가당키다",
+        "word_clean": "가당키다",
         "word_pure": "가당키다",
         "pronunciation": "가당키′인다, 가당키′이고, 가당키′이지, 가당키′이더라, 가당키′이도, 가당키′이가′아, 가당키′이머",
         "pos_symbol": "󰂿",
@@ -1198,6 +1303,7 @@
     },
     {
         "word": "가당하다",
+        "word_clean": "가당하다",
         "word_pure": "가당하다",
         "pronunciation": "가아′당′하다",
         "pos_symbol": "󰃰",
@@ -1216,6 +1322,7 @@
     },
     {
         "word": "가대기",
+        "word_clean": "가대기",
         "word_pure": "가대기",
         "pronunciation": "가대′기",
         "pos_symbol": "󰃃",
@@ -1242,6 +1349,7 @@
     },
     {
         "word": "가대기가대기",
+        "word_clean": "가대기가대기",
         "word_pure": "가대기가대기",
         "pronunciation": "가대′기가대′기",
         "pos_symbol": "󰃃",
@@ -1256,7 +1364,8 @@
     },
     {
         "word": "가돈(家豚)",
-        "word_pure": "가돈(家豚)",
+        "word_clean": "가돈",
+        "word_pure": "가돈",
         "pronunciation": "가돈′",
         "pos_symbol": "󰃃",
         "definition": "가돈. 남에게 자기의 아들을 낮추어 이르는 말. ☞아들.",
@@ -1270,6 +1379,7 @@
     },
     {
         "word": "가두케다",
+        "word_clean": "가두케다",
         "word_pure": "가두케다",
         "pronunciation": "가두케′에다",
         "pos_symbol": "󰂿",
@@ -1279,6 +1389,7 @@
     },
     {
         "word": "가두키다",
+        "word_clean": "가두키다",
         "word_pure": "가두키다",
         "pronunciation": "가두키′인다, 가두키′이고, 가두키′이지, 가두키′이더라, 가두키′이도, 가두키′이가′아, 가두키′이머",
         "pos_symbol": "󰂿",
@@ -1293,6 +1404,7 @@
     },
     {
         "word": "가두우다",
+        "word_clean": "가두우다",
         "word_pure": "가두우다",
         "pronunciation": "가두′운다, 가두′우고, 가두′우지, 가두′우더라, 가다′아도, 가다′아가′아, 가두′우머",
         "pos_symbol": "󰂿",
@@ -1311,7 +1423,8 @@
     },
     {
         "word": "가두{ㅎ-우}다",
-        "word_pure": "가두{ㅎ-우}다",
+        "word_clean": "가두ㅎ우다",
+        "word_pure": "가두ㅎ우다",
         "pronunciation": "가둔는′다, 가두′코, 가두′치, 가두터′라, 가다′아도, 가다′아가′아, 가두′우머",
         "pos_symbol": "󰂿",
         "definition": "가두다. 󰃫 ㉠ 가둫-:  〛CY. ㉡ 가두우-:    〛VY.",
@@ -1329,6 +1442,7 @@
     },
     {
         "word": "가득하다",
+        "word_clean": "가득하다",
         "word_pure": "가득하다",
         "pronunciation": "가드으′카′다",
         "pos_symbol": "󰃰",
@@ -1347,6 +1461,7 @@
     },
     {
         "word": "가디키다",
+        "word_clean": "가디키다",
         "word_pure": "가디키다",
         "pronunciation": "가디키′인다, 가디키′이고, 가디키′이지, 가디키′이더라, 가디키′이도, 가디키′이가′아, 가디키′이머",
         "pos_symbol": "󰂿",
@@ -1356,6 +1471,7 @@
     },
     {
         "word": "가따아나",
+        "word_clean": "가따아나",
         "word_pure": "가따아나",
         "pronunciation": "가따′아나",
         "pos_symbol": "󰃌",
@@ -1374,6 +1490,7 @@
     },
     {
         "word": "가딱이나",
+        "word_clean": "가딱이나",
         "word_pure": "가딱이나",
         "pronunciation": "가따′기나",
         "pos_symbol": "󰃌",
@@ -1383,6 +1500,7 @@
     },
     {
         "word": "가뜩",
+        "word_clean": "가뜩",
         "word_pure": "가뜩",
         "pronunciation": "가아′뜩′",
         "pos_symbol": "󰃌",
@@ -1392,6 +1510,7 @@
     },
     {
         "word": "가뜩어나",
+        "word_clean": "가뜩어나",
         "word_pure": "가뜩어나",
         "pronunciation": "가뜨′거나",
         "pos_symbol": "󰃌",
@@ -1401,6 +1520,7 @@
     },
     {
         "word": "가뜬하다",
+        "word_clean": "가뜬하다",
         "word_pure": "가뜬하다",
         "pronunciation": "가아′뜬′하′다",
         "pos_symbol": "󰃰",
@@ -1419,6 +1539,7 @@
     },
     {
         "word": "가띠이나",
+        "word_clean": "가띠이나",
         "word_pure": "가띠이나",
         "pronunciation": "가띠′이나",
         "pos_symbol": "󰃌",
@@ -1428,6 +1549,7 @@
     },
     {
         "word": "가띡이나",
+        "word_clean": "가띡이나",
         "word_pure": "가띡이나",
         "pronunciation": "가띠′기나",
         "pos_symbol": "󰃌",
@@ -1442,6 +1564,7 @@
     },
     {
         "word": "가라앉다",
+        "word_clean": "가라앉다",
         "word_pure": "가라앉다",
         "pronunciation": "가′라′안는다, 가′라′앙꼬, 가′라′안찌, 가′라′안떠라, 가′라′안{저/자}도, 가′라′안{저/자}가′아, 가′라′안{지>즈}머",
         "pos_symbol": "󰂿",
@@ -1451,6 +1574,7 @@
     },
     {
         "word": "가라지다",
+        "word_clean": "가라지다",
         "word_pure": "가라지다",
         "pronunciation": "가라′아지다",
         "pos_symbol": "󰂿",
@@ -1469,6 +1593,7 @@
     },
     {
         "word": "가락1",
+        "word_clean": "가락1",
         "word_pure": "가락",
         "pronunciation": "가락′",
         "pos_symbol": "󰃃",
@@ -1495,6 +1620,7 @@
     },
     {
         "word": "가락2",
+        "word_clean": "가락2",
         "word_pure": "가락",
         "pronunciation": "가락′",
         "pos_symbol": "󰃃",
@@ -1534,6 +1660,7 @@
     },
     {
         "word": "가락꼬재이",
+        "word_clean": "가락꼬재이",
         "word_pure": "가락꼬재이",
         "pronunciation": "가락꼬재′이",
         "pos_symbol": "󰃃",
@@ -1552,6 +1679,7 @@
     },
     {
         "word": "가락꼬지",
+        "word_clean": "가락꼬지",
         "word_pure": "가락꼬지",
         "pronunciation": "가락꼬′지",
         "pos_symbol": "󰃃",
@@ -1561,6 +1689,7 @@
     },
     {
         "word": "가락엿",
+        "word_clean": "가락엿",
         "word_pure": "가락엿",
         "pronunciation": "가랑′녇, 가랑′녀시, 가랑′녀슬, 가랑′녀세, 가랑′녇또, 가랑′념마",
         "pos_symbol": "󰃃",
@@ -1570,6 +1699,7 @@
     },
     {
         "word": "가락옷",
+        "word_clean": "가락옷",
         "word_pure": "가락옷",
         "pronunciation": "가락′옫/가라′곧, 가락′오시/가라′고시, 가락′오슬/가라′고슬",
         "pos_symbol": "󰃃",
@@ -1579,6 +1709,7 @@
     },
     {
         "word": "가락지",
+        "word_clean": "가락지",
         "word_pure": "가락지",
         "pronunciation": "가락′찌",
         "pos_symbol": "󰃃",
@@ -1593,6 +1724,7 @@
     },
     {
         "word": "가락토리",
+        "word_clean": "가락토리",
         "word_pure": "가락토리",
         "pronunciation": "가락토′리",
         "pos_symbol": "󰃃",
@@ -1607,6 +1739,7 @@
     },
     {
         "word": "가람옷",
+        "word_clean": "가람옷",
         "word_pure": "가람옷",
         "pronunciation": "가{람′옫/라′몯}, 가{람′오시/라′모시}, 가{람′오슬/라′모슬}",
         "pos_symbol": "󰃃",
@@ -1621,6 +1754,7 @@
     },
     {
         "word": "가랑1",
+        "word_clean": "가랑1",
         "word_pure": "가랑",
         "pronunciation": "가아′랑′",
         "pos_symbol": "󰃃",
@@ -1640,6 +1774,7 @@
     },
     {
         "word": "가랑2",
+        "word_clean": "가랑2",
         "word_pure": "가랑",
         "pronunciation": "󰠏, 󰠏, 가라′아, 󰠏, 󰠏",
         "pos_symbol": "󰃃",
@@ -1671,6 +1806,7 @@
     },
     {
         "word": "가랑3",
+        "word_clean": "가랑3",
         "word_pure": "가랑",
         "pronunciation": "가아′랑′",
         "pos_symbol": "󰃌",
@@ -1685,7 +1821,8 @@
     },
     {
         "word": "-가랑",
-        "word_pure": "-가랑",
+        "word_clean": "가랑",
+        "word_pure": "가랑",
         "pronunciation": "가아′랑′",
         "pos_symbol": "󰃥",
         "definition": "-가량. 정도 표시 접미사. 수량 표시 명〛＿.",
@@ -1703,6 +1840,7 @@
     },
     {
         "word": "가랑비",
+        "word_clean": "가랑비",
         "word_pure": "가랑비",
         "pronunciation": "가랑′비",
         "pos_symbol": "󰃃",
@@ -1721,6 +1859,7 @@
     },
     {
         "word": "가랑이퍼리",
+        "word_clean": "가랑이퍼리",
         "word_pure": "가랑이퍼리",
         "pronunciation": "가랑{이/니}퍼′리",
         "pos_symbol": "󰃃",
@@ -1730,6 +1869,7 @@
     },
     {
         "word": "가랑입",
+        "word_clean": "가랑입",
         "word_pure": "가랑입",
         "pronunciation": "가랑′니비, 가랑′니블, 가랑′니베, 가랑′닙또, 가랑′님마",
         "pos_symbol": "󰃃",
@@ -1739,6 +1879,7 @@
     },
     {
         "word": "가랑잎",
+        "word_clean": "가랑잎",
         "word_pure": "가랑잎",
         "pronunciation": "가랑′니피, 가랑′니플, 가랑′니페, 가랑′닙또, 가랑′님마",
         "pos_symbol": "󰃃",
@@ -1748,6 +1889,7 @@
     },
     {
         "word": "가랑잎사구",
+        "word_clean": "가랑잎사구",
         "word_pure": "가랑잎사구",
         "pronunciation": "가랑{입/닙}사′구",
         "pos_symbol": "󰃃",
@@ -1757,6 +1899,7 @@
     },
     {
         "word": "가랑하다1",
+        "word_clean": "가랑하다1",
         "word_pure": "가랑하다",
         "pronunciation": "가아′랑′하다",
         "pos_symbol": "󰂿",
@@ -1775,6 +1918,7 @@
     },
     {
         "word": "가랑하다2",
+        "word_clean": "가랑하다2",
         "word_pure": "가랑하다",
         "pronunciation": "가아′랑′하다",
         "pos_symbol": "󰂿",
@@ -1789,6 +1933,7 @@
     },
     {
         "word": "가래1",
+        "word_clean": "가래1",
         "word_pure": "가래",
         "pronunciation": "가′래",
         "pos_symbol": "󰃃",
@@ -1803,6 +1948,7 @@
     },
     {
         "word": "가래2",
+        "word_clean": "가래2",
         "word_pure": "가래",
         "pronunciation": "가′래",
         "pos_symbol": "󰃃",
@@ -1821,6 +1967,7 @@
     },
     {
         "word": "가래3",
+        "word_clean": "가래3",
         "word_pure": "가래",
         "pronunciation": "가′래′",
         "pos_symbol": "󰃃",
@@ -1830,6 +1977,7 @@
     },
     {
         "word": "가래4",
+        "word_clean": "가래4",
         "word_pure": "가래",
         "pronunciation": "가′래",
         "pos_symbol": "󰃃",
@@ -1844,6 +1992,7 @@
     },
     {
         "word": "가래5",
+        "word_clean": "가래5",
         "word_pure": "가래",
         "pronunciation": "가′래′",
         "pos_symbol": "󰃃",
@@ -1858,6 +2007,7 @@
     },
     {
         "word": "가래기1",
+        "word_clean": "가래기1",
         "word_pure": "가래기",
         "pronunciation": "가래′기",
         "pos_symbol": "󰃃",
@@ -1872,6 +2022,7 @@
     },
     {
         "word": "가래기2",
+        "word_clean": "가래기2",
         "word_pure": "가래기",
         "pronunciation": "가래′기",
         "pos_symbol": "󰃃",
@@ -1886,6 +2037,7 @@
     },
     {
         "word": "가래나무",
+        "word_clean": "가래나무",
         "word_pure": "가래나무",
         "pronunciation": "가′래′나무",
         "pos_symbol": "󰃃",
@@ -1908,6 +2060,7 @@
     },
     {
         "word": "가래떡",
+        "word_clean": "가래떡",
         "word_pure": "가래떡",
         "pronunciation": "가′래떡",
         "pos_symbol": "󰃃",
@@ -1917,6 +2070,7 @@
     },
     {
         "word": "가래엿",
+        "word_clean": "가래엿",
         "word_pure": "가래엿",
         "pronunciation": "가′래엳, 가′래여시, 가′래여슬",
         "pos_symbol": "󰃃",
@@ -1931,6 +2085,7 @@
     },
     {
         "word": "가래이",
+        "word_clean": "가래이",
         "word_pure": "가래이",
         "pronunciation": "가래′이가, 가래′이{로/를}, 가래′이에/가라′아, 가래′이도, 가래′이마",
         "pos_symbol": "󰃃",
@@ -1966,6 +2121,7 @@
     },
     {
         "word": "가래조",
+        "word_clean": "가래조",
         "word_pure": "가래조",
         "pronunciation": "가′래′조",
         "pos_symbol": "󰃃",
@@ -1988,6 +2144,7 @@
     },
     {
         "word": "가래질",
+        "word_clean": "가래질",
         "word_pure": "가래질",
         "pronunciation": "가′래질",
         "pos_symbol": "󰃃",
@@ -2006,6 +2163,7 @@
     },
     {
         "word": "가래질하다",
+        "word_clean": "가래질하다",
         "word_pure": "가래질하다",
         "pronunciation": "가′래질하다",
         "pos_symbol": "󰂿",
@@ -2015,6 +2173,7 @@
     },
     {
         "word": "가래춤",
+        "word_clean": "가래춤",
         "word_pure": "가래춤",
         "pronunciation": "가′래′춤, 가′래′추미, 가′래′추물",
         "pos_symbol": "󰃃",
@@ -2034,6 +2193,7 @@
     },
     {
         "word": "가래토시",
+        "word_clean": "가래토시",
         "word_pure": "가래토시",
         "pronunciation": "가래토′시",
         "pos_symbol": "󰃃",
@@ -2043,6 +2203,7 @@
     },
     {
         "word": "가랫장",
+        "word_clean": "가랫장",
         "word_pure": "가랫장",
         "pronunciation": "가랟짱′",
         "pos_symbol": "󰃃",
@@ -2052,6 +2213,7 @@
     },
     {
         "word": "가랫장구",
+        "word_clean": "가랫장구",
         "word_pure": "가랫장구",
         "pronunciation": "가랟짱′구",
         "pos_symbol": "󰃃",
@@ -2066,6 +2228,7 @@
     },
     {
         "word": "가런",
+        "word_clean": "가런",
         "word_pure": "가런",
         "pronunciation": "가아′런′",
         "pos_symbol": "󰃃",
@@ -2093,6 +2256,7 @@
     },
     {
         "word": "가런하다1",
+        "word_clean": "가런하다1",
         "word_pure": "가런하다",
         "pronunciation": "가아′런′하다",
         "pos_symbol": "󰂿",
@@ -2107,6 +2271,7 @@
     },
     {
         "word": "가런하다2",
+        "word_clean": "가런하다2",
         "word_pure": "가런하다",
         "pronunciation": "가아′런′하다",
         "pos_symbol": "󰃰",
@@ -2129,6 +2294,7 @@
     },
     {
         "word": "가럲다",
+        "word_clean": "가럲다",
         "word_pure": "가럲다",
         "pronunciation": "가아′런′타",
         "pos_symbol": "󰃰",
@@ -2151,6 +2317,7 @@
     },
     {
         "word": "가럼옷",
+        "word_clean": "가럼옷",
         "word_pure": "가럼옷",
         "pronunciation": "가럼′옫",
         "pos_symbol": "󰃃",
@@ -2165,6 +2332,7 @@
     },
     {
         "word": "가럽다",
+        "word_clean": "가럽다",
         "word_pure": "가럽다",
         "pronunciation": "가럽′따, 가럭′꼬, 가럽′찌, 가럽떠′라, 가러′버도, 가러′버가′아, 가러′부머",
         "pos_symbol": "󰃰",
@@ -2183,6 +2351,7 @@
     },
     {
         "word": "가럽데기",
+        "word_clean": "가럽데기",
         "word_pure": "가럽데기",
         "pronunciation": "가럽떼′기",
         "pos_symbol": "󰃃",
@@ -2201,6 +2370,7 @@
     },
     {
         "word": "가레다",
+        "word_clean": "가레다",
         "word_pure": "가레다",
         "pronunciation": "가레′에다",
         "pos_symbol": "󰂿",
@@ -2220,6 +2390,7 @@
     },
     {
         "word": "가로1",
+        "word_clean": "가로1",
         "word_pure": "가로",
         "pronunciation": "가로′",
         "pos_symbol": "󰃃",
@@ -2229,6 +2400,7 @@
     },
     {
         "word": "가로2",
+        "word_clean": "가로2",
         "word_pure": "가로",
         "pronunciation": "가로′",
         "pos_symbol": "󰃃",
@@ -2237,7 +2409,18 @@
         "idioms": []
     },
     {
+        "word": "가로3(街路)",
+        "word_clean": "가로3",
+        "word_pure": "가로",
+        "pronunciation": "가아′로′",
+        "pos_symbol": "󰃃",
+        "definition": "가로. 시가지의 넓은 도로. 일반적으로 교통안전을 위하여 차도(車道)와 보도(步道)로 구분되어 있다.",
+        "examples": [],
+        "idioms": []
+    },
+    {
         "word": "가로늦다",
+        "word_clean": "가로늦다",
         "word_pure": "가로늦다",
         "pronunciation": "가로늗′따, 가로늑′꼬, 가로늗′찌, 가로늗떠′라, 가로느′저도, 가로느′저가′아, 가로느′{지>즈}머",
         "pos_symbol": "󰃰",
@@ -2252,6 +2435,7 @@
     },
     {
         "word": "가루다",
+        "word_clean": "가루다",
         "word_pure": "가루다",
         "pronunciation": "가루′운다, 가루′우고, 가루′우지, 가루′우더라, 가{롸′/라′}아도, 가{롸′/라′}아가′아, 가{롸′/라′}아라, 가루′우머",
         "pos_symbol": "󰂿",
@@ -2282,7 +2466,8 @@
     },
     {
         "word": "가루{ㅎ-우}다",
-        "word_pure": "가루{ㅎ-우}다",
+        "word_clean": "가루ㅎ우다",
+        "word_pure": "가루ㅎ우다",
         "pronunciation": "가룬는′다, 가루′코, 가루′치, 가루터′라, 가{롸′/라′}아도, 가루′우머",
         "pos_symbol": "󰂿",
         "definition": "가리다. 보이거나 통하지 못하도록 막히다. ☞가루다.",
@@ -2291,6 +2476,7 @@
     },
     {
         "word": "가르렁거리다",
+        "word_clean": "가르렁거리다",
         "word_pure": "가르렁거리다",
         "pronunciation": "가르렁거′리다",
         "pos_symbol": "󰂿",
@@ -2309,6 +2495,7 @@
     },
     {
         "word": "가르렁대다",
+        "word_clean": "가르렁대다",
         "word_pure": "가르렁대다",
         "pronunciation": "가르렁대′애다",
         "pos_symbol": "󰂿",
@@ -2318,6 +2505,7 @@
     },
     {
         "word": "가르매",
+        "word_clean": "가르매",
         "word_pure": "가르매",
         "pronunciation": "가르′매",
         "pos_symbol": "󰃃",
@@ -2327,6 +2515,7 @@
     },
     {
         "word": "가르시다",
+        "word_clean": "가르시다",
         "word_pure": "가르시다",
         "pronunciation": "가르′시다",
         "pos_symbol": "󰂿",
@@ -2336,6 +2525,7 @@
     },
     {
         "word": "가르키다1",
+        "word_clean": "가르키다1",
         "word_pure": "가르키다",
         "pronunciation": "가르′키다",
         "pos_symbol": "󰂿",
@@ -2358,6 +2548,7 @@
     },
     {
         "word": "가르키다2",
+        "word_clean": "가르키다2",
         "word_pure": "가르키다",
         "pronunciation": "가르′키다",
         "pos_symbol": "󰂿",
@@ -2376,6 +2567,7 @@
     },
     {
         "word": "가륵하다",
+        "word_clean": "가륵하다",
         "word_pure": "가륵하다",
         "pronunciation": "가아′륵′{하>카}다",
         "pos_symbol": "󰃰",
@@ -2398,6 +2590,7 @@
     },
     {
         "word": "가름자",
+        "word_clean": "가름자",
         "word_pure": "가름자",
         "pronunciation": "가름′자",
         "pos_symbol": "󰃃",
@@ -2407,6 +2600,7 @@
     },
     {
         "word": "가리1",
+        "word_clean": "가리1",
         "word_pure": "가리",
         "pronunciation": "가′리",
         "pos_symbol": "󰃃",
@@ -2416,6 +2610,7 @@
     },
     {
         "word": "가리2",
+        "word_clean": "가리2",
         "word_pure": "가리",
         "pronunciation": "가리′",
         "pos_symbol": "󰃃",
@@ -2438,6 +2633,7 @@
     },
     {
         "word": "가리3",
+        "word_clean": "가리3",
         "word_pure": "가리",
         "pronunciation": "가리′가, 가리′{로/를}, 가{리′/레′}에/가리′예, 가리′도, 가리′마",
         "pos_symbol": "󰃃",
@@ -2460,6 +2656,7 @@
     },
     {
         "word": "가리4",
+        "word_clean": "가리4",
         "word_pure": "가리",
         "pronunciation": "가′리",
         "pos_symbol": "󰃃",
@@ -2478,6 +2675,7 @@
     },
     {
         "word": "가리5",
+        "word_clean": "가리5",
         "word_pure": "가리",
         "pronunciation": "가′리",
         "pos_symbol": "󰃃",
@@ -2492,6 +2690,7 @@
     },
     {
         "word": "가리놓다",
+        "word_clean": "가리놓다",
         "word_pure": "가리놓다",
         "pronunciation": "가리노′타",
         "pos_symbol": "󰂿",
@@ -2510,6 +2709,7 @@
     },
     {
         "word": "가리눕다",
+        "word_clean": "가리눕다",
         "word_pure": "가리눕다",
         "pronunciation": "가리눕′따",
         "pos_symbol": "󰂿",
@@ -2528,6 +2728,7 @@
     },
     {
         "word": "가리늦다",
+        "word_clean": "가리늦다",
         "word_pure": "가리늦다",
         "pronunciation": "가리늗′따, 가리늑′꼬, 가리늗′찌, 가리늗떠′라, 가리느′저도, 가리느′저가′아, 가리느′{지>즈}머",
         "pos_symbol": "󰃰",
@@ -2546,6 +2747,7 @@
     },
     {
         "word": "가리닙히다",
+        "word_clean": "가리닙히다",
         "word_pure": "가리닙히다",
         "pronunciation": "가리니피′이다",
         "pos_symbol": "󰂿",
@@ -2558,7 +2760,18 @@
             {
                 "dialect": "{얼/알}라아로 가리닙히지 마래이. 유유이 날갯짓을 하메 날러가더라니더.",
                 "standard": "백로들이 귀한 몸을 가로누여서 유유히 날갯짓을 하며 날아가더랍니다."
-            },
+            }
+        ],
+        "idioms": []
+    },
+    {
+        "word": "가리다1(苦)",
+        "word_clean": "가리다1",
+        "word_pure": "가리다",
+        "pronunciation": "가리′인다, 가리′이고, 가리′이지, 가리′이더라, 가리′이도, 가리′이가아, 가리′이머",
+        "pos_symbol": "󰂿",
+        "definition": "가리다: 속이 부대끼다. 신물이 오르다.",
+        "examples": [
             {
                 "dialect": "가리임석을 묵어가아 그런동, 속이 가리 가주구 신트럼이 자꼬 올{러/라}오네요.",
                 "standard": "가루음식을 먹어서 그런지, 속이 부대껴서 신트림이 자꾸 올라오네요."
@@ -2570,11 +2783,33 @@
             {
                 "dialect": "그러이까데 앤 보던 음석은 갈래가메 묵어야 속이 앤 가리지러.",
                 "standard": "그러니까 (흔히) 안 보던 음식은 가려 가며 먹어야 속이 안 부대끼지."
-            },
+            }
+        ],
+        "idioms": []
+    },
+    {
+        "word": "가리다2(買)",
+        "word_clean": "가리다2",
+        "word_pure": "가리다",
+        "pronunciation": "가′리다",
+        "pos_symbol": "󰂿",
+        "definition": "사다.",
+        "examples": [
             {
                 "dialect": "(구걸하듯 연필을 들고 와서) 보소, 불상은사람, 연필 한 자리라도 좀 가리 주소.",
                 "standard": "보소, 불쌍한 사람, 연필을 한 자루라도 좀 사 주소."
-            },
+            }
+        ],
+        "idioms": []
+    },
+    {
+        "word": "가리다3(遮)",
+        "word_clean": "가리다3",
+        "word_pure": "가리다",
+        "pronunciation": "가리′인다, 가리′이고, 가리′이지, 가리′이더라, 가{리′이/레′에}도, 가{리′이/레′에}가′아, 가리′이머",
+        "pos_symbol": "󰂿",
+        "definition": "가리다. 보이지 않게 무엇이 막히다.",
+        "examples": [
             {
                 "dialect": "눈물이 앞을 가리 가주굴랑 아무꺼도 앤 비잇다.",
                 "standard": "눈물이 앞을 가려서 아무것도 안 보였다."
@@ -2582,7 +2817,18 @@
             {
                 "dialect": "집 앞쪽은 회나ᇬ에 가리가아 멀리까지 잘 안 비인다 말이시더.",
                 "standard": "집의 앞쪽은 회화나무에 가려서 멀리까지 잘 안 보인다는 말입니다."
-            },
+            }
+        ],
+        "idioms": []
+    },
+    {
+        "word": "가리다4(積)",
+        "word_clean": "가리다4",
+        "word_pure": "가리다",
+        "pronunciation": "가′린다, 가′리고, 가′리지, 가′리더라, 가′{리/레}도, 가′{리/레}가′아, 가′리머",
+        "pos_symbol": "󰂿",
+        "definition": "쌓다.",
+        "examples": [
             {
                 "dialect": "저 노적벳가리로 뜯어내야 이 돌모데기로 마커 가린다꼬, 노적벳가리버텅 뜯어내라 이거라.",
                 "standard": "저 노적가리를 뜯어내야 이 돌무더기를 (그 자리에) 모두 쌓는다고, 노적가리부터 뜯어내라 이거라."
@@ -2590,7 +2836,18 @@
             {
                 "dialect": "나락단이고 짚단이고, 비가 앤 쇠 드가두룩 가리는 기이 크일꾼이지.",
                 "standard": "볏단이고 짚단이고, 비가 안 새어 들어가도록 쌓는 것이 상일꾼의 기술이지."
-            },
+            }
+        ],
+        "idioms": []
+    },
+    {
+        "word": "가리다5(選)",
+        "word_clean": "가리다5",
+        "word_pure": "가리다",
+        "pronunciation": "가′린다, 가′리고, 가′리지, 가′리더라, 가′{리/레}도, 가′{리/레}가′아, 가′리머",
+        "pos_symbol": "󰂿",
+        "definition": "가리다. 선별하다.",
+        "examples": [
             {
                 "dialect": "우야든동 니느, 친구로 잘 가리가메 사과야 댄대이.",
                 "standard": "어쩌든지 너는, 친구를 잘 가려 가며 사귀어야 된다."
@@ -2602,7 +2859,18 @@
             {
                 "dialect": "여기 도세 사람들이 거기보다 가리는 것이 많어, 사생활이라는 거는 철저히 가리지.",
                 "standard": "여기 도시의 사람들이 거기보다 가리는 것이 많아, 사생활이라는 거는 철저히 가리지."
-            },
+            }
+        ],
+        "idioms": []
+    },
+    {
+        "word": "가리다6(厭)",
+        "word_clean": "가리다6",
+        "word_pure": "가리다",
+        "pronunciation": "가리′이다/가′}리다",
+        "pos_symbol": "󰂿",
+        "definition": "가리다(낯을).",
+        "examples": [
             {
                 "dialect": "{얼/알}라가 낱을 가리가아 운다 애인기요.",
                 "standard": "애가 낯을 가려서 울잖아요."
@@ -2612,6 +2880,7 @@
     },
     {
         "word": "가리다지",
+        "word_clean": "가리다지",
         "word_pure": "가리다지",
         "pronunciation": "가리다′지",
         "pos_symbol": "󰃃",
@@ -2621,6 +2890,7 @@
     },
     {
         "word": "가리도치중",
+        "word_clean": "가리도치중",
         "word_pure": "가리도치중",
         "pronunciation": "가리도′치주웅′",
         "pos_symbol": "󰃃",
@@ -2630,6 +2900,7 @@
     },
     {
         "word": "가리떡",
+        "word_clean": "가리떡",
         "word_pure": "가리떡",
         "pronunciation": "가′리떡",
         "pos_symbol": "󰃃",
@@ -2639,6 +2910,7 @@
     },
     {
         "word": "가리마",
+        "word_clean": "가리마",
         "word_pure": "가리마",
         "pronunciation": "가리′마",
         "pos_symbol": "󰃃",
@@ -2648,6 +2920,7 @@
     },
     {
         "word": "가리막다",
+        "word_clean": "가리막다",
         "word_pure": "가리막다",
         "pronunciation": "가리막′따",
         "pos_symbol": "󰂿",
@@ -2657,6 +2930,7 @@
     },
     {
         "word": "가리막후다",
+        "word_clean": "가리막후다",
         "word_pure": "가리막후다",
         "pronunciation": "가리마쿠′운다, 가리마쿠′우고, 가리마쿠′우지, 가리마쿠′우더라, 가리마카′아도, 가리마카′아가′아, 가리마쿠′우머",
         "pos_symbol": "󰂿",
@@ -2671,7 +2945,8 @@
     },
     {
         "word": "가리막후{ㅎ-우}다",
-        "word_pure": "가리막후{ㅎ-우}다",
+        "word_clean": "가리막후ㅎ우다",
+        "word_pure": "가리막후ㅎ우다",
         "pronunciation": "가리마쿤는′다, 가리마쿠′코, 가리마쿠′치, 가리마쿠터′라, 가리마카′아도, 가리마카′아가′아, 가리마쿠′우머",
         "pos_symbol": "󰂿",
         "definition": "가로막다. 󰃫 ㉠ 가리막훟-:  〛CY. ㉡ 가리막후-:    〛VY. ☞가리막후다.",
@@ -2680,6 +2955,7 @@
     },
     {
         "word": "가리막히다",
+        "word_clean": "가리막히다",
         "word_pure": "가리막히다",
         "pronunciation": "가리마키′이다",
         "pos_symbol": "󰂿",
@@ -2689,6 +2965,7 @@
     },
     {
         "word": "가리맡다",
+        "word_clean": "가리맡다",
         "word_pure": "가리맡다",
         "pronunciation": "가리마′따",
         "pos_symbol": "󰂿",
@@ -2703,6 +2980,7 @@
     },
     {
         "word": "가리매",
+        "word_clean": "가리매",
         "word_pure": "가리매",
         "pronunciation": "가리′매",
         "pos_symbol": "󰃃",
@@ -2717,6 +2995,7 @@
     },
     {
         "word": "가리맥히다",
+        "word_clean": "가리맥히다",
         "word_pure": "가리맥히다",
         "pronunciation": "가리매키′이다",
         "pos_symbol": "󰂿",
@@ -2726,6 +3005,7 @@
     },
     {
         "word": "가리미",
+        "word_clean": "가리미",
         "word_pure": "가리미",
         "pronunciation": "가리′미",
         "pos_symbol": "󰃃",
@@ -2735,6 +3015,7 @@
     },
     {
         "word": "가리분",
+        "word_clean": "가리분",
         "word_pure": "가리분",
         "pronunciation": "가리′분",
         "pos_symbol": "󰃃",
@@ -2749,6 +3030,7 @@
     },
     {
         "word": "가리뻗질리다",
+        "word_clean": "가리뻗질리다",
         "word_pure": "가리뻗질리다",
         "pronunciation": "가리뻗찔리′이다",
         "pos_symbol": "󰂿",
@@ -2758,6 +3040,7 @@
     },
     {
         "word": "가리뻗질리키다",
+        "word_clean": "가리뻗질리키다",
         "word_pure": "가리뻗질리키다",
         "pronunciation": "가리뻐찔리키′이다",
         "pos_symbol": "󰂿",
@@ -2767,6 +3050,7 @@
     },
     {
         "word": "가리뻗히다",
+        "word_clean": "가리뻗히다",
         "word_pure": "가리뻗히다",
         "pronunciation": "가리뻐치′이다",
         "pos_symbol": "󰂿",
@@ -2785,6 +3069,7 @@
     },
     {
         "word": "가리새1",
+        "word_clean": "가리새1",
         "word_pure": "가리새",
         "pronunciation": "가리′새",
         "pos_symbol": "󰃃",
@@ -2799,6 +3084,7 @@
     },
     {
         "word": "가리새2",
+        "word_clean": "가리새2",
         "word_pure": "가리새",
         "pronunciation": "가리′새",
         "pos_symbol": "󰃃",
@@ -2813,6 +3099,7 @@
     },
     {
         "word": "가리새3",
+        "word_clean": "가리새3",
         "word_pure": "가리새",
         "pronunciation": "가리′새",
         "pos_symbol": "󰃃",
@@ -2822,6 +3109,7 @@
     },
     {
         "word": "가리서다",
+        "word_clean": "가리서다",
         "word_pure": "가리서다",
         "pronunciation": "가리서′다",
         "pos_symbol": "󰂿",
@@ -2836,6 +3124,7 @@
     },
     {
         "word": "가리세리",
+        "word_clean": "가리세리",
         "word_pure": "가리세리",
         "pronunciation": "가리′세리′",
         "pos_symbol": "󰃃",
@@ -2845,6 +3134,7 @@
     },
     {
         "word": "가리시다",
+        "word_clean": "가리시다",
         "word_pure": "가리시다",
         "pronunciation": "가리′신다, 가리′시고, 가리′시지, 가리′시더라, 가리′시도, 가리′시가′아, 가리′{시>스}머",
         "pos_symbol": "󰂿",
@@ -2868,6 +3158,7 @@
     },
     {
         "word": "가리약",
+        "word_clean": "가리약",
         "word_pure": "가리약",
         "pronunciation": "가리′약",
         "pos_symbol": "󰃃",
@@ -2886,6 +3177,7 @@
     },
     {
         "word": "가리임석",
+        "word_clean": "가리임석",
         "word_pure": "가리임석",
         "pronunciation": "가리′(이)임′석′",
         "pos_symbol": "󰃃",
@@ -2900,6 +3192,7 @@
     },
     {
         "word": "가리장",
+        "word_clean": "가리장",
         "word_pure": "가리장",
         "pronunciation": "가리′장",
         "pos_symbol": "󰃃",
@@ -2909,6 +3202,7 @@
     },
     {
         "word": "가리지다",
+        "word_clean": "가리지다",
         "word_pure": "가리지다",
         "pronunciation": "가리′이지다",
         "pos_symbol": "󰂿",
@@ -2918,6 +3212,7 @@
     },
     {
         "word": "가리지리",
+        "word_clean": "가리지리",
         "word_pure": "가리지리",
         "pronunciation": "가리지′리",
         "pos_symbol": "󰃃",
@@ -2932,7 +3227,8 @@
     },
     {
         "word": "가리지ㄹ{이-르}다",
-        "word_pure": "가리지ㄹ{이-르}다",
+        "word_clean": "가리지ㄹ이르다",
+        "word_pure": "가리지ㄹ이르다",
         "pronunciation": "가리지린′다, 가리지리′고, 가리지리′지, 가리지리더′라, 가리질′러도, 가리질′러가′아, 가리지리′머",
         "pos_symbol": "󰂿",
         "definition": "가로지르다. 양쪽 사이에 기다란 막대나 줄 따위를 가로로 놓거나 꽂다. 󰃫 ㉠ 가리지리-: ＿〛(으)C. ㉡ 가리질르-: ＿〛어Y.",
@@ -2950,6 +3246,7 @@
     },
     {
         "word": "가리질이",
+        "word_clean": "가리질이",
         "word_pure": "가리질이",
         "pronunciation": "가리지′리",
         "pos_symbol": "󰃃",
@@ -2959,6 +3256,7 @@
     },
     {
         "word": "가리찔리다",
+        "word_clean": "가리찔리다",
         "word_pure": "가리찔리다",
         "pronunciation": "가리찔리′이다",
         "pos_symbol": "󰂿",
@@ -2968,6 +3266,7 @@
     },
     {
         "word": "가리찔리키다",
+        "word_clean": "가리찔리키다",
         "word_pure": "가리찔리키다",
         "pronunciation": "가리찔리키′이다",
         "pos_symbol": "󰂿",
@@ -2977,6 +3276,7 @@
     },
     {
         "word": "가리채다",
+        "word_clean": "가리채다",
         "word_pure": "가리채다",
         "pronunciation": "가리′채다",
         "pos_symbol": "󰂿",
@@ -2991,6 +3291,7 @@
     },
     {
         "word": "가리채이다",
+        "word_clean": "가리채이다",
         "word_pure": "가리채이다",
         "pronunciation": "가리채이′이다",
         "pos_symbol": "󰂿",
@@ -3000,10 +3301,21 @@
     },
     {
         "word": "가리채키다",
+        "word_clean": "가리채키다",
         "word_pure": "가리채키다",
         "pronunciation": "가리채키′이다",
         "pos_symbol": "󰂿",
         "definition": "가로채이다. ☞가리채이다. 드).",
+        "examples": [],
+        "idioms": []
+    },
+    {
+        "word": "가리치다1(敎)",
+        "word_clean": "가리치다1",
+        "word_pure": "가리치다",
+        "pronunciation": "가리′친다, 가리′치고, 가리′치도, 가리′치머",
+        "pos_symbol": "󰂿",
+        "definition": "가르치다. ☞갈치다1.",
         "examples": [
             {
                 "dialect": "(잠잘 때) 그 인자 참 다리 띠고 팔 띠는 거느, 안 가리치 주더라는데.",
@@ -3012,7 +3324,18 @@
             {
                 "dialect": "그 와 안 가리치 주느냥꼬 물으이꺼, ‘아아, 장부는 혹은 급할 시가 잇으머 언제 이거 갖다 붙일 시기가 없다’ 이기라.",
                 "standard": "그 왜 안 가르쳐 주느냐?고, 물으니까, ‘응, (남자대)장부는 혹(혹시) 급할 때가 있으면(=다다르면) 언제 이것을 (떼 놓았다가 도로) 갖다 붙일 틈이(시간 여유가) 없다’ 이거라."
-            },
+            }
+        ],
+        "idioms": []
+    },
+    {
+        "word": "가리치다2(指)",
+        "word_clean": "가리치다2",
+        "word_pure": "가리치다",
+        "pronunciation": "가리′치다",
+        "pos_symbol": "󰂿",
+        "definition": "가리키다. ≒가리키다2(指).",
+        "examples": [
             {
                 "dialect": "(갑) “그래애요? 어디서요?”",
                 "standard": "“그래요? 어디서요?”"
@@ -3021,7 +3344,28 @@
         "idioms": []
     },
     {
+        "word": "가리키다1(敎)",
+        "word_clean": "가리키다1",
+        "word_pure": "가리키다",
+        "pronunciation": "가리′킨다, 가리′키고, 가리′키지, 가리′키더라, 가리′키도, 가리′키가′아, 가리′키머",
+        "pos_symbol": "󰂿",
+        "definition": "가르치다. ☞갈치다1.",
+        "examples": [],
+        "idioms": []
+    },
+    {
+        "word": "가리키다2(指)",
+        "word_clean": "가리키다2",
+        "word_pure": "가리키다",
+        "pronunciation": "가리′키다",
+        "pos_symbol": "󰂿",
+        "definition": "가리키다. ☞가리치다2.",
+        "examples": [],
+        "idioms": []
+    },
+    {
         "word": "가리키이다",
+        "word_clean": "가리키이다",
         "word_pure": "가리키이다",
         "pronunciation": "가리키′인다, 가리키′이고, 가리키′이지, 가리키′이더라, 가리{키′이/케′에}도, 가리{키′이/케′에}가′아, 가리키′이머",
         "pos_symbol": "󰂿",
@@ -3031,6 +3375,7 @@
     },
     {
         "word": "가리토시",
+        "word_clean": "가리토시",
         "word_pure": "가리토시",
         "pronunciation": "가리토′시",
         "pos_symbol": "󰃃",
@@ -3047,11 +3392,33 @@
             {
                 "dialect": "모개이자테 물린 거도 애인데 무다이 장딴지가 부ᇹ고 지그럽고 가리토시도 서고 머가 이상하네요.",
                 "standard": "모기한테 물린 것도 아닌데 무단히 장딴지가 붓고 근지럽고 가래톳도 서고 뭐가 이상하네요."
-            },
+            }
+        ],
+        "idioms": []
+    },
+    {
+        "word": "가ㄹ{이-르}다1(斷)",
+        "word_clean": "가ㄹ이르다1",
+        "word_pure": "가ㄹ이르다",
+        "pronunciation": "가린′다, 가리′고, 가리′지, 가리더′라, 갈′러도, 갈′러가′아, 가리′머",
+        "pos_symbol": "󰂿",
+        "definition": "가르다(배를). 󰃫 ㉠ 가리-: ＿〛(으)CY. ㉡ 갈르-: ＿〛어Y.",
+        "examples": [
             {
                 "dialect": "물괴기 배로 갈{러/라} 보머, 초록색으로 반짝거리는 기이 실개다.",
                 "standard": "민물고기의 배를 갈라 보면, 초록색으로 반짝거리는 것이 쓸개다."
-            },
+            }
+        ],
+        "idioms": []
+    },
+    {
+        "word": "가ㄹ{이-르}다2(分)",
+        "word_clean": "가ㄹ이르다2",
+        "word_pure": "가ㄹ이르다",
+        "pronunciation": "가린′다, 가리′고, 가리′지, 가리더′라, 갈′러도, 갈′러가′아, 가리′머",
+        "pos_symbol": "󰂿",
+        "definition": "나누다. 가르다. 쪼개거나 나누어 따로따로 구별하다. 󰃫 ㉠ 가리-:＿〛(으)CY. ㉡ 갈르-:＿〛어Y. ☞농가리다.",
+        "examples": [
             {
                 "dialect": "청관재이가 많으머, 집에서고 듥에서고 음석 갈{러/라}묵을 일이 어딧겟노?",
                 "standard": "청관쟁이가 많으면, 집에서든 들에서든 음식을 갈라 먹을 일이 어디 있겠니?"
@@ -3065,6 +3432,7 @@
     },
     {
         "word": "가린다지",
+        "word_clean": "가린다지",
         "word_pure": "가린다지",
         "pronunciation": "가린다′지",
         "pos_symbol": "󰃃",
@@ -3083,6 +3451,7 @@
     },
     {
         "word": "가린다지로",
+        "word_clean": "가린다지로",
         "word_pure": "가린다지로",
         "pronunciation": "가린다′지로",
         "pos_symbol": "󰃌",
@@ -3097,6 +3466,7 @@
     },
     {
         "word": "가림옷",
+        "word_clean": "가림옷",
         "word_pure": "가림옷",
         "pronunciation": "가림′옫/가리′몯",
         "pos_symbol": "󰃃",
@@ -3106,6 +3476,7 @@
     },
     {
         "word": "가림자",
+        "word_clean": "가림자",
         "word_pure": "가림자",
         "pronunciation": "가림′자",
         "pos_symbol": "󰃃",
@@ -3115,6 +3486,7 @@
     },
     {
         "word": "가마1",
+        "word_clean": "가마1",
         "word_pure": "가마",
         "pronunciation": "가마아′",
         "pos_symbol": "󰃌",
@@ -3141,6 +3513,7 @@
     },
     {
         "word": "가마2",
+        "word_clean": "가마2",
         "word_pure": "가마",
         "pronunciation": "가아′마′",
         "pos_symbol": "󰃃",
@@ -3150,6 +3523,7 @@
     },
     {
         "word": "가마구",
+        "word_clean": "가마구",
         "word_pure": "가마구",
         "pronunciation": "가마′구",
         "pos_symbol": "󰃃",
@@ -3164,6 +3538,7 @@
     },
     {
         "word": "가마꼬",
+        "word_clean": "가마꼬",
         "word_pure": "가마꼬",
         "pronunciation": "가마아′꼬′",
         "pos_symbol": "󰃌",
@@ -3202,6 +3577,7 @@
     },
     {
         "word": "가마꼬잇다",
+        "word_clean": "가마꼬잇다",
         "word_pure": "가마꼬잇다",
         "pronunciation": "가마아′꼬′인는다, 가마아′꼬′익꼬, 가마아′꼬′읻찌, 가마아′꼬′읻떠라, 가마아′꼬′이서도, 가마아′꼬′이서가′아, 가마아′꼬′{이서라/익꺼′라}, 가마아′꼬′이{시′>스′}머",
         "pos_symbol": "󰃰󰂿",
@@ -3220,6 +3596,7 @@
     },
     {
         "word": "가마꾼",
+        "word_clean": "가마꾼",
         "word_pure": "가마꾼",
         "pronunciation": "가아′마′꾼",
         "pos_symbol": "󰃃",
@@ -3234,7 +3611,8 @@
     },
     {
         "word": "가마ㄷ{우-오}다",
-        "word_pure": "가마ㄷ{우-오}다",
+        "word_clean": "가마ㄷ우오다",
+        "word_pure": "가마ㄷ우오다",
         "pronunciation": "가마아′두′고, 가마아′도오′도, 가마아′두′머",
         "pos_symbol": "󰂿",
         "definition": "가만두다. 건드리거나 상관하지 않고 그대로 두다. 󰃫 ㉠ 가마두-: ＿〛(으)CY. ㉡ 가마도-:＿〛어Y.",
@@ -3243,6 +3621,7 @@
     },
     {
         "word": "가마무리하다",
+        "word_clean": "가마무리하다",
         "word_pure": "가마무리하다",
         "pronunciation": "가마무리이′하′다",
         "pos_symbol": "󰃰",
@@ -3252,7 +3631,8 @@
     },
     {
         "word": "가마소{ㅊ-ㅌ}",
-        "word_pure": "가마소{ㅊ-ㅌ}",
+        "word_clean": "가마소ㅊㅌ",
+        "word_pure": "가마소ㅊㅌ",
         "pronunciation": "가마솓′, 가마소′치, 가마소′테, 가마소′틀, 가마솜′마",
         "pos_symbol": "󰃃",
         "definition": "가마솥. 아주 크고 우묵한 솥. 소). 󰃫 ㉠ 가마솣:＿〛<{주격어미, 계사어간}>. ㉡ 가마솥:＿〛<㉠ 외의 환경>. ☞소물소{ㅊ-ㅌ}.",
@@ -3261,6 +3641,7 @@
     },
     {
         "word": "가마이1",
+        "word_clean": "가마이1",
         "word_pure": "가마이",
         "pronunciation": "가′마이",
         "pos_symbol": "󰃃",
@@ -3275,6 +3656,7 @@
     },
     {
         "word": "가마이2",
+        "word_clean": "가마이2",
         "word_pure": "가마이",
         "pronunciation": "가마아′이′",
         "pos_symbol": "󰃌",
@@ -3309,6 +3691,7 @@
     },
     {
         "word": "가마이때기",
+        "word_clean": "가마이때기",
         "word_pure": "가마이때기",
         "pronunciation": "가마′이때기/가′}마이때기",
         "pos_symbol": "󰃃",
@@ -3318,6 +3701,7 @@
     },
     {
         "word": "가마이띠기",
+        "word_clean": "가마이띠기",
         "word_pure": "가마이띠기",
         "pronunciation": "가마′이띠기/가′}마이띠기",
         "pos_symbol": "󰃃",
@@ -3327,6 +3711,7 @@
     },
     {
         "word": "가마이바늘",
+        "word_clean": "가마이바늘",
         "word_pure": "가마이바늘",
         "pronunciation": "가′마이바′늘/가마′이바′늘",
         "pos_symbol": "󰃃",
@@ -3336,6 +3721,7 @@
     },
     {
         "word": "가마이틀",
+        "word_clean": "가마이틀",
         "word_pure": "가마이틀",
         "pronunciation": "가′마이틀/가마′이틀",
         "pos_symbol": "󰃃",
@@ -3350,6 +3736,7 @@
     },
     {
         "word": "가마잇거라",
+        "word_clean": "가마잇거라",
         "word_pure": "가마잇거라",
         "pronunciation": "가마아익꺼′라",
         "pos_symbol": "󰂳",
@@ -3364,6 +3751,7 @@
     },
     {
         "word": "가마잇다",
+        "word_clean": "가마잇다",
         "word_pure": "가마잇다",
         "pronunciation": "가마아′인는′다, 가마아′익′꼬, 가마아′읻′찌, 가마아′읻떠′라, 가마아′이′서도, 가마아′이′서가′아, 가마아′이{시′>스′}머",
         "pos_symbol": "󰃰󰂿",
@@ -3390,6 +3778,7 @@
     },
     {
         "word": "가마잇자",
+        "word_clean": "가마잇자",
         "word_pure": "가마잇자",
         "pronunciation": "가마아′읻′짜/가마이′짜",
         "pos_symbol": "󰂳",
@@ -3404,6 +3793,7 @@
     },
     {
         "word": "가막깐치",
+        "word_clean": "가막깐치",
         "word_pure": "가막깐치",
         "pronunciation": "가막′까안′치′",
         "pos_symbol": "󰃃",
@@ -3413,6 +3803,7 @@
     },
     {
         "word": "가만",
+        "word_clean": "가만",
         "word_pure": "가만",
         "pronunciation": "가{만′/마′안′}",
         "pos_symbol": "󰃌",
@@ -3422,6 +3813,7 @@
     },
     {
         "word": "가만가만",
+        "word_clean": "가만가만",
         "word_pure": "가만가만",
         "pronunciation": "가{마앙′/망′}가만′",
         "pos_symbol": "󰃌",
@@ -3431,7 +3823,8 @@
     },
     {
         "word": "가ㅁ{앟-애-아}다",
-        "word_pure": "가ㅁ{앟-애-아}다",
+        "word_clean": "가ㅁ앟애아다",
+        "word_pure": "가ㅁ앟애아다",
         "pronunciation": "가(아′)마′타, 가(아′)마′코, 가(아′)마′치, 가(아)마터′라, 가(아′)매′애도, 가(아′)매′애가′아, 가(아′)마′머",
         "pos_symbol": "󰃰",
         "definition": "가맣다. ① 밝고 엷게 검다. ② 거리나 시간 따위가 아득하게 멀다. 󰃫 ㉠ 가맣-:  〛CY. ㉡ 가매-:＿〛어Y. ㉢ 가마-:  〛으Y.",
@@ -3457,6 +3850,7 @@
     },
     {
         "word": "가매1",
+        "word_clean": "가매1",
         "word_pure": "가매",
         "pronunciation": "가′매",
         "pos_symbol": "󰃃",
@@ -3471,6 +3865,7 @@
     },
     {
         "word": "가매2",
+        "word_clean": "가매2",
         "word_pure": "가매",
         "pronunciation": "가′매",
         "pos_symbol": "󰃃",
@@ -3489,6 +3884,7 @@
     },
     {
         "word": "가매3",
+        "word_clean": "가매3",
         "word_pure": "가매",
         "pronunciation": "가′매",
         "pos_symbol": "󰃃",
@@ -3511,6 +3907,7 @@
     },
     {
         "word": "가매4",
+        "word_clean": "가매4",
         "word_pure": "가매",
         "pronunciation": "가′매",
         "pos_symbol": "󰃃",
@@ -3529,6 +3926,7 @@
     },
     {
         "word": "가매5",
+        "word_clean": "가매5",
         "word_pure": "가매",
         "pronunciation": "가아′매′",
         "pos_symbol": "󰃃",
@@ -3551,6 +3949,7 @@
     },
     {
         "word": "가매꾼",
+        "word_clean": "가매꾼",
         "word_pure": "가매꾼",
         "pronunciation": "{가아′매′/가매}꾼′",
         "pos_symbol": "󰃃",
@@ -3565,6 +3964,7 @@
     },
     {
         "word": "가매때기",
+        "word_clean": "가매때기",
         "word_pure": "가매때기",
         "pronunciation": "가매때′기",
         "pos_symbol": "󰃃",
@@ -3574,6 +3974,7 @@
     },
     {
         "word": "가매물미",
+        "word_clean": "가매물미",
         "word_pure": "가매물미",
         "pronunciation": "가매물′미",
         "pos_symbol": "󰃃",
@@ -3588,6 +3989,7 @@
     },
     {
         "word": "가매물미하다",
+        "word_clean": "가매물미하다",
         "word_pure": "가매물미하다",
         "pronunciation": "가매물′미하다",
         "pos_symbol": "󰂿",
@@ -3597,6 +3999,7 @@
     },
     {
         "word": "가매바가이",
+        "word_clean": "가매바가이",
         "word_pure": "가매바가이",
         "pronunciation": "가매바가′이",
         "pos_symbol": "󰃃",
@@ -3606,6 +4009,7 @@
     },
     {
         "word": "가매바가치",
+        "word_clean": "가매바가치",
         "word_pure": "가매바가치",
         "pronunciation": "가매바가′치",
         "pos_symbol": "󰃃",
@@ -3620,6 +4024,7 @@
     },
     {
         "word": "가매바개이",
+        "word_clean": "가매바개이",
         "word_pure": "가매바개이",
         "pronunciation": "가매바개′이",
         "pos_symbol": "󰃃",
@@ -3629,7 +4034,8 @@
     },
     {
         "word": "가매소{ㅊ-ㅌ}",
-        "word_pure": "가매소{ㅊ-ㅌ}",
+        "word_clean": "가매소ㅊㅌ",
+        "word_pure": "가매소ㅊㅌ",
         "pronunciation": "가매소′치, 가매소′틀, 가매소′테, 가매솓′또, 가매솜′마",
         "pos_symbol": "󰃃",
         "definition": "가마솥. 아주 크고 우묵한 솥. 󰃫 ㉠ 가매솣:＿〛<{주격어미, 계사어간}>. ㉡ 가매솥:＿〛<㉠ 외의 환경>. ☞소물소{ㅊ-ㅌ}.",
@@ -3647,6 +4053,7 @@
     },
     {
         "word": "가매이1",
+        "word_clean": "가매이1",
         "word_pure": "가매이",
         "pronunciation": "가′매이/가매′이",
         "pos_symbol": "󰃃",
@@ -3670,6 +4077,7 @@
     },
     {
         "word": "가매이2",
+        "word_clean": "가매이2",
         "word_pure": "가매이",
         "pronunciation": "가′매이",
         "pos_symbol": "󰃃",
@@ -3684,6 +4092,7 @@
     },
     {
         "word": "가매이때기",
+        "word_clean": "가매이때기",
         "word_pure": "가매이때기",
         "pronunciation": "가매′이때기/가′}매이때기",
         "pos_symbol": "󰃃",
@@ -3698,6 +4107,7 @@
     },
     {
         "word": "가매이바늘",
+        "word_clean": "가매이바늘",
         "word_pure": "가매이바늘",
         "pronunciation": "가매′이바′늘/가′}매이바′늘",
         "pos_symbol": "󰃃",
@@ -3712,6 +4122,7 @@
     },
     {
         "word": "가매이틀",
+        "word_clean": "가매이틀",
         "word_pure": "가매이틀",
         "pronunciation": "가′매이틀/가매′이틀",
         "pos_symbol": "󰃃",
@@ -3721,6 +4132,7 @@
     },
     {
         "word": "가매정지",
+        "word_clean": "가매정지",
         "word_pure": "가매정지",
         "pronunciation": "가매{정/쩡}지′",
         "pos_symbol": "󰃃",
@@ -3735,6 +4147,7 @@
     },
     {
         "word": "가매채",
+        "word_clean": "가매채",
         "word_pure": "가매채",
         "pronunciation": "가(아′)매′채",
         "pos_symbol": "󰃃",
@@ -3753,6 +4166,7 @@
     },
     {
         "word": "가무사리",
+        "word_clean": "가무사리",
         "word_pure": "가무사리",
         "pronunciation": "가′무′사리",
         "pos_symbol": "󰃃",
@@ -3771,6 +4185,7 @@
     },
     {
         "word": "가무살",
+        "word_clean": "가무살",
         "word_pure": "가무살",
         "pronunciation": "가′무′살",
         "pos_symbol": "󰃃",
@@ -3780,7 +4195,8 @@
     },
     {
         "word": "가무소{ㅊ-ㅌ}",
-        "word_pure": "가무소{ㅊ-ㅌ}",
+        "word_clean": "가무소ㅊㅌ",
+        "word_pure": "가무소ㅊㅌ",
         "pronunciation": "가무소′치, 가무소′틀, 가무소′테, 가무솓′또, 가무솜′마",
         "pos_symbol": "󰃃",
         "definition": "가마솥. 아주 크고 우묵한 솥. 드). 󰃫 ㉠ 가무솣:＿〛<{주격어미, 계사어간}>. ㉡ 가무솥:＿〛<㉠ 외의 환경>. ☞소물소{ㅊ-ㅌ}.",
@@ -3798,6 +4214,7 @@
     },
     {
         "word": "가무수룸하다",
+        "word_clean": "가무수룸하다",
         "word_pure": "가무수룸하다",
         "pronunciation": "가무수루움′하′다",
         "pos_symbol": "󰃰",
@@ -3807,6 +4224,7 @@
     },
     {
         "word": "가무직다",
+        "word_clean": "가무직다",
         "word_pure": "가무직다",
         "pronunciation": "가무징는′다, 가무직′꼬, 가무직′찌, 가무직떠′라, 가무지′거도, 가무지′거가′아, 가무지′그머",
         "pos_symbol": "󰂿",
@@ -3821,6 +4239,7 @@
     },
     {
         "word": "가무짭잡하다",
+        "word_clean": "가무짭잡하다",
         "word_pure": "가무짭잡하다",
         "pronunciation": "가무짭짜압′{하′>파′}다",
         "pos_symbol": "󰃰",
@@ -3830,6 +4249,7 @@
     },
     {
         "word": "가무치",
+        "word_clean": "가무치",
         "word_pure": "가무치",
         "pronunciation": "가′무치",
         "pos_symbol": "󰃃",
@@ -3860,6 +4280,7 @@
     },
     {
         "word": "가무치다",
+        "word_clean": "가무치다",
         "word_pure": "가무치다",
         "pronunciation": "가무′치다",
         "pos_symbol": "󰂿",
@@ -3869,6 +4290,7 @@
     },
     {
         "word": "가무트다",
+        "word_clean": "가무트다",
         "word_pure": "가무트다",
         "pronunciation": "가무′튼다, 가무′트고, 가무′트지, 가무′트더라, 가무′터도, 가무′터가′아, 가무′트머",
         "pos_symbol": "󰂿",
@@ -3891,6 +4313,7 @@
     },
     {
         "word": "가무티티하다",
+        "word_clean": "가무티티하다",
         "word_pure": "가무티티하다",
         "pronunciation": "가무티티이′하′다",
         "pos_symbol": "󰃰",
@@ -3900,6 +4323,7 @@
     },
     {
         "word": "가문사리",
+        "word_clean": "가문사리",
         "word_pure": "가문사리",
         "pronunciation": "가′문′사리",
         "pos_symbol": "󰃃",
@@ -3909,6 +4333,7 @@
     },
     {
         "word": "가문살",
+        "word_clean": "가문살",
         "word_pure": "가문살",
         "pronunciation": "가′문′사리, 가′문′살로, 가′문′사레, 가′문′살또, 가′문′살마",
         "pos_symbol": "󰃃",
@@ -3923,6 +4348,7 @@
     },
     {
         "word": "가물",
+        "word_clean": "가물",
         "word_pure": "가물",
         "pronunciation": "가′무′리, 가′물′{로/을}, 가′무′레, 가′물′{도/또}, 가′물′마",
         "pos_symbol": "󰃃",
@@ -3941,6 +4367,7 @@
     },
     {
         "word": "가물거리다",
+        "word_clean": "가물거리다",
         "word_pure": "가물거리다",
         "pronunciation": "가물거′리다",
         "pos_symbol": "󰂿",
@@ -3950,6 +4377,7 @@
     },
     {
         "word": "가물다",
+        "word_clean": "가물다",
         "word_pure": "가물다",
         "pronunciation": "가′문′다, 가′{물′/무′}고, 가′{물′/무′}지, 가′{물′/무′}더라, 가′무′러도, 가′무′러가′아, 가′{물′/무′}머",
         "pos_symbol": "󰂿",
@@ -3964,6 +4392,7 @@
     },
     {
         "word": "가물대다",
+        "word_clean": "가물대다",
         "word_pure": "가물대다",
         "pronunciation": "가물대′애다",
         "pos_symbol": "󰂿",
@@ -3973,7 +4402,8 @@
     },
     {
         "word": "가물소{ㅊ-ㅌ}",
-        "word_pure": "가물소{ㅊ-ㅌ}",
+        "word_clean": "가물소ㅊㅌ",
+        "word_pure": "가물소ㅊㅌ",
         "pronunciation": "가물솓′, 가물소′치, 가물소′틀, 가물소′테, 가물솜′마",
         "pos_symbol": "󰃃",
         "definition": "가마솥. 아주 크고 우묵한 솥. 드). 󰃫 ㉠ 가물솣:＿〛<{주격어미, 계사어간}>. ㉡ 가물솥:＿〛<㉠ 외의 환경>. ☞소물소{ㅊ-ㅌ}.",
@@ -3987,6 +4417,7 @@
     },
     {
         "word": "가물치",
+        "word_clean": "가물치",
         "word_pure": "가물치",
         "pronunciation": "가′물치",
         "pos_symbol": "󰃃",
@@ -4001,6 +4432,7 @@
     },
     {
         "word": "가물치다",
+        "word_clean": "가물치다",
         "word_pure": "가물치다",
         "pronunciation": "가물′치다",
         "pos_symbol": "󰂿",
@@ -4010,6 +4442,7 @@
     },
     {
         "word": "가물트다",
+        "word_clean": "가물트다",
         "word_pure": "가물트다",
         "pronunciation": "가물′트다",
         "pos_symbol": "󰂿",
@@ -4019,6 +4452,7 @@
     },
     {
         "word": "가뭄",
+        "word_clean": "가뭄",
         "word_pure": "가뭄",
         "pronunciation": "가′뭄′",
         "pos_symbol": "󰃃",
@@ -4028,6 +4462,7 @@
     },
     {
         "word": "가방",
+        "word_clean": "가방",
         "word_pure": "가방",
         "pronunciation": "가′방/가방′",
         "pos_symbol": "󰃃",
@@ -4042,6 +4477,7 @@
     },
     {
         "word": "가방끈",
+        "word_clean": "가방끈",
         "word_pure": "가방끈",
         "pronunciation": "가방′끈",
         "pos_symbol": "󰃃",
@@ -4065,6 +4501,7 @@
     },
     {
         "word": "가보1",
+        "word_clean": "가보1",
         "word_pure": "가보",
         "pronunciation": "가′보′",
         "pos_symbol": "󰃃",
@@ -4078,7 +4515,18 @@
         "idioms": []
     },
     {
+        "word": "가보2(家寶)",
+        "word_clean": "가보2",
+        "word_pure": "가보",
+        "pronunciation": "가′보",
+        "pos_symbol": "󰃃",
+        "definition": "가보. 한 집안에서 대를 물려 전해 오거나 전해질 보배로운 물건.",
+        "examples": [],
+        "idioms": []
+    },
+    {
         "word": "가부1",
+        "word_clean": "가부1",
         "word_pure": "가부",
         "pronunciation": "가부′",
         "pos_symbol": "󰃃",
@@ -4092,7 +4540,18 @@
         "idioms": []
     },
     {
+        "word": "가부2(可否)",
+        "word_clean": "가부2",
+        "word_pure": "가부",
+        "pronunciation": "가아′부′",
+        "pos_symbol": "󰃃",
+        "definition": "가부. ① 옳고 그름. ② 찬성과 반대를 아울러 이르는 말.",
+        "examples": [],
+        "idioms": []
+    },
+    {
         "word": "가부간에",
+        "word_clean": "가부간에",
         "word_pure": "가부간에",
         "pronunciation": "가아′부′가네",
         "pos_symbol": "󰃌",
@@ -4102,6 +4561,7 @@
     },
     {
         "word": "가부던지",
+        "word_clean": "가부던지",
         "word_pure": "가부던지",
         "pronunciation": "가부던′지",
         "pos_symbol": "󰃃",
@@ -4116,6 +4576,7 @@
     },
     {
         "word": "가부때기",
+        "word_clean": "가부때기",
         "word_pure": "가부때기",
         "pronunciation": "가부때′기",
         "pos_symbol": "󰃃",
@@ -4125,6 +4586,7 @@
     },
     {
         "word": "가부때이",
+        "word_clean": "가부때이",
         "word_pure": "가부때이",
         "pronunciation": "가부때′이",
         "pos_symbol": "󰃃",
@@ -4134,6 +4596,7 @@
     },
     {
         "word": "가부리",
+        "word_clean": "가부리",
         "word_pure": "가부리",
         "pronunciation": "가부′리/가′}부리",
         "pos_symbol": "󰃃",
@@ -4152,6 +4615,7 @@
     },
     {
         "word": "가부리연",
+        "word_clean": "가부리연",
         "word_pure": "가부리연",
         "pronunciation": "가부′리연/가′}부리연",
         "pos_symbol": "󰃃",
@@ -4161,6 +4625,7 @@
     },
     {
         "word": "가부리좆",
+        "word_clean": "가부리좆",
         "word_pure": "가부리좆",
         "pronunciation": "가부′리졷/가′}부리졷, 가부′리조지/가′}부리조지, 가부′리조즐/가′}부리조즐",
         "pos_symbol": "󰃃",
@@ -4180,6 +4645,7 @@
     },
     {
         "word": "가분데",
+        "word_clean": "가분데",
         "word_pure": "가분데",
         "pronunciation": "가분′데",
         "pos_symbol": "󰃃",
@@ -4198,6 +4664,7 @@
     },
     {
         "word": "가분데마디",
+        "word_clean": "가분데마디",
         "word_pure": "가분데마디",
         "pronunciation": "가분′데마디",
         "pos_symbol": "󰃃",
@@ -4212,6 +4679,7 @@
     },
     {
         "word": "가분데손가락",
+        "word_clean": "가분데손가락",
         "word_pure": "가분데손가락",
         "pronunciation": "가분′데송까락",
         "pos_symbol": "󰃃",
@@ -4221,6 +4689,7 @@
     },
     {
         "word": "가분뎃다리",
+        "word_clean": "가분뎃다리",
         "word_pure": "가분뎃다리",
         "pronunciation": "가분′데따리",
         "pos_symbol": "󰃃",
@@ -4230,6 +4699,7 @@
     },
     {
         "word": "가분테",
+        "word_clean": "가분테",
         "word_pure": "가분테",
         "pronunciation": "가분′테",
         "pos_symbol": "󰃃",
@@ -4239,6 +4709,7 @@
     },
     {
         "word": "가불대기",
+        "word_clean": "가불대기",
         "word_pure": "가불대기",
         "pronunciation": "가불때′기",
         "pos_symbol": "󰃃",
@@ -4248,6 +4719,7 @@
     },
     {
         "word": "가불대이",
+        "word_clean": "가불대이",
         "word_pure": "가불대이",
         "pronunciation": "가불때′이",
         "pos_symbol": "󰃃",
@@ -4262,6 +4734,7 @@
     },
     {
         "word": "가불때이",
+        "word_clean": "가불때이",
         "word_pure": "가불때이",
         "pronunciation": "가불때′이",
         "pos_symbol": "󰃃",
@@ -4271,6 +4744,7 @@
     },
     {
         "word": "가불연",
+        "word_clean": "가불연",
         "word_pure": "가불연",
         "pronunciation": "가불련′",
         "pos_symbol": "󰃃",
@@ -4280,6 +4754,7 @@
     },
     {
         "word": "가빠",
+        "word_clean": "가빠",
         "word_pure": "가빠",
         "pronunciation": "가′빠′",
         "pos_symbol": "󰃃",
@@ -4294,6 +4769,7 @@
     },
     {
         "word": "가빠지다",
+        "word_clean": "가빠지다",
         "word_pure": "가빠지다",
         "pronunciation": "가′빠지다",
         "pos_symbol": "󰂿",
@@ -4303,6 +4779,7 @@
     },
     {
         "word": "가뻐지다",
+        "word_clean": "가뻐지다",
         "word_pure": "가뻐지다",
         "pronunciation": "가′뻐지다",
         "pos_symbol": "󰂿",
@@ -4321,6 +4798,7 @@
     },
     {
         "word": "가뿌다",
+        "word_clean": "가뿌다",
         "word_pure": "가뿌다",
         "pronunciation": "가뿌′다, 가뿌′고, 가뿌′지, 가뿌더′라, 가′{뻐/빠}도, 가′{뻐/빠}가′아, 가뿌′머",
         "pos_symbol": "󰃰",
@@ -4343,6 +4821,7 @@
     },
     {
         "word": "가뿍",
+        "word_clean": "가뿍",
         "word_pure": "가뿍",
         "pronunciation": "가아′뿍′",
         "pos_symbol": "󰃌",
@@ -4361,6 +4840,7 @@
     },
     {
         "word": "가뿒다",
+        "word_clean": "가뿒다",
         "word_pure": "가뿒다",
         "pronunciation": "{가아′/가}뿐′타",
         "pos_symbol": "󰃰",
@@ -4370,6 +4850,7 @@
     },
     {
         "word": "가사1",
+        "word_clean": "가사1",
         "word_pure": "가사",
         "pronunciation": "가아′사′(아)",
         "pos_symbol": "󰃌",
@@ -4386,11 +4867,33 @@
             {
                 "dialect": "그래, 가사 저 아아로 좌아 왓다커ᇹ자. 그러머 머가 달러지는데?",
                 "standard": "그래, 가령 저 아이를 주워 왔다고 하자. 그러면 뭐가 달라지는데?"
-            },
+            }
+        ],
+        "idioms": []
+    },
+    {
+        "word": "가사2(袈裟)",
+        "word_clean": "가사2",
+        "word_pure": "가사",
+        "pronunciation": "가사′",
+        "pos_symbol": "󰃃",
+        "definition": "가사. 중이 장삼 위에, 왼쪽 어깨에서 오른쪽 겨드랑이 밑으로 걸쳐 입는 법의(法衣).",
+        "examples": [
             {
                 "dialect": "(불이 나서) 그때 중들이 입는 가사에꺼점 불이 떡 올{러/라}붙엇단다.",
                 "standard": "그때 중들이 입는 가사에까지 불이 턱 옮겨붙었단다."
-            },
+            }
+        ],
+        "idioms": []
+    },
+    {
+        "word": "가사3(家事)",
+        "word_clean": "가사3",
+        "word_pure": "가사",
+        "pronunciation": "가사′/가′}사",
+        "pos_symbol": "󰃃",
+        "definition": "가사. ① 살림살이에 관한 일. ② 한 집안의 사사로운 일.",
+        "examples": [
             {
                 "dialect": "가사 시간에는 우야든동 디로 마뜩구로로 하는 아아가 점수가 좋대이.",
                 "standard": "가사 시간에는 어떻게 하든지 뒤를 마뜩하게 하는 아이가 점수가 좋다."
@@ -4400,6 +4903,7 @@
     },
     {
         "word": "가사이",
+        "word_clean": "가사이",
         "word_pure": "가사이",
         "pronunciation": "가아′사′이",
         "pos_symbol": "󰃃",
@@ -4409,6 +4913,7 @@
     },
     {
         "word": "가살",
+        "word_clean": "가살",
         "word_pure": "가살",
         "pronunciation": "가아′살′",
         "pos_symbol": "󰃃",
@@ -4435,6 +4940,7 @@
     },
     {
         "word": "가살시럽다",
+        "word_clean": "가살시럽다",
         "word_pure": "가살시럽다",
         "pronunciation": "가아′살′시럽따",
         "pos_symbol": "󰃰",
@@ -4453,6 +4959,7 @@
     },
     {
         "word": "가살재이",
+        "word_clean": "가살재이",
         "word_pure": "가살재이",
         "pronunciation": "가아′살′{재/째}이",
         "pos_symbol": "󰃃",
@@ -4462,6 +4969,7 @@
     },
     {
         "word": "가삼",
+        "word_clean": "가삼",
         "word_pure": "가삼",
         "pronunciation": "가삼′",
         "pos_symbol": "󰃃",
@@ -4471,6 +4979,7 @@
     },
     {
         "word": "가새1",
+        "word_clean": "가새1",
         "word_pure": "가새",
         "pronunciation": "가아′새′",
         "pos_symbol": "󰃃",
@@ -4485,6 +4994,7 @@
     },
     {
         "word": "가새2",
+        "word_clean": "가새2",
         "word_pure": "가새",
         "pronunciation": "가′새",
         "pos_symbol": "󰃃",
@@ -4494,6 +5004,7 @@
     },
     {
         "word": "가새미",
+        "word_clean": "가새미",
         "word_pure": "가새미",
         "pronunciation": "가새′미",
         "pos_symbol": "󰃃",
@@ -4503,6 +5014,7 @@
     },
     {
         "word": "가새이",
+        "word_clean": "가새이",
         "word_pure": "가새이",
         "pronunciation": "가아′새′이",
         "pos_symbol": "󰃃",
@@ -4521,6 +5033,7 @@
     },
     {
         "word": "가서느",
+        "word_clean": "가서느",
         "word_pure": "가서느",
         "pronunciation": "가′서′느",
         "pos_symbol": "󰂳",
@@ -4530,6 +5043,7 @@
     },
     {
         "word": "가서는",
+        "word_clean": "가서는",
         "word_pure": "가서는",
         "pronunciation": "가′서′는",
         "pos_symbol": "󰂳",
@@ -4544,6 +5058,7 @@
     },
     {
         "word": "가소럽다",
+        "word_clean": "가소럽다",
         "word_pure": "가소럽다",
         "pronunciation": "가아′소′럽따",
         "pos_symbol": "󰃰",
@@ -4553,6 +5068,7 @@
     },
     {
         "word": "가소롭다",
+        "word_clean": "가소롭다",
         "word_pure": "가소롭다",
         "pronunciation": "가아′소′롭따",
         "pos_symbol": "󰃰",
@@ -4567,6 +5083,7 @@
     },
     {
         "word": "가수럽다",
+        "word_clean": "가수럽다",
         "word_pure": "가수럽다",
         "pronunciation": "가아′수′럽따",
         "pos_symbol": "󰃰",
@@ -4581,6 +5098,7 @@
     },
     {
         "word": "가시개",
+        "word_clean": "가시개",
         "word_pure": "가시개",
         "pronunciation": "가시′개",
         "pos_symbol": "󰃃",
@@ -4603,6 +5121,7 @@
     },
     {
         "word": "가시개다리",
+        "word_clean": "가시개다리",
         "word_pure": "가시개다리",
         "pronunciation": "가시′개다리",
         "pos_symbol": "󰃃",
@@ -4612,6 +5131,7 @@
     },
     {
         "word": "가시개뽕",
+        "word_clean": "가시개뽕",
         "word_pure": "가시개뽕",
         "pronunciation": "가시′개뽕",
         "pos_symbol": "󰃃",
@@ -4626,6 +5146,7 @@
     },
     {
         "word": "가시개질",
+        "word_clean": "가시개질",
         "word_pure": "가시개질",
         "pronunciation": "가시′개질",
         "pos_symbol": "󰃃",
@@ -4640,6 +5161,7 @@
     },
     {
         "word": "가시갯밥",
+        "word_clean": "가시갯밥",
         "word_pure": "가시갯밥",
         "pronunciation": "가시′갭빱",
         "pos_symbol": "󰃃",
@@ -4649,6 +5171,7 @@
     },
     {
         "word": "가시나",
+        "word_clean": "가시나",
         "word_pure": "가시나",
         "pronunciation": "가시나′(아)",
         "pos_symbol": "󰃃",
@@ -4676,6 +5199,7 @@
     },
     {
         "word": "가시내",
+        "word_clean": "가시내",
         "word_pure": "가시내",
         "pronunciation": "가시내′애",
         "pos_symbol": "󰃃",
@@ -4685,6 +5209,7 @@
     },
     {
         "word": "가시다1",
+        "word_clean": "가시다1",
         "word_pure": "가시다",
         "pronunciation": "가′신다, 가′시고, 가′시지, 가′시더라, 가′{시/세}도, 가′{시/세}가′아, 가′{시>스}머",
         "pos_symbol": "󰂿",
@@ -4723,6 +5248,7 @@
     },
     {
         "word": "가시다2",
+        "word_clean": "가시다2",
         "word_pure": "가시다",
         "pronunciation": "가′시다",
         "pos_symbol": "󰂿",
@@ -4741,6 +5267,7 @@
     },
     {
         "word": "가시덤풀",
+        "word_clean": "가시덤풀",
         "word_pure": "가시덤풀",
         "pronunciation": "가시덤풀′",
         "pos_symbol": "󰃃",
@@ -4750,6 +5277,7 @@
     },
     {
         "word": "가시랑차",
+        "word_clean": "가시랑차",
         "word_pure": "가시랑차",
         "pronunciation": "가시랑차′",
         "pos_symbol": "󰃃",
@@ -4768,6 +5296,7 @@
     },
     {
         "word": "가실",
+        "word_clean": "가실",
         "word_pure": "가실",
         "pronunciation": "가시′리, 가실′{로/를}, 가시′레, 가실′{도/또}, 가실′마",
         "pos_symbol": "󰃃",
@@ -4790,6 +5319,7 @@
     },
     {
         "word": "가실갈이",
+        "word_clean": "가실갈이",
         "word_pure": "가실갈이",
         "pronunciation": "가실가′리",
         "pos_symbol": "󰃃",
@@ -4804,6 +5334,7 @@
     },
     {
         "word": "가실갈이하다",
+        "word_clean": "가실갈이하다",
         "word_pure": "가실갈이하다",
         "pronunciation": "가실가′리하′다",
         "pos_symbol": "󰂿",
@@ -4813,6 +5344,7 @@
     },
     {
         "word": "가실걷이",
+        "word_clean": "가실걷이",
         "word_pure": "가실걷이",
         "pronunciation": "가실거′지",
         "pos_symbol": "󰃃",
@@ -4822,6 +5354,7 @@
     },
     {
         "word": "가실걷이하다",
+        "word_clean": "가실걷이하다",
         "word_pure": "가실걷이하다",
         "pronunciation": "가실거′지하′다",
         "pos_symbol": "󰂿",
@@ -4831,6 +5364,7 @@
     },
     {
         "word": "가실곤치",
+        "word_clean": "가실곤치",
         "word_pure": "가실곤치",
         "pronunciation": "가실곤′치",
         "pos_symbol": "󰃃",
@@ -4840,6 +5374,7 @@
     },
     {
         "word": "가실꼰치",
+        "word_clean": "가실꼰치",
         "word_pure": "가실꼰치",
         "pronunciation": "가실꼰′치",
         "pos_symbol": "󰃃",
@@ -4849,6 +5384,7 @@
     },
     {
         "word": "가실꽃",
+        "word_clean": "가실꽃",
         "word_pure": "가실꽃",
         "pronunciation": "가실꼬′치, 가실꼬′츨, 가실꼬′체",
         "pos_symbol": "󰃃",
@@ -4871,7 +5407,8 @@
     },
     {
         "word": "가실꼬{ㅊ-ㅌ}",
-        "word_pure": "가실꼬{ㅊ-ㅌ}",
+        "word_clean": "가실꼬ㅊㅌ",
+        "word_pure": "가실꼬ㅊㅌ",
         "pronunciation": "가실꼳′, 가실꼬′치, 가실꼬′틀, 가실꼬′테",
         "pos_symbol": "󰃃",
         "definition": "가을꽃. 󰃫 ㉠ 가실꽂:＿〛<{주격어미, 계사어간}>. ㉡ 가실꽅:＿〛<㉠ 외의 환경>. ☞가실꽃.",
@@ -4889,6 +5426,7 @@
     },
     {
         "word": "가실날",
+        "word_clean": "가실날",
         "word_pure": "가실날",
         "pronunciation": "가실′랄",
         "pos_symbol": "󰃃",
@@ -4903,6 +5441,7 @@
     },
     {
         "word": "가실내",
+        "word_clean": "가실내",
         "word_pure": "가실내",
         "pronunciation": "가실′래애′",
         "pos_symbol": "󰃃",
@@ -4917,6 +5456,7 @@
     },
     {
         "word": "가실니비",
+        "word_clean": "가실니비",
         "word_pure": "가실니비",
         "pronunciation": "가실니′비",
         "pos_symbol": "󰃃",
@@ -4926,6 +5466,7 @@
     },
     {
         "word": "가실달1",
+        "word_clean": "가실달1",
         "word_pure": "가실달",
         "pronunciation": "가실′달",
         "pos_symbol": "󰃃",
@@ -4935,6 +5476,7 @@
     },
     {
         "word": "가실달2",
+        "word_clean": "가실달2",
         "word_pure": "가실달",
         "pronunciation": "가실딸′",
         "pos_symbol": "󰃃",
@@ -4944,6 +5486,7 @@
     },
     {
         "word": "가실마당",
+        "word_clean": "가실마당",
         "word_pure": "가실마당",
         "pronunciation": "가실마당′",
         "pos_symbol": "󰃃",
@@ -4958,6 +5501,7 @@
     },
     {
         "word": "가실바람",
+        "word_clean": "가실바람",
         "word_pure": "가실바람",
         "pronunciation": "가실{바/빠}람′",
         "pos_symbol": "󰃃",
@@ -4967,6 +5511,7 @@
     },
     {
         "word": "가실밤",
+        "word_clean": "가실밤",
         "word_pure": "가실밤",
         "pronunciation": "가실′빰",
         "pos_symbol": "󰃃",
@@ -4976,6 +5521,7 @@
     },
     {
         "word": "가실뱁추",
+        "word_clean": "가실뱁추",
         "word_pure": "가실뱁추",
         "pronunciation": "가실′배앱′추′",
         "pos_symbol": "󰃃",
@@ -4994,7 +5540,8 @@
     },
     {
         "word": "가실베{ㅊ-ㅌ}",
-        "word_pure": "가실베{ㅊ-ㅌ}",
+        "word_clean": "가실베ㅊㅌ",
+        "word_pure": "가실베ㅊㅌ",
         "pronunciation": "가실{벧′/뻳′}, 가실{베′/뻬′}치, 가실{베′/뻬′}틀, 가실{베′/뻬′}테",
         "pos_symbol": "󰃃",
         "definition": "가을볕. ⇔봄베{ㅊ-ㅌ}. 󰃫 ㉠ 가실벷:＿〛<{주격어미, 계사어간}>. ㉡ 가실벹:＿〛<㉠ 외의 환경>.",
@@ -5016,6 +5563,7 @@
     },
     {
         "word": "가실보리",
+        "word_clean": "가실보리",
         "word_pure": "가실보리",
         "pronunciation": "가실보리′",
         "pos_symbol": "󰃃",
@@ -5025,6 +5573,7 @@
     },
     {
         "word": "가실비",
+        "word_clean": "가실비",
         "word_pure": "가실비",
         "pronunciation": "가실′비",
         "pos_symbol": "󰃃",
@@ -5043,6 +5592,7 @@
     },
     {
         "word": "가실삧",
+        "word_clean": "가실삧",
         "word_pure": "가실삧",
         "pronunciation": "가실′삐치, 가실′삐츨, 가실′삐체, 가실′삠마",
         "pos_symbol": "󰃃",
@@ -5052,7 +5602,8 @@
     },
     {
         "word": "가실삐{ㅊ-ㅌ}",
-        "word_pure": "가실삐{ㅊ-ㅌ}",
+        "word_clean": "가실삐ㅊㅌ",
+        "word_pure": "가실삐ㅊㅌ",
         "pronunciation": "가실′삐치, 가실′삐틀, 가실′삐테, 가실′삠마",
         "pos_symbol": "󰃃",
         "definition": "가을빛. 가을을 느낄 수 있는 경치나 분위기. 󰃫 ㉠ 가실삧:＿〛<{주격어미, 계사어간}>. ㉡ 가실삩:＿〛<㉠ 외의 환경>.",
@@ -5061,6 +5612,7 @@
     },
     {
         "word": "가실숨기",
+        "word_clean": "가실숨기",
         "word_pure": "가실숨기",
         "pronunciation": "가실숭′기",
         "pos_symbol": "󰃃",
@@ -5075,6 +5627,7 @@
     },
     {
         "word": "가실일",
+        "word_clean": "가실일",
         "word_pure": "가실일",
         "pronunciation": "가실′리일",
         "pos_symbol": "󰃃",
@@ -5084,6 +5637,7 @@
     },
     {
         "word": "가실장매",
+        "word_clean": "가실장매",
         "word_pure": "가실장매",
         "pronunciation": "가실장매′",
         "pos_symbol": "󰃃",
@@ -5093,6 +5647,7 @@
     },
     {
         "word": "가실철",
+        "word_clean": "가실철",
         "word_pure": "가실철",
         "pronunciation": "가실′철",
         "pos_symbol": "󰃃",
@@ -5102,6 +5657,7 @@
     },
     {
         "word": "가실하다",
+        "word_clean": "가실하다",
         "word_pure": "가실하다",
         "pronunciation": "가실하′다",
         "pos_symbol": "󰂿",
@@ -5124,6 +5680,7 @@
     },
     {
         "word": "가싥",
+        "word_clean": "가싥",
         "word_pure": "가싥",
         "pronunciation": "가실′기, 가실′글, 가실′게, 가실′{도/또}, 가실′마",
         "pos_symbol": "󰃃",
@@ -5142,7 +5699,8 @@
     },
     {
         "word": "가시ᇘ",
-        "word_pure": "가시ᇘ",
+        "word_clean": "가",
+        "word_pure": "가",
         "pronunciation": "가실′키, 가실′클, 가실′케, 가실′{도/또}, 가실′마",
         "pos_symbol": "󰃃",
         "definition": "가을. 드). ☞가실.",
@@ -5151,6 +5709,7 @@
     },
     {
         "word": "가심",
+        "word_clean": "가심",
         "word_pure": "가심",
         "pronunciation": "가′심",
         "pos_symbol": "󰃃",
@@ -5169,6 +5728,7 @@
     },
     {
         "word": "가심때기",
+        "word_clean": "가심때기",
         "word_pure": "가심때기",
         "pronunciation": "가심때′기",
         "pos_symbol": "󰃃",
@@ -5183,6 +5743,7 @@
     },
     {
         "word": "가심앓이",
+        "word_clean": "가심앓이",
         "word_pure": "가심앓이",
         "pronunciation": "가심아′리/가시마′리",
         "pos_symbol": "󰃃",
@@ -5192,6 +5753,7 @@
     },
     {
         "word": "가심이",
+        "word_clean": "가심이",
         "word_pure": "가심이",
         "pronunciation": "가′시미",
         "pos_symbol": "󰃃",
@@ -5339,6 +5901,7 @@
     },
     {
         "word": "가심이속",
+        "word_clean": "가심이속",
         "word_pure": "가심이속",
         "pronunciation": "가′시미소옥",
         "pos_symbol": "󰃃",
@@ -5348,6 +5911,7 @@
     },
     {
         "word": "가심팍",
+        "word_clean": "가심팍",
         "word_pure": "가심팍",
         "pronunciation": "가심팍′",
         "pos_symbol": "󰃃",
@@ -5357,6 +5921,7 @@
     },
     {
         "word": "가심패기",
+        "word_clean": "가심패기",
         "word_pure": "가심패기",
         "pronunciation": "가심패′기",
         "pos_symbol": "󰃃",
@@ -5371,6 +5936,7 @@
     },
     {
         "word": "가십기",
+        "word_clean": "가십기",
         "word_pure": "가십기",
         "pronunciation": "가아′십′끼",
         "pos_symbol": "󰃃",
@@ -5385,6 +5951,7 @@
     },
     {
         "word": "가아",
+        "word_clean": "가아",
         "word_pure": "가아",
         "pronunciation": "가′아",
         "pos_symbol": "󰂽",
@@ -5407,6 +5974,7 @@
     },
     {
         "word": "가아가다",
+        "word_clean": "가아가다",
         "word_pure": "가아가다",
         "pronunciation": "가′아간′다′, 가′아가′고, 가′아가′지, 가′아가′더′라, 가′아가′도′, 가′아가′가′아, 가′아가거′라/가′}아가′(라), 가′아가′머",
         "pos_symbol": "󰂿",
@@ -5433,6 +6001,7 @@
     },
     {
         "word": "가아놀다",
+        "word_clean": "가아놀다",
         "word_pure": "가아놀다",
         "pronunciation": "가′아노{올′/오′}다′",
         "pos_symbol": "󰂿",
@@ -5451,6 +6020,7 @@
     },
     {
         "word": "가아오다",
+        "word_clean": "가아오다",
         "word_pure": "가아오다",
         "pronunciation": "가′아온′다′, 가′아오′고, 가′아오′지, 가′아오′더′라, 가′아와′도′, 가′아와′가′아, 가′아오′머",
         "pos_symbol": "󰂿",
@@ -5473,6 +6043,7 @@
     },
     {
         "word": "가아잇다",
+        "word_clean": "가아잇다",
         "word_pure": "가아잇다",
         "pronunciation": "가′아인는′다, 가′아익′꼬, 가′아읻′찌, 가′아읻떠′라, 가′아이′서도, 가′아이′서가′아, 가′아{이′서라/이꺼′라}, 가′아이{시′>스′}머",
         "pos_symbol": "󰃰󰂿",
@@ -5487,6 +6058,7 @@
     },
     {
         "word": "가아지1",
+        "word_clean": "가아지1",
         "word_pure": "가아지",
         "pronunciation": "가아′지",
         "pos_symbol": "󰃃",
@@ -5496,6 +6068,7 @@
     },
     {
         "word": "가아지2",
+        "word_clean": "가아지2",
         "word_pure": "가아지",
         "pronunciation": "가아′지",
         "pos_symbol": "󰃃",
@@ -5510,6 +6083,7 @@
     },
     {
         "word": "가알",
+        "word_clean": "가알",
         "word_pure": "가알",
         "pronunciation": "가알′",
         "pos_symbol": "󰃃",
@@ -5532,6 +6106,7 @@
     },
     {
         "word": "가알갈이",
+        "word_clean": "가알갈이",
         "word_pure": "가알갈이",
         "pronunciation": "가알′가′리",
         "pos_symbol": "󰃃",
@@ -5541,6 +6116,7 @@
     },
     {
         "word": "가알걷이",
+        "word_clean": "가알걷이",
         "word_pure": "가알걷이",
         "pronunciation": "가알′거′지",
         "pos_symbol": "󰃃",
@@ -5555,6 +6131,7 @@
     },
     {
         "word": "가알걷이하다",
+        "word_clean": "가알걷이하다",
         "word_pure": "가알걷이하다",
         "pronunciation": "가알′거′지하다",
         "pos_symbol": "󰂿",
@@ -5564,6 +6141,7 @@
     },
     {
         "word": "가알바람",
+        "word_clean": "가알바람",
         "word_pure": "가알바람",
         "pronunciation": "가알{바/빠}람′",
         "pos_symbol": "󰃃",
@@ -5582,6 +6160,7 @@
     },
     {
         "word": "가알밤",
+        "word_clean": "가알밤",
         "word_pure": "가알밤",
         "pronunciation": "가알′빰",
         "pos_symbol": "󰃃",
@@ -5596,6 +6175,7 @@
     },
     {
         "word": "가알벷",
+        "word_clean": "가알벷",
         "word_pure": "가알벷",
         "pronunciation": "가알′{벧′/뻳′}, 가알′{베′/뻬′}치, 가알′{베′/뻬′}츨, 가알′{베′/뻬′}체",
         "pos_symbol": "󰃃",
@@ -5605,7 +6185,8 @@
     },
     {
         "word": "가알베{ㅊ-ㅌ}",
-        "word_pure": "가알베{ㅊ-ㅌ}",
+        "word_clean": "가알베ㅊㅌ",
+        "word_pure": "가알베ㅊㅌ",
         "pronunciation": "가알′{벧′/뻳′}, 가알′{베′/뻬′}치, 가알′{베′/뻬′}틀, 가알′{베′/뻬′}테",
         "pos_symbol": "󰃃",
         "definition": "가을볕. 󰃫 ㉠ 가알벷:＿〛<{주격어미, 계사어간}>. ㉡ 가알벹:＿〛<㉠ 외의 환경>. ≒가알벷.",
@@ -5614,6 +6195,7 @@
     },
     {
         "word": "가알비",
+        "word_clean": "가알비",
         "word_pure": "가알비",
         "pronunciation": "가알′{비/삐}",
         "pos_symbol": "󰃃",
@@ -5623,6 +6205,7 @@
     },
     {
         "word": "가앍",
+        "word_clean": "가앍",
         "word_pure": "가앍",
         "pronunciation": "가알′",
         "pos_symbol": "󰃃",
@@ -5637,6 +6220,7 @@
     },
     {
         "word": "가애",
+        "word_clean": "가애",
         "word_pure": "가애",
         "pronunciation": "가′애",
         "pos_symbol": "󰃃",
@@ -5646,6 +6230,7 @@
     },
     {
         "word": "가얄푸다",
+        "word_clean": "가얄푸다",
         "word_pure": "가얄푸다",
         "pronunciation": "가얄푸′다",
         "pos_symbol": "󰃰",
@@ -5655,6 +6240,7 @@
     },
     {
         "word": "가언도",
+        "word_clean": "가언도",
         "word_pure": "가언도",
         "pronunciation": "가언′도",
         "pos_symbol": "󰃃",
@@ -5664,6 +6250,7 @@
     },
     {
         "word": "가언두",
+        "word_clean": "가언두",
         "word_pure": "가언두",
         "pronunciation": "가언′두",
         "pos_symbol": "󰃃",
@@ -5682,6 +6269,7 @@
     },
     {
         "word": "가업다",
+        "word_clean": "가업다",
         "word_pure": "가업다",
         "pronunciation": "가아′업′따",
         "pos_symbol": "󰃰",
@@ -5691,6 +6279,7 @@
     },
     {
         "word": "가업잖다",
+        "word_clean": "가업잖다",
         "word_pure": "가업잖다",
         "pronunciation": "가아′업′{잔/짠}타",
         "pos_symbol": "󰃰",
@@ -5709,7 +6298,8 @@
     },
     {
         "word": "-가여",
-        "word_pure": "-가여",
+        "word_clean": "가여",
+        "word_pure": "가여",
         "pronunciation": "가′여",
         "pos_symbol": "󰃆",
         "definition": "-가. 주어 표시 곡용어미. 흔). 명V〛＿. 󰃫 ‘여’의 기능은 불확실함. ☞-{가-이}.",
@@ -5743,6 +6333,7 @@
     },
     {
         "word": "가연하다",
+        "word_clean": "가연하다",
         "word_pure": "가연하다",
         "pronunciation": "가아′연′하다",
         "pos_symbol": "󰃰",
@@ -5757,6 +6348,7 @@
     },
     {
         "word": "가엲다",
+        "word_clean": "가엲다",
         "word_pure": "가엲다",
         "pronunciation": "가아′연′타",
         "pos_symbol": "󰃰",
@@ -5771,6 +6363,7 @@
     },
     {
         "word": "가엽다",
+        "word_clean": "가엽다",
         "word_pure": "가엽다",
         "pronunciation": "가아′엽′따, 가아′역′꼬, 가아′엽′찌, 가아′엽′떠라, 가아′여′버도, 가아′여′버가′아, 가아′여′부머",
         "pos_symbol": "󰃰",
@@ -5780,7 +6373,8 @@
     },
     {
         "word": "-가오",
-        "word_pure": "-가오",
+        "word_clean": "가오",
+        "word_pure": "가오",
         "pronunciation": "가′오",
         "pos_symbol": "󰃥",
         "definition": "-가웃. ☞-가우.",
@@ -5794,6 +6388,7 @@
     },
     {
         "word": "가오연",
+        "word_clean": "가오연",
         "word_pure": "가오연",
         "pronunciation": "가′오′연",
         "pos_symbol": "󰃃",
@@ -5812,7 +6407,8 @@
     },
     {
         "word": "-가옷",
-        "word_pure": "-가옷",
+        "word_clean": "가옷",
+        "word_pure": "가옷",
         "pronunciation": "가′옫, 가′오시, 가′오슬, 가′오세",
         "pos_symbol": "󰃥",
         "definition": "-가웃. ☞-가우.",
@@ -5821,6 +6417,7 @@
     },
     {
         "word": "가외1",
+        "word_clean": "가외1",
         "word_pure": "가외",
         "pronunciation": "가아′웨′",
         "pos_symbol": "󰃌",
@@ -5843,6 +6440,7 @@
     },
     {
         "word": "가외2",
+        "word_clean": "가외2",
         "word_pure": "가외",
         "pronunciation": "가′웨(에)",
         "pos_symbol": "󰃃",
@@ -5852,6 +6450,7 @@
     },
     {
         "word": "가용",
+        "word_clean": "가용",
         "word_pure": "가용",
         "pronunciation": "가′용",
         "pos_symbol": "󰃃",
@@ -5866,6 +6465,7 @@
     },
     {
         "word": "가우1",
+        "word_clean": "가우1",
         "word_pure": "가우",
         "pronunciation": "가′우",
         "pos_symbol": "󰃃",
@@ -5875,6 +6475,7 @@
     },
     {
         "word": "가우2",
+        "word_clean": "가우2",
         "word_pure": "가우",
         "pronunciation": "가우′",
         "pos_symbol": "󰃃",
@@ -5889,6 +6490,7 @@
     },
     {
         "word": "가우3",
+        "word_clean": "가우3",
         "word_pure": "가우",
         "pronunciation": "가아′우′",
         "pos_symbol": "󰃌",
@@ -5907,7 +6509,8 @@
     },
     {
         "word": "-가우",
-        "word_pure": "-가우",
+        "word_clean": "가우",
+        "word_pure": "가우",
         "pronunciation": "가′우",
         "pos_symbol": "󰃥",
         "definition": "-가웃. 반(半) 표시 접미사. 흔). {되･말･자} 등〛＿. ≒-가오/-가옷.",
@@ -5921,6 +6524,7 @@
     },
     {
         "word": "가운데손가락",
+        "word_clean": "가운데손가락",
         "word_pure": "가운데손가락",
         "pronunciation": "가운′데송까′락",
         "pos_symbol": "󰃃",
@@ -5929,7 +6533,18 @@
         "idioms": []
     },
     {
+        "word": "가원도",
+        "word_clean": "가원도",
+        "word_pure": "가원도",
+        "pronunciation": "가원′도",
+        "pos_symbol": "󰃃",
+        "definition": "강원도(江原道). ☞가언두.",
+        "examples": [],
+        "idioms": []
+    },
+    {
         "word": "가원두",
+        "word_clean": "가원두",
         "word_pure": "가원두",
         "pronunciation": "가원′두",
         "pos_symbol": "󰃃",
@@ -5939,6 +6554,7 @@
     },
     {
         "word": "가웨",
+        "word_clean": "가웨",
         "word_pure": "가웨",
         "pronunciation": "가′웨",
         "pos_symbol": "󰃃",
@@ -5948,6 +6564,7 @@
     },
     {
         "word": "가을",
+        "word_clean": "가을",
         "word_pure": "가을",
         "pronunciation": "가을′",
         "pos_symbol": "󰃃",
@@ -5962,6 +6579,7 @@
     },
     {
         "word": "가읅",
+        "word_clean": "가읅",
         "word_pure": "가읅",
         "pronunciation": "가을′",
         "pos_symbol": "󰃃",
@@ -5971,6 +6589,7 @@
     },
     {
         "word": "가이1",
+        "word_clean": "가이1",
         "word_pure": "가이",
         "pronunciation": "가′이",
         "pos_symbol": "󰃃",
@@ -5980,6 +6599,7 @@
     },
     {
         "word": "가이2",
+        "word_clean": "가이2",
         "word_pure": "가이",
         "pronunciation": "가아′이′",
         "pos_symbol": "󰃌",
@@ -5989,6 +6609,7 @@
     },
     {
         "word": "가이가",
+        "word_clean": "가이가",
         "word_pure": "가이가",
         "pronunciation": "가′이가",
         "pos_symbol": "󰃃",
@@ -6003,6 +6624,7 @@
     },
     {
         "word": "가이없다",
+        "word_clean": "가이없다",
         "word_pure": "가이없다",
         "pronunciation": "가아′이′어업′따′, 가아′이′어억′꼬′, 가아′이′어업′찌′, 가아′이′어업떠′라, 가아′이′어업′서′도, 가아′이′어업′서′가′아, 가아′이′어업′{시′>스′}머",
         "pos_symbol": "󰃰",
@@ -6017,6 +6639,7 @@
     },
     {
         "word": "가이하다",
+        "word_clean": "가이하다",
         "word_pure": "가이하다",
         "pronunciation": "가′이한다, 가′이하고, 가′이하지, 가′이하더라, 가′이해애도, 가′이해애가′아, 가′이하머",
         "pos_symbol": "󰂿",
@@ -6035,6 +6658,7 @@
     },
     {
         "word": "가인하다",
+        "word_clean": "가인하다",
         "word_pure": "가인하다",
         "pronunciation": "가아′인′하다",
         "pos_symbol": "󰃰",
@@ -6044,6 +6668,7 @@
     },
     {
         "word": "가읺다",
+        "word_clean": "가읺다",
         "word_pure": "가읺다",
         "pronunciation": "가아′인′타",
         "pos_symbol": "󰃰",
@@ -6058,6 +6683,7 @@
     },
     {
         "word": "가자",
+        "word_clean": "가자",
         "word_pure": "가자",
         "pronunciation": "가′자",
         "pos_symbol": "󰃃",
@@ -6067,6 +6693,7 @@
     },
     {
         "word": "가작다",
+        "word_clean": "가작다",
         "word_pure": "가작다",
         "pronunciation": "가작′따, 가작′꼬, 가작′찌, 가작떠′라, 가자′{가/거}도, 가자′{가/거}가′아, 가자′그머",
         "pos_symbol": "󰃰",
@@ -6076,6 +6703,7 @@
     },
     {
         "word": "가잠",
+        "word_clean": "가잠",
         "word_pure": "가잠",
         "pronunciation": "가잠′",
         "pos_symbol": "󰃃",
@@ -6085,6 +6713,7 @@
     },
     {
         "word": "가잡다",
+        "word_clean": "가잡다",
         "word_pure": "가잡다",
         "pronunciation": "가작′따, 가작′꼬, 가잡′찌, 가잡떠′라, 가자′버도, 가자′버가′아, 가자′부머",
         "pos_symbol": "󰃰",
@@ -6099,15 +6728,37 @@
     },
     {
         "word": "가장1",
+        "word_clean": "가장1",
         "word_pure": "가장",
         "pronunciation": "가′장",
         "pos_symbol": "󰃌",
         "definition": "가장. 첫째로. 제일로. 여럿 가운데 으뜸으로.",
+        "examples": [],
+        "idioms": []
+    },
+    {
+        "word": "가장2(家長)",
+        "word_clean": "가장2",
+        "word_pure": "가장",
+        "pronunciation": "가′{자/재}이, 가′자을, 가′자에, 가′장도, 가′장마",
+        "pos_symbol": "󰃃",
+        "definition": "가장. 남편. 신랑. ☞남편.",
         "examples": [
             {
                 "dialect": "가장이라커는 작자가 노롬이나 하고 산짓만 찾{어/아} 하니 누가 좋다커겟노?",
                 "standard": "가장이라고 하는 작자가 노름이나 하고 싼 짓만 찾아서 하니 누가 좋다고 하겠니?"
-            },
+            }
+        ],
+        "idioms": []
+    },
+    {
+        "word": "가장3(假裝)",
+        "word_clean": "가장3",
+        "word_pure": "가장",
+        "pronunciation": "가아′장′",
+        "pos_symbol": "󰃃",
+        "definition": "가장. ① 태도를 거짓으로 꾸밈. ② 얼굴이나 몸차림 따위를 알아보지 못하게 바꾸어 꾸밈.",
+        "examples": [
             {
                 "dialect": "영감시가 대주로 잡디이 대석거직대기로 엮어가아 멫 매끼 묶우디이, 똑 영장매애로 가장을 해 가주구 아들 보고 짊어지고 나서라커거등.",
                 "standard": "영감님이 돼지를 잡더니 대석거적을 엮어서는 몇 매끼를 묶더니, 꼭 송장처럼 가장을 해 가지고 아들을 보고 짊어지고 나서라고 하거든."
@@ -6117,6 +6768,7 @@
     },
     {
         "word": "가재",
+        "word_clean": "가재",
         "word_pure": "가재",
         "pronunciation": "가아′재′",
         "pos_symbol": "󰃃",
@@ -6126,6 +6778,7 @@
     },
     {
         "word": "가재미",
+        "word_clean": "가재미",
         "word_pure": "가재미",
         "pronunciation": "가재′미",
         "pos_symbol": "󰃃",
@@ -6135,6 +6788,7 @@
     },
     {
         "word": "가재이",
+        "word_clean": "가재이",
         "word_pure": "가재이",
         "pronunciation": "가재′이",
         "pos_symbol": "󰃃",
@@ -6165,6 +6819,7 @@
     },
     {
         "word": "가적",
+        "word_clean": "가적",
         "word_pure": "가적",
         "pronunciation": "가아′적′",
         "pos_symbol": "󰃌",
@@ -6174,6 +6829,7 @@
     },
     {
         "word": "가적껀",
+        "word_clean": "가적껀",
         "word_pure": "가적껀",
         "pronunciation": "가아′적′껀",
         "pos_symbol": "󰃌",
@@ -6183,6 +6839,7 @@
     },
     {
         "word": "가적껏",
+        "word_clean": "가적껏",
         "word_pure": "가적껏",
         "pronunciation": "가아적′껃′",
         "pos_symbol": "󰃌",
@@ -6192,6 +6849,7 @@
     },
     {
         "word": "가적다",
+        "word_clean": "가적다",
         "word_pure": "가적다",
         "pronunciation": "가적′따, 가적′꼬, 가적′찌, 가적떠′라, 가저′거도, 가저′거가′아, 가저′그머",
         "pos_symbol": "󰃰",
@@ -6210,6 +6868,7 @@
     },
     {
         "word": "가전1",
+        "word_clean": "가전1",
         "word_pure": "가전",
         "pronunciation": "가′전",
         "pos_symbol": "󰃃",
@@ -6227,7 +6886,18 @@
         "idioms": []
     },
     {
+        "word": "가전2(家電)",
+        "word_clean": "가전2",
+        "word_pure": "가전",
+        "pronunciation": "가전′",
+        "pos_symbol": "󰃃",
+        "definition": "가전. 가전제품.",
+        "examples": [],
+        "idioms": []
+    },
+    {
         "word": "가정고육",
+        "word_clean": "가정고육",
         "word_pure": "가정고육",
         "pronunciation": "가정′고오′육′",
         "pos_symbol": "󰃃",
@@ -6242,7 +6912,8 @@
     },
     {
         "word": "가정실습(家庭實習)",
-        "word_pure": "가정실습(家庭實習)",
+        "word_clean": "가정실습",
+        "word_pure": "가정실습",
         "pronunciation": "가정′실습",
         "pos_symbol": "󰃃",
         "definition": "가정실습. (농업인구가 많던 시절, 보리 수확 및 모내기 철과 벼 수확 및 보리갈이 시기 등) 봄가을의 농번기에 초등학생들에게 3~6일간 학교를 쉬는 대신 농사일을 직간접으로 도우며 체험토록 하는 실습.",
@@ -6256,7 +6927,8 @@
     },
     {
         "word": "가제참봉(-參奉)",
-        "word_pure": "가제참봉(-參奉)",
+        "word_clean": "가제참봉",
+        "word_pure": "가제참봉",
         "pronunciation": "가제참′봉",
         "pos_symbol": "󰃃",
         "definition": "가제참봉: (조선 말엽의 혼란 시기에) 돈을 주고 산 벼슬.",
@@ -6270,6 +6942,7 @@
     },
     {
         "word": "가조가다",
+        "word_clean": "가조가다",
         "word_pure": "가조가다",
         "pronunciation": "가′조가다",
         "pos_symbol": "󰂿",
@@ -6279,6 +6952,7 @@
     },
     {
         "word": "가주가다",
+        "word_clean": "가주가다",
         "word_pure": "가주가다",
         "pronunciation": "가′주가다",
         "pos_symbol": "󰂿",
@@ -6293,6 +6967,7 @@
     },
     {
         "word": "가주놀다",
+        "word_clean": "가주놀다",
         "word_pure": "가주놀다",
         "pronunciation": "가′주노{오′/올′} 다′",
         "pos_symbol": "󰂿",
@@ -6311,6 +6986,7 @@
     },
     {
         "word": "가주오다",
+        "word_clean": "가주오다",
         "word_pure": "가주오다",
         "pronunciation": "가′주온′다′, 가′주오′고, 가′주오′지, 가′주오′더′라, 가′주와′도′, 가′주와′가′아, 가′주오′머",
         "pos_symbol": "󰂿",
@@ -6341,6 +7017,7 @@
     },
     {
         "word": "가죽1",
+        "word_clean": "가죽1",
         "word_pure": "가죽",
         "pronunciation": "가아′죽′",
         "pos_symbol": "󰃃",
@@ -6363,6 +7040,7 @@
     },
     {
         "word": "가죽2",
+        "word_clean": "가죽2",
         "word_pure": "가죽",
         "pronunciation": "가주′기, 가주′글, 가주′게, 가죽′또, 가중′마",
         "pos_symbol": "󰃃",
@@ -6389,6 +7067,7 @@
     },
     {
         "word": "가죽골개이",
+        "word_clean": "가죽골개이",
         "word_pure": "가죽골개이",
         "pronunciation": "가죽{골/꼴}개′이",
         "pos_symbol": "󰃃",
@@ -6407,6 +7086,7 @@
     },
     {
         "word": "가죽나무",
+        "word_clean": "가죽나무",
         "word_pure": "가죽나무",
         "pronunciation": "가아′중′나무",
         "pos_symbol": "󰃃",
@@ -6425,6 +7105,7 @@
     },
     {
         "word": "가죽나발",
+        "word_clean": "가죽나발",
         "word_pure": "가죽나발",
         "pronunciation": "가중나′발",
         "pos_symbol": "󰃃",
@@ -6439,6 +7120,7 @@
     },
     {
         "word": "가죽나팔",
+        "word_clean": "가죽나팔",
         "word_pure": "가죽나팔",
         "pronunciation": "가중나′팔",
         "pos_symbol": "󰃃",
@@ -6448,7 +7130,8 @@
     },
     {
         "word": "가죽나ᇬ",
-        "word_pure": "가죽나ᇬ",
+        "word_clean": "가죽",
+        "word_pure": "가죽",
         "pronunciation": "가아′중′낭",
         "pos_symbol": "󰃃",
         "definition": "참죽나무. ☞가죽나무.",
@@ -6466,6 +7149,7 @@
     },
     {
         "word": "가죽다",
+        "word_clean": "가죽다",
         "word_pure": "가죽다",
         "pronunciation": "가죽′따, 가죽′꼬, 가죽′찌, 가죽떠′라, 가주′거도, 가주′거가′아, 가주′{구>그}머",
         "pos_symbol": "󰃰",
@@ -6475,6 +7159,7 @@
     },
     {
         "word": "가죽바아",
+        "word_clean": "가죽바아",
         "word_pure": "가죽바아",
         "pronunciation": "가죽′바아′",
         "pos_symbol": "󰃃",
@@ -6489,6 +7174,7 @@
     },
     {
         "word": "가죽방매이",
+        "word_clean": "가죽방매이",
         "word_pure": "가죽방매이",
         "pronunciation": "가죽빵매′이",
         "pos_symbol": "󰃃",
@@ -6503,6 +7189,7 @@
     },
     {
         "word": "가죽삼",
+        "word_clean": "가죽삼",
         "word_pure": "가죽삼",
         "pronunciation": "가아′죽′삼",
         "pos_symbol": "󰃃",
@@ -6517,6 +7204,7 @@
     },
     {
         "word": "가죽신",
+        "word_clean": "가죽신",
         "word_pure": "가죽신",
         "pronunciation": "가죽′신",
         "pos_symbol": "󰃃",
@@ -6526,6 +7214,7 @@
     },
     {
         "word": "가죽침",
+        "word_clean": "가죽침",
         "word_pure": "가죽침",
         "pronunciation": "가죽침′",
         "pos_symbol": "󰃃",
@@ -6552,6 +7241,7 @@
     },
     {
         "word": "가죽피리",
+        "word_clean": "가죽피리",
         "word_pure": "가죽피리",
         "pronunciation": "가죽′피리",
         "pos_symbol": "󰃃",
@@ -6566,6 +7256,7 @@
     },
     {
         "word": "가죽허리끈",
+        "word_clean": "가죽허리끈",
         "word_pure": "가죽허리끈",
         "pronunciation": "가죽′허리′끈",
         "pos_symbol": "󰃃",
@@ -6575,6 +7266,7 @@
     },
     {
         "word": "가죽헐끈",
+        "word_clean": "가죽헐끈",
         "word_pure": "가죽헐끈",
         "pronunciation": "가죽헐′끈",
         "pos_symbol": "󰃃",
@@ -6584,6 +7276,7 @@
     },
     {
         "word": "가죽헐띠",
+        "word_clean": "가죽헐띠",
         "word_pure": "가죽헐띠",
         "pronunciation": "가죽헐′띠",
         "pos_symbol": "󰃃",
@@ -6593,6 +7286,7 @@
     },
     {
         "word": "가중하다",
+        "word_clean": "가중하다",
         "word_pure": "가중하다",
         "pronunciation": "가아′중′하다",
         "pos_symbol": "󰃰",
@@ -6602,7 +7296,8 @@
     },
     {
         "word": "가주ퟶ다",
-        "word_pure": "가주ퟶ다",
+        "word_clean": "가다",
+        "word_pure": "가다",
         "pronunciation": "가아′중′타",
         "pos_symbol": "󰃰",
         "definition": "과중하다. 󰃫 ‘가중하다<과중하다>’가 줄어든 말. ☞배중하다.",
@@ -6611,6 +7306,7 @@
     },
     {
         "word": "가지1",
+        "word_clean": "가지1",
         "word_pure": "가지",
         "pronunciation": "가′지",
         "pos_symbol": "󰃃",
@@ -6637,6 +7333,7 @@
     },
     {
         "word": "가지2",
+        "word_clean": "가지2",
         "word_pure": "가지",
         "pronunciation": "가아′지′",
         "pos_symbol": "󰃌",
@@ -6646,6 +7343,7 @@
     },
     {
         "word": "가지3",
+        "word_clean": "가지3",
         "word_pure": "가지",
         "pronunciation": "가′지′",
         "pos_symbol": "󰃃",
@@ -6655,6 +7353,7 @@
     },
     {
         "word": "가지4",
+        "word_clean": "가지4",
         "word_pure": "가지",
         "pronunciation": "가지′",
         "pos_symbol": "󰃃",
@@ -6673,6 +7372,7 @@
     },
     {
         "word": "가지가지1",
+        "word_clean": "가지가지1",
         "word_pure": "가지가지",
         "pronunciation": "가′지가′지",
         "pos_symbol": "󰃃",
@@ -6691,6 +7391,7 @@
     },
     {
         "word": "가지가지2",
+        "word_clean": "가지가지2",
         "word_pure": "가지가지",
         "pronunciation": "가′지′가′지′",
         "pos_symbol": "󰃃",
@@ -6705,6 +7406,7 @@
     },
     {
         "word": "가지각석",
+        "word_clean": "가지각석",
         "word_pure": "가지각석",
         "pronunciation": "가′지각′석′",
         "pos_symbol": "󰃃",
@@ -6719,6 +7421,7 @@
     },
     {
         "word": "가지기",
+        "word_clean": "가지기",
         "word_pure": "가지기",
         "pronunciation": "가지′기",
         "pos_symbol": "󰃃",
@@ -6737,6 +7440,7 @@
     },
     {
         "word": "가지껀",
+        "word_clean": "가지껀",
         "word_pure": "가지껀",
         "pronunciation": "가아′지′껀",
         "pos_symbol": "󰃌",
@@ -6746,6 +7450,7 @@
     },
     {
         "word": "가지껏",
+        "word_clean": "가지껏",
         "word_pure": "가지껏",
         "pronunciation": "가아′지′껃",
         "pos_symbol": "󰃌",
@@ -6755,6 +7460,7 @@
     },
     {
         "word": "가지나물1",
+        "word_clean": "가지나물1",
         "word_pure": "가지나물",
         "pronunciation": "가지나무′리, 가지나물′로, 가지나무′레, 가지나물′또, 가지나물′마",
         "pos_symbol": "󰃃",
@@ -6769,6 +7475,7 @@
     },
     {
         "word": "가지나물2",
+        "word_clean": "가지나물2",
         "word_pure": "가지나물",
         "pronunciation": "가지나무′리, 가지나물′로, 가지나무′레, 가지나물′또, 가지나물′마",
         "pos_symbol": "󰃃",
@@ -6787,6 +7494,7 @@
     },
     {
         "word": "가지다1",
+        "word_clean": "가지다1",
         "word_pure": "가지다",
         "pronunciation": "가지′인다, 가지′이고, 가지′이지, 가지′이더라, 가지′이도, 가지′이가′아, 가지′이머",
         "pos_symbol": "󰂿",
@@ -6813,6 +7521,7 @@
     },
     {
         "word": "가지다2",
+        "word_clean": "가지다2",
         "word_pure": "가지다",
         "pronunciation": "가′진다, 가′주구/가′}지고, 가′지지, 가′지더라, 가′{지/저}도, 가′{지/저}가′아, 가′{지/저}라, 가′지머",
         "pos_symbol": "󰂿",
@@ -6831,6 +7540,7 @@
     },
     {
         "word": "가지둥치",
+        "word_clean": "가지둥치",
         "word_pure": "가지둥치",
         "pronunciation": "가지둥′치",
         "pos_symbol": "󰃃",
@@ -6845,6 +7555,7 @@
     },
     {
         "word": "가지랑대",
+        "word_clean": "가지랑대",
         "word_pure": "가지랑대",
         "pronunciation": "가지랑′때",
         "pos_symbol": "󰃃",
@@ -6854,6 +7565,7 @@
     },
     {
         "word": "가지런하다",
+        "word_clean": "가지런하다",
         "word_pure": "가지런하다",
         "pronunciation": "가지러언′하′다",
         "pos_symbol": "󰃰",
@@ -6872,6 +7584,7 @@
     },
     {
         "word": "가지말",
+        "word_clean": "가지말",
         "word_pure": "가지말",
         "pronunciation": "가아′지′말",
         "pos_symbol": "󰃃",
@@ -6881,6 +7594,7 @@
     },
     {
         "word": "가지미",
+        "word_clean": "가지미",
         "word_pure": "가지미",
         "pronunciation": "가지′미",
         "pos_symbol": "󰃃",
@@ -6890,6 +7604,7 @@
     },
     {
         "word": "가지볼",
+        "word_clean": "가지볼",
         "word_pure": "가지볼",
         "pronunciation": "가지′볼",
         "pos_symbol": "󰃃",
@@ -6913,6 +7628,7 @@
     },
     {
         "word": "가지뽁지이",
+        "word_clean": "가지뽁지이",
         "word_pure": "가지뽁지이",
         "pronunciation": "가지뽁찌′이",
         "pos_symbol": "󰃃",
@@ -6922,6 +7638,7 @@
     },
     {
         "word": "가지뽈때기",
+        "word_clean": "가지뽈때기",
         "word_pure": "가지뽈때기",
         "pronunciation": "가지뽈때′기",
         "pos_symbol": "󰃃",
@@ -6936,6 +7653,7 @@
     },
     {
         "word": "가지색",
+        "word_clean": "가지색",
         "word_pure": "가지색",
         "pronunciation": "가지′색",
         "pos_symbol": "󰃃",
@@ -6945,6 +7663,7 @@
     },
     {
         "word": "가지야집",
+        "word_clean": "가지야집",
         "word_pure": "가지야집",
         "pronunciation": "가지′야{집/찝}",
         "pos_symbol": "󰃃",
@@ -6959,6 +7678,7 @@
     },
     {
         "word": "가지얏방",
+        "word_clean": "가지얏방",
         "word_pure": "가지얏방",
         "pronunciation": "가지′야빵",
         "pos_symbol": "󰃃",
@@ -6968,6 +7688,7 @@
     },
     {
         "word": "가지지",
+        "word_clean": "가지지",
         "word_pure": "가지지",
         "pronunciation": "가지′지이′",
         "pos_symbol": "󰃃",
@@ -6977,6 +7698,7 @@
     },
     {
         "word": "가직다",
+        "word_clean": "가직다",
         "word_pure": "가직다",
         "pronunciation": "가직′따, 가직′꼬, 가직′찌, 가직떠′라, 가지′거도, 가지′거가아, 가지′그머",
         "pos_symbol": "󰃰",
@@ -7019,6 +7741,7 @@
     },
     {
         "word": "가짓대",
+        "word_clean": "가짓대",
         "word_pure": "가짓대",
         "pronunciation": "가짇′때",
         "pos_symbol": "󰃃",
@@ -7033,6 +7756,7 @@
     },
     {
         "word": "가짓말",
+        "word_clean": "가짓말",
         "word_pure": "가짓말",
         "pronunciation": "가아′짐′말",
         "pos_symbol": "󰃃",
@@ -7047,6 +7771,7 @@
     },
     {
         "word": "가짓말하다",
+        "word_clean": "가짓말하다",
         "word_pure": "가짓말하다",
         "pronunciation": "가아′짐′말하다",
         "pos_symbol": "󰂿",
@@ -7056,6 +7781,7 @@
     },
     {
         "word": "가짓부리기",
+        "word_clean": "가짓부리기",
         "word_pure": "가짓부리기",
         "pronunciation": "가아′집′뿌리′기",
         "pos_symbol": "󰃃",
@@ -7065,6 +7791,7 @@
     },
     {
         "word": "가짓부리이",
+        "word_clean": "가짓부리이",
         "word_pure": "가짓부리이",
         "pronunciation": "가아′집′뿌리′이",
         "pos_symbol": "󰃃",
@@ -7074,6 +7801,7 @@
     },
     {
         "word": "가짓수",
+        "word_clean": "가짓수",
         "word_pure": "가짓수",
         "pronunciation": "가′짇수(우)",
         "pos_symbol": "󰃃",
@@ -7083,6 +7811,7 @@
     },
     {
         "word": "가짜",
+        "word_clean": "가짜",
         "word_pure": "가짜",
         "pronunciation": "가아′짜′",
         "pos_symbol": "󰃃",
@@ -7092,6 +7821,7 @@
     },
     {
         "word": "가짜배기",
+        "word_clean": "가짜배기",
         "word_pure": "가짜배기",
         "pronunciation": "가아′짜′배기/가짜배′기",
         "pos_symbol": "󰃃",
@@ -7101,6 +7831,7 @@
     },
     {
         "word": "가찐하다",
+        "word_clean": "가찐하다",
         "word_pure": "가찐하다",
         "pronunciation": "가아′찐′하′다/가찐하′다",
         "pos_symbol": "󰂿",
@@ -7119,6 +7850,7 @@
     },
     {
         "word": "가차이",
+        "word_clean": "가차이",
         "word_pure": "가차이",
         "pronunciation": "가차′이",
         "pos_symbol": "󰃌",
@@ -7141,6 +7873,7 @@
     },
     {
         "word": "가차이하다",
+        "word_clean": "가차이하다",
         "word_pure": "가차이하다",
         "pronunciation": "가차′이하다",
         "pos_symbol": "󰂿",
@@ -7150,6 +7883,7 @@
     },
     {
         "word": "가착",
+        "word_clean": "가착",
         "word_pure": "가착",
         "pronunciation": "가아′착′",
         "pos_symbol": "󰃃",
@@ -7159,6 +7893,7 @@
     },
     {
         "word": "가착다",
+        "word_clean": "가착다",
         "word_pure": "가착다",
         "pronunciation": "가착′따",
         "pos_symbol": "󰃰",
@@ -7168,6 +7903,7 @@
     },
     {
         "word": "가찹다",
+        "word_clean": "가찹다",
         "word_pure": "가찹다",
         "pronunciation": "가찹′따, 가착′꼬, 가찹′찌, 가찹떠′라, 가차′버도, 가차′버가′아, 가차′부머",
         "pos_symbol": "󰃰",
@@ -7182,6 +7918,7 @@
     },
     {
         "word": "가척",
+        "word_clean": "가척",
         "word_pure": "가척",
         "pronunciation": "가아′척′",
         "pos_symbol": "󰃃",
@@ -7205,6 +7942,7 @@
     },
     {
         "word": "가척다",
+        "word_clean": "가척다",
         "word_pure": "가척다",
         "pronunciation": "가척′따",
         "pos_symbol": "󰃰",
@@ -7223,6 +7961,7 @@
     },
     {
         "word": "가초가초",
+        "word_clean": "가초가초",
         "word_pure": "가초가초",
         "pronunciation": "가′초가′초",
         "pos_symbol": "󰃃",
@@ -7232,6 +7971,7 @@
     },
     {
         "word": "가추",
+        "word_clean": "가추",
         "word_pure": "가추",
         "pronunciation": "가추′",
         "pos_symbol": "󰃃",
@@ -7251,6 +7991,7 @@
     },
     {
         "word": "가추가추",
+        "word_clean": "가추가추",
         "word_pure": "가추가추",
         "pronunciation": "가′추가′추",
         "pos_symbol": "󰃌",
@@ -7260,6 +8001,7 @@
     },
     {
         "word": "가축없다",
+        "word_clean": "가축없다",
         "word_pure": "가축없다",
         "pronunciation": "가′추거업′따′, 가′추거억′꼬′, 가′추거업′찌′, 가′추거업떠′라, 가′추거업′서′도, 가′추거업′서′가아, 가′추거업′{시′>스′}머",
         "pos_symbol": "󰃰",
@@ -7274,6 +8016,7 @@
     },
     {
         "word": "가치1",
+        "word_clean": "가치1",
         "word_pure": "가치",
         "pronunciation": "가′치",
         "pos_symbol": "󰃃",
@@ -7288,6 +8031,7 @@
     },
     {
         "word": "가치2",
+        "word_clean": "가치2",
         "word_pure": "가치",
         "pronunciation": "가′치",
         "pos_symbol": "󰃃",
@@ -7302,6 +8046,7 @@
     },
     {
         "word": "가치3",
+        "word_clean": "가치3",
         "word_pure": "가치",
         "pronunciation": "가′치",
         "pos_symbol": "󰃃",
@@ -7314,7 +8059,18 @@
             {
                 "dialect": "그 엿가치 참 굵으네.",
                 "standard": "그 엿가락 참 굵네."
-            },
+            }
+        ],
+        "idioms": []
+    },
+    {
+        "word": "가치4(價値)",
+        "word_clean": "가치4",
+        "word_pure": "가치",
+        "pronunciation": "가아′치′",
+        "pos_symbol": "󰃃",
+        "definition": "가치. 각종 재료나 노력 전부. 사물이 지니고 있는 쓸모. 일정한 값에 해당하는 분량이나 값어치.",
+        "examples": [
             {
                 "dialect": "시굼장 그것도 가치가 마이 드니더. 고치도 옇고, 무시도 옇고 콩이퍼리지도 옇고 해 놓으머 맛잇심더.",
                 "standard": "등겨장(시금장) 그것도 가치가 많이 듭니다. 고추도 넣고, 무도 넣고 콩잎장아찌도 넣고 해 놓으면 맛있습니다."
@@ -7333,6 +8089,7 @@
     },
     {
         "word": "가치가치",
+        "word_clean": "가치가치",
         "word_pure": "가치가치",
         "pronunciation": "가′치가′치",
         "pos_symbol": "󰃃",
@@ -7347,6 +8104,7 @@
     },
     {
         "word": "가치작거리다",
+        "word_clean": "가치작거리다",
         "word_pure": "가치작거리다",
         "pronunciation": "가치작꺼′리다",
         "pos_symbol": "󰂿",
@@ -7356,6 +8114,7 @@
     },
     {
         "word": "가치작대다",
+        "word_clean": "가치작대다",
         "word_pure": "가치작대다",
         "pronunciation": "가치작때′애다",
         "pos_symbol": "󰂿",
@@ -7365,6 +8124,7 @@
     },
     {
         "word": "가칙다",
+        "word_clean": "가칙다",
         "word_pure": "가칙다",
         "pronunciation": "가칙′따",
         "pos_symbol": "󰃰",
@@ -7374,7 +8134,8 @@
     },
     {
         "word": "가친(家親)",
-        "word_pure": "가친(家親)",
+        "word_clean": "가친",
+        "word_pure": "가친",
         "pronunciation": "가친′",
         "pos_symbol": "󰃃",
         "definition": "가친(家親). 남에게 자기 아버지를 높여 이르는 말. ☞아부지.",
@@ -7388,6 +8149,7 @@
     },
     {
         "word": "가친거리다",
+        "word_clean": "가친거리다",
         "word_pure": "가친거리다",
         "pronunciation": "가칭거′리다",
         "pos_symbol": "󰂿",
@@ -7397,6 +8159,7 @@
     },
     {
         "word": "가친대다",
+        "word_clean": "가친대다",
         "word_pure": "가친대다",
         "pronunciation": "가친대′애다",
         "pos_symbol": "󰂿",
@@ -7406,6 +8169,7 @@
     },
     {
         "word": "가친하다",
+        "word_clean": "가친하다",
         "word_pure": "가친하다",
         "pronunciation": "가아′친′하′다/가친하′다",
         "pos_symbol": "󰂿",
@@ -7420,6 +8184,7 @@
     },
     {
         "word": "가칫",
+        "word_clean": "가칫",
         "word_pure": "가칫",
         "pronunciation": "가칟′",
         "pos_symbol": "󰃌",
@@ -7429,6 +8194,7 @@
     },
     {
         "word": "가타부타",
+        "word_clean": "가타부타",
         "word_pure": "가타부타",
         "pronunciation": "가아′타′부우′타′",
         "pos_symbol": "󰃃",
@@ -7443,6 +8209,7 @@
     },
     {
         "word": "가탈시럽다",
+        "word_clean": "가탈시럽다",
         "word_pure": "가탈시럽다",
         "pronunciation": "가아′탈′시럽따",
         "pos_symbol": "󰃰",
@@ -7452,6 +8219,7 @@
     },
     {
         "word": "가푸다",
+        "word_clean": "가푸다",
         "word_pure": "가푸다",
         "pronunciation": "가푸′다",
         "pos_symbol": "󰃰",
@@ -7461,6 +8229,7 @@
     },
     {
         "word": "가푸리",
+        "word_clean": "가푸리",
         "word_pure": "가푸리",
         "pronunciation": "가푸′리",
         "pos_symbol": "󰃃",
@@ -7470,6 +8239,7 @@
     },
     {
         "word": "가풀1",
+        "word_clean": "가풀1",
         "word_pure": "가풀",
         "pronunciation": "가′풀",
         "pos_symbol": "󰃃",
@@ -7484,6 +8254,7 @@
     },
     {
         "word": "가풀2",
+        "word_clean": "가풀2",
         "word_pure": "가풀",
         "pronunciation": "가풀′",
         "pos_symbol": "󰃃",
@@ -7498,6 +8269,7 @@
     },
     {
         "word": "가플막",
+        "word_clean": "가플막",
         "word_pure": "가플막",
         "pronunciation": "가플막′",
         "pos_symbol": "󰃃",
@@ -7512,6 +8284,7 @@
     },
     {
         "word": "가피",
+        "word_clean": "가피",
         "word_pure": "가피",
         "pronunciation": "가′피",
         "pos_symbol": "󰃃",
@@ -7521,7 +8294,8 @@
     },
     {
         "word": "-{가-고}",
-        "word_pure": "-{가-고}",
+        "word_clean": "가고",
+        "word_pure": "가고",
         "pronunciation": "{가-고}",
         "pos_symbol": "󰃆",
         "definition": "-니. -냐. 해라체 의문 종결어미. 󰅻 -가: 계〛＿. 문 속에 의문사가 없을 때 사용됨. 󰅼 -고: 계〛＿. 문 속에 의문사가 있을 때 사용됨. 󰃫 ⓐ ‘{계,엇,겟}〛-’인 경우, 종결어미 ‘-가’와 ‘-고’는 각각 ‘-나’와 ‘-노’로 됨. ⓑ ‘-{가-고}’는 계사 ‘이-’가 없이 직접 명사와 결합하기도 함. ☞-{나-노}.",
@@ -7591,7 +8365,8 @@
     },
     {
         "word": "-{가-이}",
-        "word_pure": "-{가-이}",
+        "word_clean": "가이",
+        "word_pure": "가이",
         "pronunciation": "{가-이}",
         "pos_symbol": "󰃆",
         "definition": "-{가-이}. 주어표시 곡용어미. 흔). 󰅻 -가: 명V〛＿. 󰅼 -이: 명{C,ㄹ}〛＿. ≒-가/-이/-가여/-이가/-이가여.",
@@ -7661,6 +8436,7 @@
     },
     {
         "word": "각1",
+        "word_clean": "각1",
         "word_pure": "각",
         "pronunciation": "{가′/개′}기′, 가′글′, 가′게′, 각′또′, 강′마′",
         "pos_symbol": "󰃃",
@@ -7675,6 +8451,7 @@
     },
     {
         "word": "각2",
+        "word_clean": "각2",
         "word_pure": "각",
         "pronunciation": "각′",
         "pos_symbol": "󰃃",
@@ -7683,11 +8460,33 @@
             {
                 "dialect": "(약방에서) 각 없는 인단, 시 개마 주이소.",
                 "standard": "곽 없는 은단, 세 개만 주세요."
-            },
+            }
+        ],
+        "idioms": []
+    },
+    {
+        "word": "각3(刻)",
+        "word_clean": "각3",
+        "word_pure": "각",
+        "pronunciation": "각′",
+        "pos_symbol": "󰃃",
+        "definition": "각. 시간의 단위. 1각은 약 15분 동안으로, 본래 시헌력(時憲曆)을 채택하기 이전에 하루의 100분의 1이 되는 14분 24초 동안을 나타내던 단위.",
+        "examples": [
             {
                 "dialect": "당신이 오시두룩 기다리는 시간은, 일각이 여삼추락꼬요.",
                 "standard": "당신이 오시도록 기다리는 시간은, 일각이 여삼추(如三秋)라고요."
-            },
+            }
+        ],
+        "idioms": []
+    },
+    {
+        "word": "각4(角)",
+        "word_clean": "각4",
+        "word_pure": "각",
+        "pronunciation": "각′",
+        "pos_symbol": "󰃃",
+        "definition": "각. 모서리.",
+        "examples": [
             {
                 "dialect": "(가게에서) 아지매, 각사탕 {같/겉}은 거가 여어 없는교?",
                 "standard": "아주머니, 각설탕 같은 것은 여기에 없습니까(=팔지 않습니까)?"
@@ -7695,7 +8494,18 @@
             {
                 "dialect": "사각이 반듯한 나무 상자로 하나 구해야 대겟는데 그런 기 어데 없으까?",
                 "standard": "사각이 반듯한 나무 상자를 하나 구해야 되겠는데 그런 것이 어디 없을까?"
-            },
+            }
+        ],
+        "idioms": []
+    },
+    {
+        "word": "각5(脚)",
+        "word_clean": "각5",
+        "word_pure": "각",
+        "pronunciation": "각′",
+        "pos_symbol": "󰃃",
+        "definition": "각. ① 다리. ② 짐승을 잡아 그 고기를 나눌 때, 전체를 몇 등분한 것 가운데 한 부분.",
+        "examples": [
             {
                 "dialect": "지굼 저기서 사람들이, 어제 잡{어/아} 온 노리로 각을 뜨는 중이시더.",
                 "standard": "지금 저기서 사람들이, 어제 잡아 온 노루를 각을 뜨는 중입니다."
@@ -7714,6 +8524,7 @@
     },
     {
         "word": "각가치",
+        "word_clean": "각가치",
         "word_pure": "각가치",
         "pronunciation": "각′까′치",
         "pos_symbol": "󰃃",
@@ -7728,7 +8539,8 @@
     },
     {
         "word": "각각(各各)",
-        "word_pure": "각각(各各)",
+        "word_clean": "각각",
+        "word_pure": "각각",
         "pronunciation": "각′깍′",
         "pos_symbol": "󰃃󰃌",
         "definition": "각각. 저마다. 제각기. 따로따로. ≒각객이/구구각각.",
@@ -7746,6 +8558,7 @@
     },
     {
         "word": "각객이",
+        "word_clean": "각객이",
         "word_pure": "각객이",
         "pronunciation": "각′깨′기",
         "pos_symbol": "󰃌",
@@ -7755,6 +8568,7 @@
     },
     {
         "word": "각단",
+        "word_clean": "각단",
         "word_pure": "각단",
         "pronunciation": "각′딴",
         "pos_symbol": "󰃃",
@@ -7785,6 +8599,7 @@
     },
     {
         "word": "각때",
+        "word_clean": "각때",
         "word_pure": "각때",
         "pronunciation": "각′때′",
         "pos_symbol": "󰃃",
@@ -7794,6 +8609,7 @@
     },
     {
         "word": "각띠",
+        "word_clean": "각띠",
         "word_pure": "각띠",
         "pronunciation": "각′띠′",
         "pos_symbol": "󰃃",
@@ -7803,6 +8619,7 @@
     },
     {
         "word": "각란",
+        "word_clean": "각란",
         "word_pure": "각란",
         "pronunciation": "가앙′난′",
         "pos_symbol": "󰃃",
@@ -7817,7 +8634,8 @@
     },
     {
         "word": "각립(各立)",
-        "word_pure": "각립(各立)",
+        "word_clean": "각립",
+        "word_pure": "각립",
         "pronunciation": "가앙′닙′",
         "pos_symbol": "󰃃",
         "definition": "이혼. 따로따로 갈라서는 것. ≒강입.",
@@ -7826,6 +8644,7 @@
     },
     {
         "word": "각립하다",
+        "word_clean": "각립하다",
         "word_pure": "각립하다",
         "pronunciation": "가앙′닙′{하>파}다",
         "pos_symbol": "󰂿",
@@ -7840,6 +8659,7 @@
     },
     {
         "word": "각살림",
+        "word_clean": "각살림",
         "word_pure": "각살림",
         "pronunciation": "각′살′림",
         "pos_symbol": "󰃃",
@@ -7849,6 +8669,7 @@
     },
     {
         "word": "각살림하다",
+        "word_clean": "각살림하다",
         "word_pure": "각살림하다",
         "pronunciation": "각′살′림하다",
         "pos_symbol": "󰂿",
@@ -7858,6 +8679,7 @@
     },
     {
         "word": "각설이",
+        "word_clean": "각설이",
         "word_pure": "각설이",
         "pronunciation": "각′서′리",
         "pos_symbol": "󰃃",
@@ -7876,6 +8698,7 @@
     },
     {
         "word": "각설이타랑",
+        "word_clean": "각설이타랑",
         "word_pure": "각설이타랑",
         "pronunciation": "각′서′리타아랑",
         "pos_symbol": "󰃃",
@@ -7885,6 +8708,7 @@
     },
     {
         "word": "각성바지",
+        "word_clean": "각성바지",
         "word_pure": "각성바지",
         "pronunciation": "각′서′엉바지",
         "pos_symbol": "󰃃",
@@ -7899,6 +8723,7 @@
     },
     {
         "word": "각시1",
+        "word_clean": "각시1",
         "word_pure": "각시",
         "pronunciation": "각′시",
         "pos_symbol": "󰃃",
@@ -7908,6 +8733,7 @@
     },
     {
         "word": "각시2",
+        "word_clean": "각시2",
         "word_pure": "각시",
         "pronunciation": "각′시",
         "pos_symbol": "󰃃",
@@ -7930,6 +8756,7 @@
     },
     {
         "word": "각시3",
+        "word_clean": "각시3",
         "word_pure": "각시",
         "pronunciation": "각′시",
         "pos_symbol": "󰃃",
@@ -7944,6 +8771,7 @@
     },
     {
         "word": "각아부자석",
+        "word_clean": "각아부자석",
         "word_pure": "각아부자석",
         "pronunciation": "가′가′부자석",
         "pos_symbol": "󰃃",
@@ -7953,6 +8781,7 @@
     },
     {
         "word": "각어부자석",
+        "word_clean": "각어부자석",
         "word_pure": "각어부자석",
         "pronunciation": "가′거′부자석",
         "pos_symbol": "󰃃",
@@ -7971,6 +8800,7 @@
     },
     {
         "word": "각좌아",
+        "word_clean": "각좌아",
         "word_pure": "각좌아",
         "pronunciation": "가악′쫘′아",
         "pos_symbol": "󰃌",
@@ -7989,6 +8819,7 @@
     },
     {
         "word": "각주에",
+        "word_clean": "각주에",
         "word_pure": "각주에",
         "pronunciation": "가악′쭈′에",
         "pos_symbol": "󰃌",
@@ -8023,6 +8854,7 @@
     },
     {
         "word": "각줴에",
+        "word_clean": "각줴에",
         "word_pure": "각줴에",
         "pronunciation": "가악′쮀′에",
         "pos_symbol": "󰃌",
@@ -8065,6 +8897,7 @@
     },
     {
         "word": "간1",
+        "word_clean": "간1",
         "word_pure": "간",
         "pronunciation": "간′",
         "pos_symbol": "󰃃",
@@ -8085,7 +8918,23 @@
             {
                 "dialect": "이 봄뱁추느 소곰에 간을 해 가아, 하릿밤 재우머 간이 너무 밸 거로요.",
                 "standard": "이 봄배추는 소금에 간을 해서, 하룻밤을 재우면 간이 너무 밸 걸요."
-            },
+            }
+        ],
+        "idioms": [
+            {
+                "phrase": "간 보다",
+                "meaning": "간 보다"
+            }
+        ]
+    },
+    {
+        "word": "간2(肝)",
+        "word_clean": "간2",
+        "word_pure": "간",
+        "pronunciation": "가아′이, 가아′늘′, 가아′네′, 가안′도′, 가암′마′",
+        "pos_symbol": "󰃃",
+        "definition": "간. 󰃫 가로막 바로 밑의 오른쪽에 있는 기관. 탄수화물을 저장하고, 단백질이나 당의 대사를 조절하며, 해독 작용을 함.",
+        "examples": [
             {
                 "dialect": "내상, 남을 쇡일라커가 간이 쫄망쫄망해가아 몬하겟습디더.",
                 "standard": "나는, 남을 속이려니까 간이 조마조마해서 못하겠습디다."
@@ -8093,41 +8942,9 @@
             {
                 "dialect": "이 양반, 간다발이가 버엇나?",
                 "standard": "이 양반이, 간덩이가 부었나?"
-            },
-            {
-                "dialect": "경울° 간에 장동° 어른 모리는 사람이 없을 지겅이시더.",
-                "standard": "경울(경주-울산) 간에 장동 어른을 모르는 사람이 없을 지경입니다."
-            },
-            {
-                "dialect": "좋든 싫든 간에, 니가 일단 멩동° 아재인테 가 바라. 무진 이박이 잇을 기이다.",
-                "standard": "좋든 싫든 간에, 네가 일단 명동 아저씨에게 가 봐라. 무슨 이야기가 있을 것이다."
-            },
-            {
-                "dialect": "어떤 문제기나 간에, 자꾸 큰사랑 어른인테마 가아가머, 그 어른은 또 우야란 말고?",
-                "standard": "어떤 문제거나 간에, 자꾸 큰사랑 어른한테만 가져가면, 그 어른은 또 어쩌란 말이냐?"
-            },
-            {
-                "dialect": "조오° 그 사람 처고모부 양반이사 가진 거락꼬느 초가삼간뿐이시더.",
-                "standard": "종오 그 사람의 ‘처고모부’ 양반이야 가진 것이라고는 초가삼간뿐입니다."
-            },
-            {
-                "dialect": "구십아홉 간 집이서 사는 사람은 얼매나 좋을꼬?",
-                "standard": "아흔아홉 간 (되는) 집에서 사는 사람은 얼마나 좋을까?"
-            },
-            {
-                "dialect": "우리 큰집 청마리도 여섯 간인강 여덜 간이다.",
-                "standard": "우리 큰집 (대청)마루도 여섯 간인지 여덟 간이다."
-            },
-            {
-                "dialect": "두 간짜리 낚숫대에 까무치가 한 바리 걸릿는데 힘이 어떻굼 신동 낚숫대로 잡{어/아}땡기지 몬하겟더라.",
-                "standard": "두 간짜리 낚싯대에 가물치가 한 마리 걸렸는데 힘이 어떻게나 센지 낚싯대를 잡아당기지 못하겠더라."
             }
         ],
         "idioms": [
-            {
-                "phrase": "간 보다",
-                "meaning": "간 보다"
-            },
             {
                 "phrase": "간(에) 불 붙다",
                 "meaning": "간(에) 불(이) 붙다"
@@ -8223,7 +9040,58 @@
         ]
     },
     {
+        "word": "간3(間)",
+        "word_clean": "간3",
+        "word_pure": "간",
+        "pronunciation": "간′",
+        "pos_symbol": "󰃃",
+        "definition": "사이.",
+        "examples": [
+            {
+                "dialect": "경울° 간에 장동° 어른 모리는 사람이 없을 지겅이시더.",
+                "standard": "경울(경주-울산) 간에 장동 어른을 모르는 사람이 없을 지경입니다."
+            },
+            {
+                "dialect": "좋든 싫든 간에, 니가 일단 멩동° 아재인테 가 바라. 무진 이박이 잇을 기이다.",
+                "standard": "좋든 싫든 간에, 네가 일단 명동 아저씨에게 가 봐라. 무슨 이야기가 있을 것이다."
+            },
+            {
+                "dialect": "어떤 문제기나 간에, 자꾸 큰사랑 어른인테마 가아가머, 그 어른은 또 우야란 말고?",
+                "standard": "어떤 문제거나 간에, 자꾸 큰사랑 어른한테만 가져가면, 그 어른은 또 어쩌란 말이냐?"
+            }
+        ],
+        "idioms": []
+    },
+    {
+        "word": "간4(間)",
+        "word_clean": "간4",
+        "word_pure": "간",
+        "pronunciation": "간′",
+        "pos_symbol": "󰃃",
+        "definition": "간. ① 길이의 단위. 한 간은 여섯 자로, 1.81818m에 해당함. ② 넓이의 단위. 건물의 칸살의 넓이를 잴 때 씀. 한 간은 보통 여섯 자 제곱의 넓이임.",
+        "examples": [
+            {
+                "dialect": "조오° 그 사람 처고모부 양반이사 가진 거락꼬느 초가삼간뿐이시더.",
+                "standard": "종오 그 사람의 ‘처고모부’ 양반이야 가진 것이라고는 초가삼간뿐입니다."
+            },
+            {
+                "dialect": "구십아홉 간 집이서 사는 사람은 얼매나 좋을꼬?",
+                "standard": "아흔아홉 간 (되는) 집에서 사는 사람은 얼마나 좋을까?"
+            },
+            {
+                "dialect": "우리 큰집 청마리도 여섯 간인강 여덜 간이다.",
+                "standard": "우리 큰집 (대청)마루도 여섯 간인지 여덟 간이다."
+            },
+            {
+                "dialect": "두 간짜리 낚숫대에 까무치가 한 바리 걸릿는데 힘이 어떻굼 신동 낚숫대로 잡{어/아}땡기지 몬하겟더라.",
+                "standard": "두 간짜리 낚싯대에 가물치가 한 마리 걸렸는데 힘이 어떻게나 센지 낚싯대를 잡아당기지 못하겠더라."
+            }
+        ],
+        "idioms": []
+    },
+    {
         "word": "간가무리하다",
+        "word_clean": "간가무리하다",
         "word_pure": "간가무리하다",
         "pronunciation": "강가무리이′하′다",
         "pos_symbol": "󰃰",
@@ -8238,6 +9106,7 @@
     },
     {
         "word": "간간더로",
+        "word_clean": "간간더로",
         "word_pure": "간간더로",
         "pronunciation": "가앙′간′더로",
         "pos_symbol": "󰃌",
@@ -8247,6 +9116,7 @@
     },
     {
         "word": "간간두로",
+        "word_clean": "간간두로",
         "word_pure": "간간두로",
         "pronunciation": "가앙′간′두로",
         "pos_symbol": "󰃌",
@@ -8256,6 +9126,7 @@
     },
     {
         "word": "간간두루",
+        "word_clean": "간간두루",
         "word_pure": "간간두루",
         "pronunciation": "가앙′간′두루",
         "pos_symbol": "󰃌",
@@ -8265,6 +9136,7 @@
     },
     {
         "word": "간간두리",
+        "word_clean": "간간두리",
         "word_pure": "간간두리",
         "pronunciation": "가앙′간′두리",
         "pos_symbol": "󰃌",
@@ -8283,6 +9155,7 @@
     },
     {
         "word": "간간둘",
+        "word_clean": "간간둘",
         "word_pure": "간간둘",
         "pronunciation": "가앙′간′둘",
         "pos_symbol": "󰃌",
@@ -8292,6 +9165,7 @@
     },
     {
         "word": "간간이",
+        "word_clean": "간간이",
         "word_pure": "간간이",
         "pronunciation": "가앙′가′이",
         "pos_symbol": "󰃌",
@@ -8301,6 +9175,7 @@
     },
     {
         "word": "간간하다",
+        "word_clean": "간간하다",
         "word_pure": "간간하다",
         "pronunciation": "강가안′하′다",
         "pos_symbol": "󰃰",
@@ -8310,6 +9185,7 @@
     },
     {
         "word": "간개기",
+        "word_clean": "간개기",
         "word_pure": "간개기",
         "pronunciation": "강′깨′기",
         "pos_symbol": "󰃃",
@@ -8319,6 +9195,7 @@
     },
     {
         "word": "간고드에",
+        "word_clean": "간고드에",
         "word_pure": "간고드에",
         "pronunciation": "강′꼬′드에",
         "pos_symbol": "󰃃",
@@ -8337,7 +9214,8 @@
     },
     {
         "word": "간곡하다(懇曲-)",
-        "word_pure": "간곡하다(懇曲-)",
+        "word_clean": "간곡하다",
+        "word_pure": "간곡하다",
         "pronunciation": "가앙′곡′{하>카}다",
         "pos_symbol": "󰃰",
         "definition": "간곡하다. 간절하고 정성스럽다.",
@@ -8346,7 +9224,8 @@
     },
     {
         "word": "간곡히(懇曲-)",
-        "word_pure": "간곡히(懇曲-)",
+        "word_clean": "간곡히",
+        "word_pure": "간곡히",
         "pronunciation": "가앙′고′키",
         "pos_symbol": "󰃌",
         "definition": "간곡히.",
@@ -8355,6 +9234,7 @@
     },
     {
         "word": "간곤하다",
+        "word_clean": "간곤하다",
         "word_pure": "간곤하다",
         "pronunciation": "강′곤하다",
         "pos_symbol": "󰃰",
@@ -8364,6 +9244,7 @@
     },
     {
         "word": "간괴기",
+        "word_clean": "간괴기",
         "word_pure": "간괴기",
         "pronunciation": "강′꿰′기",
         "pos_symbol": "󰃃",
@@ -8373,6 +9254,7 @@
     },
     {
         "word": "간구하다",
+        "word_clean": "간구하다",
         "word_pure": "간구하다",
         "pronunciation": "강′구하다",
         "pos_symbol": "󰃰",
@@ -8382,6 +9264,7 @@
     },
     {
         "word": "간난재이",
+        "word_clean": "간난재이",
         "word_pure": "간난재이",
         "pronunciation": "간난재′이",
         "pos_symbol": "󰃃",
@@ -8391,6 +9274,7 @@
     },
     {
         "word": "간날1",
+        "word_clean": "간날1",
         "word_pure": "간날",
         "pronunciation": "가안′날′",
         "pos_symbol": "󰃃",
@@ -8400,6 +9284,7 @@
     },
     {
         "word": "간날2",
+        "word_clean": "간날2",
         "word_pure": "간날",
         "pronunciation": "가안′날′",
         "pos_symbol": "󰃃",
@@ -8409,6 +9294,7 @@
     },
     {
         "word": "간날갓적",
+        "word_clean": "간날갓적",
         "word_pure": "간날갓적",
         "pronunciation": "가안′날′가앋′쩍′",
         "pos_symbol": "󰃃",
@@ -8423,6 +9309,7 @@
     },
     {
         "word": "간노부",
+        "word_clean": "간노부",
         "word_pure": "간노부",
         "pronunciation": "간노′부",
         "pos_symbol": "󰃃",
@@ -8432,6 +9319,7 @@
     },
     {
         "word": "간다발이",
+        "word_clean": "간다발이",
         "word_pure": "간다발이",
         "pronunciation": "가안′따′바리",
         "pos_symbol": "󰃃",
@@ -8463,6 +9351,7 @@
     },
     {
         "word": "간다이",
+        "word_clean": "간다이",
         "word_pure": "간다이",
         "pronunciation": "가안′따′이",
         "pos_symbol": "󰃌",
@@ -8481,6 +9370,7 @@
     },
     {
         "word": "간단하다",
+        "word_clean": "간단하다",
         "word_pure": "간단하다",
         "pronunciation": "가안′{단′/딴′}하다",
         "pos_symbol": "󰃰",
@@ -8499,6 +9389,7 @@
     },
     {
         "word": "간닪다",
+        "word_clean": "간닪다",
         "word_pure": "간닪다",
         "pronunciation": "가안′딴′타",
         "pos_symbol": "󰃰",
@@ -8513,7 +9404,8 @@
     },
     {
         "word": "간담(肝膽)",
-        "word_pure": "간담(肝膽)",
+        "word_clean": "간담",
+        "word_pure": "간담",
         "pronunciation": "가안′{다′/대′}미, 가안′다′믈, 가안′다′메, 가안′담′도, 가안′담′마",
         "pos_symbol": "󰃃",
         "definition": "간담. 간과 쓸개를 아울러 이르는 말.",
@@ -8522,6 +9414,7 @@
     },
     {
         "word": "간당간당",
+        "word_clean": "간당간당",
         "word_pure": "간당간당",
         "pronunciation": "간{다앙′/당′}간당′",
         "pos_symbol": "󰃌",
@@ -8531,6 +9424,7 @@
     },
     {
         "word": "간당간당하다",
+        "word_clean": "간당간당하다",
         "word_pure": "간당간당하다",
         "pronunciation": "간{다앙′/당′}간당하′다",
         "pos_symbol": "󰂿",
@@ -8545,6 +9439,7 @@
     },
     {
         "word": "간당거리다",
+        "word_clean": "간당거리다",
         "word_pure": "간당거리다",
         "pronunciation": "간당거′리다",
         "pos_symbol": "󰂿",
@@ -8559,6 +9454,7 @@
     },
     {
         "word": "간당대다",
+        "word_clean": "간당대다",
         "word_pure": "간당대다",
         "pronunciation": "간당대′애다",
         "pos_symbol": "󰂿",
@@ -8568,6 +9464,7 @@
     },
     {
         "word": "간대로",
+        "word_clean": "간대로",
         "word_pure": "간대로",
         "pronunciation": "간대′로",
         "pos_symbol": "󰃌",
@@ -8590,6 +9487,7 @@
     },
     {
         "word": "간데쪽쪽",
+        "word_clean": "간데쪽쪽",
         "word_pure": "간데쪽쪽",
         "pronunciation": "가안′데′쪽쪽",
         "pos_symbol": "󰃌",
@@ -8599,6 +9497,7 @@
     },
     {
         "word": "간돔배기",
+        "word_clean": "간돔배기",
         "word_pure": "간돔배기",
         "pronunciation": "간′똠배기",
         "pos_symbol": "󰃃",
@@ -8613,6 +9512,7 @@
     },
     {
         "word": "간돔비기",
+        "word_clean": "간돔비기",
         "word_pure": "간돔비기",
         "pronunciation": "간′똠′비기",
         "pos_symbol": "󰃃",
@@ -8622,6 +9522,7 @@
     },
     {
         "word": "간땀",
+        "word_clean": "간땀",
         "word_pure": "간땀",
         "pronunciation": "가안′{따′/때′}미, 가안′따′믈, 가안′따′메, 가안′땀′도, 가안′땀′마",
         "pos_symbol": "󰃃",
@@ -8636,6 +9537,7 @@
     },
     {
         "word": "간떼이",
+        "word_clean": "간떼이",
         "word_pure": "간떼이",
         "pronunciation": "가안′떼′이",
         "pos_symbol": "󰃃",
@@ -8650,6 +9552,7 @@
     },
     {
         "word": "간띠이",
+        "word_clean": "간띠이",
         "word_pure": "간띠이",
         "pronunciation": "가안′띠′이",
         "pos_symbol": "󰃃",
@@ -8664,6 +9567,7 @@
     },
     {
         "word": "간맥이",
+        "word_clean": "간맥이",
         "word_pure": "간맥이",
         "pronunciation": "감매′기",
         "pos_symbol": "󰃃",
@@ -8678,6 +9582,7 @@
     },
     {
         "word": "간물",
+        "word_clean": "간물",
         "word_pure": "간물",
         "pronunciation": "감′물",
         "pos_symbol": "󰃃",
@@ -8692,6 +9597,7 @@
     },
     {
         "word": "간밤",
+        "word_clean": "간밤",
         "word_pure": "간밤",
         "pronunciation": "감밤′",
         "pos_symbol": "󰃃",
@@ -8710,7 +9616,8 @@
     },
     {
         "word": "간사(奸詐)",
-        "word_pure": "간사(奸詐)",
+        "word_clean": "간사",
+        "word_pure": "간사",
         "pronunciation": "간′사",
         "pos_symbol": "󰃃",
         "definition": "간사. 교활하게 거짓으로 남의 비위를 맞춤.",
@@ -8719,6 +9626,7 @@
     },
     {
         "word": "간사시럽다",
+        "word_clean": "간사시럽다",
         "word_pure": "간사시럽다",
         "pronunciation": "간′사시′럽따",
         "pos_symbol": "󰃰",
@@ -8728,7 +9636,8 @@
     },
     {
         "word": "간사하다(奸邪-)",
-        "word_pure": "간사하다(奸邪-)",
+        "word_clean": "간사하다",
+        "word_pure": "간사하다",
         "pronunciation": "간′사하다",
         "pos_symbol": "󰃰",
         "definition": "간사하다.",
@@ -8737,6 +9646,7 @@
     },
     {
         "word": "간살",
+        "word_clean": "간살",
         "word_pure": "간살",
         "pronunciation": "간′살",
         "pos_symbol": "󰃃",
@@ -8755,6 +9665,7 @@
     },
     {
         "word": "간살시럽다",
+        "word_clean": "간살시럽다",
         "word_pure": "간살시럽다",
         "pronunciation": "간′살시럽따",
         "pos_symbol": "󰃰",
@@ -8764,6 +9675,7 @@
     },
     {
         "word": "간살재이",
+        "word_clean": "간살재이",
         "word_pure": "간살재이",
         "pronunciation": "간′살재이",
         "pos_symbol": "󰃃",
@@ -8773,6 +9685,7 @@
     },
     {
         "word": "간새시럽다",
+        "word_clean": "간새시럽다",
         "word_pure": "간새시럽다",
         "pronunciation": "간′새시럽다",
         "pos_symbol": "󰃰",
@@ -8787,6 +9700,7 @@
     },
     {
         "word": "간석",
+        "word_clean": "간석",
         "word_pure": "간석",
         "pronunciation": "가안′석′",
         "pos_symbol": "󰃃",
@@ -8796,6 +9710,7 @@
     },
     {
         "word": "간셈보살",
+        "word_clean": "간셈보살",
         "word_pure": "간셈보살",
         "pronunciation": "간셈보′살",
         "pos_symbol": "󰃃",
@@ -8805,6 +9720,7 @@
     },
     {
         "word": "간수1",
+        "word_clean": "간수1",
         "word_pure": "간수",
         "pronunciation": "간′수",
         "pos_symbol": "󰃃",
@@ -8823,6 +9739,7 @@
     },
     {
         "word": "간수2",
+        "word_clean": "간수2",
         "word_pure": "간수",
         "pronunciation": "간수′",
         "pos_symbol": "󰃃",
@@ -8836,7 +9753,18 @@
         "idioms": []
     },
     {
+        "word": "간수3(看守)",
+        "word_clean": "간수3",
+        "word_pure": "간수",
+        "pronunciation": "간수′",
+        "pos_symbol": "󰃃",
+        "definition": "간수. (어떤 대상을) 보살펴 지키는 것.",
+        "examples": [],
+        "idioms": []
+    },
+    {
         "word": "간수하다",
+        "word_clean": "간수하다",
         "word_pure": "간수하다",
         "pronunciation": "간수하′다",
         "pos_symbol": "󰂿",
@@ -8851,6 +9779,7 @@
     },
     {
         "word": "간시이",
+        "word_clean": "간시이",
         "word_pure": "간시이",
         "pronunciation": "가안′시′이",
         "pos_symbol": "󰃌",
@@ -8865,7 +9794,8 @@
     },
     {
         "word": "간악(奸惡)",
-        "word_pure": "간악(奸惡)",
+        "word_clean": "간악",
+        "word_pure": "간악",
         "pronunciation": "가′낙",
         "pos_symbol": "󰃃",
         "definition": "간악. 간사하고 악독함.",
@@ -8874,7 +9804,8 @@
     },
     {
         "word": "간악시럽다(奸惡-)",
-        "word_pure": "간악시럽다(奸惡-)",
+        "word_clean": "간악시럽다",
+        "word_pure": "간악시럽다",
         "pronunciation": "가′낙시럽따",
         "pos_symbol": "󰃰",
         "definition": "간악스럽다.",
@@ -8892,7 +9823,8 @@
     },
     {
         "word": "간악하다(奸惡-)",
-        "word_pure": "간악하다(奸惡-)",
+        "word_clean": "간악하다",
+        "word_pure": "간악하다",
         "pronunciation": "가′낙{하>카}다",
         "pos_symbol": "󰃰",
         "definition": "간악하다.",
@@ -8910,6 +9842,7 @@
     },
     {
         "word": "간알라",
+        "word_clean": "간알라",
         "word_pure": "간알라",
         "pronunciation": "가날라′아",
         "pos_symbol": "󰃃",
@@ -8919,6 +9852,7 @@
     },
     {
         "word": "간얼라",
+        "word_clean": "간얼라",
         "word_pure": "간얼라",
         "pronunciation": "가널라′아",
         "pos_symbol": "󰃃",
@@ -8937,6 +9871,7 @@
     },
     {
         "word": "간애",
+        "word_clean": "간애",
         "word_pure": "간애",
         "pronunciation": "가아′내′",
         "pos_symbol": "󰃃",
@@ -8946,6 +9881,7 @@
     },
     {
         "word": "간애학교",
+        "word_clean": "간애학교",
         "word_pure": "간애학교",
         "pronunciation": "가아′내′학꾜",
         "pos_symbol": "󰃃",
@@ -8960,10 +9896,21 @@
     },
     {
         "word": "간장1",
+        "word_clean": "간장1",
         "word_pure": "간장",
         "pronunciation": "간′자′앙",
         "pos_symbol": "󰃃",
         "definition": "간장. 음식의 간을 맞추는 데 쓰는 짠맛이 나는 흑갈색 액체. 󰃫 지렁>간장.",
+        "examples": [],
+        "idioms": []
+    },
+    {
+        "word": "간장2(肝腸)",
+        "word_clean": "간장2",
+        "word_pure": "간장",
+        "pronunciation": "가안′{자′앙/장}",
+        "pos_symbol": "󰃃",
+        "definition": "간장. ① 간과 창자. ② ‘애’나 ‘마음’을 비유적으로 이르는 말.",
         "examples": [],
         "idioms": [
             {
@@ -8985,7 +9932,18 @@
         ]
     },
     {
+        "word": "간장3(肝臟)",
+        "word_clean": "간장3",
+        "word_pure": "간장",
+        "pronunciation": "가안′{자′앙/장}",
+        "pos_symbol": "󰃃",
+        "definition": "간장. 간.",
+        "examples": [],
+        "idioms": []
+    },
+    {
         "word": "간절우다1",
+        "word_clean": "간절우다1",
         "word_pure": "간절우다",
         "pronunciation": "가안′저′루우다",
         "pos_symbol": "󰂿",
@@ -8995,6 +9953,7 @@
     },
     {
         "word": "간절우다2",
+        "word_clean": "간절우다2",
         "word_pure": "간절우다",
         "pronunciation": "간′저루우다",
         "pos_symbol": "󰂿",
@@ -9004,6 +9963,7 @@
     },
     {
         "word": "간절이",
+        "word_clean": "간절이",
         "word_pure": "간절이",
         "pronunciation": "가안′저′리",
         "pos_symbol": "󰃌",
@@ -9018,6 +9978,7 @@
     },
     {
         "word": "간절하다",
+        "word_clean": "간절하다",
         "word_pure": "간절하다",
         "pronunciation": "가안′절′하다",
         "pos_symbol": "󰃰",
@@ -9032,6 +9993,7 @@
     },
     {
         "word": "간젏다",
+        "word_clean": "간젏다",
         "word_pure": "간젏다",
         "pronunciation": "가안′절′타",
         "pos_symbol": "󰃰",
@@ -9046,6 +10008,7 @@
     },
     {
         "word": "간조",
+        "word_clean": "간조",
         "word_pure": "간조",
         "pronunciation": "간조′",
         "pos_symbol": "󰃃",
@@ -9055,6 +10018,7 @@
     },
     {
         "word": "간조구",
+        "word_clean": "간조구",
         "word_pure": "간조구",
         "pronunciation": "간′{조′/쪼′}구",
         "pos_symbol": "󰃃",
@@ -9069,6 +10033,7 @@
     },
     {
         "word": "간조럼이",
+        "word_clean": "간조럼이",
         "word_pure": "간조럼이",
         "pronunciation": "간조러어′미′",
         "pos_symbol": "󰃌",
@@ -9078,6 +10043,7 @@
     },
     {
         "word": "간조럼하다",
+        "word_clean": "간조럼하다",
         "word_pure": "간조럼하다",
         "pronunciation": "간조러엄′하′다",
         "pos_symbol": "󰃰",
@@ -9087,6 +10053,7 @@
     },
     {
         "word": "간조롬이",
+        "word_clean": "간조롬이",
         "word_pure": "간조롬이",
         "pronunciation": "간조로오′미′",
         "pos_symbol": "󰃌",
@@ -9109,6 +10076,7 @@
     },
     {
         "word": "간조롬하다",
+        "word_clean": "간조롬하다",
         "word_pure": "간조롬하다",
         "pronunciation": "간조로옴′하′다",
         "pos_symbol": "󰃰",
@@ -9118,6 +10086,7 @@
     },
     {
         "word": "간조하다",
+        "word_clean": "간조하다",
         "word_pure": "간조하다",
         "pronunciation": "간조하′다",
         "pos_symbol": "󰂿",
@@ -9132,6 +10101,7 @@
     },
     {
         "word": "간좃증",
+        "word_clean": "간좃증",
         "word_pure": "간좃증",
         "pronunciation": "간조′쯩",
         "pos_symbol": "󰃃",
@@ -9141,6 +10111,7 @@
     },
     {
         "word": "간주1",
+        "word_clean": "간주1",
         "word_pure": "간주",
         "pronunciation": "간주′",
         "pos_symbol": "󰃃",
@@ -9149,7 +10120,18 @@
         "idioms": []
     },
     {
+        "word": "간주2(看做)",
+        "word_clean": "간주2",
+        "word_pure": "간주",
+        "pronunciation": "간주′",
+        "pos_symbol": "󰃃",
+        "definition": "간주. 상태, 모양, 성질 따위가 그와 같다고 봄. 또는 그렇다고 여김.",
+        "examples": [],
+        "idioms": []
+    },
+    {
         "word": "간주럲다",
+        "word_clean": "간주럲다",
         "word_pure": "간주럲다",
         "pronunciation": "간주런′타, 간주렁′코, 간주런′치, 간주런터′라, 간주러′너도, 간주러′너가아, 간주러′느머",
         "pos_symbol": "󰃰",
@@ -9164,6 +10146,7 @@
     },
     {
         "word": "간주럼이",
+        "word_clean": "간주럼이",
         "word_pure": "간주럼이",
         "pronunciation": "간주러어′미′",
         "pos_symbol": "󰃌",
@@ -9173,6 +10156,7 @@
     },
     {
         "word": "간주룸이",
+        "word_clean": "간주룸이",
         "word_pure": "간주룸이",
         "pronunciation": "간주루우′미′",
         "pos_symbol": "󰃌",
@@ -9182,6 +10166,7 @@
     },
     {
         "word": "간주룸하다",
+        "word_clean": "간주룸하다",
         "word_pure": "간주룸하다",
         "pronunciation": "간주루움′하′다",
         "pos_symbol": "󰃰",
@@ -9196,6 +10181,7 @@
     },
     {
         "word": "간주리다",
+        "word_clean": "간주리다",
         "word_pure": "간주리다",
         "pronunciation": "간주′리다",
         "pos_symbol": "󰂿",
@@ -9205,6 +10191,7 @@
     },
     {
         "word": "간줄리다",
+        "word_clean": "간줄리다",
         "word_pure": "간줄리다",
         "pronunciation": "간줄′린다, 간줄′리고, 간줄′리지, 간줄′리더라, 간줄′러도, 간줄′러가′아, 간줄′리머",
         "pos_symbol": "󰂿",
@@ -9219,6 +10206,7 @@
     },
     {
         "word": "간줏증",
+        "word_clean": "간줏증",
         "word_pure": "간줏증",
         "pronunciation": "간줃′쯩",
         "pos_symbol": "󰃃",
@@ -9246,6 +10234,7 @@
     },
     {
         "word": "간지람",
+        "word_clean": "간지람",
         "word_pure": "간지람",
         "pronunciation": "간지람′",
         "pos_symbol": "󰃃",
@@ -9260,6 +10249,7 @@
     },
     {
         "word": "간지럼",
+        "word_clean": "간지럼",
         "word_pure": "간지럼",
         "pronunciation": "간지럼′",
         "pos_symbol": "󰃃",
@@ -9283,6 +10273,7 @@
     },
     {
         "word": "간지럽다",
+        "word_clean": "간지럽다",
         "word_pure": "간지럽다",
         "pronunciation": "간지럽′따, 간지럭′꼬, 간지럽′찌, 간지럽떠′라, 간지러′버도, 간지러′버가′아, 간지{레′/리′}라, 간지러′부머",
         "pos_symbol": "󰃰",
@@ -9305,6 +10296,7 @@
     },
     {
         "word": "간지럽후다",
+        "word_clean": "간지럽후다",
         "word_pure": "간지럽후다",
         "pronunciation": "간지러푸′우다",
         "pos_symbol": "󰂿",
@@ -9314,7 +10306,8 @@
     },
     {
         "word": "간지럽후{ㅎ-우}다",
-        "word_pure": "간지럽후{ㅎ-우}다",
+        "word_clean": "간지럽후ㅎ우다",
+        "word_pure": "간지럽후ㅎ우다",
         "pronunciation": "간지러푸′타",
         "pos_symbol": "󰂿",
         "definition": "간질이다. ☞간지럽후다.",
@@ -9323,6 +10316,7 @@
     },
     {
         "word": "간지럽히다",
+        "word_clean": "간지럽히다",
         "word_pure": "간지럽히다",
         "pronunciation": "간지러피′이다",
         "pos_symbol": "󰂿",
@@ -9337,6 +10331,7 @@
     },
     {
         "word": "간지렁하다",
+        "word_clean": "간지렁하다",
         "word_pure": "간지렁하다",
         "pronunciation": "간지러엉′하′다",
         "pos_symbol": "󰃰",
@@ -9346,6 +10341,7 @@
     },
     {
         "word": "간직다",
+        "word_clean": "간직다",
         "word_pure": "간직다",
         "pronunciation": "간직′따",
         "pos_symbol": "󰂿",
@@ -9360,6 +10356,7 @@
     },
     {
         "word": "간질간질",
+        "word_clean": "간질간질",
         "word_pure": "간질간질",
         "pronunciation": "간{지일′/질′}간질′",
         "pos_symbol": "󰃌",
@@ -9369,6 +10366,7 @@
     },
     {
         "word": "간질간질하다",
+        "word_clean": "간질간질하다",
         "word_pure": "간질간질하다",
         "pronunciation": "간{지일′/질′}간질하′다",
         "pos_symbol": "󰃰",
@@ -9387,6 +10385,7 @@
     },
     {
         "word": "간질거리다",
+        "word_clean": "간질거리다",
         "word_pure": "간질거리다",
         "pronunciation": "간질거′리다",
         "pos_symbol": "󰂿",
@@ -9396,6 +10395,7 @@
     },
     {
         "word": "간질구다",
+        "word_clean": "간질구다",
         "word_pure": "간질구다",
         "pronunciation": "간질구′우다",
         "pos_symbol": "󰂿",
@@ -9410,7 +10410,8 @@
     },
     {
         "word": "간질구{ㅎ-우}다",
-        "word_pure": "간질구{ㅎ-우}다",
+        "word_clean": "간질구ㅎ우다",
+        "word_pure": "간질구ㅎ우다",
         "pronunciation": "간질구′타",
         "pos_symbol": "󰂿",
         "definition": "간질이다. ☞간질구다.",
@@ -9419,6 +10420,7 @@
     },
     {
         "word": "간질대다",
+        "word_clean": "간질대다",
         "word_pure": "간질대다",
         "pronunciation": "간질대′애다",
         "pos_symbol": "󰂿",
@@ -9428,6 +10430,7 @@
     },
     {
         "word": "간질에다",
+        "word_clean": "간질에다",
         "word_pure": "간질에다",
         "pronunciation": "간지레′에다",
         "pos_symbol": "󰂿",
@@ -9450,6 +10453,7 @@
     },
     {
         "word": "간질이다",
+        "word_clean": "간질이다",
         "word_pure": "간질이다",
         "pronunciation": "간지리′이다",
         "pos_symbol": "󰂿",
@@ -9459,6 +10463,7 @@
     },
     {
         "word": "간짓대",
+        "word_clean": "간짓대",
         "word_pure": "간짓대",
         "pronunciation": "간짇′때",
         "pos_symbol": "󰃃",
@@ -9468,6 +10473,7 @@
     },
     {
         "word": "간짓대이",
+        "word_clean": "간짓대이",
         "word_pure": "간짓대이",
         "pronunciation": "간짇때′이",
         "pos_symbol": "󰃃",
@@ -9486,6 +10492,7 @@
     },
     {
         "word": "간처엽",
+        "word_clean": "간처엽",
         "word_pure": "간처엽",
         "pronunciation": "가안′처′엽",
         "pos_symbol": "󰃃",
@@ -9495,6 +10502,7 @@
     },
     {
         "word": "간추룸하다",
+        "word_clean": "간추룸하다",
         "word_pure": "간추룸하다",
         "pronunciation": "간추루움′하′다",
         "pos_symbol": "󰃰",
@@ -9509,6 +10517,7 @@
     },
     {
         "word": "간추리다",
+        "word_clean": "간추리다",
         "word_pure": "간추리다",
         "pronunciation": "간추′리다",
         "pos_symbol": "󰂿",
@@ -9518,6 +10527,7 @@
     },
     {
         "word": "간출리다",
+        "word_clean": "간출리다",
         "word_pure": "간출리다",
         "pronunciation": "간출′리다",
         "pos_symbol": "󰂿",
@@ -9527,6 +10537,7 @@
     },
     {
         "word": "간태우다",
+        "word_clean": "간태우다",
         "word_pure": "간태우다",
         "pronunciation": "가안′태′우다",
         "pos_symbol": "󰂿",
@@ -9536,7 +10547,8 @@
     },
     {
         "word": "간판(看板)",
-        "word_pure": "간판(看板)",
+        "word_clean": "간판",
+        "word_pure": "간판",
         "pronunciation": "감′판",
         "pos_symbol": "󰃃",
         "definition": "간판. ☞광판1.",
@@ -9545,6 +10557,7 @@
     },
     {
         "word": "간펜하다",
+        "word_clean": "간펜하다",
         "word_pure": "간펜하다",
         "pronunciation": "감′펜하다",
         "pos_symbol": "󰃰",
@@ -9554,6 +10567,7 @@
     },
     {
         "word": "간펞다",
+        "word_clean": "간펞다",
         "word_pure": "간펞다",
         "pronunciation": "감′펜타",
         "pos_symbol": "󰃰",
@@ -9568,6 +10582,7 @@
     },
     {
         "word": "간하다1",
+        "word_clean": "간하다1",
         "word_pure": "간하다",
         "pronunciation": "간′하′다",
         "pos_symbol": "󰂿",
@@ -9576,7 +10591,18 @@
         "idioms": []
     },
     {
+        "word": "간하다2(諫-)",
+        "word_clean": "간하다2",
+        "word_pure": "간하다",
+        "pronunciation": "가안′하′다",
+        "pos_symbol": "󰂿",
+        "definition": "간하다. 옳지 못하거나 잘못된 일을 고치도록 말하다.",
+        "examples": [],
+        "idioms": []
+    },
+    {
         "word": "갆다",
+        "word_clean": "갆다",
         "word_pure": "갆다",
         "pronunciation": "간는′다, 강′코, 간′치, 간터′라, 가′너도, 가′너가′아, 가′느머",
         "pos_symbol": "󰂿",
@@ -9591,6 +10617,7 @@
     },
     {
         "word": "갆어듣다",
+        "word_clean": "갆어듣다",
         "word_pure": "갆어듣다",
         "pronunciation": "가′너듣′따",
         "pos_symbol": "󰂿",
@@ -9609,6 +10636,7 @@
     },
     {
         "word": "갆어보다",
+        "word_clean": "갆어보다",
         "word_pure": "갆어보다",
         "pronunciation": "가′너보′다",
         "pos_symbol": "󰂿",
@@ -9627,6 +10655,7 @@
     },
     {
         "word": "갇",
+        "word_clean": "갇",
         "word_pure": "갇",
         "pronunciation": "가′디′, 가′들′, 가′데, 갇′또′, 감′마′",
         "pos_symbol": "󰃃",
@@ -9641,6 +10670,7 @@
     },
     {
         "word": "갇다",
+        "word_clean": "갇다",
         "word_pure": "갇다",
         "pronunciation": "갇′따",
         "pos_symbol": "󰂿",
@@ -9650,6 +10680,7 @@
     },
     {
         "word": "갇어들다",
+        "word_clean": "갇어들다",
         "word_pure": "갇어들다",
         "pronunciation": "가′더{들/드}다",
         "pos_symbol": "󰂿",
@@ -9659,6 +10690,7 @@
     },
     {
         "word": "갇어지다",
+        "word_clean": "갇어지다",
         "word_pure": "갇어지다",
         "pronunciation": "가′더진다, 가′더지고, 가′더지지, 가′더지더라, 가′더저도, 가′더저가′아, 가′더지머",
         "pos_symbol": "󰂿",
@@ -9689,6 +10721,7 @@
     },
     {
         "word": "갇헤다",
+        "word_clean": "갇헤다",
         "word_pure": "갇헤다",
         "pronunciation": "가체′에다",
         "pos_symbol": "󰂿",
@@ -9703,6 +10736,7 @@
     },
     {
         "word": "갇히다",
+        "word_clean": "갇히다",
         "word_pure": "갇히다",
         "pronunciation": "가치′이다",
         "pos_symbol": "󰂿",
@@ -9717,6 +10751,7 @@
     },
     {
         "word": "갇히키다",
+        "word_clean": "갇히키다",
         "word_pure": "갇히키다",
         "pronunciation": "가치키′이다",
         "pos_symbol": "󰂿",
@@ -9731,6 +10766,7 @@
     },
     {
         "word": "갈1",
+        "word_clean": "갈1",
         "word_pure": "갈",
         "pronunciation": "가′알′",
         "pos_symbol": "󰃃",
@@ -9762,6 +10798,7 @@
     },
     {
         "word": "갈2",
+        "word_clean": "갈2",
         "word_pure": "갈",
         "pronunciation": "가′알′",
         "pos_symbol": "󰃃",
@@ -9776,6 +10813,7 @@
     },
     {
         "word": "갈가마구",
+        "word_clean": "갈가마구",
         "word_pure": "갈가마구",
         "pronunciation": "갈가마′구",
         "pos_symbol": "󰃃",
@@ -9810,6 +10848,7 @@
     },
     {
         "word": "갈가마귀",
+        "word_clean": "갈가마귀",
         "word_pure": "갈가마귀",
         "pronunciation": "갈가마′귀",
         "pos_symbol": "󰃃",
@@ -9819,6 +10858,7 @@
     },
     {
         "word": "갈가지",
+        "word_clean": "갈가지",
         "word_pure": "갈가지",
         "pronunciation": "갈가′지/갈′가지",
         "pos_symbol": "󰃃",
@@ -9833,6 +10873,7 @@
     },
     {
         "word": "갈거새이",
+        "word_clean": "갈거새이",
         "word_pure": "갈거새이",
         "pronunciation": "갈′거′새이",
         "pos_symbol": "󰃃",
@@ -9847,6 +10888,7 @@
     },
     {
         "word": "갈게내다",
+        "word_clean": "갈게내다",
         "word_pure": "갈게내다",
         "pronunciation": "갈게′에내애′다′",
         "pos_symbol": "󰂿",
@@ -9856,6 +10898,7 @@
     },
     {
         "word": "갈게다",
+        "word_clean": "갈게다",
         "word_pure": "갈게다",
         "pronunciation": "갈겐′다, 갈게′고, 갈게′지, 갈게더′라, 갈게′에도, 갈게′에가′아, 갈게′라/갈게′에라, 갈게′머",
         "pos_symbol": "󰂿",
@@ -9886,6 +10929,7 @@
     },
     {
         "word": "갈게지다",
+        "word_clean": "갈게지다",
         "word_pure": "갈게지다",
         "pronunciation": "갈게′에지다",
         "pos_symbol": "󰂿",
@@ -9895,6 +10939,7 @@
     },
     {
         "word": "갈구다",
+        "word_clean": "갈구다",
         "word_pure": "갈구다",
         "pronunciation": "갈구′우다",
         "pos_symbol": "󰂿",
@@ -9917,6 +10962,7 @@
     },
     {
         "word": "갈구장",
+        "word_clean": "갈구장",
         "word_pure": "갈구장",
         "pronunciation": "갈구장′",
         "pos_symbol": "󰃃",
@@ -9931,6 +10977,7 @@
     },
     {
         "word": "갈구재기1",
+        "word_clean": "갈구재기1",
         "word_pure": "갈구재기",
         "pronunciation": "갈구재′기",
         "pos_symbol": "󰃃",
@@ -9940,6 +10987,7 @@
     },
     {
         "word": "갈구재기2",
+        "word_clean": "갈구재기2",
         "word_pure": "갈구재기",
         "pronunciation": "갈구재′기",
         "pos_symbol": "󰃃",
@@ -9949,6 +10997,7 @@
     },
     {
         "word": "갈구재이1",
+        "word_clean": "갈구재이1",
         "word_pure": "갈구재이",
         "pronunciation": "갈구재′이",
         "pos_symbol": "󰃃",
@@ -9963,6 +11012,7 @@
     },
     {
         "word": "갈구재이2",
+        "word_clean": "갈구재이2",
         "word_pure": "갈구재이",
         "pronunciation": "갈구재′이",
         "pos_symbol": "󰃃",
@@ -9977,6 +11027,7 @@
     },
     {
         "word": "갈기",
+        "word_clean": "갈기",
         "word_pure": "갈기",
         "pronunciation": "갈′기",
         "pos_symbol": "󰃃",
@@ -9986,6 +11037,7 @@
     },
     {
         "word": "갈기다1",
+        "word_clean": "갈기다1",
         "word_pure": "갈기다",
         "pronunciation": "갈기′이다",
         "pos_symbol": "󰂿",
@@ -10000,6 +11052,7 @@
     },
     {
         "word": "갈기다2",
+        "word_clean": "갈기다2",
         "word_pure": "갈기다",
         "pronunciation": "갈기′이다",
         "pos_symbol": "󰂿",
@@ -10014,6 +11067,7 @@
     },
     {
         "word": "갈기다3",
+        "word_clean": "갈기다3",
         "word_pure": "갈기다",
         "pronunciation": "갈′긴다, 갈′기고, 갈′기지, 갈′기더라, 갈′{기/게}도, 갈′{기/게}가′아, 갈′기머",
         "pos_symbol": "󰂿",
@@ -10026,15 +11080,48 @@
             {
                 "dialect": "말도 앤하고 무조건 귀때기부터 갈{깃/겟}다.",
                 "standard": "말도 하지 않고 무조건 귀때기부터 갈겼다."
-            },
+            }
+        ],
+        "idioms": []
+    },
+    {
+        "word": "갈다1(買)",
+        "word_clean": "갈다1",
+        "word_pure": "갈다",
+        "pronunciation": "갈′다",
+        "pos_symbol": "󰂿",
+        "definition": "사다(장사꾼의 물건을).",
+        "examples": [
             {
                 "dialect": "아지미 적선하는 텍치고, 엿 한 가락 갈{어/아} 주소.",
                 "standard": "아주머니 적선하는 셈 치고, 엿 한 가락을 사 주세요."
-            },
+            }
+        ],
+        "idioms": []
+    },
+    {
+        "word": "갈다2(換)",
+        "word_clean": "갈다2",
+        "word_pure": "갈다",
+        "pronunciation": "간′다, 갈′고, 갈′지, 갈더′라, 가′{러/라}도, 가′{러/라}가′아, 가′{러/라}라, 갈′머",
+        "pos_symbol": "󰂿",
+        "definition": "갈다. 교환하다. 어떤 것을 다른 것과 바꾸다.",
+        "examples": [
             {
                 "dialect": "이 어항에 잇는 물, 갈{어/아} 줄 때 앤 댓나?",
                 "standard": "이 어항에 있는 물을, 갈아 줄 때가 안 되었니?"
-            },
+            }
+        ],
+        "idioms": []
+    },
+    {
+        "word": "갈다3(磨)",
+        "word_clean": "갈다3",
+        "word_pure": "갈다",
+        "pronunciation": "간′다′, 갈′고′, 갈′지′, 갈′더′라, 가′{러/라}′도, 가′{러/라}′가′아, 가′{러/라}′라, 갈′머′",
+        "pos_symbol": "󰂿",
+        "definition": "갈다(칼을).",
+        "examples": [
             {
                 "dialect": "이 정지칼 쫌 갈{어/아} 주쇠이.",
                 "standard": "이 부엌칼을 좀 갈아 주세요."
@@ -10054,7 +11141,18 @@
             {
                 "dialect": "영까시 줄 눈에 드가머, 눈물이 나메 눈이 종발디이 겉이 부ᇹ는데, 눈에 먹을 갈{어/아} 옇어 놓고 바늘귀에다가 푸심을 마이 감어가아 딲어 내머 비인다커더라.",
                 "standard": "사마귀의 줄이 눈에 들어가면, 눈물이 나면서 눈이 종발 같이 붓는데, 눈에 먹을 갈아 넣어 놓고 바늘귀에다가 풀솜을 많이 감아서 닦아 내면 (눈이) 보인다고 하더라."
-            },
+            }
+        ],
+        "idioms": []
+    },
+    {
+        "word": "갈다4(耕)",
+        "word_clean": "갈다4",
+        "word_pure": "갈다",
+        "pronunciation": "가안′다′, 가알′고′, 가알′지′, 가알′더′라, 가′{러/라}도, 가′{러/라}가′아, 가′{러/라}라, 가알′머′",
+        "pos_symbol": "󰂿",
+        "definition": "갈다(논을). ☞숭구다.",
+        "examples": [
             {
                 "dialect": "철둑 너머에 머슴 논 갈로 갓는 데, 새참 쫌 갖다 조래이.",
                 "standard": "철둑 너머에 머슴이 논을 갈러 간 데에, 곁두리를 좀 갖다 줘라."
@@ -10068,6 +11166,7 @@
     },
     {
         "word": "갈대",
+        "word_clean": "갈대",
         "word_pure": "갈대",
         "pronunciation": "갈′때′",
         "pos_symbol": "󰃃",
@@ -10082,6 +11181,7 @@
     },
     {
         "word": "갈대밭",
+        "word_clean": "갈대밭",
         "word_pure": "갈대밭",
         "pronunciation": "갈′때′받",
         "pos_symbol": "󰃃",
@@ -10096,6 +11196,7 @@
     },
     {
         "word": "갈라내다",
+        "word_clean": "갈라내다",
         "word_pure": "갈라내다",
         "pronunciation": "갈′라내애′다′",
         "pos_symbol": "󰂿",
@@ -10105,6 +11206,7 @@
     },
     {
         "word": "갈라놓다",
+        "word_clean": "갈라놓다",
         "word_pure": "갈라놓다",
         "pronunciation": "갈′라노′타",
         "pos_symbol": "󰂿",
@@ -10119,6 +11221,7 @@
     },
     {
         "word": "갈라묵다",
+        "word_clean": "갈라묵다",
         "word_pure": "갈라묵다",
         "pronunciation": "갈′라뭉는′다, 갈′라묵′꼬, 갈′라묵′찌, 갈′라묵떠′라, 갈′라무′{거/우}도, 갈′라무′{거/우}가′아, 갈′라무′{거/우}라, 갈′라무′{구/우>그}머",
         "pos_symbol": "󰂿",
@@ -10133,6 +11236,7 @@
     },
     {
         "word": "갈라붙이다",
+        "word_clean": "갈라붙이다",
         "word_pure": "갈라붙이다",
         "pronunciation": "갈′라부′치다",
         "pos_symbol": "󰂿",
@@ -10142,6 +11246,7 @@
     },
     {
         "word": "갈라서다",
+        "word_clean": "갈라서다",
         "word_pure": "갈라서다",
         "pronunciation": "갈′라서다",
         "pos_symbol": "󰂿",
@@ -10156,6 +11261,7 @@
     },
     {
         "word": "갈라지다",
+        "word_clean": "갈라지다",
         "word_pure": "갈라지다",
         "pronunciation": "갈′라진다, 갈′라지고, 갈′라지지, 갈′라지더라, 갈′라저도, 갈′라저가′아, 갈′라지머",
         "pos_symbol": "󰂿",
@@ -10165,6 +11271,7 @@
     },
     {
         "word": "갈래",
+        "word_clean": "갈래",
         "word_pure": "갈래",
         "pronunciation": "갈래′",
         "pos_symbol": "󰃃",
@@ -10174,6 +11281,7 @@
     },
     {
         "word": "갈래갈래하다",
+        "word_clean": "갈래갈래하다",
         "word_pure": "갈래갈래하다",
         "pronunciation": "갈래애′갈′래하′다/갈래갈래하′다",
         "pos_symbol": "󰃰",
@@ -10188,6 +11296,7 @@
     },
     {
         "word": "갈래기",
+        "word_clean": "갈래기",
         "word_pure": "갈래기",
         "pronunciation": "갈래′기",
         "pos_symbol": "󰃃",
@@ -10206,6 +11315,7 @@
     },
     {
         "word": "갈러내다",
+        "word_clean": "갈러내다",
         "word_pure": "갈러내다",
         "pronunciation": "갈′러내애′다′",
         "pos_symbol": "󰂿",
@@ -10220,6 +11330,7 @@
     },
     {
         "word": "갈러놓다",
+        "word_clean": "갈러놓다",
         "word_pure": "갈러놓다",
         "pronunciation": "갈′러노′타",
         "pos_symbol": "󰂿",
@@ -10234,6 +11345,7 @@
     },
     {
         "word": "갈러묵다",
+        "word_clean": "갈러묵다",
         "word_pure": "갈러묵다",
         "pronunciation": "갈′러뭉는′다, 갈′러묵꼬, 갈′러묵찌, 갈′러묵떠라, 갈′러무{거/우}도, 갈′러무{거/우}가′아, 갈′러무{거/우}라, 갈′러무{구/우>그}머",
         "pos_symbol": "󰂿",
@@ -10256,6 +11368,7 @@
     },
     {
         "word": "갈러붙이다",
+        "word_clean": "갈러붙이다",
         "word_pure": "갈러붙이다",
         "pronunciation": "갈′러부′치다",
         "pos_symbol": "󰂿",
@@ -10265,6 +11378,7 @@
     },
     {
         "word": "갈러서다",
+        "word_clean": "갈러서다",
         "word_pure": "갈러서다",
         "pronunciation": "갈′러서다",
         "pos_symbol": "󰂿",
@@ -10279,6 +11393,7 @@
     },
     {
         "word": "갈러지다",
+        "word_clean": "갈러지다",
         "word_pure": "갈러지다",
         "pronunciation": "갈′러진다, 갈′러지고, 갈′러지지, 갈′러지더라, 갈′러저도, 갈′러저가′아, 갈′러지머",
         "pos_symbol": "󰂿",
@@ -10309,6 +11424,7 @@
     },
     {
         "word": "갈레가다",
+        "word_clean": "갈레가다",
         "word_pure": "갈레가다",
         "pronunciation": "갈레′에가′다",
         "pos_symbol": "󰂿",
@@ -10318,6 +11434,7 @@
     },
     {
         "word": "갈레내다",
+        "word_clean": "갈레내다",
         "word_pure": "갈레내다",
         "pronunciation": "갈레′에내애′다′",
         "pos_symbol": "󰂿",
@@ -10327,6 +11444,7 @@
     },
     {
         "word": "갈레다",
+        "word_clean": "갈레다",
         "word_pure": "갈레다",
         "pronunciation": "갈렌′다, 갈레′고, 갈레′지, 갈레더′라, 갈레′에도, 갈레′에가′아, 갈레′에라, 갈레′머",
         "pos_symbol": "󰂿",
@@ -10349,6 +11467,7 @@
     },
     {
         "word": "갈레지다",
+        "word_clean": "갈레지다",
         "word_pure": "갈레지다",
         "pronunciation": "갈레′에지다",
         "pos_symbol": "󰂿",
@@ -10358,6 +11477,7 @@
     },
     {
         "word": "갈례내다",
+        "word_clean": "갈례내다",
         "word_pure": "갈례내다",
         "pronunciation": "갈례′에내애′다′",
         "pos_symbol": "󰂿",
@@ -10372,6 +11492,7 @@
     },
     {
         "word": "갈류다",
+        "word_clean": "갈류다",
         "word_pure": "갈류다",
         "pronunciation": "갈류′우고, 갈류′우지, 갈류′우더라, 갈랴′아도, 갈랴′아가′아, 갈류′우먼",
         "pos_symbol": "󰂿",
@@ -10386,7 +11507,8 @@
     },
     {
         "word": "갈르다(分)",
-        "word_pure": "갈르다(分)",
+        "word_clean": "갈르다",
+        "word_pure": "갈르다",
         "pronunciation": "갈르′다",
         "pos_symbol": "󰂿",
         "definition": "나누다. 가르다. ☞농가리다.",
@@ -10395,6 +11517,7 @@
     },
     {
         "word": "갈름질",
+        "word_clean": "갈름질",
         "word_pure": "갈름질",
         "pronunciation": "갈름′찔",
         "pos_symbol": "󰃃",
@@ -10404,6 +11527,7 @@
     },
     {
         "word": "갈리가다",
+        "word_clean": "갈리가다",
         "word_pure": "갈리가다",
         "pronunciation": "갈리′이가′다",
         "pos_symbol": "󰂿",
@@ -10422,6 +11546,7 @@
     },
     {
         "word": "갈리내다",
+        "word_clean": "갈리내다",
         "word_pure": "갈리내다",
         "pronunciation": "갈′리내애′다′",
         "pos_symbol": "󰂿",
@@ -10436,6 +11561,7 @@
     },
     {
         "word": "갈리다1",
+        "word_clean": "갈리다1",
         "word_pure": "갈리다",
         "pronunciation": "갈′린다, 갈′리고, 갈′리지, 갈′리더라, 갈′리도, 갈′리가′아, 갈′리머",
         "pos_symbol": "󰂿",
@@ -10486,6 +11612,7 @@
     },
     {
         "word": "갈리다2",
+        "word_clean": "갈리다2",
         "word_pure": "갈리다",
         "pronunciation": "갈리′인다, 갈리′이고, 갈리′이지, 갈리′이더라, 갈리′이도, 갈리′이가′아, 갈리′이머",
         "pos_symbol": "󰂿",
