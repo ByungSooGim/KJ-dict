@@ -113,13 +113,16 @@
         '󰃦': '부사', '󰃥': '접두/접미사', '󰃆': '어미', '󰃲': '관형사', 
         '󰃳': '감탄사', '󰃲': '활용어미', '󰃓': '수사', '󰃫': '참고', '󰃩': '준말' 
     };
-    const consonants = ['ㄱ', 'ㄲ', 'ㄴ', 'ㄷ', 'ㄸ', 'ㄹ', 'ㅁ', 'ㅂ', 'ㅃ', 'ㅅ', 'ㅆ', 'ㅇ', 'ㅈ', 'ㅉ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ'];
+    const consonants = ['ㄱ', 'ㄲ', 'ㄴ', 'ㄷ', 'ㄸ', 'ㄹ', 'ㅁ', 'ㅂ', 
+     'ㅃ', 'ㅅ', 'ㅆ', 'ㅇ', 'ㅈ', 'ㅉ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ'];
 
     // 표제어 숫자 윗첨자 변환 함수
     function formatWord(word) {
         if (!word) return "";
-        // 숫자를 찾아 <sup> 태그로 감쌈
-        return word.replace(/(\d+)/g, '<sup>$1</sup>');
+        let formatted = word;
+        formatted = formatted.replace(/\((.*?)\)/g, '<span class="hanja">($1)</span>');
+        formatted = formatted.replace(/(\d+)(?![^<]*>)/g, '<sup>$1</sup>');
+        return formatted;
     }
 
     function getInitialConsonant(str) {
@@ -166,7 +169,31 @@
         const main = ['󰃃', '󰂴', '󰃓', '󰂿', '󰃰'];
         displayList(dictData.filter(item => item.pos_symbol && !main.includes(item.pos_symbol)));
     }
+    function linkify(text) {
+        if (!text) return "";
+        let cleaned = text.replace(/[가-힣]*'\s*\)?\s*">/g, '');
+        
+        let tokenized = cleaned;
+        const foundWords = allWords.filter(w => cleaned.includes(w));
+        const map = new Map();
 
+        foundWords.forEach((word, index) => {
+            const token = `###LINK${index}###`;
+            if (tokenized.includes(word)) {
+                tokenized = tokenized.split(word).join(token);
+                map.set(token, word);
+            }
+        });
+
+        map.forEach((originalWord, token) => {
+            const displayWord = formatWord(originalWord);
+            const linkHtml = `<span class="dict-link" onclick="handleLinkClick('${originalWord.replace(/\d+/g, '').replace(/\(.*\)/g, '')}')">${displayWord}</span>`;
+            tokenized = tokenized.split(token).join(linkHtml);
+        });
+
+        return tokenized;
+    }
+    
     function displayDetail(item) {
         document.getElementById('resultView').style.display = 'block';
         document.getElementById('v-word').innerHTML = formatWord(item.word || item.word_pure);
@@ -174,7 +201,7 @@
         const pBadge = document.getElementById('v-pos');
         pBadge.innerText = posText;
         pBadge.style.display = posText ? 'inline-block' : 'none';
-        document.getElementById('v-def').innerHTML = item.definition;
+        document.getElementById('v-def').innerHTML = linkify(item.definition);
         window.scrollTo({ top: document.getElementById('resultView').offsetTop - 10, behavior: 'smooth' });
     }
 
