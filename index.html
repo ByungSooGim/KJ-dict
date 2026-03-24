@@ -169,31 +169,7 @@
         const main = ['󰃃', '󰂴', '󰃓', '󰂿', '󰃰'];
         displayList(dictData.filter(item => item.pos_symbol && !main.includes(item.pos_symbol)));
     }
-    function linkify(text) {
-        if (!text) return "";
-        let cleaned = text.replace(/[가-힣]*'\s*\)?\s*">/g, '');
-        
-        let tokenized = cleaned;
-        const foundWords = allWords.filter(w => cleaned.includes(w));
-        const map = new Map();
 
-        foundWords.forEach((word, index) => {
-            const token = `###LINK${index}###`;
-            if (tokenized.includes(word)) {
-                tokenized = tokenized.split(word).join(token);
-                map.set(token, word);
-            }
-        });
-
-        map.forEach((originalWord, token) => {
-            const displayWord = formatWord(originalWord);
-            const linkHtml = `<span class="dict-link" onclick="handleLinkClick('${originalWord.replace(/\d+/g, '').replace(/\(.*\)/g, '')}')">${displayWord}</span>`;
-            tokenized = tokenized.split(token).join(linkHtml);
-        });
-
-        return tokenized;
-    }
-    
     function displayDetail(item) {
         document.getElementById('resultView').style.display = 'block';
         document.getElementById('v-word').innerHTML = formatWord(item.word || item.word_pure);
@@ -201,7 +177,7 @@
         const pBadge = document.getElementById('v-pos');
         pBadge.innerText = posText;
         pBadge.style.display = posText ? 'inline-block' : 'none';
-        document.getElementById('v-def').innerHTML = linkify(item.definition);
+        document.getElementById('v-def').innerHTML = item.definition;
         window.scrollTo({ top: document.getElementById('resultView').offsetTop - 10, behavior: 'smooth' });
     }
 
