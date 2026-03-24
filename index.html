@@ -119,10 +119,8 @@
     // 표제어 숫자 윗첨자 변환 함수
     function formatWord(word) {
         if (!word) return "";
-        let formatted = word;
-        formatted = formatted.replace(/\((.*?)\)/g, '<span class="hanja">($1)</span>');
-        formatted = formatted.replace(/(\d+)(?![^<]*>)/g, '<sup>$1</sup>');
-        return formatted;
+        // 숫자를 찾아 <sup> 태그로 감쌈
+        return word.replace(/(\d+)/g, '<sup>$1</sup>');
     }
 
     function getInitialConsonant(str) {
