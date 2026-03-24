@@ -21,7 +21,7 @@
             font-size: 14px; box-sizing: border-box; background: #fff;
         }
 
-        /* 자음 버튼 2줄 */
+        /* 자음 버튼 */
         .nav-grid { 
             display: grid; grid-template-columns: repeat(7, 1fr); 
             gap: 5px; margin-bottom: 12px; padding: 5px; background: #fff; border-radius: 10px; border: 1px solid #eee;
@@ -32,7 +32,7 @@
             font-size: 20px; font-weight: bold; cursor: pointer; color: #444;
         }
 
-        /* 품사 3분할 */
+        /* 품사 버튼 */
         .pos-row { display: flex; gap: 5px; margin-bottom: 15px; }
         .pos-btn { 
             flex: 1; padding: 10px 2px; background: #fff; border: 1px solid #ddd; border-radius: 8px; 
@@ -41,7 +41,7 @@
         }
         .pos-btn span { font-size: 10px; font-weight: normal; color: #999; margin-top: 2px; }
 
-        /* 결과 목록 최적화 (단어 + 뜻풀이 한 줄) */
+        /* 결과 목록 */
         #searchList { margin-bottom: 10px; display: none; background: #fff; border-radius: 8px; border: 1px solid #ddd; width: 100%; }
         .list-item { 
             padding: 12px 15px; border-bottom: 1px solid #eee; font-size: 17px; 
@@ -50,18 +50,20 @@
         .list-item b { color: #000; }
         .list-item span.brief-text { font-size: 13px; color: #999; font-weight: normal; margin-left: 8px; }
 
-        /* 상세 결과 */
+        /* 상세 결과 및 자동 링크 스타일 */
         #resultView { width: 100%; display: none; margin-bottom: 15px; }
         .result-card { background: white; padding: 18px; border-radius: 12px; border: 2px solid var(--point); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
         .word-title { font-size: 30px; font-weight: bold; color: var(--point); }
         .word-title sup { font-size: 0.5em; vertical-align: super; margin-left: 1px; }
         .pos-badge { font-size: 13px; background: #eee; padding: 2px 6px; border-radius: 4px; color: #666; margin-left: 6px; }
         .def-area { font-size: 20px; line-height: 1.6; margin-top: 15px; word-break: keep-all; }
+        
+        /* 뜻풀이 내 링크 스타일 */
+        .def-link { color: var(--point); text-decoration: underline; cursor: pointer; font-weight: bold; }
 
         /* 하단 추천 */
         .rec-container { display: flex; flex-direction: column; gap: 5px; margin-bottom: 15px; width: 100%; }
         .rec-card { background: #fff; padding: 10px 15px; border-radius: 8px; border: 1px solid #eee; font-size: 16px; display: flex; justify-content: space-between; align-items: center; }
-        .rec-card b sup { font-size: 0.6em; vertical-align: super; }
 
         .footer-info { font-size: 10px; color: #ccc; text-align: center; padding: 10px; }
     </style>
@@ -113,14 +115,53 @@
         '󰃦': '부사', '󰃥': '접두/접미사', '󰃆': '어미', '󰃲': '관형사', 
         '󰃳': '감탄사', '󰃲': '활용어미', '󰃓': '수사', '󰃫': '참고', '󰃩': '준말' 
     };
-    const consonants = ['ㄱ', 'ㄲ', 'ㄴ', 'ㄷ', 'ㄸ', 'ㄹ', 'ㅁ', 'ㅂ', 
-     'ㅃ', 'ㅅ', 'ㅆ', 'ㅇ', 'ㅈ', 'ㅉ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ'];
+    const consonants = ['ㄱ', 'ㄲ', 'ㄴ', 'ㄷ', 'ㄸ', 'ㄹ', 'ㅁ', 'ㅂ', 'ㅃ', 'ㅅ', 'ㅆ', 'ㅇ', 'ㅈ', 'ㅉ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ'];
 
-    // 표제어 숫자 윗첨자 변환 함수
-    function formatWord(word) {
+    function formatWordSuperscript(word) {
         if (!word) return "";
-        // 숫자를 찾아 <sup> 태그로 감쌈
         return word.replace(/(\d+)/g, '<sup>$1</sup>');
+    }
+
+    // [핵심] 뜻풀이 내 자동 링크 생성 함수 (중첩 방지 로직 포함)
+    function createAutoLinks(text, currentWord) {
+        if (!text) return "";
+        
+        // 1. 긴 단어부터 정렬하여 짧은 단어가 긴 단어 내부를 파고들지 못하게 함
+        const sortedWords = dictData
+            .map(d => d.word_pure)
+            .filter(w => w && w.length > 1 && w !== currentWord)
+            .sort((a, b) => b.length - a.length);
+
+        // 고유한 단어 세트 생성
+        const uniqueWords = [...new Set(sortedWords)];
+        let linkedText = text;
+
+        // 2. 이미 치환된 영역을 보호하기 위한 임시 마커 사용
+        const placeholders = [];
+        uniqueWords.forEach((word, index) => {
+            if (linkedText.includes(word)) {
+                const marker = `__MARKER${index}__`;
+                placeholders.push({ marker, word });
+                // 단어 전체 일치 여부를 확인하기 위해 정규식 활용 가능하지만, 
+                // 방언 특성상 단순 치환 후 마커로 보호하는 방식이 가장 안정적입니다.
+                const regex = new RegExp(word, 'g');
+                linkedText = linkedText.replace(regex, marker);
+            }
+        });
+
+        // 3. 마커를 실제 클릭 가능한 링크로 복원
+        placeholders.forEach(p => {
+            const linkHtml = `<span class="def-link" onclick="handleLinkClick('${p.word}')">${p.word}</span>`;
+            linkedText = linkedText.replace(new RegExp(p.marker, 'g'), linkHtml);
+        });
+
+        return linkedText;
+    }
+
+    // 링크 클릭 시 호출되는 함수
+    function handleLinkClick(word) {
+        const item = dictData.find(d => d.word_pure === word || d.word === word);
+        if (item) displayDetail(item);
     }
 
     function getInitialConsonant(str) {
@@ -169,14 +210,20 @@
     }
 
     function displayDetail(item) {
+        document.getElementById('searchList').style.display = 'none';
         document.getElementById('resultView').style.display = 'block';
-        document.getElementById('v-word').innerHTML = formatWord(item.word || item.word_pure);
+        document.getElementById('v-word').innerHTML = formatWordSuperscript(item.word || item.word_pure);
+        
         const posText = posMap[item.pos_symbol] || item.pos_symbol || "";
         const pBadge = document.getElementById('v-pos');
         pBadge.innerText = posText;
         pBadge.style.display = posText ? 'inline-block' : 'none';
-        document.getElementById('v-def').innerHTML = item.definition;
-        window.scrollTo({ top: document.getElementById('resultView').offsetTop - 10, behavior: 'smooth' });
+
+        // 뜻풀이에 링크 적용
+        const linkedDefinition = createAutoLinks(item.definition, item.word_pure);
+        document.getElementById('v-def').innerHTML = linkedDefinition;
+        
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     function displayList(items) {
@@ -189,10 +236,9 @@
         items.slice(0, 50).forEach(item => {
             const div = document.createElement('div');
             div.className = 'list-item';
-            // 단어는 굵게, 뜻풀이는 작고 연하게 한 줄에 배치 (말줄임표 자동 적용)
             const cleanDef = item.definition.replace(/<[^>]*>?/gm, '').substring(0, 20);
-            div.innerHTML = `<b>${formatWord(item.word)}</b><span class="brief-text">${cleanDef}...</span>`;
-            div.onclick = () => { displayDetail(item); searchList.style.display = 'none'; };
+            div.innerHTML = `<b>${formatWordSuperscript(item.word)}</b><span class="brief-text">${cleanDef}...</span>`;
+            div.onclick = () => { displayDetail(item); };
             list.appendChild(div);
         });
     }
@@ -203,7 +249,7 @@
         recs.forEach(item => {
             const div = document.createElement('div');
             div.className = 'rec-card';
-            div.innerHTML = `<b>${formatWord(item.word)}</b> <span style="font-size:12px; color:#999;">${item.definition.substring(0, 10)}...</span>`;
+            div.innerHTML = `<b>${formatWordSuperscript(item.word)}</b> <span style="font-size:12px; color:#999;">${item.definition.substring(0, 10)}...</span>`;
             div.onclick = () => displayDetail(item);
             container.appendChild(div);
         });
