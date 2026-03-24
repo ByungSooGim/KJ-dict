@@ -6,107 +6,84 @@
     <title>경주말 방언 사전</title>
     <style>
         :root { --point: #a33b3b; --bg: #fdfaf6; --text: #222; }
-        
-        body { 
-            background: var(--bg); margin: 0; padding: 10px; 
-            font-family: 'Malgun Gothic', sans-serif; 
-            display: flex; flex-direction: column; align-items: center; color: var(--text);
-        }
-        
+        body { background: var(--bg); margin: 0; padding: 8px; font-family: 'Malgun Gothic', sans-serif; display: flex; flex-direction: column; align-items: center; color: var(--text); }
         .container { width: 100%; max-width: 400px; }
 
-        /* 로고와 타이틀 한 줄 배치 */
-        .header { display: flex; align-items: center; justify-content: center; margin: 10px 0 15px; gap: 8px; }
-        .logo-svg { width: 32px; height: 32px; fill: var(--point); }
-        .logo-text { font-size: 20px; font-weight: bold; color: var(--point); letter-spacing: -1px; }
+        /* 상단 헤더 간소화 */
+        .header { display: flex; align-items: center; justify-content: center; margin: 8px 0 12px; gap: 6px; }
+        .logo-svg { width: 24px; height: 24px; fill: var(--point); }
+        .logo-text { font-size: 18px; font-weight: bold; color: var(--point); }
 
-        /* 검색 섹션 여백 축소 */
-        .search-section { background: white; padding: 12px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); margin-bottom: 12px; }
-        .input-group { margin-bottom: 8px; }
-        .input-group:last-child { margin-bottom: 0; }
-        label { font-size: 12px; font-weight: bold; color: #777; margin-left: 4px; }
-        input { 
-            width: 100%; padding: 10px; border: 1.5px solid #eee; border-radius: 8px; 
-            font-size: 16px; box-sizing: border-box; margin-top: 2px;
+        /* 검색창 1줄 2분할 */
+        .search-row { display: flex; gap: 6px; margin-bottom: 10px; width: 100%; }
+        .search-row input { 
+            flex: 1; width: 50%; padding: 12px 8px; border: 1.5px solid #ddd; border-radius: 8px; 
+            font-size: 14px; box-sizing: border-box; background: #fff;
         }
 
-        /* 탐색 섹션 슬림화 */
-        .browse-section { background: #fff; padding: 12px; border-radius: 10px; margin-bottom: 12px; border: 1px solid #eee; }
-        .browse-title { font-size: 12px; font-weight: bold; color: #999; margin-bottom: 8px; text-align: center; border-bottom: 1px solid #f5f5f5; padding-bottom: 4px; }
-        
+        /* 자음 버튼 2줄 배치 & 폰트 확대 */
         .nav-grid { 
-            display: grid; grid-template-columns: repeat(7, 1fr); /* 7열로 더 촘촘하게 */
-            gap: 4px; margin-bottom: 15px; 
+            display: grid; grid-template-columns: repeat(7, 1fr); 
+            gap: 5px; margin-bottom: 12px; padding: 5px; background: #fff; border-radius: 10px; border: 1px solid #eee;
         }
         .nav-btn { 
             aspect-ratio: 1/1; display: flex; align-items: center; justify-content: center; 
-            background: #f9f9f9; border: 1px solid #eee; border-radius: 4px; 
-            font-size: 14px; cursor: pointer;
+            background: #fdfdfd; border: 1px solid #eee; border-radius: 6px; 
+            font-size: 20px; font-weight: bold; cursor: pointer; color: #444;
         }
+        .nav-btn:active { background: var(--point); color: #fff; }
 
-        /* 품사 카테고리 (3개 그룹) */
-        .cat-grid { display: grid; grid-template-columns: 1fr; gap: 6px; }
-        .cat-btn { 
-            padding: 8px; background: #fff; border: 1px solid #eee; border-radius: 6px; 
-            cursor: pointer; text-align: center; font-size: 14px; color: #444;
+        /* 품사 1줄 3분할 */
+        .pos-row { display: flex; gap: 5px; margin-bottom: 15px; }
+        .pos-btn { 
+            flex: 1; padding: 12px 2px; background: #fff; border: 1px solid #ddd; border-radius: 8px; 
+            cursor: pointer; text-align: center; font-size: 13px; font-weight: bold; color: #555;
+            display: flex; flex-direction: column; justify-content: center; height: 50px;
         }
-        .cat-btn:active { background: var(--point); color: #fff; }
+        .pos-btn span { font-size: 10px; font-weight: normal; color: #999; margin-top: 2px; }
+        .pos-btn:active { border-color: var(--point); color: var(--point); }
 
-        /* 결과 목록 */
-        #searchList { margin-bottom: 15px; display: none; background: #fff; border-radius: 8px; border: 1px solid #ddd; width: 100%; }
-        .list-item { padding: 12px 15px; border-bottom: 1px solid #eee; font-size: 16px; }
+        /* 결과 영역 */
+        #searchList { margin-bottom: 10px; display: none; background: #fff; border-radius: 8px; border: 1px solid #ddd; width: 100%; }
+        .list-item { padding: 12px 15px; border-bottom: 1px solid #eee; font-size: 17px; font-weight: bold; }
 
-        /* 상세 카드 글씨 크기 확대 */
-        #resultView { width: 100%; display: none; margin-bottom: 20px; }
-        .result-card { background: white; padding: 20px; border-radius: 12px; border: 1px solid var(--point); }
-        .word-title { font-size: 28px; font-weight: bold; color: var(--point); }
-        .pos-badge { font-size: 13px; background: #f0f0f0; padding: 2px 6px; border-radius: 4px; color: #666; margin-left: 8px; }
-        .def-area { font-size: 19px; line-height: 1.6; margin-top: 15px; word-break: keep-all; }
+        #resultView { width: 100%; display: none; margin-bottom: 15px; }
+        .result-card { background: white; padding: 18px; border-radius: 12px; border: 2px solid var(--point); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .word-title { font-size: 30px; font-weight: bold; color: var(--point); }
+        .pos-badge { font-size: 13px; background: #eee; padding: 2px 6px; border-radius: 4px; color: #666; margin-left: 6px; }
+        .def-area { font-size: 20px; line-height: 1.6; margin-top: 15px; word-break: keep-all; }
 
-        /* 추천어 리스트 간소화 */
-        .rec-section { width: 100%; }
-        .rec-container { display: flex; flex-direction: column; gap: 6px; margin-bottom: 20px; }
-        .rec-card { background: #fff; padding: 10px; border-radius: 8px; border: 1px solid #eee; font-size: 15px; display: flex; justify-content: space-between; align-items: center; }
-        .rec-card .word { font-weight: bold; color: var(--point); }
-        .rec-card .brief { font-size: 12px; color: #999; }
+        /* 하단 추천 */
+        .rec-container { display: flex; flex-direction: column; gap: 5px; margin-bottom: 15px; width: 100%; }
+        .rec-card { background: #fff; padding: 10px 15px; border-radius: 8px; border: 1px solid #eee; font-size: 16px; display: flex; justify-content: space-between; align-items: center; }
+        .rec-card b { color: var(--point); }
 
-        .footer-info { padding: 15px 5px; color: #bbb; font-size: 11px; line-height: 1.5; text-align: center; }
+        .footer-info { font-size: 10px; color: #ccc; text-align: center; padding: 10px; line-height: 1.4; }
     </style>
 </head>
 <body>
 
 <div class="container">
     <div class="header">
-        <svg class="logo-svg" viewBox="0 0 100 100">
-            <path d="M35 80 L65 80 M38 70 L62 70 M40 25 L60 25 L63 70 L37 70 Z" fill="none" stroke="currentColor" stroke-width="4"/>
-            <rect x="47" y="42" width="6" height="8" fill="currentColor"/>
-        </svg>
+        <svg class="logo-svg" viewBox="0 0 100 100"><path d="M35 80 L65 80 M38 70 L62 70 M40 25 L60 25 L63 70 L37 70 Z" fill="none" stroke="currentColor" stroke-width="5"/><rect x="47" y="42" width="6" height="8" fill="currentColor"/></svg>
         <div class="logo-text">경주말 방언 사전</div>
     </div>
 
-    <div class="search-section">
-        <div class="input-group">
-            <input type="text" id="diaSearch" placeholder="🔍 경주말 검색 (예: 가시나)">
-        </div>
-        <div class="input-group">
-            <input type="text" id="stdSearch" placeholder="📖 표준어 뜻풀이 검색">
-        </div>
+    <div class="search-row">
+        <input type="text" id="diaSearch" placeholder="방언 검색">
+        <input type="text" id="stdSearch" placeholder="표준어 검색">
     </div>
 
-    <div class="browse-section">
-        <div class="browse-title">가나다순</div>
-        <div id="consonantNav" class="nav-grid"></div>
+    <div id="consonantNav" class="nav-grid"></div>
 
-        <div class="browse-title">품사 부류</div>
-        <div class="cat-grid">
-            <div class="cat-btn" onclick="searchByPosGroup(['󰃃', '󰂴', '󰃓'])">체언 (명사/대명사/수사)</div>
-            <div class="cat-btn" onclick="searchByPosGroup(['󰂿', '󰃰'])">용언 (동사/형용사)</div>
-            <div class="cat-btn" onclick="searchByPosOther()">기타 (관형/감탄/부사/어미 등)</div>
-        </div>
+    <div class="pos-row">
+        <div class="pos-btn" onclick="searchByPosGroup(['󰃃', '󰂴', '󰃓'])">체언<span>(대/명사,수사)</span></div>
+        <div class="pos-btn" onclick="searchByPosGroup(['󰂿', '󰃰'])">용언<span>(동/형용사)</span></div>
+        <div class="pos-btn" onclick="searchByPosOther()">기타<span>(부사/어미 등)</span></div>
     </div>
 
     <div id="searchList">
-        <div id="resCount" style="padding:8px; font-size:12px; background:#f8f8f8; color:#999; text-align:center;"></div>
+        <div id="resCount" style="padding:6px; font-size:11px; color:#999; text-align:center; border-bottom:1px solid #f5f5f5;"></div>
         <div id="listItems"></div>
     </div>
 
@@ -120,13 +97,10 @@
         </div>
     </div>
 
-    <div class="rec-section">
-        <div style="font-size:13px; font-weight:bold; color:#aaa; margin-bottom:8px; padding-left:5px;">오늘의 단어</div>
-        <div class="rec-container" id="recommendList"></div>
-        
-        <div class="footer-info">
-            본 데이터의 저작권은 편저자에게 있으며,<br>소스코드는 비영리 목적으로 공개됩니다.
-        </div>
+    <div class="rec-container" id="recommendList"></div>
+    
+    <div class="footer-info">
+        데이터 저작권: 편저자 | 소스코드: 비영리 공개 정책
     </div>
 </div>
 
@@ -137,7 +111,6 @@
         '󰃦': '부사', '󰃥': '접두/접미사', '󰃆': '어미', '󰃲': '관형사', 
         '󰃳': '감탄사', '󰃲': '활용어미', '󰃓': '수사', '󰃫': '참고', '󰃩': '준말' 
     };
-
     const consonants = ['ㄱ', 'ㄲ', 'ㄴ', 'ㄷ', 'ㄸ', 'ㄹ', 'ㅁ', 'ㅂ', 'ㅃ', 'ㅅ', 'ㅆ', 'ㅇ', 'ㅈ', 'ㅉ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ'];
 
     function getInitialConsonant(str) {
@@ -147,6 +120,7 @@
         return consonants[Math.floor(code / 588)];
     }
 
+    // 자음 버튼 생성
     const nav = document.getElementById('consonantNav');
     ['ㄱ','ㄴ','ㄷ','ㄹ','ㅁ','ㅂ','ㅅ','ㅇ','ㅈ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ'].forEach(c => {
         const btn = document.createElement('div');
@@ -156,12 +130,10 @@
         nav.appendChild(btn);
     });
 
-    fetch('gyeongju_dict.json')
-        .then(res => res.json())
-        .then(data => {
-            dictData = data;
-            initRecommendations();
-        });
+    fetch('gyeongju_dict.json').then(res => res.json()).then(data => {
+        dictData = data;
+        initRecommendations();
+    });
 
     function searchByInitial(char) {
         const filtered = dictData.filter(item => {
@@ -178,16 +150,13 @@
         displayList(filtered);
     }
 
-    // 품사 그룹 검색 로직
     function searchByPosGroup(symbols) {
-        const filtered = dictData.filter(item => symbols.includes(item.pos_symbol));
-        displayList(filtered);
+        displayList(dictData.filter(item => symbols.includes(item.pos_symbol)));
     }
 
     function searchByPosOther() {
-        const mainSymbols = ['󰃃', '󰂴', '󰃓', '󰂿', '󰃰'];
-        const filtered = dictData.filter(item => item.pos_symbol && !mainSymbols.includes(item.pos_symbol));
-        displayList(filtered);
+        const main = ['󰃃', '󰂴', '󰃓', '󰂿', '󰃰'];
+        displayList(dictData.filter(item => item.pos_symbol && !main.includes(item.pos_symbol)));
     }
 
     function displayDetail(item) {
@@ -205,13 +174,13 @@
         const searchList = document.getElementById('searchList');
         searchList.style.display = 'block';
         document.getElementById('resultView').style.display = 'none';
-        document.getElementById('resCount').innerText = `${items.length}건 검색됨`;
+        document.getElementById('resCount').innerText = `${items.length}건`;
         const list = document.getElementById('listItems');
         list.innerHTML = '';
-        items.slice(0, 60).forEach(item => {
+        items.slice(0, 50).forEach(item => {
             const div = document.createElement('div');
             div.className = 'list-item';
-            div.innerHTML = `<strong>${item.word}</strong>`;
+            div.innerHTML = item.word;
             div.onclick = () => { displayDetail(item); searchList.style.display = 'none'; };
             list.appendChild(div);
         });
@@ -223,8 +192,7 @@
         recs.forEach(item => {
             const div = document.createElement('div');
             div.className = 'rec-card';
-            div.innerHTML = `<span class="word">${item.word}</span>
-                             <span class="brief">${item.definition.substring(0, 12)}...</span>`;
+            div.innerHTML = `<b>${item.word}</b> <span style="font-size:12px; color:#999;">${item.definition.substring(0, 10)}...</span>`;
             div.onclick = () => displayDetail(item);
             container.appendChild(div);
         });
@@ -232,20 +200,13 @@
 
     document.getElementById('diaSearch').addEventListener('input', (e) => {
         const val = e.target.value.trim();
-        if(val.length >= 1) {
-            const filtered = dictData.filter(i => (i.word_pure && i.word_pure.includes(val)) || (i.word && i.word.includes(val)));
-            displayList(filtered);
-        }
+        if(val) displayList(dictData.filter(i => (i.word_pure && i.word_pure.includes(val)) || (i.word && i.word.includes(val))));
     });
 
     document.getElementById('stdSearch').addEventListener('input', (e) => {
         const val = e.target.value.trim();
-        if(val.length >= 1) {
-            const filtered = dictData.filter(i => i.definition && i.definition.includes(val));
-            displayList(filtered);
-        }
+        if(val) displayList(dictData.filter(i => i.definition && i.definition.includes(val)));
     });
 </script>
-
 </body>
 </html>
