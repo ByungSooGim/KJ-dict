@@ -9,6 +9,11 @@
         body { background: var(--bg); margin: 0; padding: 20px; font-family: 'Malgun Gothic', sans-serif; display: flex; flex-direction: column; align-items: center; color: var(--text); }
         .container { width: 100%; max-width: 800px; }
         
+        /* 로고 스타일 */
+        .logo-container { text-align: center; margin-bottom: 30px; }
+        .logo-svg { width: 120px; height: auto; fill: var(--point); margin-bottom: 10px; }
+        .logo-text { font-size: 24px; font-weight: bold; color: var(--point); letter-spacing: -1px; }
+
         /* 로딩 레이어 */
         #loadingOverlay { position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(255,255,255,0.95); 
                           display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 9999; }
@@ -22,6 +27,18 @@
         input { width: 100%; padding: 15px; border: 2px solid #ddd; border-radius: 10px; font-size: 16px; box-sizing: border-box; transition: 0.3s; }
         input:focus { border-color: var(--point); outline: none; box-shadow: 0 0 8px rgba(163,59,59,0.15); }
 
+        /* 탐색 섹션 (가나다, 카테고리) */
+        .browse-section { background: #fff; padding: 20px; border-radius: 15px; margin-bottom: 20px; border: 1px solid #eee; }
+        .browse-title { font-size: 14px; font-weight: bold; color: #888; margin-bottom: 12px; display: flex; align-items: center; }
+        
+        .nav-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+        .nav-btn { padding: 8px 12px; background: #f9f9f9; border: 1px solid #eee; border-radius: 8px; cursor: pointer; font-size: 14px; transition: 0.2s; }
+        .nav-btn:hover { background: var(--point); color: white; border-color: var(--point); }
+
+        .cat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+        .cat-btn { padding: 10px; background: #fff; border: 1.5px solid #eee; border-radius: 10px; cursor: pointer; text-align: center; font-size: 14px; }
+        .cat-btn:hover { border-color: var(--point); color: var(--point); font-weight: bold; }
+
         /* 검색 결과 목록 */
         #searchList { margin-bottom: 20px; display: none; background: #fff; border-radius: 12px; border: 1px solid #ddd; overflow: hidden; width: 100%; }
         .list-item { padding: 15px 20px; border-bottom: 1px solid #eee; cursor: pointer; transition: 0.2s; }
@@ -32,22 +49,21 @@
         .result-card { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.08); }
         .word-header { border-bottom: 2px solid var(--point); padding-bottom: 15px; margin-bottom: 20px; display: flex; align-items: baseline; flex-wrap: wrap; }
         
-        /* 표제어 스타일링 */
         .word-title { font-size: 32px; font-weight: bold; color: var(--point); }
         .word-title sup { font-size: 0.6em; vertical-align: super; margin-left: 2px; }
         .word-title .hanja { font-size: 0.7em; color: #888; font-weight: normal; margin-left: 8px; }
-        
         .word-pron { font-size: 18px; color: #666; margin-left: 10px; }
         .pos-badge { font-size: 14px; background: #eee; padding: 2px 8px; border-radius: 4px; margin-left: 10px; color: #666; }
-
         .def-area { font-size: 18px; line-height: 1.8; margin-bottom: 25px; white-space: pre-wrap; }
         .dict-link { color: var(--point); text-decoration: underline; cursor: pointer; font-weight: bold; }
-        .dict-link sup { font-size: 0.6em; vertical-align: super; }
 
-        /* 하단 추천 */
+        /* 하단 추천 및 정보 */
         .rec-section { margin-top: 20px; width: 100%; }
-        .rec-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+        .rec-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 40px;}
         .rec-card { background: white; padding: 15px; border-radius: 12px; text-align: center; cursor: pointer; border: 1px solid #eee; }
+
+        .footer-info { border-top: 1px solid #ddd; padding-top: 20px; color: #777; font-size: 13px; line-height: 1.6; }
+        .footer-info strong { color: #555; }
     </style>
 </head>
 <body>
@@ -58,6 +74,15 @@
 </div>
 
 <div class="container">
+    <div class="logo-container">
+        <svg class="logo-svg" viewBox="0 0 100 100">
+            <path d="M30 85 L70 85 M35 75 L65 75 M38 20 L62 20 L65 75 L35 75 Z" fill="none" stroke="currentColor" stroke-width="3"/>
+            <path d="M40 30 H60 M40 40 H60 M40 50 H60 M40 60 H60" stroke="currentColor" stroke-width="2"/>
+            <circle cx="50" cy="12" r="5" />
+        </svg>
+        <div class="logo-text">경주말 방언 사전</div>
+    </div>
+
     <div class="search-section">
         <div class="input-group">
             <label>🔍 경주말 표제어 검색</label>
@@ -66,6 +91,20 @@
         <div class="input-group">
             <label>📖 뜻풀이 키워드 검색</label>
             <input type="text" id="stdSearch" placeholder="표준어 입력">
+        </div>
+    </div>
+
+    <div class="browse-section">
+        <div class="browse-title">가나다순 탐색</div>
+        <div class="nav-grid" id="consonantNav">
+            </div>
+
+        <div class="browse-title">카테고리</div>
+        <div class="cat-grid">
+            <div class="cat-btn" onclick="searchCategory('음식')">🍱 음식</div>
+            <div class="cat-btn" onclick="searchCategory('생활')">🏠 생활</div>
+            <div class="cat-btn" onclick="searchCategory('감정')">😊 감정</div>
+            <div class="cat-btn" onclick="searchCategory('욕설')">🤬 욕설</div>
         </div>
     </div>
 
@@ -88,27 +127,37 @@
     <div class="rec-section">
         <div style="font-weight:bold; color:#666; margin-bottom:10px;">📅 오늘의 추천어</div>
         <div class="rec-container" id="recommendList"></div>
+
+        <div class="footer-info">
+            <p><strong>[사전 머리말]</strong> 본 사전은 경주 지역의 소중한 언어 자산인 방언을 보존하고 누구나 쉽게 찾아볼 수 있도록 디지털화한 기록물입니다.</p>
+            <p><strong>[저작권 선언]</strong> 본 서비스의 데이터(KJ-dict.json) 및 콘텐츠의 저작권은 편저자에게 있으며, 무단 전재 및 상업적 이용을 금합니다. 본 index.html 및 웹 소스코드는 <strong>공개 정책</strong>에 따라 누구나 열람 및 비영리 목적으로 활용 가능합니다.</p>
+        </div>
     </div>
 </div>
 
 <script>
     let dictData = [];
     let allWords = [];
+    const consonants = ['ㄱ', 'ㄴ', 'ㄷ', 'ㄹ', 'ㅁ', 'ㅂ', 'ㅅ', 'ㅇ', 'ㅈ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ'];
+    const posMap = { '󰃃': '명사', '󰂿': '동사', '󰃰': '형용사', '󰂴': '대명사', 
+                     '󰃦': '부사', '󰃥' : '접두/접미사', '󰃆': '어미','󰃲': '관형사', 
+                     '󰃳': '감탄사', '󰃲' : '활용어미', '󰃓' : '수사', '󰃫': '참고', '󰃩':'준말'};
 
-    const posMap = { '󰃃': '명사', '󰂿': '동사', '󰃰': '형용사', '󰂴': '대명사', '󰃦': '부사', '󰃲': '관형사', '󰃳': '감탄사' };
+    // 가나다순 탐색 생성
+    const nav = document.getElementById('consonantNav');
+    consonants.forEach(c => {
+        const btn = document.createElement('div');
+        btn.className = 'nav-btn';
+        btn.innerText = c;
+        btn.onclick = () => searchConsonant(c);
+        nav.appendChild(btn);
+    });
 
-    // 표제어 포맷팅 함수 (숫자는 윗첨자로, 괄호 한자는 작게)
     function formatWord(word) {
         if (!word) return "";
         let formatted = word;
-        
-        // 1. 괄호와 그 안의 내용(한자 등) 처리
         formatted = formatted.replace(/\((.*?)\)/g, '<span class="hanja">($1)</span>');
-        
-        // 2. 숫자를 찾아서 윗첨자로 (단, 태그 안의 숫자는 건드리지 않음)
-        // 안전한 처리를 위해 괄호 밖의 숫자만 매칭
         formatted = formatted.replace(/(\d+)(?![^<]*>)/g, '<sup>$1</sup>');
-        
         return formatted;
     }
 
@@ -128,57 +177,44 @@
             initRecommendations();
         });
 
-    function linkify(text) {
-        if (!text) return "";
-        let cleaned = text.replace(/[가-힣]*'\s*\)?\s*">/g, '');
-        
-        let tokenized = cleaned;
-        const foundWords = allWords.filter(w => cleaned.includes(w));
-        const map = new Map();
-
-        foundWords.forEach((word, index) => {
-            const token = `###LINK${index}###`;
-            if (tokenized.includes(word)) {
-                tokenized = tokenized.split(word).join(token);
-                map.set(token, word);
-            }
+    function searchConsonant(char) {
+        const charCode = char.charCodeAt(0);
+        const filtered = dictData.filter(item => {
+            const firstChar = item.word_pure[0];
+            const uni = firstChar.charCodeAt(0) - 44032;
+            const conIndex = Math.floor(uni / 588);
+            return consonants[conIndex] === char;
         });
+        displayList(filtered);
+    }
 
-        map.forEach((originalWord, token) => {
-            const displayWord = formatWord(originalWord);
-            const linkHtml = `<span class="dict-link" onclick="handleLinkClick('${originalWord.replace(/\d+/g, '').replace(/\(.*\)/g, '')}')">${displayWord}</span>`;
-            tokenized = tokenized.split(token).join(linkHtml);
-        });
-
-        return tokenized;
+    function searchCategory(cat) {
+        const filtered = dictData.filter(item => item.definition.includes(cat));
+        displayList(filtered);
     }
 
     function displayDetail(item) {
         resultView.style.display = 'block';
         document.getElementById('v-word').innerHTML = formatWord(item.word);
-        document.getElementById('v-pron').innerText = `[${item.pronunciation}]`;
-        
+        document.getElementById('v-pron').innerText = item.pronunciation ? `[${item.pronunciation}]` : "";
         const posText = posMap[item.pos_symbol] || item.pos_symbol || "";
         const pBadge = document.getElementById('v-pos');
         pBadge.innerText = posText;
         pBadge.style.display = posText ? 'inline-block' : 'none';
-
-        document.getElementById('v-def').innerHTML = linkify(item.definition);
+        document.getElementById('v-def').innerHTML = item.definition;
         resultView.scrollIntoView({ behavior: 'smooth' });
     }
 
     function performSearch(type, query) {
-        if (query.length < 1) return;
-        let filtered = (type === 'dia') 
-            ? dictData.filter(i => i.word_pure === query || i.word.includes(query))
-            : dictData.filter(i => i.definition.includes(query));
-
-        if (filtered.length === 1) {
+        if (query.length < 1) {
             searchList.style.display = 'none';
-            displayDetail(filtered[0]);
-        } else if (filtered.length > 1) {
-            displayList(filtered);
+            return;
         }
+        let filtered = (type === 'dia') 
+            ? dictData.filter(i => (i.word_pure && i.word_pure.includes(query)) || (i.word && i.word.includes(query)))
+            : dictData.filter(i => i.definition && i.definition.includes(query));
+
+        displayList(filtered);
     }
 
     function displayList(items) {
@@ -187,24 +223,25 @@
         document.getElementById('resCount').innerText = `결과 ${items.length}건`;
         const list = document.getElementById('listItems');
         list.innerHTML = '';
-        items.slice(0, 50).forEach(item => {
+        items.slice(0, 100).forEach(item => {
             const div = document.createElement('div');
             div.className = 'list-item';
-            div.innerHTML = `<strong>${formatWord(item.word)}</strong> - ${item.definition.substring(0, 30)}...`;
+            div.innerHTML = `<strong>${formatWord(item.word)}</strong> - ${item.definition.substring(0, 40)}...`;
             div.onclick = () => { displayDetail(item); searchList.style.display = 'none'; };
             list.appendChild(div);
         });
     }
 
-    function handleLinkClick(word) {
-        const pure = word.trim();
-        document.getElementById('diaSearch').value = pure;
-        performSearch('dia', pure);
-    }
-
     function initRecommendations() {
         const container = document.getElementById('recommendList');
-        const shuffled = [...dictData].sort(() => 0.5 - Math.random()).slice(0, 3);
+        // 요청하신 "가시나", "가장", "가리다" 우선 시도, 없으면 랜덤
+        const fixedWords = ["가시나", "가장", "가리다"];
+        let shuffled = dictData.filter(i => fixedWords.includes(i.word_pure)).slice(0, 3);
+        
+        if(shuffled.length < 3) {
+            shuffled = [...dictData].sort(() => 0.5 - Math.random()).slice(0, 3);
+        }
+
         shuffled.forEach(item => {
             const div = document.createElement('div');
             div.className = 'rec-card';

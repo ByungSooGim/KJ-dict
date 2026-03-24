@@ -11628,5 +11628,994 @@
             }
         ],
         "idioms": []
+    },
+    {
+        "word": "나발꽃",
+        "word_clean": "나발꽃",
+        "word_pure": "나발꽃",
+        "pronunciation": "나발꼳′, 나바꼬′치, 나발꼬′츨, 나발꼬′체",
+        "pos_symbol": "󰃃",
+        "definition": "나팔꽃. ≒나발꼬{ㅊ-ㅌ}.",
+        "examples": [
+            {
+                "dialect": "옛날에느 동네 담에 아침이머 나발꽃이 마이 피잇다.",
+                "standard": "옛날에는 동네 담에 아침이면 나팔꽃이 많이 피었다."
+            },
+            {
+                "dialect": "오새느 나발꽃으로 보기 에럽다.",
+                "standard": "요즘은 나팔꽃을 보기 어렵다."
+            }
+        ],
+        "idioms": []
+    },
+    {
+        "word": "나발꼬{ㅊ-ㅌ}",
+        "word_clean": "나발꼬ㅊㅌ",
+        "word_pure": "나발꼬ㅊㅌ",
+        "pronunciation": "나발꼳′, 나바꼬′치, 나발꼬′틀, 나발꼬′테",
+        "pos_symbol": "󰃃",
+        "definition": "나팔꽃. 노). 󰃫 ㉠ 나발꽃:＿〛<{주격어미, 계사어간}>. ㉡ 나발꽅:＿〛<㉠ 외의 환경>. ☞나발꽃.",
+        "examples": [
+            {
+                "dialect": "야아야, 요 와 바라. 저 꽃이 나발꽃이다.",
+                "standard": "얘야, 여기 와 보아라. 저 꽃이 나팔꽃이다."
+            },
+            {
+                "dialect": "나발꽅을 숭굴라커머 시앗을 구해야 댈 낀데, 그 심술이 나발꽅 시앗을 쫌 농갈{러/라}줄라는강 몰시더.",
+                "standard": "나팔꽃을 심으려고 하면 씨앗을 구해야 될 것인데, 그 심술이 나팔꽃 씨앗을 좀 나누어 줄지 모르겠습니다."
+            },
+            {
+                "dialect": "벌이가 나발꽅에 드가가아 꿀로 빨어 묵니더.",
+                "standard": "벌이 나팔꽃에 들어가서 꿀을 빨아 먹습니다."
+            }
+        ],
+        "idioms": []
+    },
+    {
+        "word": "나발바지",
+        "word_clean": "나발바지",
+        "word_pure": "나발바지",
+        "pronunciation": "나′발바′지",
+        "pos_symbol": "󰃃",
+        "definition": "나발바지(=나팔바지): 통이 매우 넓은 바지. ⇔홀때바지.",
+        "examples": [
+            {
+                "dialect": "그래, 유행은 나발바지로 갓다가 홀때바지로 오기 대 잇는 거지.",
+                "standard": "그래, 유행은 나팔바지로 갔다가 홀태바지로 오게 돼 있는 거지."
+            }
+        ],
+        "idioms": []
+    },
+    {
+        "word": "대범하다",
+        "word_clean": "대범하다",
+        "word_pure": "대범하다",
+        "pronunciation": "대애′범′하다",
+        "pos_symbol": "󰃰",
+        "definition": "대범하다. 성격이나 태도가 사소한 것에 얽매이지 않으며 너그럽다.",
+        "examples": [
+            {
+                "dialect": "남자가 대범하지 몬하고 민하기 노는 거로 보고 곤지럽다{컨/칸}다.",
+                "standard": "남자가 대범하지 못하고 민하게 노는 것을 보고 곤지럽다고 한다."
+            },
+            {
+                "dialect": "나가 들엇으머 쫌 대범할 줄도 알{어/아}야지, 우얘 만날 뒤댄짓만 골리 가메 하는교?",
+                "standard": "나이가 들었으면 좀 대범할 줄도 알아야지, 어째 만날 데데한 짓만 골라 가며 합니까?"
+            }
+        ],
+        "idioms": []
+    },
+    {
+        "word": "대버ᇡ다",
+        "word_clean": "대다",
+        "word_pure": "대다",
+        "pronunciation": "대애′범′타",
+        "pos_symbol": "󰃰",
+        "definition": "대범하다. 대범하다가 줄어든 말.",
+        "examples": [],
+        "idioms": []
+    },
+    {
+        "word": "대보다",
+        "word_clean": "대보다",
+        "word_pure": "대보다",
+        "pronunciation": "대′애보′다",
+        "pos_symbol": "󰂿",
+        "definition": "대보다. 서로 견주어 보다.",
+        "examples": [
+            {
+                "dialect": "(서로 항렬이 높다고 주장하니) 그렇다머 너거 둘이 촌을 대보는 기이 수다, 시저굼 항열이 머꼬?",
+                "standard": "그렇다면 너희 둘의 촌수를 대어 보는 것이 방법이다, 너희 각각의 항렬이 무엇이냐?"
+            }
+        ],
+        "idioms": []
+    },
+    {
+        "word": "대보롬",
+        "word_clean": "대보롬",
+        "word_pure": "대보롬",
+        "pronunciation": "대애′보′롬",
+        "pos_symbol": "󰃃",
+        "definition": "대보름. 음력 정월 보름날을 명절로 이르는 말. ≒보롬/보룸.",
+        "examples": [
+            {
+                "dialect": "대보롬에 밥을 첫새복에 해 묵으머 농사 장원한다.",
+                "standard": "정월 대보름에 밥을 첫새벽에 (남 먼저) 해 먹으면 농사를 장원한다."
+            },
+            {
+                "dialect": "대보롬날 달로 먼녀 보머 소원 성취한다.",
+                "standard": "정월 대보름날 달을 (남) 먼저 보면 소원 성취한다."
+            }
+        ],
+        "idioms": []
+    },
+    {
+        "word": "대복1",
+        "word_clean": "대복1",
+        "word_pure": "대복",
+        "pronunciation": "대복′",
+        "pos_symbol": "󰃃",
+        "definition": "꼭대기(산의). 산마루. ≒대박.",
+        "examples": [],
+        "idioms": []
+    },
+    {
+        "word": "대복2",
+        "word_clean": "대복2",
+        "word_pure": "대복",
+        "pronunciation": "대′복",
+        "pos_symbol": "󰃃",
+        "definition": "도배. 종이를 벽･반자･장지 등에 바르는 일. 드).",
+        "examples": [],
+        "idioms": []
+    },
+    {
+        "word": "-{로-을}",
+        "word_clean": "로을",
+        "word_pure": "로을",
+        "pronunciation": "{로-을}",
+        "pos_symbol": "󰃆",
+        "definition": "-{를-을}. 대격표시 곡용어미. 흔). ❶ -로: 명{V,ㄹ〛＿.❷ -을: 명C〛＿.",
+        "examples": [
+            {
+                "dialect": "야 이넘들, 너거가 자꾸 그 웅티이에다가 돌로 좌아 옇을 기가?",
+                "standard": "야 이놈들, 너희들이 자꾸 그 웅덩이에다가 돌을 주워 넣을 것이냐?"
+            },
+            {
+                "dialect": "이 마당에 와가아 니로 탓할 텍이 없지.",
+                "standard": "이 마당에 와서 너를 탓할 턱이 없지."
+            },
+            {
+                "dialect": "당신 지굼 누구로 보고 그런 소리로 하는 거요?",
+                "standard": "당신 지금 누구를 보고 그런 소리를 하는 것이오?"
+            },
+            {
+                "dialect": "도무지 머로 가주구 그레 하리 죄일 시름을 하고 잇노?",
+                "standard": "도무지 무엇을 가지고 그렇게 하루 종일 씨름을 하고 있니?"
+            },
+            {
+                "dialect": "결국 그 다구진 아아로 갖다가 양자로 삼더란다.",
+                "standard": "결국 그 다부진 아이를 갖다가 양자를 삼더란다."
+            },
+            {
+                "dialect": "돈을, 논접을[논쩌′블] 팔아가아 가방에 옇어 주는 거로 가주구, 대구° 올{러/라}가가아 딘탕 섯다 말이지.",
+                "standard": "돈을, 논접을 팔아서 가방에 넣어 주는 것을 가지고, 대구로 올라가서 된통 썼다 말이지."
+            },
+            {
+                "dialect": "눈이 마이 와가아 묵을 기이 없으머, 놀개이들이 떼전을 지야가아 마실로 내리오는데 우얄 기고?",
+                "standard": "눈이 많이 와서 먹을 것이 없으면, 노루들이 떼를 지어서 마을로 내려오는데 어쩔 거냐?"
+            },
+            {
+                "dialect": "잘감° 봇도랑을 따{러/라}, 가 우예 올{러/라}가머 웅티이가 하나 잇다.",
+                "standard": "잘감 봇도랑을 따라, 그 위에 올라가면 웅덩이가 하나 있다."
+            },
+            {
+                "dialect": "참, 밤떡 겉은 처자가 시집을 왓더란다. 그래 섭섭잖이 해가아 떡도 해가아 들리이 보내고 나이, 사돈 집이서도 지고 시ᇙ고 한 짐 해 가주구 왓더란다.",
+                "standard": "참, 밤떡 같은 처녀가 시집을 왔더란다, 그래 섭섭잖게 해서 떡도 해서 들려 보내고 나니까, 사돈 쪽에서 또 지고 싣고 한 짐을 해 가지고 왔더란다."
+            }
+        ],
+        "idioms": []
+    },
+    {
+        "word": "-롱1",
+        "word_clean": "롱1",
+        "word_pure": "롱",
+        "pronunciation": "롱′",
+        "pos_symbol": "󰃆",
+        "definition": "-든지. 명V〛＿. (받침 없는 체은류에 붙어) 어느 것이 선택되어도 상관없는 사물들을 열거할 때 쓰는 곡용어미. ☞-으롱. ☞-래3.",
+        "examples": [
+            {
+                "dialect": "아분님으느 가알마 대머 산내°롱[살′래롱] 저 어데서러, 미영으로 한 버티이석 사가아 당신 한 짐 지고 또 누구 놉을 해가아 한 짐 지키고 오신다.",
+                "standard": "시아버님은 가을만 되면 산내(山內)라든지 저 어디에서, 목화를 한 보퉁이씩 사서 당신이 한 짐을 지고 또 누구 놉을 해서 한 짐을 지우고 오신다."
+            }
+        ],
+        "idioms": []
+    },
+    {
+        "word": "-롱2",
+        "word_clean": "롱2",
+        "word_pure": "롱",
+        "pronunciation": "롱′",
+        "pos_symbol": "󰃆",
+        "definition": "-으렴. 해라체 명령 종결어미. 드). 보(視)＿_. ≒-래3. 󰃫 동사 ‘보-’(視)에만 결합하는 것으로 보임.",
+        "examples": [
+            {
+                "dialect": "점마 저거 하는 짓거리로 쫌 보롱, 완전히 안하무인이네.",
+                "standard": "저놈 아이 저것이 하는 짓거리를 좀 보렴, 완전히 안하무인이네."
+            },
+            {
+                "dialect": "저거 보롱, 내 물가에서 놀 때부터 빠질 줄 알{엇/앗}다니까.",
+                "standard": "저것 보렴, 늘 물가에서 놀 때부터 빠질 줄 알았다니까."
+            }
+        ],
+        "idioms": []
+    },
+    {
+        "word": "말문",
+        "word_clean": "말문",
+        "word_pure": "말문",
+        "pronunciation": "마알′문′",
+        "pos_symbol": "󰃃",
+        "definition": "말문. ① 말을 할 때에 여는 입. ② 말을 꺼내는 실마리.",
+        "examples": [
+            {
+                "dialect": "말문이 맥히 가주구 아무 말도 몬햇슴더.",
+                "standard": "말문이 막혀 가지고 아무 말도 못했습니다."
+            }
+        ],
+        "idioms": [
+            {
+                "phrase": "말문 닫다",
+                "meaning": "말문 닫다"
+            },
+            {
+                "phrase": "말문 막다",
+                "meaning": "말문 막다"
+            },
+            {
+                "phrase": "말문 열다",
+                "meaning": "말문 열다"
+            },
+            {
+                "phrase": "말문이 막히다",
+                "meaning": "말문이 막히다"
+            },
+            {
+                "phrase": "말문이 열리다",
+                "meaning": "말문이 열리다"
+            }
+        ]
+    },
+    {
+        "word": "말미",
+        "word_clean": "말미",
+        "word_pure": "말미",
+        "pronunciation": "말′미",
+        "pos_symbol": "󰃃",
+        "definition": "말미. 겨를. 휴가(休暇). 시간적 여유.",
+        "examples": [
+            {
+                "dialect": "외식이° 자아도 말미로 한 여을 받{엇/앗}단다.",
+                "standard": "외식이 쟤도 말미(=휴가)를 한 열흘 받았단다."
+            }
+        ],
+        "idioms": []
+    },
+    {
+        "word": "말미암다",
+        "word_clean": "말미암다",
+        "word_pure": "말미암다",
+        "pronunciation": "마알′미′암따",
+        "pos_symbol": "󰂿",
+        "definition": "말미암다.",
+        "examples": [
+            {
+                "dialect": "(상해 버린 물고기를 들고) 몬 묵을 성바리머 일찌검치 내삐는 기이 옳지. 게속 들만치고 그라무로 말미암어 시간 낭비가 얼매나 큰동 아기나 하나?",
+                "standard": "못 먹을 성싶으면 일찌감치 내버리는 것이 옳지. 계속 들어서 만지작거리고 그러므로 말미암아 시간 낭비가 얼마나 큰지 알기나 하니?"
+            }
+        ],
+        "idioms": []
+    },
+    {
+        "word": "말박줄박",
+        "word_clean": "말박줄박",
+        "word_pure": "말박줄박",
+        "pronunciation": "말′박줄박",
+        "pos_symbol": "󰃃",
+        "definition": "말박줄박: 큰 바가지. 큰 그릇. 마구 퍼붓는 욕.",
+        "examples": [
+            {
+                "dialect": "그 할마시가 욕을 갖다가 말박줄박을 하는데 우짜겟노? 듣고 잇는 수밖에.",
+                "standard": "그 할멈이 욕을 갖다가 마구 퍼붓는데 어쩌겠니? 듣고 있는 수밖에."
+            }
+        ],
+        "idioms": []
+    },
+    {
+        "word": "반들쿠다",
+        "word_clean": "반들쿠다",
+        "word_pure": "반들쿠다",
+        "pronunciation": "반들쿠′우다",
+        "pos_symbol": "󰂿",
+        "definition": "바루다. 바르게 하다.  ☞반들구다.",
+        "examples": [],
+        "idioms": []
+    },
+    {
+        "word": "반들쿠{ㅎ-우}다",
+        "word_clean": "반들쿠ㅎ우다",
+        "word_pure": "반들쿠ㅎ우다",
+        "pronunciation": "반들쿤는′다, 반들쿠′코, 반들쿠′치, 반들쿠터′라, 반들카′아도, 반들카′아가′아, 반들쿠′우머",
+        "pos_symbol": "󰂿",
+        "definition": "바루다. 바르게 하다. 바르게 고치다. 󰃫 ㉠ 반들쿻-:  〛CY. ㉡ 반들쿠우-:    〛VY. ☞반들구다.",
+        "examples": [],
+        "idioms": []
+    },
+    {
+        "word": "반디기",
+        "word_clean": "반디기",
+        "word_pure": "반디기",
+        "pronunciation": "반디이′기′",
+        "pos_symbol": "󰃌",
+        "definition": "반듯이. 반듯하게.",
+        "examples": [
+            {
+                "dialect": "(잠을 잘 때) 엎어저가아 자는 사람도 잇고 반디기 디비저 자는 사람도 잇고, 가지가지지.",
+                "standard": "엎어져서 자는 사람도 있고 반듯이 뒤집어져 자는 사람도 있고, 가지가지지."
+            }
+        ],
+        "idioms": [
+            {
+                "phrase": "반디기 눕다",
+                "meaning": "반듯하게 눕다"
+            },
+            {
+                "phrase": "반디기 디베지다",
+                "meaning": "반듯하게 뒤집어지다"
+            }
+        ]
+    },
+    {
+        "word": "반디리리",
+        "word_clean": "반디리리",
+        "word_pure": "반디리리",
+        "pronunciation": "반디리리이′",
+        "pos_symbol": "󰃌",
+        "definition": "반드르르.",
+        "examples": [],
+        "idioms": []
+    },
+    {
+        "word": "빈핞다",
+        "word_clean": "빈핞다",
+        "word_pure": "빈핞다",
+        "pronunciation": "빈한′타",
+        "pos_symbol": "󰃰",
+        "definition": "빈한하다. ‘빈한하다’가 줄어든 말.",
+        "examples": [
+            {
+                "dialect": "에릴 직에 빈핞기 큰 사람은, 누구나 물건을 애낄 줄로 아는데, 앤 그런 사람은 애낄 줄로 몰라.",
+                "standard": "어릴 적에 빈한하게 자란 사람은, 누구나 물건을 아낄 줄을 아는데, 안 그런 사람은 아낄 줄을 몰라."
+            }
+        ],
+        "idioms": []
+    },
+    {
+        "word": "빈함없다",
+        "word_clean": "빈함없다",
+        "word_pure": "빈함없다",
+        "pronunciation": "비인′하′머업′따′, 비인′하′머억′꼬′, 비인′하′머업′찌′, 비인′하′머업떠′라, 비인′하′머업′서′도, 비인′하′머업′서′가′아, 비인′하′머업′{시′>스′}머",
+        "pos_symbol": "󰃰",
+        "definition": "변함없다. 달라지지 않고 항상 같다.",
+        "examples": [],
+        "idioms": []
+    },
+    {
+        "word": "빈함없이",
+        "word_clean": "빈함없이",
+        "word_pure": "빈함없이",
+        "pronunciation": "비인′하′머업′시′",
+        "pos_symbol": "󰃌",
+        "definition": "변함없이.",
+        "examples": [
+            {
+                "dialect": "사람에 마암이 빈함없이 잇일 수가 없지러.",
+                "standard": "사람의 마음이 변함없이 있을 수가 없지."
+            }
+        ],
+        "idioms": []
+    },
+    {
+        "word": "빊다",
+        "word_clean": "빊다",
+        "word_pure": "빊다",
+        "pronunciation": "비인′는′다, 비잉′코′, 비인′치′, 비인′터′라, 비이′너′도, 비이′너′서, 비이′느′머",
+        "pos_symbol": "󰂿",
+        "definition": "변하다. ‘빈하다(=변하다)’가 줄어든 말. ☞빈아다.",
+        "examples": [
+            {
+                "dialect": "(서양 사람이 서툰 한국말로) 우리 빊지 말자커는 소리로, 우리 핀지 말자캐 가주고, 핀지가 끊어지니 정도 끊어저뿌더라니더.",
+                "standard": "우리가 변하지 말자고 하는 소리를, 우리는 편지(하지) 말자고 해 가지고, 편지가 끊어지니 정도 끊어져 버리더랍니다."
+            },
+            {
+                "dialect": "사람에 마음은 하리에도 열두 분석 빊는대이.",
+                "standard": "사람의 마음은 하루에도 열두 번씩 변한다."
+            },
+            {
+                "dialect": "세상이 요새느 까꿀로 빊는다.",
+                "standard": "세상이 요새는 거꾸로 변한다."
+            },
+            {
+                "dialect": "그래 니 말대로 세상만사가 다 빊는다커자. 앤 빊는 거도 없잖지 와.",
+                "standard": "그래 네 말대로 세상만사가 다 변한다고 하자. 안 변하는 거도 없지 않지 왜."
+            },
+            {
+                "dialect": "아무리 많은 세월이 흘러도 산천은 앤 빊더라.",
+                "standard": "아무리 많은 세월이 흘러도 산천은 변하지 않더라."
+            }
+        ],
+        "idioms": []
+    },
+    {
+        "word": "소닪다",
+        "word_clean": "소닪다",
+        "word_pure": "소닪다",
+        "pronunciation": "소′당코, 소′단치, 소′단터라, 소′다너도, 소′다너가아, 소′다느머",
+        "pos_symbol": "󰃰",
+        "definition": "소담스럽다. ‘소단하다<소담스럽다>’가 줄어든 말.",
+        "examples": [
+            {
+                "dialect": "정수°네 집이느 삐가리 열두 바리로 까가아, 소닪기 다 잘 키얏더란다.",
+                "standard": "정수네 집에는 병아리 열두 마리를 까서, 소담스럽게 다 잘 기뤘더란다."
+            }
+        ],
+        "idioms": []
+    },
+    {
+        "word": "소달가지",
+        "word_clean": "소달가지",
+        "word_pure": "소달가지",
+        "pronunciation": "소달가′지",
+        "pos_symbol": "󰃃",
+        "definition": "쇠다리. 쇠족. 소의 다리(속어).",
+        "examples": [],
+        "idioms": []
+    },
+    {
+        "word": "소담시럽다",
+        "word_clean": "소담시럽다",
+        "word_pure": "소담시럽다",
+        "pronunciation": "소′담시럽따",
+        "pos_symbol": "󰃰",
+        "definition": "소담스럽다. ① 생김새가 탐스러운 데가 있다. ② 음식이 풍족하여 먹음직한 데가 있다.",
+        "examples": [],
+        "idioms": []
+    },
+    {
+        "word": "소담하다",
+        "word_clean": "소담하다",
+        "word_pure": "소담하다",
+        "pronunciation": "소′담하다",
+        "pos_symbol": "󰃰",
+        "definition": "소담하다. 소담스럽다. 생김새가 탐스럽다.",
+        "examples": [],
+        "idioms": []
+    },
+    {
+        "word": "소다ᇡ다",
+        "word_clean": "소다",
+        "word_pure": "소다",
+        "pronunciation": "소′담타",
+        "pos_symbol": "󰃰",
+        "definition": "소다ᇡ다. 소담하다. ‘소담하다’가 줄어든 말.",
+        "examples": [
+            {
+                "dialect": "소동떡° 집운 석게랄 하나 없이 소다ᇡ기 삐가리로 열다섯 바리나 까가아 키왓다니더.",
+                "standard": "소동댁(집)은 썩은 계란 하나 없이 소담스럽게 병아리를 열다섯 마리나 까서 키웠답니다."
+            }
+        ],
+        "idioms": []
+    },
+    {
+        "word": "앍어묵다",
+        "word_clean": "앍어묵다",
+        "word_pure": "앍어묵다",
+        "pronunciation": "알′거묵′따, 알′거묵′꼬, 알′거묵′찌, 알′거묵떠′라, 알′거무′{거/우}도, 알′거무′{거/우}가′아, 알′거무′{구/우>그}머",
+        "pos_symbol": "󰂿",
+        "definition": "발라먹다. 뺏어먹다.",
+        "examples": [
+            {
+                "dialect": "저 다랩이 영감이 {얼/알}라 손에 떡 한 쪼가리로 몬 앍어묵어가아 저레 야단이다.",
+                "standard": "저 다랍이 영감이 아기 손의 떡 한 조각을 못 발라먹어서 저렇게 안달이다."
+            },
+            {
+                "dialect": "남이 가진 거로 끝까지 앍어묵는 넘도 참 머리가 비상한 넘이기느 한데 그 머리로 지대로 시머 얼매나 좋겟노.",
+                "standard": "남이 가진 것을 끝까지 발라먹는 놈도 참 머리가 비상한 놈이기는 한데 그 머리를 제대로 쓰면 얼마나 좋겠니."
+            }
+        ],
+        "idioms": []
+    },
+    {
+        "word": "아ᇙ다",
+        "word_clean": "다",
+        "word_pure": "다",
+        "pronunciation": "알른′다, 알′꼬, 알′찌, 알떠′라, 아′러도, 아′러가아, 아′르머",
+        "pos_symbol": "󰂿",
+        "definition": "앓다.",
+        "examples": [
+            {
+                "dialect": "큰집 복이°가 아ᇙ고 나디이 똑 물에 그렁지 겉더라.",
+                "standard": "큰집 복이가 앓고 나더니 꼭 물속의 그림자 같더라."
+            },
+            {
+                "dialect": "감기로 한 메칠 디기 아ᇙ고 낫디이 목소리가 구마 척 갈리저뿌네요.",
+                "standard": "감기로 한 며칠 되게 앓고 났더니 목소리가 그만 척 갈리어져 버리네요."
+            },
+            {
+                "dialect": "그 머시마 따물에 내가 골치로 아ᇙ니더[알리′이더].",
+                "standard": "그 남자애 때문에 내가 골치를 앓습니다."
+            },
+            {
+                "dialect": "날수많은빙을 한 죄기 아ᇙ고[알′꼬] 나디이 아아 꼬라지가 똑 물에 그렁지 겉더라.",
+                "standard": "장티푸스를 한 '죄기' 앓고 나더니 아이의 꼴이 꼭 물속의 그림자 같더라."
+            },
+            {
+                "dialect": "아아가 자래배로 아ᇙ고 나디이 꼬재이 겉이 마이 예벳구나.",
+                "standard": "아이가 복학을 앓고 나더니 꼬챙이 같이 많이 여위었구나."
+            }
+        ],
+        "idioms": []
+    },
+    {
+        "word": "앓다",
+        "word_clean": "앓다",
+        "word_pure": "앓다",
+        "pronunciation": "알른′다, 알′코, 알′치, 알터′라, 아′{러/라}도, 아′러가아, 아′러라, 아′르머",
+        "pos_symbol": "󰂿",
+        "definition": "앓다. ☞앍다.",
+        "examples": [
+            {
+                "dialect": "생이손 앓는[알른′] 데느 새대가리 골로 붙이머 좋대이.",
+                "standard": "생인손을 앓는 데는 참새 대가리의 골을 붙이면 좋다."
+            },
+            {
+                "dialect": "귀 앓는 귀젖 그거 엉기난대이.",
+                "standard": "귀를 앓는 귀젖 그것이 넌더리난다."
+            },
+            {
+                "dialect": "한여름에 예중을 앓고 나디이 기운을 통 몬하네요.",
+                "standard": "한여름에 복막염을 앓고 나더니 기운을 통 못하네요."
+            },
+            {
+                "dialect": "한 메칠 앓디이 얼굴이가 용 딴판이네.",
+                "standard": "한 며칠을 앓더니 얼굴이 영 딴판이네."
+            }
+        ],
+        "idioms": []
+    },
+    {
+        "word": "암-",
+        "word_clean": "암",
+        "word_pure": "암",
+        "pronunciation": "암′",
+        "pos_symbol": "󰃥",
+        "definition": "일부 명사 앞에 붙어 그것이 암컷 또는 암컷의 성질을 지닌 것임을 나타내는 접두사. ⇔숙-. 󰃫 암꽁(=까투리). 암달(=암탉). 암눔(=암놈).",
+        "examples": [],
+        "idioms": []
+    },
+    {
+        "word": "암강새이",
+        "word_clean": "암강새이",
+        "word_pure": "암강새이",
+        "pronunciation": "암′깡′새이",
+        "pos_symbol": "󰃃",
+        "definition": "암캉아지. 강아지의 암컷. ⇔숙강새이.",
+        "examples": [
+            {
+                "dialect": "나느 암강새이가 좋온데 지느 또 우짠 일로 숙강새이가 좋다카네.",
+                "standard": "나는 암캉아지가 좋은데 저는 또 어쩐 일로 수캉아지가 좋다고 하네."
+            }
+        ],
+        "idioms": []
+    },
+    {
+        "word": "재롱(才弄)",
+        "word_clean": "재롱",
+        "word_pure": "재롱",
+        "pronunciation": "재롱′",
+        "pos_symbol": "󰃃",
+        "definition": "재롱. 어린아이의 재미있는 말과 귀여운 행동.",
+        "examples": [
+            {
+                "dialect": "할매느 손자 여석 재롱이, 날마당 눈에 밟힌다네요.",
+                "standard": "할머니는 손자 녀석의 재롱이, 날마다 눈에 밟힌다네요."
+            }
+        ],
+        "idioms": []
+    },
+    {
+        "word": "재롱디이",
+        "word_clean": "재롱디이",
+        "word_pure": "재롱디이",
+        "pronunciation": "재롱띠′이",
+        "pos_symbol": "󰃃",
+        "definition": "재롱덩이.",
+        "examples": [],
+        "idioms": []
+    },
+    {
+        "word": "재롱시럽다",
+        "word_clean": "재롱시럽다",
+        "word_pure": "재롱시럽다",
+        "pronunciation": "제롱시′럽따",
+        "pos_symbol": "󰃰",
+        "definition": "재롱스럽다.",
+        "examples": [],
+        "idioms": []
+    },
+    {
+        "word": "재루",
+        "word_clean": "재루",
+        "word_pure": "재루",
+        "pronunciation": "재루′",
+        "pos_symbol": "󰃃",
+        "definition": "재료(材料).",
+        "examples": [
+            {
+                "dialect": "(과자 맛이 덜한 이유는) 재루가 덜 드갓던갑더라.",
+                "standard": "재료가 덜 들어갔나 보더라."
+            }
+        ],
+        "idioms": []
+    },
+    {
+        "word": "재루깝",
+        "word_clean": "재루깝",
+        "word_pure": "재루깝",
+        "pronunciation": "재루′깝",
+        "pos_symbol": "󰃃",
+        "definition": "재료값(材料-).",
+        "examples": [
+            {
+                "dialect": "(음식점의 요리가) 재루깝이 올{러/라}가아 그런동 맛이 전에만 몬하다커ᇹ더락꼬.",
+                "standard": "재료값이 올라서 그런지 맛이 전에만 못하다고 하더라고."
+            }
+        ],
+        "idioms": []
+    },
+    {
+        "word": "재만대이",
+        "word_clean": "재만대이",
+        "word_pure": "재만대이",
+        "pronunciation": "{재만대′/재′만′대}이",
+        "pos_symbol": "󰃃",
+        "definition": "산마루. 고갯마루. ☞산만디이.",
+        "examples": [
+            {
+                "dialect": "저기 저 재만대이로 넘어야 현실° 남사°시더.",
+                "standard": "저기 저 산마루를 넘어야 현곡(見谷) 남사(마을)입니다."
+            }
+        ],
+        "idioms": []
+    },
+    {
+        "word": "재만디이",
+        "word_clean": "재만디이",
+        "word_pure": "재만디이",
+        "pronunciation": "재′만′디이",
+        "pos_symbol": "󰃃",
+        "definition": "산마루. 고갯마루. ☞산만디이.",
+        "examples": [],
+        "idioms": []
+    },
+    {
+        "word": "척당간",
+        "word_clean": "척당간",
+        "word_pure": "척당간",
+        "pronunciation": "척′땅′간",
+        "pos_symbol": "󰃃",
+        "definition": "척(戚). 성이 다르면서 친척이 되는 관계. 고종(姑從), 외종(外從), 이종(姨從) 등을 이른다.",
+        "examples": [
+            {
+                "dialect": "넉엄마 언니네 아아들캉 니캉이머 이종 간이니까 척당간 대지.",
+                "standard": "네 어머니의 언니네 아이들과 너 사이면 이종 간이니까 척지지."
+            }
+        ],
+        "idioms": [
+            {
+                "phrase": "척당간 대다",
+                "meaning": "척이 지다"
+            }
+        ]
+    },
+    {
+        "word": "척사(擲柶)",
+        "word_clean": "척사",
+        "word_pure": "척사",
+        "pronunciation": "척′사′",
+        "pos_symbol": "󰃃",
+        "definition": "척사. 윷놀이. 편을 갈라 윷으로 승부를 겨루는 놀이.",
+        "examples": [],
+        "idioms": []
+    },
+    {
+        "word": "척사대회(擲柶大會)",
+        "word_clean": "척사대회",
+        "word_pure": "척사대회",
+        "pronunciation": "척′사′대애훼",
+        "pos_symbol": "󰃃",
+        "definition": "척사대회. 윷놀이대회. 편을 갈라 윷으로 승부를 겨루는 놀이. 둘 또는 두 편 이상의 사람이 교대로 윷을 던져서 도･개･걸･윷･모의 끗수를 가리며, 그에 따라 윷판 위에 네 개의 말을 움직여 모든 말이 먼저 최종점을 통과하는 편이 이긴다.",
+        "examples": [
+            {
+                "dialect": "윷놀이락꼬도 하고 좀 어려운 말로느 척사대회.",
+                "standard": "윷놀이라고도 하고 좀 어려운 말로는 척사대회."
+            }
+        ],
+        "idioms": []
+    },
+    {
+        "word": "캄캄하다",
+        "word_clean": "캄캄하다",
+        "word_pure": "캄캄하다",
+        "pronunciation": "캉캄하′다",
+        "pos_symbol": "󰃰",
+        "definition": "캄캄하다. 감감소식이다. ① 매우 어둡다. ② 도무지 아는 것이 없다.",
+        "examples": [
+            {
+                "dialect": "비느 놋날겉이 오는데, 천지느 캄캄하고 우비는 없고 우얀단 말고?",
+                "standard": "비는 노드리듯 오는데, 천지는 캄캄하고 우비는 없고 어쩐단 말이냐?"
+            },
+            {
+                "dialect": "자동차 유리가 돌에 맞{어/아} 얼거저가아 눈앞이 캄캄한데 머로 우얀단 말고?",
+                "standard": "자동차 유리가 돌에 맞아 (순식간에) 어그러져서 눈앞이 캄캄한데 무엇을 어쩐단 말이냐?"
+            },
+            {
+                "dialect": "이 캄캄한 밤에 어덜로 가서 머로 찾{어/아}본단 소리로 하노?",
+                "standard": "이 캄캄한 밤에 어디로 가서 무엇을 찾아본단 소리를 하느냐?"
+            },
+            {
+                "dialect": "새복이 대니까 촛불은 지덜로 꺼저뿌고 방안이 캄캄한데 말시더.",
+                "standard": "새벽이 되니까 촛불은 저절로 꺼져 버리고 방안이 캄캄한데 말입니다."
+            }
+        ],
+        "idioms": []
+    },
+    {
+        "word": "캄카ᇡ다",
+        "word_clean": "캄다",
+        "word_pure": "캄다",
+        "pronunciation": "캉캄′타",
+        "pos_symbol": "󰃰",
+        "definition": "캄캄하다. ‘캄캄하다’가 줄어든 말.",
+        "examples": [
+            {
+                "dialect": "그 할마시 말로 들어 보머 저거 큰아들이 자동차 사고로 죽고 나니, 세상이 완전이 캄카ᇡ기 짝이 없이 빈엇는 겉더라니더.",
+                "standard": "그 할멈의 말을 들어 보면, 자기 큰아들이 자동차 사고로 죽고 나니까, 세상이 완전히 캄캄하기 짝이 없이 변한 것 같더랍니다."
+            }
+        ],
+        "idioms": []
+    },
+    {
+        "word": "틀배이",
+        "word_clean": "틀배이",
+        "word_pure": "틀배이",
+        "pronunciation": "틀배′이",
+        "pos_symbol": "󰃃",
+        "definition": "틀배이: 트집. 공연히 조그만 흠을 들추어내어 불평을 하거나 말썽을 부림. 또는 그 불평이나 말썽. ☞티집.",
+        "examples": [
+            {
+                "dialect": "그래도 신랑 각시가 같이 사이, 아들 놓고 딸 놓고 합이가 대고, 본데 틀배이 한문 없이 잘 사데.",
+                "standard": "그래도 신랑 각시가 같이 사니까, 아들 낳고 딸 낳고 합의가 되고, 본디 트집 한 번 없이 잘 살더군."
+            }
+        ],
+        "idioms": []
+    },
+    {
+        "word": "틀시럽다1",
+        "word_clean": "틀시럽다1",
+        "word_pure": "틀시럽다",
+        "pronunciation": "틀′시′럽따",
+        "pos_symbol": "󰃰",
+        "definition": "틀스럽다. 겉모양이 듬직하고 위엄이 있다.",
+        "examples": [],
+        "idioms": []
+    },
+    {
+        "word": "틀시럽다2",
+        "word_clean": "틀시럽다2",
+        "word_pure": "틀시럽다",
+        "pronunciation": "틀′시′럽따",
+        "pos_symbol": "󰃰",
+        "definition": "고집스럽다. 보기에 고집을 부리는 태도가 있다. ☞{뻐/빠}꾸마리시럽다.",
+        "examples": [],
+        "idioms": []
+    },
+    {
+        "word": "틀안다",
+        "word_clean": "틀안다",
+        "word_pure": "틀안다",
+        "pronunciation": "트라안′따′",
+        "pos_symbol": "󰂿",
+        "definition": "틀안다: (두 팔로) 틀어 안다.",
+        "examples": [
+            {
+                "dialect": "머, 아무거도 없이 코도 안 뀌고 이런데, 모가지로 틀안으이꺼데 그렇게 날산 넘이 가마아 잇거등.",
+                "standard": "뭐, 아무것도 없이 코도 안 꿰고 이런데, 모가지를 틀어 안으니까 그렇게 날쌘 놈이 가만있거든."
+            },
+            {
+                "dialect": "정 안구 접우머 뽀꿈 틀안어뿌라커ᇹ던데요, 머.",
+                "standard": "정 (품에) 안고 싶으면 볼끈 틀어 안아 버리라고 하던데요, 뭐."
+            }
+        ],
+        "idioms": []
+    },
+    {
+        "word": "풀매",
+        "word_clean": "풀매",
+        "word_pure": "풀매",
+        "pronunciation": "풀′매",
+        "pos_symbol": "󰃃",
+        "definition": "풀맷돌. 쌀무리를 가는 작은 맷돌. ‘풀맷돌’이 줄어든 말.",
+        "examples": [],
+        "idioms": []
+    },
+    {
+        "word": "풀맷돌",
+        "word_clean": "풀맷돌",
+        "word_pure": "풀맷돌",
+        "pronunciation": "풀′맫또올",
+        "pos_symbol": "󰃃",
+        "definition": "풀맷돌. ㉴. 쌀무리를 가는 작은 맷돌.",
+        "examples": [
+            {
+                "dialect": "무리로 가는 쪼맪은맷돌이 풀맷돌이다.",
+                "standard": "쌀무리를 가는 조그만 맷돌이 풀맷돌이다."
+            }
+        ],
+        "idioms": []
+    },
+    {
+        "word": "풀메띠기",
+        "word_clean": "풀메띠기",
+        "word_pure": "풀메띠기",
+        "pronunciation": "풀메띠′기",
+        "pos_symbol": "󰃃",
+        "definition": "풀무치. ㉴. 소)흔). ☞불메띠기.",
+        "examples": [],
+        "idioms": []
+    },
+    {
+        "word": "풀물",
+        "word_clean": "풀물",
+        "word_pure": "풀물",
+        "pronunciation": "풀′물′",
+        "pos_symbol": "󰃃",
+        "definition": "풀물. 풀에서 나오는 퍼런 물.",
+        "examples": [
+            {
+                "dialect": "바지에 풀물이 묻은 거로 보이, 어디 풀밭에 가가아 구불럿던 모양이지?",
+                "standard": "바지에 풀물이 묻은 것을 보니까, 어디 풀밭에 가서 굴렀던 모양이지?"
+            }
+        ],
+        "idioms": []
+    },
+    {
+        "word": "풀버레",
+        "word_clean": "풀버레",
+        "word_pure": "풀버레",
+        "pronunciation": "풀버′레",
+        "pos_symbol": "󰃃",
+        "definition": "풀벌레.",
+        "examples": [
+            {
+                "dialect": "늦여름이 오머 풀버레 우는 소리가 요란하기 대지.",
+                "standard": "늦여름이 오면 풀벌레 우는 소리가 요란하게 되지."
+            }
+        ],
+        "idioms": []
+    },
+    {
+        "word": "풀벌거지",
+        "word_clean": "풀벌거지",
+        "word_pure": "풀벌거지",
+        "pronunciation": "풀{벌/뻘}거′지",
+        "pos_symbol": "󰃃",
+        "definition": "풀벌레. 풀숲에서 사는 벌레를 통틀어 이르는 말. ≒풀벌기이.",
+        "examples": [],
+        "idioms": []
+    },
+    {
+        "word": "풀벌기이",
+        "word_clean": "풀벌기이",
+        "word_pure": "풀벌기이",
+        "pronunciation": "풀벌기′이",
+        "pos_symbol": "󰃃",
+        "definition": "풀벌레. ☞풀벌거지.",
+        "examples": [],
+        "idioms": []
+    },
+    {
+        "word": "힘저룸",
+        "word_clean": "힘저룸",
+        "word_pure": "힘저룸",
+        "pronunciation": "힘′저′루움",
+        "pos_symbol": "󰃃",
+        "definition": "힘겨룸. 힘의 세고 약함을 겨룸. ☞심저룸.",
+        "examples": [],
+        "idioms": []
+    },
+    {
+        "word": "힘저룸하다",
+        "word_clean": "힘저룸하다",
+        "word_pure": "힘저룸하다",
+        "pronunciation": "힘′저′루움하다",
+        "pos_symbol": "󰂿",
+        "definition": "힘겨룸하다. ☞심저룸하다.",
+        "examples": [],
+        "idioms": []
+    },
+    {
+        "word": "힘지다",
+        "word_clean": "힘지다",
+        "word_pure": "힘지다",
+        "pronunciation": "힘′지′다",
+        "pos_symbol": "󰂿",
+        "definition": "힘들이다. 힘주다. 힘을 싣다.",
+        "examples": [
+            {
+                "dialect": "동네매 그기이 힘지기 패는 기이 아이라, 동네 인자 위사시긴다 그기지.",
+                "standard": "동네매 그것이 힘들여 (몹시 아프게) 패는 것이 아니라, 동네에서 남우세 시킨다 그거지."
+            }
+        ],
+        "idioms": []
+    },
+    {
+        "word": "힘차다",
+        "word_clean": "힘차다",
+        "word_pure": "힘차다",
+        "pronunciation": "힘′차′다",
+        "pos_symbol": "󰃰",
+        "definition": "힘차다. 힘이 있고 씩씩하다.",
+        "examples": [
+            {
+                "dialect": "그 어른 괌 소리가 힘찬 걸 보이 오래 살따.",
+                "standard": "그 어른 고함 소리가 힘찬 것을 보니 오래 살겠다."
+            },
+            {
+                "dialect": "낚수로 너무 힘차기 채치는 바람에 괴기는 주디이가 떨어저 가주고 말이지.",
+                "standard": "낚싯대를 너무 힘차게 채는 바람에 고기는 주둥이가 떨어져 가지고 말이지."
+            }
+        ],
+        "idioms": []
+    },
+    {
+        "word": "힝가리",
+        "word_clean": "힝가리",
+        "word_pure": "힝가리",
+        "pronunciation": "힝가′리",
+        "pos_symbol": "󰃃",
+        "definition": "힘. 철.",
+        "examples": [
+            {
+                "dialect": "(아이가 자라서) 인자 힝가리가 드니까 적엄마자테 전에버다 잘한단다.",
+                "standard": "이제 철이 드니까 자기 엄마한데 전보다 잘한단다."
+            }
+        ],
+        "idioms": [
+            {
+                "phrase": "힝가리가 들다",
+                "meaning": "철이 들다"
+            }
+        ]
+    },
+    {
+        "word": "힝덩그리하다",
+        "word_clean": "힝덩그리하다",
+        "word_pure": "힝덩그리하다",
+        "pronunciation": "힝덩그리이′하′다",
+        "pos_symbol": "󰃰",
+        "definition": "휑뎅그렁하다. ≒헝시그리하다.",
+        "examples": [],
+        "idioms": []
     }
 ]
