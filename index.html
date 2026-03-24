@@ -235,7 +235,7 @@
     function initRecommendations() {
         const container = document.getElementById('recommendList');
         // 요청하신 "가시나", "가장", "가리다" 우선 시도, 없으면 랜덤
-        const fixedWords = ["가시나", "가장", "가리다"];
+        const fixedWords = [];
         let shuffled = dictData.filter(i => fixedWords.includes(i.word_pure)).slice(0, 3);
         
         if(shuffled.length < 3) {
