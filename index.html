@@ -2,151 +2,130 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>경주말 방언 사전</title>
     <style>
-        :root { --point: #a33b3b; --bg: #fdfaf6; --text: #333; }
+        :root { --point: #a33b3b; --bg: #fdfaf6; --text: #222; }
         
-        /* 모바일 최적화: 전체 폭을 좁게 설정하여 글씨가 상대적으로 커 보이게 함 */
         body { 
-            background: var(--bg); 
-            margin: 0; 
-            padding: 15px; 
+            background: var(--bg); margin: 0; padding: 10px; 
             font-family: 'Malgun Gothic', sans-serif; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            color: var(--text);
-            line-height: 1.5;
+            display: flex; flex-direction: column; align-items: center; color: var(--text);
         }
         
-        .container { 
-            width: 100%; 
-            max-width: 450px; /* 휴대폰 한 손 너비에 맞춤 */
-        }
-        
-        /* 로고 섹션 크기 조정 */
-        .logo-container { text-align: center; margin: 20px 0 30px; }
-        .logo-svg { width: 80px; height: auto; fill: var(--point); margin-bottom: 5px; }
-        .logo-text { font-size: 22px; font-weight: bold; color: var(--point); letter-spacing: -1px; }
+        .container { width: 100%; max-width: 400px; }
 
-        /* 검색창 영역: 입력창과 폰트 크기 확대 */
-        .search-section { background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 20px; width: 100%; box-sizing: border-box; }
-        .input-group { margin-bottom: 20px; }
-        label { display: block; margin-bottom: 8px; font-weight: bold; color: #555; font-size: 1rem; }
+        /* 로고와 타이틀 한 줄 배치 */
+        .header { display: flex; align-items: center; justify-content: center; margin: 10px 0 15px; gap: 8px; }
+        .logo-svg { width: 32px; height: 32px; fill: var(--point); }
+        .logo-text { font-size: 20px; font-weight: bold; color: var(--point); letter-spacing: -1px; }
+
+        /* 검색 섹션 여백 축소 */
+        .search-section { background: white; padding: 12px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); margin-bottom: 12px; }
+        .input-group { margin-bottom: 8px; }
+        .input-group:last-child { margin-bottom: 0; }
+        label { font-size: 12px; font-weight: bold; color: #777; margin-left: 4px; }
         input { 
-            width: 100%; 
-            padding: 18px; /* 터치하기 쉽게 높임 */
-            border: 2px solid #ddd; 
-            border-radius: 12px; 
-            font-size: 18px; /* 모바일에서 자동 줌 방지 및 가독성 확보 */
-            box-sizing: border-box; 
-            transition: 0.3s; 
+            width: 100%; padding: 10px; border: 1.5px solid #eee; border-radius: 8px; 
+            font-size: 16px; box-sizing: border-box; margin-top: 2px;
         }
-        input:focus { border-color: var(--point); outline: none; }
 
-        /* 가나다순 탐색: 버튼을 큼직하게 배치 */
-        .browse-section { background: #fff; padding: 20px; border-radius: 15px; margin-bottom: 20px; border: 1px solid #eee; width: 100%; box-sizing: border-box;}
-        .browse-title { font-size: 15px; font-weight: bold; color: #888; margin-bottom: 15px; text-align: center; }
+        /* 탐색 섹션 슬림화 */
+        .browse-section { background: #fff; padding: 12px; border-radius: 10px; margin-bottom: 12px; border: 1px solid #eee; }
+        .browse-title { font-size: 12px; font-weight: bold; color: #999; margin-bottom: 8px; text-align: center; border-bottom: 1px solid #f5f5f5; padding-bottom: 4px; }
         
         .nav-grid { 
-            display: grid; 
-            grid-template-columns: repeat(5, 1fr); /* 5열 배치로 버튼 크기 확보 */
-            gap: 8px; 
-            margin-bottom: 25px; 
+            display: grid; grid-template-columns: repeat(7, 1fr); /* 7열로 더 촘촘하게 */
+            gap: 4px; margin-bottom: 15px; 
         }
         .nav-btn { 
-            aspect-ratio: 1/1; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            background: #f9f9f9; 
-            border: 1px solid #eee; 
-            border-radius: 10px; 
-            cursor: pointer; 
-            font-size: 18px; 
-            font-weight: bold;
+            aspect-ratio: 1/1; display: flex; align-items: center; justify-content: center; 
+            background: #f9f9f9; border: 1px solid #eee; border-radius: 4px; 
+            font-size: 14px; cursor: pointer;
         }
 
-        /* 카테고리: 2열 배치로 텍스트 공간 확보 */
-        .cat-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
-        .cat-btn { padding: 15px; background: #fff; border: 1.5px solid #eee; border-radius: 12px; cursor: pointer; text-align: center; font-size: 16px; }
+        /* 품사 카테고리 (3개 그룹) */
+        .cat-grid { display: grid; grid-template-columns: 1fr; gap: 6px; }
+        .cat-btn { 
+            padding: 8px; background: #fff; border: 1px solid #eee; border-radius: 6px; 
+            cursor: pointer; text-align: center; font-size: 14px; color: #444;
+        }
+        .cat-btn:active { background: var(--point); color: #fff; }
 
-        /* 검색 결과 목록 */
-        #searchList { margin-bottom: 20px; display: none; background: #fff; border-radius: 12px; border: 1px solid #ddd; width: 100%; }
-        .list-item { padding: 20px; border-bottom: 1px solid #eee; cursor: pointer; font-size: 18px; }
+        /* 결과 목록 */
+        #searchList { margin-bottom: 15px; display: none; background: #fff; border-radius: 8px; border: 1px solid #ddd; width: 100%; }
+        .list-item { padding: 12px 15px; border-bottom: 1px solid #eee; font-size: 16px; }
 
-        /* 상세 결과 카드: 텍스트 가독성 중심 */
-        #resultView { width: 100%; display: none; margin-bottom: 40px; }
-        .result-card { background: white; padding: 25px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.08); }
-        .word-title { font-size: 36px; font-weight: bold; color: var(--point); display: block; margin-bottom: 5px; }
-        .pos-badge { font-size: 14px; background: #f0f0f0; padding: 4px 10px; border-radius: 6px; color: #666; }
-        .def-area { font-size: 20px; line-height: 1.8; margin-top: 25px; border-top: 1px solid #eee; padding-top: 20px; }
+        /* 상세 카드 글씨 크기 확대 */
+        #resultView { width: 100%; display: none; margin-bottom: 20px; }
+        .result-card { background: white; padding: 20px; border-radius: 12px; border: 1px solid var(--point); }
+        .word-title { font-size: 28px; font-weight: bold; color: var(--point); }
+        .pos-badge { font-size: 13px; background: #f0f0f0; padding: 2px 6px; border-radius: 4px; color: #666; margin-left: 8px; }
+        .def-area { font-size: 19px; line-height: 1.6; margin-top: 15px; word-break: keep-all; }
 
-        /* 하단 추천: 세로로 길게 배치 */
-        .rec-section { width: 100%; margin-top: 20px; }
-        .rec-container { display: flex; flex-direction: column; gap: 12px; margin-bottom: 40px; }
-        .rec-card { background: white; padding: 20px; border-radius: 15px; text-align: center; border: 1px solid #eee; font-size: 18px; }
+        /* 추천어 리스트 간소화 */
+        .rec-section { width: 100%; }
+        .rec-container { display: flex; flex-direction: column; gap: 6px; margin-bottom: 20px; }
+        .rec-card { background: #fff; padding: 10px; border-radius: 8px; border: 1px solid #eee; font-size: 15px; display: flex; justify-content: space-between; align-items: center; }
+        .rec-card .word { font-weight: bold; color: var(--point); }
+        .rec-card .brief { font-size: 12px; color: #999; }
 
-        .footer-info { border-top: 1px solid #ddd; padding: 25px 10px; color: #888; font-size: 14px; line-height: 1.7; word-break: keep-all; }
+        .footer-info { padding: 15px 5px; color: #bbb; font-size: 11px; line-height: 1.5; text-align: center; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <div class="logo-container">
+    <div class="header">
         <svg class="logo-svg" viewBox="0 0 100 100">
-            <path d="M35 80 L65 80 M38 70 L62 70 M40 25 L60 25 L63 70 L37 70 Z" fill="none" stroke="currentColor" stroke-width="3"/>
-            <rect x="47" y="40" width="6" height="8" fill="currentColor"/>
-            <path d="M42 32 H58 M42 42 H58 M42 52 H58" stroke="currentColor" stroke-width="1"/>
+            <path d="M35 80 L65 80 M38 70 L62 70 M40 25 L60 25 L63 70 L37 70 Z" fill="none" stroke="currentColor" stroke-width="4"/>
+            <rect x="47" y="42" width="6" height="8" fill="currentColor"/>
         </svg>
         <div class="logo-text">경주말 방언 사전</div>
     </div>
 
     <div class="search-section">
         <div class="input-group">
-            <label>🔍 경주말 표제어</label>
-            <input type="text" id="diaSearch" placeholder="어휘 입력">
+            <input type="text" id="diaSearch" placeholder="🔍 경주말 검색 (예: 가시나)">
         </div>
         <div class="input-group">
-            <label>📖 뜻풀이 키워드</label>
-            <input type="text" id="stdSearch" placeholder="표준어 입력">
+            <input type="text" id="stdSearch" placeholder="📖 표준어 뜻풀이 검색">
         </div>
     </div>
 
     <div class="browse-section">
-        <div class="browse-title">가나다순 탐색</div>
+        <div class="browse-title">가나다순</div>
         <div id="consonantNav" class="nav-grid"></div>
 
-        <div class="browse-title">카테고리</div>
+        <div class="browse-title">품사 부류</div>
         <div class="cat-grid">
-            <div class="cat-btn" onclick="searchCategory('음식')">🍱 음식</div>
-            <div class="cat-btn" onclick="searchCategory('생활')">🏠 생활</div>
-            <div class="cat-btn" onclick="searchCategory('감정')">😊 감정</div>
-            <div class="cat-btn" onclick="searchCategory('욕설')">🤬 욕설</div>
+            <div class="cat-btn" onclick="searchByPosGroup(['󰃃', '󰂴', '󰃓'])">체언 (명사/대명사/수사)</div>
+            <div class="cat-btn" onclick="searchByPosGroup(['󰂿', '󰃰'])">용언 (동사/형용사)</div>
+            <div class="cat-btn" onclick="searchByPosOther()">기타 (관형/감탄/부사/어미 등)</div>
         </div>
     </div>
 
     <div id="searchList">
-        <div id="resCount" style="padding:15px; font-size:14px; background:#f8f8f8; color:#888; text-align:center;"></div>
+        <div id="resCount" style="padding:8px; font-size:12px; background:#f8f8f8; color:#999; text-align:center;"></div>
         <div id="listItems"></div>
     </div>
 
     <div id="resultView">
         <div class="result-card">
-            <span id="v-word" class="word-title"></span>
-            <span id="v-pos" class="pos-badge"></span>
+            <div style="display: flex; align-items: baseline;">
+                <span id="v-word" class="word-title"></span>
+                <span id="v-pos" class="pos-badge"></span>
+            </div>
             <div id="v-def" class="def-area"></div>
         </div>
     </div>
 
     <div class="rec-section">
-        <div style="font-weight:bold; color:#666; margin-bottom:15px; text-align:center;">📅 오늘의 추천어</div>
+        <div style="font-size:13px; font-weight:bold; color:#aaa; margin-bottom:8px; padding-left:5px;">오늘의 단어</div>
         <div class="rec-container" id="recommendList"></div>
         
         <div class="footer-info">
-            <p><strong>[사전 안내]</strong> 본 서비스는 경주 지역 방언의 가치를 알리고 보존하기 위해 제작되었습니다.</p>
-            <p><strong>[저작권]</strong> 데이터의 저작권은 편저자에게 있으며, 웹 소스는 비영리 목적으로 공개됩니다.</p>
+            본 데이터의 저작권은 편저자에게 있으며,<br>소스코드는 비영리 목적으로 공개됩니다.
         </div>
     </div>
 </div>
@@ -199,8 +178,15 @@
         displayList(filtered);
     }
 
-    function searchCategory(cat) {
-        const filtered = dictData.filter(item => item.definition && item.definition.includes(cat));
+    // 품사 그룹 검색 로직
+    function searchByPosGroup(symbols) {
+        const filtered = dictData.filter(item => symbols.includes(item.pos_symbol));
+        displayList(filtered);
+    }
+
+    function searchByPosOther() {
+        const mainSymbols = ['󰃃', '󰂴', '󰃓', '󰂿', '󰃰'];
+        const filtered = dictData.filter(item => item.pos_symbol && !mainSymbols.includes(item.pos_symbol));
         displayList(filtered);
     }
 
@@ -212,17 +198,17 @@
         pBadge.innerText = posText;
         pBadge.style.display = posText ? 'inline-block' : 'none';
         document.getElementById('v-def').innerHTML = item.definition;
-        window.scrollTo({ top: document.getElementById('resultView').offsetTop - 20, behavior: 'smooth' });
+        window.scrollTo({ top: document.getElementById('resultView').offsetTop - 10, behavior: 'smooth' });
     }
 
     function displayList(items) {
         const searchList = document.getElementById('searchList');
         searchList.style.display = 'block';
         document.getElementById('resultView').style.display = 'none';
-        document.getElementById('resCount').innerText = `총 ${items.length}개의 단어가 있습니다.`;
+        document.getElementById('resCount').innerText = `${items.length}건 검색됨`;
         const list = document.getElementById('listItems');
         list.innerHTML = '';
-        items.slice(0, 50).forEach(item => {
+        items.slice(0, 60).forEach(item => {
             const div = document.createElement('div');
             div.className = 'list-item';
             div.innerHTML = `<strong>${item.word}</strong>`;
@@ -233,16 +219,12 @@
 
     function initRecommendations() {
         const container = document.getElementById('recommendList');
-        // 요청하신 대로 samples를 비우고 바로 랜덤 로직 가동
-        const samples = []; 
-        let recs = dictData.filter(i => samples.includes(i.word_pure)).slice(0, 3);
-        if(recs.length < 3) recs = [...dictData].sort(() => 0.5 - Math.random()).slice(0, 3);
-
+        const recs = [...dictData].sort(() => 0.5 - Math.random()).slice(0, 3);
         recs.forEach(item => {
             const div = document.createElement('div');
             div.className = 'rec-card';
-            div.innerHTML = `<div style="color:var(--point); font-weight:bold;">${item.word}</div>
-                             <div style="font-size:14px; color:#999; margin-top:5px;">${item.definition.substring(0, 20)}...</div>`;
+            div.innerHTML = `<span class="word">${item.word}</span>
+                             <span class="brief">${item.definition.substring(0, 12)}...</span>`;
             div.onclick = () => displayDetail(item);
             container.appendChild(div);
         });
