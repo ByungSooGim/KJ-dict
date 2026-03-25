@@ -36,10 +36,10 @@
         .pos-row { display: flex; gap: 5px; margin-bottom: 15px; }
         .pos-btn { 
             flex: 1; padding: 10px 2px; background: #fff; border: 1px solid #ddd; border-radius: 8px; 
-            cursor: pointer; text-align: center; font-size: 15px; font-weight: bold; color: #555;
+            cursor: pointer; text-align: center; font-size: 13px; font-weight: bold; color: #555;
             display: flex; flex-direction: column; justify-content: center; height: 50px;
         }
-        .pos-btn span { font-size: 12px; font-weight: normal; color: #999; margin-top: 2px; }
+        .pos-btn span { font-size: 10px; font-weight: normal; color: #999; margin-top: 2px; }
 
         /* 결과 목록 */
         #searchList { margin-bottom: 10px; display: none; background: #fff; border-radius: 8px; border: 1px solid #ddd; width: 100%; }
@@ -50,21 +50,30 @@
         .list-item b { color: #000; }
         .list-item span.brief-text { font-size: 13px; color: #999; font-weight: normal; margin-left: 8px; }
 
-        /* 상세 결과 및 자동 링크 스타일 */
+        /* 상세 결과 */
         #resultView { width: 100%; display: none; margin-bottom: 15px; }
         .result-card { background: white; padding: 18px; border-radius: 12px; border: 2px solid var(--point); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
         .word-title { font-size: 30px; font-weight: bold; color: var(--point); }
         .word-title sup { font-size: 0.5em; vertical-align: super; margin-left: 1px; }
         .pos-badge { font-size: 13px; background: #eee; padding: 2px 6px; border-radius: 4px; color: #666; margin-left: 6px; }
         .def-area { font-size: 20px; line-height: 1.6; margin-top: 15px; word-break: keep-all; }
-        
-        /* 뜻풀이 내 링크 스타일 */
         .def-link { color: var(--point); text-decoration: underline; cursor: pointer; font-weight: bold; }
 
-        /* 하단 추천 */
+        /* 예문 아코디언 스타일 */
+        .ex-container { margin-top: 15px; border-top: 1px dashed #ddd; padding-top: 10px; }
+        .ex-toggle { 
+            display: inline-flex; align-items: center; color: #777; font-size: 14px; 
+            font-weight: bold; cursor: pointer; padding: 5px 0;
+        }
+        .ex-toggle::after { content: ' ▼'; font-size: 10px; margin-left: 4px; transition: 0.3s; }
+        .ex-toggle.active::after { content: ' ▲'; }
+        .ex-content { 
+            display: none; background: #f9f9f9; padding: 12px; border-radius: 8px; 
+            margin-top: 8px; font-size: 16px; line-height: 1.5; color: #444; border-left: 3px solid #ccc;
+        }
+
         .rec-container { display: flex; flex-direction: column; gap: 5px; margin-bottom: 15px; width: 100%; }
         .rec-card { background: #fff; padding: 10px 15px; border-radius: 8px; border: 1px solid #eee; font-size: 16px; display: flex; justify-content: space-between; align-items: center; }
-
         .footer-info { font-size: 10px; color: #ccc; text-align: center; padding: 10px; }
     </style>
 </head>
@@ -101,6 +110,11 @@
                 <span id="v-pos" class="pos-badge"></span>
             </div>
             <div id="v-def" class="def-area"></div>
+            
+            <div id="v-ex-box" class="ex-container" style="display:none;">
+                <div class="ex-toggle" onclick="toggleExample()">📜 예문 보기</div>
+                <div id="v-ex-content" class="ex-content"></div>
+            </div>
         </div>
     </div>
 
@@ -122,34 +136,35 @@
         return word.replace(/(\d+)/g, '<sup>$1</sup>');
     }
 
-    // [핵심] 뜻풀이 내 자동 링크 생성 함수 (중첩 방지 로직 포함)
+    // 예문 토글
+    function toggleExample() {
+        const content = document.getElementById('v-ex-content');
+        const toggleBtn = document.querySelector('.ex-toggle');
+        const isHidden = content.style.display === 'none' || content.style.display === '';
+        content.style.display = isHidden ? 'block' : 'none';
+        toggleBtn.classList.toggle('active', isHidden);
+    }
+
+    // 자동 링크 생성 (중첩 방지 및 예문/뜻풀이 공용)
     function createAutoLinks(text, currentWord) {
         if (!text) return "";
-        
-        // 1. 긴 단어부터 정렬하여 짧은 단어가 긴 단어 내부를 파고들지 못하게 함
         const sortedWords = dictData
             .map(d => d.word_pure)
             .filter(w => w && w.length > 1 && w !== currentWord)
             .sort((a, b) => b.length - a.length);
 
-        // 고유한 단어 세트 생성
         const uniqueWords = [...new Set(sortedWords)];
         let linkedText = text;
-
-        // 2. 이미 치환된 영역을 보호하기 위한 임시 마커 사용
         const placeholders = [];
+
         uniqueWords.forEach((word, index) => {
             if (linkedText.includes(word)) {
                 const marker = `__MARKER${index}__`;
                 placeholders.push({ marker, word });
-                // 단어 전체 일치 여부를 확인하기 위해 정규식 활용 가능하지만, 
-                // 방언 특성상 단순 치환 후 마커로 보호하는 방식이 가장 안정적입니다.
-                const regex = new RegExp(word, 'g');
-                linkedText = linkedText.replace(regex, marker);
+                linkedText = linkedText.replace(new RegExp(word, 'g'), marker);
             }
         });
 
-        // 3. 마커를 실제 클릭 가능한 링크로 복원
         placeholders.forEach(p => {
             const linkHtml = `<span class="def-link" onclick="handleLinkClick('${p.word}')">${p.word}</span>`;
             linkedText = linkedText.replace(new RegExp(p.marker, 'g'), linkHtml);
@@ -158,7 +173,6 @@
         return linkedText;
     }
 
-    // 링크 클릭 시 호출되는 함수
     function handleLinkClick(word) {
         const item = dictData.find(d => d.word_pure === word || d.word === word);
         if (item) displayDetail(item);
@@ -190,12 +204,8 @@
             const target = item.word_pure || item.word;
             if (!target) return false;
             const initial = getInitialConsonant(target);
-            if (char === 'ㄱ') return initial === 'ㄱ' || initial === 'ㄲ';
-            if (char === 'ㄷ') return initial === 'ㄷ' || initial === 'ㄸ';
-            if (char === 'ㅂ') return initial === 'ㅂ' || initial === 'ㅃ';
-            if (char === 'ㅅ') return initial === 'ㅅ' || initial === 'ㅆ';
-            if (char === 'ㅈ') return initial === 'ㅈ' || initial === 'ㅉ';
-            return initial === char;
+            const sets = {'ㄱ':['ㄱ','ㄲ'],'ㄷ':['ㄷ','ㄸ'],'ㅂ':['ㅂ','ㅃ'],'ㅅ':['ㅅ','ㅆ'],'ㅈ':['ㅈ','ㅉ']};
+            return sets[char] ? sets[char].includes(initial) : initial === char;
         });
         displayList(filtered);
     }
@@ -219,9 +229,22 @@
         pBadge.innerText = posText;
         pBadge.style.display = posText ? 'inline-block' : 'none';
 
-        // 뜻풀이에 링크 적용
-        const linkedDefinition = createAutoLinks(item.definition, item.word_pure);
-        document.getElementById('v-def').innerHTML = linkedDefinition;
+        // 뜻풀이 링크 적용
+        document.getElementById('v-def').innerHTML = createAutoLinks(item.definition, item.word_pure);
+        
+        // 예문 처리 및 링크 적용
+        const exBox = document.getElementById('v-ex-box');
+        const exContent = document.getElementById('v-ex-content');
+        const toggleBtn = document.querySelector('.ex-toggle');
+
+        if (item.example && item.example.trim() !== "") {
+            exBox.style.display = 'block';
+            exContent.innerHTML = createAutoLinks(item.example, item.word_pure); // 예문에도 링크 적용
+            exContent.style.display = 'none';
+            toggleBtn.classList.remove('active');
+        } else {
+            exBox.style.display = 'none';
+        }
         
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
