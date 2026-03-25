@@ -35,15 +35,18 @@
         .word-title { font-size: 30px; font-weight: bold; color: var(--point); }
         .word-title sup { font-size: 0.5em; vertical-align: super; margin-left: 1px; }
         .pos-badge { font-size: 13px; background: #eee; padding: 2px 6px; border-radius: 4px; color: #666; margin-left: 6px; }
-        .def-area { font-size: 20px; line-height: 1.6; margin-top: 15px; word-break: keep-all; }
+        
+        /* 발음 스타일 추가 */
+        .pron-area { font-size: 15px; color: #777; margin-top: 4px; font-style: italic; }
+        
+        .def-area { font-size: 20px; line-height: 1.6; margin-top: 12px; word-break: keep-all; }
         .def-link { color: var(--point); text-decoration: underline; cursor: pointer; font-weight: bold; }
 
-        /* 예문 스타일 최적화 */
+        /* 예문 스타일 */
         .ex-container { margin-top: 15px; border-top: 1px dashed #ddd; padding-top: 10px; }
         .ex-toggle { display: inline-flex; align-items: center; color: #777; font-size: 14px; font-weight: bold; cursor: pointer; padding: 5px 0; }
         .ex-toggle::after { content: ' ▼'; font-size: 10px; margin-left: 4px; transition: 0.3s; }
         .ex-toggle.active::after { content: ' ▲'; }
-        
         .ex-content { display: none; margin-top: 8px; }
         .ex-item { background: #f9f9f9; padding: 12px; border-radius: 8px; margin-bottom: 8px; border-left: 3px solid #ccc; font-size: 16px; }
         .ex-std { display: block; font-size: 13px; color: #888; margin-top: 5px; border-top: 1px dotted #eee; padding-top: 5px; }
@@ -81,10 +84,12 @@
 
     <div id="resultView">
         <div class="result-card">
-            <div style="display: flex; align-items: baseline;">
+            <div style="display: flex; align-items: baseline; flex-wrap: wrap;">
                 <span id="v-word" class="word-title"></span>
                 <span id="v-pos" class="pos-badge"></span>
             </div>
+            <div id="v-pron" class="pron-area"></div>
+            
             <div id="v-def" class="def-area"></div>
             
             <div id="v-ex-box" class="ex-container" style="display:none;">
@@ -185,9 +190,17 @@
         pBadge.innerText = posText;
         pBadge.style.display = posText ? 'inline-block' : 'none';
 
+        // --- [추가] 발음 표시 로직 ---
+        const pronArea = document.getElementById('v-pron');
+        if (item.pronunciation) {
+            pronArea.innerText = `[${item.pronunciation}]`;
+            pronArea.style.display = 'block';
+        } else {
+            pronArea.style.display = 'none';
+        }
+
         document.getElementById('v-def').innerHTML = createAutoLinks(item.definition, item.word_pure);
         
-        // --- [수정] 배열 형태의 examples 처리 로직 ---
         const exBox = document.getElementById('v-ex-box');
         const exContent = document.getElementById('v-ex-content');
         const toggleBtn = document.querySelector('.ex-toggle');
