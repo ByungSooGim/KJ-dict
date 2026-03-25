@@ -8,47 +8,31 @@
         :root { --point: #a33b3b; --bg: #fdfaf6; --text: #222; }
         body { background: var(--bg); margin: 0; padding: 8px; font-family: 'Malgun Gothic', sans-serif; display: flex; flex-direction: column; align-items: center; color: var(--text); }
         .container { width: 100%; max-width: 400px; }
-
-        /* 헤더 & 검색창 */
         .header { display: flex; align-items: center; justify-content: center; margin: 8px 0 12px; gap: 6px; }
         .logo-svg { width: 24px; height: 24px; fill: var(--point); }
         .logo-text { font-size: 18px; font-weight: bold; color: var(--point); }
         .search-row { display: flex; gap: 6px; margin-bottom: 10px; width: 100%; }
         .search-row input { flex: 1; width: 50%; padding: 12px 8px; border: 1.5px solid #ddd; border-radius: 8px; font-size: 14px; box-sizing: border-box; background: #fff; }
-
-        /* 자음 & 품사 버튼 */
         .nav-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; margin-bottom: 12px; padding: 5px; background: #fff; border-radius: 10px; border: 1px solid #eee; }
         .nav-btn { aspect-ratio: 1/1; display: flex; align-items: center; justify-content: center; background: #fdfdfd; border: 1px solid #eee; border-radius: 6px; font-size: 20px; font-weight: bold; cursor: pointer; color: #444; }
         .pos-row { display: flex; gap: 5px; margin-bottom: 15px; }
         .pos-btn { flex: 1; padding: 10px 2px; background: #fff; border: 1px solid #ddd; border-radius: 8px; cursor: pointer; text-align: center; font-size: 13px; font-weight: bold; color: #555; display: flex; flex-direction: column; justify-content: center; height: 50px; }
         .pos-btn span { font-size: 10px; font-weight: normal; color: #999; margin-top: 2px; }
-
-        /* 결과 목록 */
         #searchList { margin-bottom: 10px; display: none; background: #fff; border-radius: 8px; border: 1px solid #ddd; width: 100%; }
         .list-item { padding: 12px 15px; border-bottom: 1px solid #eee; font-size: 17px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .list-item b { color: #000; }
         .list-item span.brief-text { font-size: 13px; color: #999; font-weight: normal; margin-left: 8px; }
-
-        /* 상세 결과 */
         #resultView { width: 100%; display: none; margin-bottom: 15px; }
         .result-card { background: white; padding: 18px; border-radius: 12px; border: 2px solid var(--point); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
         .word-title { font-size: 30px; font-weight: bold; color: var(--point); }
         .word-title sup { font-size: 0.5em; vertical-align: super; margin-left: 1px; }
         .pos-badge { font-size: 13px; background: #eee; padding: 2px 6px; border-radius: 4px; color: #666; margin-left: 6px; }
-        
-        /* 발음 및 스피커 스타일 */
         .pron-row { display: flex; align-items: center; gap: 8px; margin-top: 4px; }
         .pron-area { font-size: 15px; color: #777; font-style: italic; }
-        .speaker-btn { 
-            width: 24px; height: 24px; cursor: pointer; fill: #999; 
-            transition: fill 0.2s; display: flex; align-items: center; 
-        }
+        .speaker-btn { width: 24px; height: 24px; cursor: pointer; fill: #999; transition: fill 0.2s; display: flex; align-items: center; }
         .speaker-btn:hover { fill: var(--point); }
-        
         .def-area { font-size: 20px; line-height: 1.6; margin-top: 12px; word-break: keep-all; }
         .def-link { color: var(--point); text-decoration: underline; cursor: pointer; font-weight: bold; }
-
-        /* 예문 스타일 */
         .ex-container { margin-top: 15px; border-top: 1px dashed #ddd; padding-top: 10px; }
         .ex-toggle { display: inline-flex; align-items: center; color: #777; font-size: 14px; font-weight: bold; cursor: pointer; padding: 5px 0; }
         .ex-toggle::after { content: ' ▼'; font-size: 10px; margin-left: 4px; transition: 0.3s; }
@@ -56,7 +40,6 @@
         .ex-content { display: none; margin-top: 8px; }
         .ex-item { background: #f9f9f9; padding: 12px; border-radius: 8px; margin-bottom: 8px; border-left: 3px solid #ccc; font-size: 16px; }
         .ex-std { display: block; font-size: 13px; color: #888; margin-top: 5px; border-top: 1px dotted #eee; padding-top: 5px; }
-
         .rec-container { display: flex; flex-direction: column; gap: 5px; margin-bottom: 15px; width: 100%; }
         .rec-card { background: #fff; padding: 10px 15px; border-radius: 8px; border: 1px solid #eee; font-size: 16px; display: flex; justify-content: space-between; align-items: center; }
         .footer-info { font-size: 10px; color: #ccc; text-align: center; padding: 10px; }
@@ -69,208 +52,123 @@
         <svg class="logo-svg" viewBox="0 0 100 100"><path d="M35 80 L65 80 M38 70 L62 70 M40 25 L60 25 L63 70 L37 70 Z" fill="none" stroke="currentColor" stroke-width="5"/><rect x="47" y="42" width="6" height="8" fill="currentColor"/></svg>
         <div class="logo-text">경주말 방언 사전</div>
     </div>
-
     <div class="search-row">
         <input type="text" id="diaSearch" placeholder="방언 검색">
         <input type="text" id="stdSearch" placeholder="표준어 검색">
     </div>
-
     <div id="consonantNav" class="nav-grid"></div>
-
     <div class="pos-row">
         <div class="pos-btn" onclick="searchByPosGroup(['󰃃', '󰂴', '󰃓'])">체언<span>(대/명사,수사)</span></div>
         <div class="pos-btn" onclick="searchByPosGroup(['󰂿', '󰃰'])">용언<span>(동/형용사)</span></div>
         <div class="pos-btn" onclick="searchByPosOther()">기타<span>(부사/어미 등)</span></div>
     </div>
-
-    <div id="searchList">
-        <div id="resCount" style="padding:6px; font-size:11px; color:#999; text-align:center; border-bottom:1px solid #f5f5f5;"></div>
-        <div id="listItems"></div>
-    </div>
-
+    <div id="searchList"><div id="resCount" style="padding:6px; font-size:11px; color:#999; text-align:center; border-bottom:1px solid #f5f5f5;"></div><div id="listItems"></div></div>
     <div id="resultView">
         <div class="result-card">
             <div style="display: flex; align-items: baseline; flex-wrap: wrap;">
                 <span id="v-word" class="word-title"></span>
                 <span id="v-pos" class="pos-badge"></span>
             </div>
-            
             <div id="v-pron-row" class="pron-row" style="display:none;">
                 <div id="v-pron" class="pron-area"></div>
-                <div class="speaker-btn" onclick="speakDialect()">
+                <div class="speaker-btn" onclick="speakPronunciation()">
                     <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
                 </div>
             </div>
-            
             <div id="v-def" class="def-area"></div>
-            
             <div id="v-ex-box" class="ex-container" style="display:none;">
                 <div class="ex-toggle" onclick="toggleExample()">📜 예문 보기</div>
                 <div id="v-ex-content" class="ex-content"></div>
             </div>
         </div>
     </div>
-
     <div class="rec-container" id="recommendList"></div>
     <div class="footer-info">데이터 저작권: 편저자 | 소스코드: 비영리 공개 정책</div>
 </div>
 
 <script>
     let dictData = [];
-    let currentItem = null; // 현재 보고 있는 단어 저장용
-    const posMap = { 
-        '󰃃': '명사', '󰂿': '동사', '󰃰': '형용사', '󰂴': '대명사', '󰃦': '부사', '󰃥': '접두/접미사', '󰃆': '어미', '󰃲': '관형사', '󰃳': '감탄사', '󰃓': '수사', '󰃫': '참고', '󰃩': '준말' 
-    };
+    let currentItem = null;
+    const posMap = { '󰃃': '명사', '󰂿': '동사', '󰃰': '형용사', '󰂴': '대명사', '󰃦': '부사', '󰃥': '접두/접미사', '󰃆': '어미', '󰃲': '관형사', '󰃳': '감탄사', '󰃓': '수사', '󰃫': '참고', '󰃩': '준말' };
     const consonants = ['ㄱ', 'ㄲ', 'ㄴ', 'ㄷ', 'ㄸ', 'ㄹ', 'ㅁ', 'ㅂ', 'ㅃ', 'ㅅ', 'ㅆ', 'ㅇ', 'ㅈ', 'ㅉ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ'];
 
-    // --- TTS 기능 구현 ---
-    function speakDialect() {
-        if (!currentItem || !window.speechSynthesis) return;
-        
-        // 브라우저 TTS 중지 후 새로 시작
+    // --- 고도화된 TTS 로직 ---
+    function speakPronunciation() {
+        if (!currentItem || !currentItem.pronunciation || !window.speechSynthesis) return;
         window.speechSynthesis.cancel();
+
+        let rawPron = currentItem.pronunciation;
         
-        const textToRead = currentItem.word_pure || currentItem.word;
-        const utterance = new SpeechSynthesisUtterance(textToRead);
+        // 1. 장음 처리: 같은 모음이 연달아 있으면 붙여서 길게 (가아 -> 가--)
+        // TTS 엔진이 '-'나 ' '를 인식하도록 변환
+        let processed = rawPron.replace(/([ㅏ-ㅣ])\1/g, "$1ー"); 
+
+        // 2. 강세 처리: /'/ 표시가 있으면 해당 부분 피치 올림 시뮬레이션
+        // 브라우저 TTS는 문장 단위 피치 조절만 가능하므로, 
+        // 강세 기호 근처에서 아주 짧은 휴지기를 주거나 톤을 높이는 방식으로 유도
+        const utterance = new SpeechSynthesisUtterance(processed.replace(/'/g, ""));
         
-        // 경상도 느낌을 위한 설정 (완벽하진 않지만 시도)
         utterance.lang = 'ko-KR';
-        utterance.rate = 0.8;  // 약간 천천히 읽어 억양을 강조
-        utterance.pitch = 1.1; // 피치를 약간 높여 경상도 특유의 강세를 흉내
         
+        // 강세 기호(')가 포함된 경우 피치와 강도를 조절
+        if (rawPron.includes("'")) {
+            utterance.pitch = 1.4; // 강세가 있을 때 톤을 더 높임
+            utterance.rate = 0.7;  // 강세를 표현하기 위해 더 천천히
+        } else {
+            utterance.pitch = 1.0;
+            utterance.rate = 0.8;
+        }
+
         window.speechSynthesis.speak(utterance);
     }
 
-    function formatWordSuperscript(word) {
-        return word ? word.replace(/(\d+)/g, '<sup>$1</sup>') : "";
-    }
-
-    function toggleExample() {
-        const content = document.getElementById('v-ex-content');
-        const toggleBtn = document.querySelector('.ex-toggle');
-        const isHidden = content.style.display === 'none' || content.style.display === '';
-        content.style.display = isHidden ? 'block' : 'none';
-        toggleBtn.classList.toggle('active', isHidden);
-    }
-
-    function createAutoLinks(text, currentWord) {
-        if (!text) return "";
-        const sortedWords = dictData.map(d => d.word_pure).filter(w => w && w.length > 1 && w !== currentWord).sort((a, b) => b.length - a.length);
-        const uniqueWords = [...new Set(sortedWords)];
-        let linkedText = text;
-        const placeholders = [];
-        uniqueWords.forEach((word, index) => {
-            if (linkedText.includes(word)) {
-                const marker = `__MARKER${index}__`;
-                placeholders.push({ marker, word });
-                linkedText = linkedText.replace(new RegExp(word, 'g'), marker);
-            }
-        });
-        placeholders.forEach(p => {
-            const linkHtml = `<span class="def-link" onclick="handleLinkClick('${p.word}')">${p.word}</span>`;
-            linkedText = linkedText.replace(new RegExp(p.marker, 'g'), linkHtml);
-        });
-        return linkedText;
-    }
-
-    function handleLinkClick(word) {
-        const item = dictData.find(d => d.word_pure === word || d.word === word);
-        if (item) displayDetail(item);
-    }
-
-    function getInitialConsonant(str) {
-        if (!str) return "";
-        const code = str.charCodeAt(0) - 44032;
-        if (code < 0 || code > 11171) return str[0];
-        return consonants[Math.floor(code / 588)];
-    }
-
+    function formatWordSuperscript(word) { return word ? word.replace(/(\d+)/g, '<sup>$1</sup>') : ""; }
+    function toggleExample() { const content = document.getElementById('v-ex-content'); const toggleBtn = document.querySelector('.ex-toggle'); const isHidden = content.style.display === 'none' || content.style.display === ''; content.style.display = isHidden ? 'block' : 'none'; toggleBtn.classList.toggle('active', isHidden); }
+    function createAutoLinks(text, currentWord) { if (!text) return ""; const sortedWords = dictData.map(d => d.word_pure).filter(w => w && w.length > 1 && w !== currentWord).sort((a, b) => b.length - a.length); const uniqueWords = [...new Set(sortedWords)]; let linkedText = text; const placeholders = []; uniqueWords.forEach((word, index) => { if (linkedText.includes(word)) { const marker = `__MARKER${index}__`; placeholders.push({ marker, word }); linkedText = linkedText.replace(new RegExp(word, 'g'), marker); } }); placeholders.forEach(p => { const linkHtml = `<span class="def-link" onclick="handleLinkClick('${p.word}')">${p.word}</span>`; linkedText = linkedText.replace(new RegExp(p.marker, 'g'), linkHtml); }); return linkedText; }
+    function handleLinkClick(word) { const item = dictData.find(d => d.word_pure === word || d.word === word); if (item) displayDetail(item); }
+    function getInitialConsonant(str) { if (!str) return ""; const code = str.charCodeAt(0) - 44032; if (code < 0 || code > 11171) return str[0]; return consonants[Math.floor(code / 588)]; }
+    
     const nav = document.getElementById('consonantNav');
-    ['ㄱ','ㄴ','ㄷ','ㄹ','ㅁ','ㅂ','ㅅ','ㅇ','ㅈ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ'].forEach(c => {
-        const btn = document.createElement('div');
-        btn.className = 'nav-btn'; btn.innerText = c;
-        btn.onclick = () => searchByInitial(c);
-        nav.appendChild(btn);
-    });
+    ['ㄱ','ㄴ','ㄷ','ㄹ','ㅁ','ㅂ','ㅅ','ㅇ','ㅈ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ'].forEach(c => { const btn = document.createElement('div'); btn.className = 'nav-btn'; btn.innerText = c; btn.onclick = () => searchByInitial(c); nav.appendChild(btn); });
 
-    fetch('gyeongju_dict.json').then(res => res.json()).then(data => {
-        dictData = data;
-        initRecommendations();
-    });
+    fetch('gyeongju_dict.json').then(res => res.json()).then(data => { dictData = data; initRecommendations(); });
 
-    function searchByInitial(char) {
-        const filtered = dictData.filter(item => {
-            const target = item.word_pure || item.word;
-            const initial = getInitialConsonant(target);
-            const sets = {'ㄱ':['ㄱ','ㄲ'],'ㄷ':['ㄷ','ㄸ'],'ㅂ':['ㅂ','ㅃ'],'ㅅ':['ㅅ','ㅆ'],'ㅈ':['ㅈ','ㅉ']};
-            return sets[char] ? sets[char].includes(initial) : initial === char;
-        });
-        displayList(filtered);
-    }
-
+    function searchByInitial(char) { const filtered = dictData.filter(item => { const target = item.word_pure || item.word; const initial = getInitialConsonant(target); const sets = {'ㄱ':['ㄱ','ㄲ'],'ㄷ':['ㄷ','ㄸ'],'ㅂ':['ㅂ','ㅃ'],'ㅅ':['ㅅ','ㅆ'],'ㅈ':['ㅈ','ㅉ']}; return sets[char] ? sets[char].includes(initial) : initial === char; }); displayList(filtered); }
     function searchByPosGroup(symbols) { displayList(dictData.filter(item => symbols.includes(item.pos_symbol))); }
     function searchByPosOther() { const main = ['󰃃', '󰂴', '󰃓', '󰂿', '󰃰']; displayList(dictData.filter(item => item.pos_symbol && !main.includes(item.pos_symbol))); }
 
     function displayDetail(item) {
-        currentItem = item; // TTS를 위해 현재 항목 저장
+        currentItem = item;
         document.getElementById('searchList').style.display = 'none';
         document.getElementById('resultView').style.display = 'block';
         document.getElementById('v-word').innerHTML = formatWordSuperscript(item.word || item.word_pure);
-        
         const posText = posMap[item.pos_symbol] || item.pos_symbol || "";
         const pBadge = document.getElementById('v-pos');
-        pBadge.innerText = posText;
-        pBadge.style.display = posText ? 'inline-block' : 'none';
-
-        // 발음 표시 및 발음 행 노출
+        pBadge.innerText = posText; pBadge.style.display = posText ? 'inline-block' : 'none';
         const pronRow = document.getElementById('v-pron-row');
         const pronArea = document.getElementById('v-pron');
-        if (item.pronunciation) {
-            pronArea.innerText = `[${item.pronunciation}]`;
-            pronRow.style.display = 'flex';
-        } else {
-            // 발음이 없어도 TTS는 동작하도록 스피커 아이콘만 보여줄 수도 있지만, 
-            // 데이터 일관성을 위해 발음 정보가 있을 때만 노출합니다.
-            pronRow.style.display = 'none';
-        }
-
+        if (item.pronunciation) { pronArea.innerText = `[${item.pronunciation}]`; pronRow.style.display = 'flex'; } else { pronRow.style.display = 'none'; }
         document.getElementById('v-def').innerHTML = createAutoLinks(item.definition, item.word_pure);
-        
         const exBox = document.getElementById('v-ex-box');
         const exContent = document.getElementById('v-ex-content');
-        const toggleBtn = document.querySelector('.ex-toggle');
-
         if (item.examples && item.examples.length > 0) {
             exBox.style.display = 'block';
-            exContent.innerHTML = item.examples.map(ex => `
-                <div class="ex-item">
-                    ${createAutoLinks(ex.dialect, item.word_pure)}
-                    <span class="ex-std">표준어: ${ex.standard}</span>
-                </div>
-            `).join('');
+            exContent.innerHTML = item.examples.map(ex => `<div class="ex-item">${createAutoLinks(ex.dialect, item.word_pure)}<span class="ex-std">표준어: ${ex.standard}</span></div>`).join('');
             exContent.style.display = 'none';
-            toggleBtn.classList.remove('active');
-        } else {
-            exBox.style.display = 'none';
-        }
-        
+        } else { exBox.style.display = 'none'; }
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     function displayList(items) {
-        const searchList = document.getElementById('searchList');
-        searchList.style.display = 'block';
+        const searchList = document.getElementById('searchList'); searchList.style.display = 'block';
         document.getElementById('resultView').style.display = 'none';
         document.getElementById('resCount').innerText = `${items.length}건`;
-        const list = document.getElementById('listItems');
-        list.innerHTML = '';
+        const list = document.getElementById('listItems'); list.innerHTML = '';
         items.slice(0, 50).forEach(item => {
-            const div = document.createElement('div');
-            div.className = 'list-item';
+            const div = document.createElement('div'); div.className = 'list-item';
             const cleanDef = item.definition.replace(/<[^>]*>?/gm, '').substring(0, 20);
             div.innerHTML = `<b>${formatWordSuperscript(item.word)}</b><span class="brief-text">${cleanDef}...</span>`;
-            div.onclick = () => { displayDetail(item); };
-            list.appendChild(div);
+            div.onclick = () => { displayDetail(item); }; list.appendChild(div);
         });
     }
 
@@ -278,22 +176,14 @@
         const container = document.getElementById('recommendList');
         const recs = [...dictData].sort(() => 0.5 - Math.random()).slice(0, 3);
         recs.forEach(item => {
-            const div = document.createElement('div');
-            div.className = 'rec-card';
+            const div = document.createElement('div'); div.className = 'rec-card';
             div.innerHTML = `<b>${formatWordSuperscript(item.word)}</b> <span style="font-size:12px; color:#999;">${item.definition.substring(0, 10)}...</span>`;
-            div.onclick = () => displayDetail(item);
-            container.appendChild(div);
+            div.onclick = () => displayDetail(item); container.appendChild(div);
         });
     }
 
-    document.getElementById('diaSearch').addEventListener('input', (e) => {
-        const val = e.target.value.trim();
-        if(val) displayList(dictData.filter(i => (i.word_pure && i.word_pure.includes(val)) || (i.word && i.word.includes(val))));
-    });
-    document.getElementById('stdSearch').addEventListener('input', (e) => {
-        const val = e.target.value.trim();
-        if(val) displayList(dictData.filter(i => i.definition && i.definition.includes(val)));
-    });
+    document.getElementById('diaSearch').addEventListener('input', (e) => { const val = e.target.value.trim(); if(val) displayList(dictData.filter(i => (i.word_pure && i.word_pure.includes(val)) || (i.word && i.word.includes(val)))); });
+    document.getElementById('stdSearch').addEventListener('input', (e) => { const val = e.target.value.trim(); if(val) displayList(dictData.filter(i => i.definition && i.definition.includes(val))); });
 </script>
 </body>
 </html>
