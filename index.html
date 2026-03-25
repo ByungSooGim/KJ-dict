@@ -36,8 +36,14 @@
         .word-title sup { font-size: 0.5em; vertical-align: super; margin-left: 1px; }
         .pos-badge { font-size: 13px; background: #eee; padding: 2px 6px; border-radius: 4px; color: #666; margin-left: 6px; }
         
-        /* 발음 스타일 추가 */
-        .pron-area { font-size: 15px; color: #777; margin-top: 4px; font-style: italic; }
+        /* 발음 및 스피커 스타일 */
+        .pron-row { display: flex; align-items: center; gap: 8px; margin-top: 4px; }
+        .pron-area { font-size: 15px; color: #777; font-style: italic; }
+        .speaker-btn { 
+            width: 24px; height: 24px; cursor: pointer; fill: #999; 
+            transition: fill 0.2s; display: flex; align-items: center; 
+        }
+        .speaker-btn:hover { fill: var(--point); }
         
         .def-area { font-size: 20px; line-height: 1.6; margin-top: 12px; word-break: keep-all; }
         .def-link { color: var(--point); text-decoration: underline; cursor: pointer; font-weight: bold; }
@@ -88,7 +94,13 @@
                 <span id="v-word" class="word-title"></span>
                 <span id="v-pos" class="pos-badge"></span>
             </div>
-            <div id="v-pron" class="pron-area"></div>
+            
+            <div id="v-pron-row" class="pron-row" style="display:none;">
+                <div id="v-pron" class="pron-area"></div>
+                <div class="speaker-btn" onclick="speakDialect()">
+                    <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+                </div>
+            </div>
             
             <div id="v-def" class="def-area"></div>
             
@@ -105,10 +117,29 @@
 
 <script>
     let dictData = [];
+    let currentItem = null; // 현재 보고 있는 단어 저장용
     const posMap = { 
         '󰃃': '명사', '󰂿': '동사', '󰃰': '형용사', '󰂴': '대명사', '󰃦': '부사', '󰃥': '접두/접미사', '󰃆': '어미', '󰃲': '관형사', '󰃳': '감탄사', '󰃓': '수사', '󰃫': '참고', '󰃩': '준말' 
     };
     const consonants = ['ㄱ', 'ㄲ', 'ㄴ', 'ㄷ', 'ㄸ', 'ㄹ', 'ㅁ', 'ㅂ', 'ㅃ', 'ㅅ', 'ㅆ', 'ㅇ', 'ㅈ', 'ㅉ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ'];
+
+    // --- TTS 기능 구현 ---
+    function speakDialect() {
+        if (!currentItem || !window.speechSynthesis) return;
+        
+        // 브라우저 TTS 중지 후 새로 시작
+        window.speechSynthesis.cancel();
+        
+        const textToRead = currentItem.word_pure || currentItem.word;
+        const utterance = new SpeechSynthesisUtterance(textToRead);
+        
+        // 경상도 느낌을 위한 설정 (완벽하진 않지만 시도)
+        utterance.lang = 'ko-KR';
+        utterance.rate = 0.8;  // 약간 천천히 읽어 억양을 강조
+        utterance.pitch = 1.1; // 피치를 약간 높여 경상도 특유의 강세를 흉내
+        
+        window.speechSynthesis.speak(utterance);
+    }
 
     function formatWordSuperscript(word) {
         return word ? word.replace(/(\d+)/g, '<sup>$1</sup>') : "";
@@ -181,6 +212,7 @@
     function searchByPosOther() { const main = ['󰃃', '󰂴', '󰃓', '󰂿', '󰃰']; displayList(dictData.filter(item => item.pos_symbol && !main.includes(item.pos_symbol))); }
 
     function displayDetail(item) {
+        currentItem = item; // TTS를 위해 현재 항목 저장
         document.getElementById('searchList').style.display = 'none';
         document.getElementById('resultView').style.display = 'block';
         document.getElementById('v-word').innerHTML = formatWordSuperscript(item.word || item.word_pure);
@@ -190,13 +222,16 @@
         pBadge.innerText = posText;
         pBadge.style.display = posText ? 'inline-block' : 'none';
 
-        // --- [추가] 발음 표시 로직 ---
+        // 발음 표시 및 발음 행 노출
+        const pronRow = document.getElementById('v-pron-row');
         const pronArea = document.getElementById('v-pron');
         if (item.pronunciation) {
             pronArea.innerText = `[${item.pronunciation}]`;
-            pronArea.style.display = 'block';
+            pronRow.style.display = 'flex';
         } else {
-            pronArea.style.display = 'none';
+            // 발음이 없어도 TTS는 동작하도록 스피커 아이콘만 보여줄 수도 있지만, 
+            // 데이터 일관성을 위해 발음 정보가 있을 때만 노출합니다.
+            pronRow.style.display = 'none';
         }
 
         document.getElementById('v-def').innerHTML = createAutoLinks(item.definition, item.word_pure);
