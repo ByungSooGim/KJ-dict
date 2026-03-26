@@ -7,71 +7,100 @@
     <style>
         :root { --point: #a33b3b; --bg: #fdfaf6; --text: #222; }
         body { background: var(--bg); margin: 0; padding: 8px; font-family: 'Malgun Gothic', sans-serif; display: flex; flex-direction: column; align-items: center; color: var(--text); }
-        .container { width: 100%; max-width: 400px; }
+        .container { width: 100%; max-width: 400px; position: relative; }
+
+        /* 로딩 스피너 */
+        #loadingOverlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.9); z-index: 9999; flex-direction: column; align-items: center; justify-content: center; }
+        .spinner { width: 40px; height: 40px; border: 4px solid #f3f3f3; border-top: 4px solid var(--point); border-radius: 50%; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
         /* 헤더 */
         .header { display: flex; align-items: center; justify-content: center; margin: 8px 0 12px; gap: 6px; }
         .logo-svg { width: 24px; height: 24px; fill: var(--point); }
         .logo-text { font-size: 18px; font-weight: bold; color: var(--point); }
+
         /* 검색창 2분할 */
         .search-row { display: flex; gap: 6px; margin-bottom: 10px; width: 100%; }
         .search-row input { flex: 1; width: 50%; padding: 12px 8px; border: 1.5px solid #ddd; border-radius: 8px; font-size: 14px; box-sizing: border-box; background: #fff; }
+
         /* 자음 버튼 */
         .nav-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; margin-bottom: 12px; padding: 5px; background: #fff; border-radius: 10px; border: 1px solid #eee; }
         .nav-btn { aspect-ratio: 1/1; display: flex; align-items: center; justify-content: center; background: #fdfdfd; border: 1px solid #eee; border-radius: 6px; font-size: 20px; font-weight: bold; cursor: pointer; color: #444; }
+
         /* 품사 버튼 */
         .pos-row { display: flex; gap: 5px; margin-bottom: 15px; }
         .pos-btn { flex: 1; padding: 10px 2px; background: #fff; border: 1px solid #ddd; border-radius: 8px; cursor: pointer; text-align: center; font-size: 17px; font-weight: bold; color: #555; display: flex; flex-direction: column; justify-content: center; height: 50px; }
         .pos-btn span { font-size: 10px; font-weight: normal; color: #999; margin-top: 2px; }
+
         /* 결과 목록 */
         #searchList { margin-bottom: 10px; display: none; background: #fff; border-radius: 8px; border: 1px solid #ddd; width: 100%; }
-        .list-item { padding: 12px 15px; border-bottom: 1px solid #eee; font-size: 17px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .list-item { padding: 12px 15px; border-bottom: 1px solid #eee; font-size: 17px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer; }
         .list-item b { color: #000; }
         .list-item span.brief-text { font-size: 13px; color: #999; font-weight: normal; margin-left: 8px; }
-        /* 상세 결과 및 자동 링크 스타일 */
+
+        /* 상세 결과 */
         #resultView { width: 100%; display: none; margin-bottom: 15px; }
         .result-card { background: white; padding: 18px; border-radius: 12px; border: 2px solid var(--point); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
         .word-title { font-size: 30px; font-weight: bold; color: var(--point); }
         .word-title sup { font-size: 0.5em; vertical-align: super; margin-left: 1px; }
         .pos-badge { font-size: 13px; background: #eee; padding: 2px 6px; border-radius: 4px; color: #666; margin-left: 6px; }
-        /* 스피커 스타일 */
+
+        /* 발음 및 스피커 */
         .pron-row { display: flex; align-items: center; gap: 8px; margin-top: 4px; }
         .pron-area { font-size: 15px; color: #777; font-style: italic; }
         .speaker-btn { width: 24px; height: 24px; cursor: pointer; fill: #999; transition: fill 0.2s; display: flex; align-items: center; }
         .speaker-btn:hover { fill: var(--point); }
+
         .def-area { font-size: 20px; line-height: 1.6; margin-top: 12px; word-break: keep-all; }
-        /* 뜻풀이 내 링크 스타일 */
         .def-link { color: var(--point); text-decoration: underline; cursor: pointer; font-weight: bold; }
+
+        /* 예문 */
         .ex-container { margin-top: 15px; border-top: 1px dashed #ddd; padding-top: 10px; }
         .ex-toggle { display: inline-flex; align-items: center; color: #777; font-size: 14px; font-weight: bold; cursor: pointer; padding: 5px 0; }
-        .ex-toggle::after { content: ' ▼'; font-size: 10px; margin-left: 4px; transition: 0.3s; }
+        .ex-toggle::after { content: ' ▼'; font-size: 10px; margin-left: 4px; }
         .ex-toggle.active::after { content: ' ▲'; }
         .ex-content { display: none; margin-top: 8px; }
         .ex-item { background: #f9f9f9; padding: 12px; border-radius: 8px; margin-bottom: 8px; border-left: 3px solid #ccc; font-size: 16px; }
         .ex-std { display: block; font-size: 13px; color: #888; margin-top: 5px; border-top: 1px dotted #eee; padding-top: 5px; }
+
         /* 하단 추천 */
         .rec-container { display: flex; flex-direction: column; gap: 5px; margin-bottom: 15px; width: 100%; }
-        .rec-card { background: #fff; padding: 10px 15px; border-radius: 8px; border: 1px solid #eee; font-size: 16px; display: flex; justify-content: space-between; align-items: center; }
+        .rec-card { background: #fff; padding: 10px 15px; border-radius: 8px; border: 1px solid #eee; font-size: 16px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
+        
         .footer-info { font-size: 10px; color: #ccc; text-align: center; padding: 10px; }
     </style>
 </head>
 <body>
+
+<div id="loadingOverlay">
+    <div class="spinner"></div>
+    <p style="margin-top:10px; font-size:14px; color:var(--point); font-weight:bold;">데이터를 불러오는 중...</p>
+</div>
 
 <div class="container">
     <div class="header">
         <svg class="logo-svg" viewBox="0 0 100 100"><path d="M35 80 L65 80 M38 70 L62 70 M40 25 L60 25 L63 70 L37 70 Z" fill="none" stroke="currentColor" stroke-width="5"/><rect x="47" y="42" width="6" height="8" fill="currentColor"/></svg>
         <div class="logo-text">경주말 방언 사전</div>
     </div>
+
     <div class="search-row">
         <input type="text" id="diaSearch" placeholder="방언 검색">
         <input type="text" id="stdSearch" placeholder="표준어 검색">
     </div>
+
     <div id="consonantNav" class="nav-grid"></div>
+
     <div class="pos-row">
         <div class="pos-btn" onclick="searchByPosGroup(['󰃃', '󰂽', '󰃓'])">체언<span>(대/명사,수사)</span></div>
         <div class="pos-btn" onclick="searchByPosGroup(['󰂿', '󰃰'])">용언<span>(동/형용사)</span></div>
         <div class="pos-btn" onclick="searchByPosOther()">기타<span>(부사/어미 등)</span></div>
     </div>
-    <div id="searchList"><div id="resCount" style="padding:6px; font-size:11px; color:#999; text-align:center; border-bottom:1px solid #f5f5f5;"></div><div id="listItems"></div></div>
+
+    <div id="searchList">
+        <div id="resCount" style="padding:6px; font-size:11px; color:#999; text-align:center; border-bottom:1px solid #f5f5f5;"></div>
+        <div id="listItems"></div>
+    </div>
+
     <div id="resultView">
         <div class="result-card">
             <div style="display: flex; align-items: baseline; flex-wrap: wrap;">
@@ -91,6 +120,7 @@
             </div>
         </div>
     </div>
+
     <div class="rec-container" id="recommendList"></div>
     <div class="footer-info">데이터 저작권: 편저자 | 소스코드: 비영리 공개 정책</div>
 </div>
@@ -98,85 +128,112 @@
 <script>
     let dictData = [];
     let currentItem = null;
+    let searchTimer;
+
+    const DB_NAME = "GyeongjuDictDB";
+    const STORE_NAME = "dictionary";
+    const DATA_VERSION = "20260326_v1"; // 업데이트 시 이 값을 변경하세요
+
     const posMap = { '󰃃': '명사', '󰂿': '동사', '󰃰': '형용사', '󰂽': '대명사', '󰃌': '부사', '󰃲': '활용어미', '󰃥': '접사', '󰃆': '어미', '󰂴': '관형사', '󰂳': '감탄사', '󰃓': '수사', '󰃫': '참고', '󰃩': '준말' };
     const consonants = ['ㄱ', 'ㄲ', 'ㄴ', 'ㄷ', 'ㄸ', 'ㄹ', 'ㅁ', 'ㅂ', 'ㅃ', 'ㅅ', 'ㅆ', 'ㅇ', 'ㅈ', 'ㅉ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ'];
 
-    // --- 고도화된 TTS 로직 ---
-    function speakPronunciation() {
-        if (!currentItem || !currentItem.pronunciation || !window.speechSynthesis) return;
-        window.speechSynthesis.cancel();
+    // [1] 데이터 로드 및 캐싱 로직
+    async function init() {
+        const loading = document.getElementById('loadingOverlay');
+        loading.style.display = 'flex';
 
-        let rawPron = currentItem.pronunciation;
-        
-        // 1. 장음 처리: 같은 모음이 연달아 있으면 붙여서 길게 (가아 -> 가--)
-        // TTS 엔진이 '-'나 ' '를 인식하도록 변환
-        let processed = rawPron.replace(/([ㅏ-ㅣ])\1/g, "$1ー"); 
+        const db = await new Promise((res) => {
+            const req = indexedDB.open(DB_NAME, 1);
+            req.onupgradeneeded = (e) => e.target.result.createObjectStore(STORE_NAME);
+            req.onsuccess = (e) => res(e.target.result);
+        });
 
-        // 2. 강세 처리: /'/ 표시가 있으면 해당 부분 피치 올림 시뮬레이션
-        // 브라우저 TTS는 문장 단위 피치 조절만 가능하므로, 
-        // 강세 기호 근처에서 아주 짧은 휴지기를 주거나 톤을 높이는 방식으로 유도
-        const utterance = new SpeechSynthesisUtterance(processed.replace(/'/g, ""));
-        
-        utterance.lang = 'ko-KR';
-        
-        // 강세 기호(')가 포함된 경우 피치와 강도를 조절
-        if (rawPron.includes("'")) {
-            utterance.pitch = 1.4; // 강세가 있을 때 톤을 더 높임
-            utterance.rate = 0.7;  // 강세를 표현하기 위해 더 천천히
+        const tx = db.transaction(STORE_NAME, "readonly");
+        const localVer = await new Promise(res => {
+            const req = tx.objectStore(STORE_NAME).get("data_version");
+            req.onsuccess = () => res(req.result);
+        });
+
+        const cached = await new Promise(res => {
+            const req = db.transaction(STORE_NAME, "readonly").objectStore(STORE_NAME).get("full_data");
+            req.onsuccess = () => res(req.result);
+        });
+
+        if (cached && localVer === DATA_VERSION) {
+            dictData = cached;
         } else {
-            utterance.pitch = 1.0;
-            utterance.rate = 0.8;
+            try {
+                const response = await fetch('gyeongju_dict.json');
+                dictData = await response.json();
+                const saveTx = db.transaction(STORE_NAME, "readwrite");
+                saveTx.objectStore(STORE_NAME).put(dictData, "full_data");
+                saveTx.objectStore(STORE_NAME).put(DATA_VERSION, "data_version");
+            } catch (err) {
+                alert("데이터 로드 실패.");
+            }
         }
-
-        window.speechSynthesis.speak(utterance);
+        initRecommendations();
+        loading.style.display = 'none';
     }
 
-    function formatWordSuperscript(word) { return word ? word.replace(/(\d+)/g, '<sup>$1</sup>') : ""; }
-    function toggleExample() { const content = document.getElementById('v-ex-content'); const toggleBtn = document.querySelector('.ex-toggle'); const isHidden = content.style.display === 'none' || content.style.display === ''; content.style.display = isHidden ? 'block' : 'none'; toggleBtn.classList.toggle('active', isHidden); }
-    // --- 수정된 createAutoLinks 함수 ---
-    function createAutoLinks(text, currentWord) {
-        if (!text) return "";
-
-        // 1. 링크를 허용할 기호(≒, ☞, ⇔) 위치와 그 뒤 마침표(.)까지의 구간을 찾음
-        const targetRegex = /([≒☞⇔][^.]*\.)/g;
-        
-        return text.replace(targetRegex, (match) => {
-            // 2. 찾은 구간 내에서 기호를 제외한 나머지 텍스트에서 '/'로 구분된 단어들 추출
-            const symbol = match[0]; // 기호 보관
-            const content = match.substring(1); // 기호 이후 내용
-            
-            // 3. '/' 기준으로 쪼개서 각 단어가 사전에 있는지 확인 후 링크 생성
-            const linkedContent = content.split('/').map(part => {
-                const trimmedPart = part.trim().replace(/\./g, ''); // 마침표 제거 및 공백 정리
-                
-                // 사전 데이터에서 일치하는 단어 찾기
-                const exists = dictData.some(d => d.word_pure === trimmedPart && d.word_pure !== currentWord);
-                
-                if (exists) {
-                    return `<span class="def-link" onclick="handleLinkClick('${trimmedPart}')">${trimmedPart}</span>`;
-                }
-                return part; // 사전에 없으면 그대로 반환
-            }).join('/');
-
-            // 기호와 링크가 적용된 내용을 다시 합쳐서 반환 (마침표는 원본 유지)
-            return symbol + linkedContent;
+    // [2] 검색 정렬 로직 (정확도 우선)
+    function sortResults(results, query) {
+        return results.sort((a, b) => {
+            const aW = a.word_pure || "";
+            const bW = b.word_pure || "";
+            if (aW === query && bW !== query) return -1;
+            if (bW === query && aW !== query) return 1;
+            if (aW.startsWith(query) && !bW.startsWith(query)) return -1;
+            if (bW.startsWith(query) && !aW.startsWith(query)) return 1;
+            return aW.length - bW.length;
         });
     }
 
-    
-    function handleLinkClick(word) { const item = dictData.find(d => d.word_pure === word || d.word === word); if (item) displayDetail(item); }
-    function getInitialConsonant(str) { if (!str) return ""; const code = str.charCodeAt(0) - 44032; if (code < 0 || code > 11171) return str[0]; return consonants[Math.floor(code / 588)]; }
-    
-    const nav = document.getElementById('consonantNav');
-    ['ㄱ','ㄴ','ㄷ','ㄹ','ㅁ','ㅂ','ㅅ','ㅇ','ㅈ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ'].forEach(c => { const btn = document.createElement('div'); btn.className = 'nav-btn'; btn.innerText = c; btn.onclick = () => searchByInitial(c); nav.appendChild(btn); });
+    // [3] 자동 링크 생성 (기호 구간 한정)
+    function createAutoLinks(text, currentWord) {
+        if (!text) return "";
+        const targetRegex = /([≒☞⇔][^.]*\.)/g;
+        return text.replace(targetRegex, (match) => {
+            const symbol = match[0];
+            const content = match.substring(1);
+            const linked = content.split('/').map(part => {
+                const trimmed = part.trim().replace(/\./g, '');
+                const target = dictData.find(d => d.word_pure === trimmed && d.word_pure !== currentWord);
+                if (target) {
+                    return `<span class="def-link" onclick="handleLinkClick('${trimmed}')">${trimmed}</span>`;
+                }
+                return part;
+            }).join('/');
+            return symbol + linked;
+        });
+    }
 
-    fetch('gyeongju_dict.json').then(res => res.json()).then(data => { dictData = data; initRecommendations(); });
+    function handleLinkClick(word) {
+        const item = dictData.find(d => d.word_pure === word || d.word === word);
+        if (item) displayDetail(item);
+    }
 
-    function searchByInitial(char) { const filtered = dictData.filter(item => { const target = item.word_pure || item.word; const initial = getInitialConsonant(target); const sets = {'ㄱ':['ㄱ','ㄲ'],'ㄷ':['ㄷ','ㄸ'],'ㅂ':['ㅂ','ㅃ'],'ㅅ':['ㅅ','ㅆ'],'ㅈ':['ㅈ','ㅉ']}; return sets[char] ? sets[char].includes(initial) : initial === char; }); displayList(filtered); }
-    function searchByPosGroup(symbols) { displayList(dictData.filter(item => symbols.includes(item.pos_symbol))); }
-    function searchByPosOther() { const main = ['󰃃', '󰂽', '󰃓', '󰂿', '󰃰']; displayList(dictData.filter(item => item.pos_symbol && !main.includes(item.pos_symbol))); }
+    function formatWordSuperscript(word) { return word ? word.replace(/(\d+)/g, '<sup>$1</sup>') : ""; }
     
-// --- 수정된 displayDetail 내 예문 처리 부분 ---
+    function speakPronunciation() {
+        if (!currentItem || !currentItem.pronunciation || !window.speechSynthesis) return;
+        window.speechSynthesis.cancel();
+        let processed = currentItem.pronunciation.replace(/([ㅏ-ㅣ])\1/g, "$1ー"); 
+        const utterance = new SpeechSynthesisUtterance(processed.replace(/'/g, ""));
+        utterance.lang = 'ko-KR';
+        utterance.pitch = currentItem.pronunciation.includes("'") ? 1.4 : 1.0;
+        utterance.rate = 0.8;
+        window.speechSynthesis.speak(utterance);
+    }
+
+    function toggleExample() {
+        const content = document.getElementById('v-ex-content');
+        const toggleBtn = document.querySelector('.ex-toggle');
+        const isHidden = content.style.display === 'none' || content.style.display === '';
+        content.style.display = isHidden ? 'block' : 'none';
+        toggleBtn.classList.toggle('active', isHidden);
+    }
+
     function displayDetail(item) {
         currentItem = item;
         document.getElementById('searchList').style.display = 'none';
@@ -185,36 +242,84 @@
         const posText = posMap[item.pos_symbol] || item.pos_symbol || "";
         const pBadge = document.getElementById('v-pos');
         pBadge.innerText = posText; pBadge.style.display = posText ? 'inline-block' : 'none';
-        const pronRow = document.getElementById('v-pron-row');
-        const pronArea = document.getElementById('v-pron');
-        if (item.pronunciation) { pronArea.innerText = `[${item.pronunciation}]`; pronRow.style.display = 'flex'; } else { pronRow.style.display = 'none'; }
         
-        // 뜻풀이에는 수정된 링크 로직 적용
+        const pronRow = document.getElementById('v-pron-row');
+        if (item.pronunciation) { document.getElementById('v-pron').innerText = `[${item.pronunciation}]`; pronRow.style.display = 'flex'; }
+        else { pronRow.style.display = 'none'; }
+        
         document.getElementById('v-def').innerHTML = createAutoLinks(item.definition, item.word_pure);
         
         const exBox = document.getElementById('v-ex-box');
         const exContent = document.getElementById('v-ex-content');
         if (item.examples && item.examples.length > 0) {
             exBox.style.display = 'block';
-            // 예문(ex.dialect)에는 createAutoLinks를 호출하지 않고 원본 텍스트만 출력
             exContent.innerHTML = item.examples.map(ex => `<div class="ex-item">${ex.dialect}<span class="ex-std">표준어: ${ex.standard}</span></div>`).join('');
             exContent.style.display = 'none';
+            document.querySelector('.ex-toggle').classList.remove('active');
         } else { exBox.style.display = 'none'; }
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
-    
+
     function displayList(items) {
-        const searchList = document.getElementById('searchList'); searchList.style.display = 'block';
+        const searchList = document.getElementById('searchList');
+        searchList.style.display = 'block';
         document.getElementById('resultView').style.display = 'none';
         document.getElementById('resCount').innerText = `${items.length}건`;
-        const list = document.getElementById('listItems'); list.innerHTML = '';
+        const list = document.getElementById('listItems');
+        list.innerHTML = '';
         items.slice(0, 50).forEach(item => {
-            const div = document.createElement('div'); div.className = 'list-item';
+            const div = document.createElement('div');
+            div.className = 'list-item';
             const cleanDef = item.definition.replace(/<[^>]*>?/gm, '').substring(0, 20);
             div.innerHTML = `<b>${formatWordSuperscript(item.word)}</b><span class="brief-text">${cleanDef}...</span>`;
-            div.onclick = () => { displayDetail(item); }; list.appendChild(div);
+            div.onclick = () => displayDetail(item);
+            list.appendChild(div);
         });
     }
+
+    function getInitialConsonant(str) {
+        if (!str) return "";
+        const code = str.charCodeAt(0) - 44032;
+        if (code < 0 || code > 11171) return str[0];
+        return consonants[Math.floor(code / 588)];
+    }
+
+    function searchByInitial(char) {
+        const filtered = dictData.filter(item => {
+            const target = item.word_pure || item.word;
+            const initial = getInitialConsonant(target);
+            const sets = {'ㄱ':['ㄱ','ㄲ'],'ㄷ':['ㄷ','ㄸ'],'ㅂ':['ㅂ','ㅃ'],'ㅅ':['ㅅ','ㅆ'],'ㅈ':['ㅈ','ㅉ']};
+            return sets[char] ? sets[char].includes(initial) : initial === char;
+        });
+        displayList(filtered);
+    }
+
+    function searchByPosGroup(symbols) { displayList(dictData.filter(item => symbols.includes(item.pos_symbol))); }
+    function searchByPosOther() { displayList(dictData.filter(item => item.pos_symbol && !['󰃃', '󰂽', '󰃓', '󰂿', '󰃰'].includes(item.pos_symbol))); }
+
+    function debounceSearch(type, val) {
+        clearTimeout(searchTimer);
+        searchTimer = setTimeout(() => {
+            if (!val) return;
+            let res = [];
+            if (type === 'dia') {
+                res = dictData.filter(i => (i.word_pure && i.word_pure.includes(val)) || (i.word && i.word.includes(val)));
+                res = sortResults(res, val);
+            } else {
+                res = dictData.filter(i => i.definition && i.definition.includes(val));
+            }
+            displayList(res);
+        }, 250);
+    }
+
+    document.getElementById('diaSearch').addEventListener('input', (e) => debounceSearch('dia', e.target.value.trim()));
+    document.getElementById('stdSearch').addEventListener('input', (e) => debounceSearch('std', e.target.value.trim()));
+
+    const nav = document.getElementById('consonantNav');
+    ['ㄱ','ㄴ','ㄷ','ㄹ','ㅁ','ㅂ','ㅅ','ㅇ','ㅈ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ'].forEach(c => {
+        const btn = document.createElement('div'); btn.className = 'nav-btn'; btn.innerText = c;
+        btn.onclick = () => searchByInitial(c); nav.appendChild(btn);
+    });
 
     function initRecommendations() {
         const container = document.getElementById('recommendList');
@@ -226,8 +331,7 @@
         });
     }
 
-    document.getElementById('diaSearch').addEventListener('input', (e) => { const val = e.target.value.trim(); if(val) displayList(dictData.filter(i => (i.word_pure && i.word_pure.includes(val)) || (i.word && i.word.includes(val)))); });
-    document.getElementById('stdSearch').addEventListener('input', (e) => { const val = e.target.value.trim(); if(val) displayList(dictData.filter(i => i.definition && i.definition.includes(val))); });
+    init();
 </script>
 </body>
 </html>
