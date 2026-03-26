@@ -67,7 +67,12 @@
         .rec-container { display: flex; flex-direction: column; gap: 5px; margin-bottom: 15px; width: 100%; }
         .rec-card { background: #fff; padding: 10px 15px; border-radius: 8px; border: 1px solid #eee; font-size: 16px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
         
-        .footer-info { font-size: 10px; color: #ccc; text-align: center; padding: 10px; }
+        /* 오류 제보 버튼 */
+        .report-btn { margin-top: 20px; display: inline-block; padding: 8px 12px; font-size: 13px; color: #888; border: 1px solid #ddd; border-radius: 6px; cursor: pointer; text-decoration: none; transition: 0.2s; }
+        .report-btn:hover { background: #f9f9f9; color: var(--point); border-color: var(--point); }
+
+        .footer-info { font-size: 10px; color: #ccc; text-align: center; padding: 10px; line-height: 1.6; }
+        .copyright-warning { color: #aaa; font-weight: bold; margin-top: 5px; display: block; }
     </style>
 </head>
 <body>
@@ -84,7 +89,7 @@
     </div>
 
     <div class="search-row">
-        <input type="text" id="diaSearch" placeholder="방언 검색">
+        <input type="text" id="diaSearch" placeholder="방언 검색 (고어 포함)">
         <input type="text" id="stdSearch" placeholder="표준어 검색">
     </div>
 
@@ -114,15 +119,20 @@
                 </div>
             </div>
             <div id="v-def" class="def-area"></div>
+            <a id="reportMail" class="report-btn">⚠️ 오류 제보하기</a>
+            <div id="v-def" class="def-area"></div>
             <div id="v-ex-box" class="ex-container" style="display:none;">
                 <div class="ex-toggle" onclick="toggleExample()">📜 예문 보기</div>
                 <div id="v-ex-content" class="ex-content"></div>
             </div>
+
         </div>
     </div>
 
     <div class="rec-container" id="recommendList"></div>
-    <div class="footer-info">데이터 저작권: 편저자 최명옥ㆍ김주석 | 소스코드: 비영리 공개 정책</div>
+    <div class="footer-info">
+        데이터 저작권: 편저자 최명옥ㆍ김주석 | 소스코드: 비영리 공개 정책
+       <span class="copyright-warning">※ 데이터 무단 크롤링 및 무단 복제를 엄격히 금지합니다.</span></div>
 </div>
 
 <script>
@@ -132,11 +142,15 @@
 
     const DB_NAME = "GyeongjuDictDB";
     const STORE_NAME = "dictionary";
-    const DATA_VERSION = "20260326_v1"; // 업데이트 시 이 값을 변경하세요
+    const DATA_VERSION = "20260326_v2"; // 업데이트 시 이 값을 변경하세요
 
     const posMap = { '󰃃': '명사', '󰂿': '동사', '󰃰': '형용사', '󰂽': '대명사', '󰃌': '부사', '󰃲': '활용어미', '󰃥': '접사', '󰃆': '어미', '󰂴': '관형사', '󰂳': '감탄사', '󰃓': '수사', '󰃫': '참고', '󰃩': '준말' };
     const consonants = ['ㄱ', 'ㄲ', 'ㄴ', 'ㄷ', 'ㄸ', 'ㄹ', 'ㅁ', 'ㅂ', 'ㅃ', 'ㅅ', 'ㅆ', 'ㅇ', 'ㅈ', 'ㅉ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ'];
 
+    // 고어 자모 분해 로직 (NFD 기반)
+    function decomposeHangul(str) {
+        return str.normalize('NFD').replace(/[\u0300-\u036f]/g, ""); 
+    }
     // [1] 데이터 로드 및 캐싱 로직
     async function init() {
         const loading = document.getElementById('loadingOverlay');
@@ -189,6 +203,28 @@
         });
     }
 
+    // 검색 최적화: 고어 분해 비교 포함
+    function debounceSearch(type, val) {
+        clearTimeout(searchTimer);
+        searchTimer = setTimeout(() => {
+            if (!val) return;
+            const searchDecomposed = decomposeHangul(val);
+            let res = [];
+            
+            if (type === 'dia') {
+                res = dictData.filter(i => {
+                    const word = i.word_pure || i.word || "";
+                    return decomposeHangul(word).includes(searchDecomposed);
+                });
+                // 정확도 정렬
+                res.sort((a, b) => (a.word_pure || "").length - (b.word_pure || "").length);
+            } else {
+                res = dictData.filter(i => (i.definition || "").includes(val));
+            }
+            displayList(res);
+        }, 250);
+    }
+    
     // [3] 자동 링크 생성 (기호 구간 한정)
     function createAutoLinks(text, currentWord) {
         if (!text) return "";
@@ -249,6 +285,12 @@
         
         document.getElementById('v-def').innerHTML = createAutoLinks(item.definition, item.word_pure);
         
+        // [오류 제보] 이메일 링크 동적 생성
+        const subject = encodeURIComponent(`[경주말사전 오류제보] ${item.word_pure}`);
+        const body = encodeURIComponent(`표제어: ${item.word_pure}\n뜻풀이: ${item.definition}\n\n내용: 이곳에 수정 내용을 적어주세요.`);
+        document.getElementById('reportMail').href = `mailto:bsgim5@gmail.com?subject=${subject}&body=${body}`;
+        
+        // 예문 
         const exBox = document.getElementById('v-ex-box');
         const exContent = document.getElementById('v-ex-content');
         if (item.examples && item.examples.length > 0) {
@@ -257,6 +299,7 @@
             exContent.style.display = 'none';
             document.querySelector('.ex-toggle').classList.remove('active');
         } else { exBox.style.display = 'none'; }
+        
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
@@ -294,8 +337,19 @@
         displayList(filtered);
     }
 
-    function searchByPosGroup(symbols) { displayList(dictData.filter(item => symbols.includes(item.pos_symbol))); }
-    function searchByPosOther() { displayList(dictData.filter(item => item.pos_symbol && !['󰃃', '󰂽', '󰃓', '󰂿', '󰃰'].includes(item.pos_symbol))); }
+    // 품사 그룹 검색 (랜덤 정렬 추가)
+    function searchByPosGroup(symbols) {
+        let filtered = dictData.filter(item => symbols.includes(item.pos_symbol));
+        filtered.sort(() => Math.random() - 0.5); // [요청] 랜덤 정렬
+        displayList(filtered);
+    }
+    
+    
+    function searchByPosOther() {
+        let filtered = dictData.filter(item => item.pos_symbol && !['󰃃', '󰂽', '󰃓', '󰂿', '󰃰'].includes(item.pos_symbol));
+        filtered.sort(() => Math.random() - 0.5);
+        displayList(filtered);
+    }
 
     function debounceSearch(type, val) {
         clearTimeout(searchTimer);
