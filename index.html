@@ -37,7 +37,12 @@
         .list-item { padding: 12px 15px; border-bottom: 1px solid #eee; font-size: 17px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer; }
         .list-item b { color: #000; }
         .list-item span.brief-text { font-size: 13px; color: #999; font-weight: normal; margin-left: 8px; }
-
+        
+/* 페이지네이션 스타일 */
+.pagination { display: flex; justify-content: center; gap: 8px; margin: 15px 0; flex-wrap: wrap; }
+.page-btn { padding: 5px 10px; border: 1px solid #ddd; border-radius: 4px; background: #fff; cursor: pointer; font-size: 13px; }
+.page-btn.active { background: var(--point); color: #fff; border-color: var(--point); }
+        
         /* 상세 결과 */
         #resultView { width: 100%; display: none; margin-bottom: 15px; }
         .result-card { background: white; padding: 18px; border-radius: 12px; border: 2px solid var(--point); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
@@ -304,22 +309,65 @@
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    function displayList(items) {
-        const searchList = document.getElementById('searchList');
-        searchList.style.display = 'block';
-        document.getElementById('resultView').style.display = 'none';
-        document.getElementById('resCount').innerText = `${items.length}건`;
-        const list = document.getElementById('listItems');
-        list.innerHTML = '';
-        items.slice(0, 50).forEach(item => {
-            const div = document.createElement('div');
-            div.className = 'list-item';
-            const cleanDef = item.definition.replace(/<[^>]*>?/gm, '').substring(0, 20);
-            div.innerHTML = `<b>${formatWordSuperscript(item.word)}</b><span class="brief-text">${cleanDef}...</span>`;
-            div.onclick = () => displayDetail(item);
-            list.appendChild(div);
-        });
-    }
+
+
+	let currentPage = 1;
+	const itemsPerPage = 50;
+	let filteredData = []; // 검색된 전체 데이터를 저장할 변수
+	
+	function displayList(items, page = 1) {
+	    filteredData = items; // 전체 결과 저장
+	    currentPage = page;
+	    
+	    const searchList = document.getElementById('searchList');
+	    searchList.style.display = 'block';
+	    document.getElementById('resultView').style.display = 'none';
+	    document.getElementById('resCount').innerText = `${items.length}건 (현재 ${page}페이지)`;
+	
+	    const list = document.getElementById('listItems');
+	    list.innerHTML = '';
+	
+	    // 페이지별 데이터 추출
+	    const start = (page - 1) * itemsPerPage;
+	    const end = start + itemsPerPage;
+	    const paginatedItems = items.slice(start, end);
+	
+	    paginatedItems.forEach(item => {
+	        const div = document.createElement('div');
+	        div.className = 'list-item';
+	        const cleanDef = item.definition.replace(/<[^>]*>?/gm, '').substring(0, 20);
+	        div.innerHTML = `<b>${formatWordSuperscript(item.word)}</b><span class="brief-text">${cleanDef}...</span>`;
+	        div.onclick = () => displayDetail(item);
+	        list.appendChild(div);
+	    });
+	
+	    renderPagination(items.length);
+	}
+	
+	function renderPagination(totalItems) {
+	    const totalPages = Math.ceil(totalItems / itemsPerPage);
+	    if (totalPages <= 1) return; // 1페이지뿐이면 표시 안 함
+	
+	    const nav = document.createElement('div');
+	    nav.className = 'pagination';
+	    
+	    // 최대 5개 페이지씩만 보여주기 (모바일 대응)
+	    let startPage = Math.max(1, currentPage - 2);
+	    let endPage = Math.min(totalPages, startPage + 4);
+	    
+	    for (let i = startPage; i <= endPage; i++) {
+	        const btn = document.createElement('button');
+	        btn.className = `page-btn ${i === currentPage ? 'active' : ''}`;
+	        btn.innerText = i;
+	        btn.onclick = () => {
+	            displayList(filteredData, i);
+	            window.scrollTo(0, 0); // 페이지 변경 시 상단으로
+	        };
+	        nav.appendChild(btn);
+	    }
+	    document.getElementById('listItems').appendChild(nav);
+	}
+            
 
     function getInitialConsonant(str) {
         if (!str) return "";
