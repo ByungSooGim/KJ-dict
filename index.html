@@ -267,7 +267,7 @@
     
     // 1. 장음 처리: '가아' 처럼 같은 모음 + 초성 'ㅇ'인 경우
     // TTS는 기호보다 글자를 한 번 더 써주는 것이 가장 확실하게 길게 읽습니다.
-    // '가아' -> '가아아' (살짝 더 길게 유도)
+    // '가아' -> '가아' (살짝 더 길게 유도)
     let processed = raw.replace(/([가-힣])([아-힣])/g, (match, p1, p2) => {
         const c1 = p1.charCodeAt(0) - 0xAC00;
         const c2 = p2.charCodeAt(0) - 0xAC00;
@@ -277,7 +277,7 @@
         const jung2 = Math.floor((c2 % 588) / 28);
 
         if (jong1 === 0 && cho2 === 11 && jung1 === jung2) {
-            return p1 + p2 + p2; // 글자를 반복하여 물리적으로 길게 만듦
+            return p1 + p2; // 글자를 반복하여 물리적으로 길게 만듦
         }
         return match;
     });
