@@ -262,9 +262,9 @@
     window.speechSynthesis.cancel();
 
     // 1. 장음 처리 (기존 로직 유지)
-    let processed = currentItem.pronunciation.replace(/([ㅏ-ㅣ])\1/g, "$1ー");
-
-    // 2. 음성 객체 생성 (여기서 바로 processed를 넣습니다. '를 미리 지우지 않음)
+    let processed = currentItem.pronunciation.replace(/([ㅏ-ㅣ])ㅇ\1/g, "$1ー");
+    
+	// 2. 음성 객체 생성 (여기서 바로 processed를 넣습니다. '를 미리 지우지 않음)
     const utterance = new SpeechSynthesisUtterance(processed);
     
     utterance.lang = 'ko-KR';
