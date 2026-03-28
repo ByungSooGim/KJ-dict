@@ -153,7 +153,7 @@
             // 기호 제거 후, 마지막 강세가 있다면 쉼표(,)를 추가하여 억양을 변화시킴
             let textToSpeak = raw // .replace(/['′]/g, "");
             if (endsWithAccent) {
-                textToSpeak += "?"; 
+                textToSpeak += "으"; 
             }
             // 2. 강세(Accent) 여부 확인    // 텍스트 내에 '′' 기호가 하나라도 포함되어 있으면 강세 모드로 판정
             const hasAccent = /['′]/.test(raw);
