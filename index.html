@@ -256,17 +256,31 @@
     }
 
     function formatWordSuperscript(word) { return word ? word.replace(/(\d+)/g, '<sup>$1</sup>') : ""; }
+
+	function speakPronunciation() {
+    if (!currentItem || !currentItem.pronunciation || !window.speechSynthesis) return;
+    window.speechSynthesis.cancel();
+
+    // 1. 장음 처리 (기존 로직 유지)
+    let processed = currentItem.pronunciation.replace(/([ㅏ-ㅣ])\1/g, "$1ー");
+
+    // 2. 음성 객체 생성 (여기서 바로 processed를 넣습니다. '를 미리 지우지 않음)
+    const utterance = new SpeechSynthesisUtterance(processed);
     
-    function speakPronunciation() {
-        if (!currentItem || !currentItem.pronunciation || !window.speechSynthesis) return;
-        window.speechSynthesis.cancel();
-        let processed = currentItem.pronunciation.replace(/([ㅏ-ㅣ])\1/g, "$1ー"); 
-        const utterance = new SpeechSynthesisUtterance(processed.replace(/'/g, ""));
-        utterance.lang = 'ko-KR';
-        utterance.pitch = currentItem.pronunciation.includes("′") ? 1.4 : 1.0;
-        utterance.rate = 0.8;
-        window.speechSynthesis.speak(utterance);
+    utterance.lang = 'ko-KR';
+    utterance.rate = 0.8;
+
+    // 3. 강조 로직: 문자열에 ' (작은따옴표) 또는 ′ (강조기호)가 포함되어 있는지 확인
+    // 포함되어 있다면 목소리 톤(Pitch)을 높여 강하게 읽는 효과를 줍니다.
+    if (processed.includes("'") || processed.includes("′")) {
+        utterance.pitch = 1.4; 
+    } else {
+        utterance.pitch = 1.0;
     }
+
+    window.speechSynthesis.speak(utterance);
+}
+
 
     function toggleExample() {
         const content = document.getElementById('v-ex-content');
