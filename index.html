@@ -148,7 +148,7 @@
             let raw = currentItem.pronunciation;
             // 1. 장음 처리용 텍스트 생성 (기호를 제거한 순수 글자 기반)  // '가′아간′' -> '가아간'으로 만든 뒤 장음 규칙 확인
             let textOnly = raw.replace(/['′]/g, "");
-            let textOnly = textOnly + ","
+            let textOnly = textOnly + ",";
             // 2. 강세(Accent) 여부 확인    // 텍스트 내에 '′' 기호가 하나라도 포함되어 있으면 강세 모드로 판정
             const hasAccent = /['′]/.test(raw);
             const utterance = new SpeechSynthesisUtterance(textOnly);
