@@ -14,14 +14,19 @@
         .header { display: flex; align-items: center; justify-content: center; margin: 8px 0 12px; gap: 6px; }
         .logo-svg { width: 24px; height: 24px; fill: var(--point); }
         .logo-text { font-size: 18px; font-weight: bold; color: var(--point); }
-        .search-row { display: flex; gap: 6px; margin-bottom: 10px; width: 100%; }
-        .search-row input { flex: 1; width: 50%; padding: 12px 8px; border: 1.5px solid #ddd; border-radius: 8px; font-size: 14px; box-sizing: border-box; background: #fff; }
-        .nav-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; margin-bottom: 12px; padding: 5px; background: #fff; border-radius: 10px; border: 1px solid #eee; }
-        .nav-btn { aspect-ratio: 1/1; display: flex; align-items: center; justify-content: center; background: #fdfdfd; border: 1px solid #eee; border-radius: 6px; font-size: 20px; font-weight: bold; cursor: pointer; color: #444; }
-        .pos-row { display: flex; gap: 5px; margin-bottom: 15px; }
-        .pos-btn { flex: 1; padding: 10px 2px; background: #fff; border: 1px solid #ddd; border-radius: 8px; cursor: pointer; text-align: center; font-size: 17px; font-weight: bold; color: #555; display: flex; flex-direction: column; justify-content: center; height: 50px; }
-        .pos-btn span { font-size: 10px; font-weight: normal; color: #999; margin-top: 2px; }
-        #searchList { margin-bottom: 10px; display: none; background: #fff; border-radius: 8px; border: 1px solid #ddd; width: 100%; }
+                /* 1. 검색창 글씨 크기 20px */
+        .search-row { display: flex; gap: 4px; margin-bottom: 8px; width: 100%; }
+        .search-row input { flex: 1; width: 50%; padding: 10px 8px; border: 1.5px solid #ddd; border-radius: 8px; font-size: 20px; box-sizing: border-box; background: #fff; }
+                /* 2. 자음 버튼 한 줄에 14개 */
+        .nav-grid { display: grid; grid-template-columns: repeat(14, 1fr); gap: 2px; margin-bottom: 8px; padding: 4px; background: #fff; border-radius: 8px; border: 1px solid #eee; }
+        .nav-btn { aspect-ratio: 1/1.2; display: flex; align-items: center; justify-content: center; background: #fdfdfd; border: 1px solid #eee; border-radius: 4px; font-size: 14px; font-weight: bold; cursor: pointer; color: #444; }
+        
+        /* 4. 품사 버튼 높이 줄임 */
+        .pos-row { display: flex; gap: 4px; margin-top: 8px; margin-bottom: 8px; }
+        .pos-btn { flex: 1; padding: 4px 2px; background: #fff; border: 1px solid #ddd; border-radius: 6px; cursor: pointer; text-align: center; font-size: 14px; font-weight: bold; color: #555; display: flex; flex-direction: column; justify-content: center; height: 35px; }
+        .pos-btn span { font-size: 8px; font-weight: normal; color: #999; margin-top: 1px; }
+
+        
         .list-item { padding: 12px 15px; border-bottom: 1px solid #eee; font-size: 17px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer; }
         .list-item b { color: #000; }
         .list-item span.brief-text { font-size: 13px; color: #999; font-weight: normal; margin-left: 8px; }
@@ -155,10 +160,14 @@
             }
             document.getElementById('listItems').appendChild(nav);
         }
+        
         function getInitialConsonant(str) { if (!str) return ""; const code = str.charCodeAt(0) - 44032; return (code < 0 || code > 11171) ? str[0] : consonants[Math.floor(code / 588)]; }
         function searchByInitial(char) { const sets = { 'ㄱ': ['ㄱ', 'ㄲ'], 'ㄷ': ['ㄷ', 'ㄸ'], 'ㅂ': ['ㅂ', 'ㅃ'], 'ㅅ': ['ㅅ', 'ㅆ'], 'ㅈ': ['ㅈ', 'ㅉ'] }; displayList(dictData.filter(item => { const initial = getInitialConsonant(item.word_pure || item.word); return sets[char] ? sets[char].includes(initial) : initial === char; })); }
+        
         function searchByPosGroup(symbols) { let filtered = dictData.filter(item => symbols.includes(item.pos_symbol)); filtered.sort(() => Math.random() - 0.5); displayList(filtered); }
+        
         function searchByPosOther() { let filtered = dictData.filter(item => item.pos_symbol && !['󰃃', '󰂽', '󰃓', '󰂿', '󰃰'].includes(item.pos_symbol)); filtered.sort(() => Math.random() - 0.5); displayList(filtered); }
+        
         function initRecommendations() { const container = document.getElementById('recommendList'); [...dictData].sort(() => 0.5 - Math.random()).slice(0, 3).forEach(item => { const div = document.createElement('div'); div.className = 'rec-card'; div.innerHTML = `<b>${formatWordSuperscript(item.word)}</b> <span style="font-size:12px; color:#999;">${item.definition.substring(0, 10)}...</span>`; div.onclick = () => displayDetail(item); container.appendChild(div); }); }
         document.getElementById('diaSearch').addEventListener('input', (e) => debounceSearch('dia', e.target.value.trim()));
         document.getElementById('stdSearch').addEventListener('input', (e) => debounceSearch('std', e.target.value.trim()));
