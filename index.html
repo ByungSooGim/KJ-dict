@@ -257,45 +257,52 @@
 
     function formatWordSuperscript(word) { return word ? word.replace(/(\d+)/g, '<sup>$1</sup>') : ""; }
 
+
 	function speakPronunciation() {
     if (!currentItem || !currentItem.pronunciation || !window.speechSynthesis) return;
+
     window.speechSynthesis.cancel();
 
-    // 1. 장음 처리: (모음) + (초성 'ㅇ'인 글자 중 같은 모음) 조합 찾기
-    // 예: '가아' -> '가ー', '서어' -> '서ー'
-    // '하다'는 '다'의 초성이 'ㄷ'이므로 이 로직에 걸리지 않습니다.
-    let processed = currentItem.pronunciation.replace(/([가-힣])([아-힣])/g, (match, p1, p2) => {
-        const charCode1 = p1.charCodeAt(0) - 0xAC00;
-        const charCode2 = p2.charCodeAt(0) - 0xAC00;
+    let raw = currentItem.pronunciation;
+    
+    // 1. 장음 처리: '가아' 처럼 같은 모음 + 초성 'ㅇ'인 경우
+    // TTS는 기호보다 글자를 한 번 더 써주는 것이 가장 확실하게 길게 읽습니다.
+    // '가아' -> '가아아' (살짝 더 길게 유도)
+    let processed = raw.replace(/([가-힣])([아-힣])/g, (match, p1, p2) => {
+        const c1 = p1.charCodeAt(0) - 0xAC00;
+        const c2 = p2.charCodeAt(0) - 0xAC00;
+        const jong1 = c1 % 28; 
+        const cho2 = Math.floor(c2 / 588);
+        const jung1 = Math.floor((c1 % 588) / 28);
+        const jung2 = Math.floor((c2 % 588) / 28);
 
-        const jong1 = charCode1 % 28;      // 앞 글자의 받침
-        const cho2 = Math.floor(charCode2 / 588); // 뒷 글자의 초성 (11이 'ㅇ')
-        const jung1 = Math.floor((charCode1 % 588) / 28); // 앞 글자의 중성
-        const jung2 = Math.floor((charCode2 % 588) / 28); // 뒷 글자의 중성
-
-        // 조건: 앞 글자 받침 없고 + 뒷 글자 초성이 'ㅇ'(11)이며 + 두 모음이 같을 때
         if (jong1 === 0 && cho2 === 11 && jung1 === jung2) {
-            return p1 + "ー";
+            return p1 + p2 + p2; // 글자를 반복하여 물리적으로 길게 만듦
         }
         return match;
     });
 
-	// 2. 음성 객체 생성 (여기서 바로 processed를 넣습니다. '를 미리 지우지 않음)
-    const utterance = new SpeechSynthesisUtterance(processed);
+    // 2. 강세(Accent) 처리: 마지막에 '나 ′가 있으면 해당 글자를 강조
+    // 기호를 제거한 순수 텍스트 생성
+    const cleanText = processed.replace(/['′]/g, "");
+    const utterance = new SpeechSynthesisUtterance(cleanText);
     
     utterance.lang = 'ko-KR';
-    utterance.rate = 0.8;
+    utterance.rate = 0.7; // 전체적으로 조금 더 느리게 설정하여 장음이 들리게 함
 
-    // 3. 강조 로직: 문자열에 ' (작은따옴표) 또는 ′ (강조기호)가 포함되어 있는지 확인
-    // 포함되어 있다면 목소리 톤(Pitch)을 높여 강하게 읽는 효과를 줍니다.
-    if (processed.includes("'") || processed.includes("′")) {
-        utterance.pitch = 1.4; 
+    // 3. 마지막 글자 강세 로직
+    if (raw.endsWith("'") || raw.endsWith("′")) {
+        // 마지막에 강조 기호가 있다면:
+        // 피치를 높이고, 속도를 더 늦춰서(0.5) 꾹 눌러 읽는 효과를 줌
+        utterance.pitch = 1.5; 
+        utterance.rate = 0.5; 
     } else {
         utterance.pitch = 1.0;
     }
 
     window.speechSynthesis.speak(utterance);
 }
+
 
 
     function toggleExample() {
