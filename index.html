@@ -263,7 +263,7 @@
         let processed = currentItem.pronunciation.replace(/([ㅏ-ㅣ])\1/g, "$1ー"); 
         const utterance = new SpeechSynthesisUtterance(processed.replace(/'/g, ""));
         utterance.lang = 'ko-KR';
-        utterance.pitch = currentItem.pronunciation.includes("'") ? 1.4 : 1.0;
+        utterance.pitch = currentItem.pronunciation.includes("′") ? 1.4 : 1.0;
         utterance.rate = 0.8;
         window.speechSynthesis.speak(utterance);
     }
