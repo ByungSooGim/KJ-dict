@@ -14,10 +14,12 @@
         .header { display: flex; align-items: center; justify-content: center; margin: 8px 0 12px; gap: 6px; }
         .logo-svg { width: 24px; height: 24px; fill: var(--point); }
         .logo-text { font-size: 18px; font-weight: bold; color: var(--point); }
-                /* 1. 검색창 글씨 크기 20px */
+        
+        /* 1. 검색창 글씨 크기 20px */
         .search-row { display: flex; gap: 4px; margin-bottom: 8px; width: 100%; }
         .search-row input { flex: 1; width: 50%; padding: 10px 8px; border: 1.5px solid #ddd; border-radius: 8px; font-size: 20px; box-sizing: border-box; background: #fff; }
-                /* 2. 자음 버튼 한 줄에 14개 */
+        
+        /* 2. 자음 버튼 한 줄에 14개 */
         .nav-grid { display: grid; grid-template-columns: repeat(14, 1fr); gap: 2px; margin-bottom: 8px; padding: 4px; background: #fff; border-radius: 8px; border: 1px solid #eee; }
         .nav-btn { aspect-ratio: 1/1.2; display: flex; align-items: center; justify-content: center; background: #fdfdfd; border: 1px solid #eee; border-radius: 4px; font-size: 14px; font-weight: bold; cursor: pointer; color: #444; }
         
@@ -25,25 +27,31 @@
         .pos-row { display: flex; gap: 4px; margin-top: 8px; margin-bottom: 8px; }
         .pos-btn { flex: 1; padding: 4px 2px; background: #fff; border: 1px solid #ddd; border-radius: 6px; cursor: pointer; text-align: center; font-size: 14px; font-weight: bold; color: #555; display: flex; flex-direction: column; justify-content: center; height: 35px; }
         .pos-btn span { font-size: 8px; font-weight: normal; color: #999; margin-top: 1px; }
-
         
         .list-item { padding: 12px 15px; border-bottom: 1px solid #eee; font-size: 17px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer; }
         .list-item b { color: #000; }
         .list-item span.brief-text { font-size: 13px; color: #999; font-weight: normal; margin-left: 8px; }
+
         .pagination { display: flex; justify-content: center; gap: 8px; margin: 15px 0; flex-wrap: wrap; }
         .page-btn { padding: 5px 10px; border: 1px solid #ddd; border-radius: 4px; background: #fff; cursor: pointer; font-size: 13px; }
         .page-btn.active { background: var(--point); color: #fff; border-color: var(--point); }
+
         #resultView { width: 100%; display: none; margin-bottom: 15px; }
         .result-card { background: white; padding: 18px; border-radius: 12px; border: 2px solid var(--point); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+
         .word-title { font-size: 30px; font-weight: bold; color: var(--point); }
         .word-title sup { font-size: 0.5em; vertical-align: super; margin-left: 1px; }
+
         .pos-badge { font-size: 13px; background: #eee; padding: 2px 6px; border-radius: 4px; color: #666; margin-left: 6px; }
         .pron-row { display: flex; align-items: center; gap: 8px; margin-top: 4px; }
         .pron-area { font-size: 15px; color: #777; font-style: italic; }
+
         .speaker-btn { width: 24px; height: 24px; cursor: pointer; fill: #999; transition: fill 0.2s; display: flex; align-items: center; }
         .speaker-btn:hover { fill: var(--point); }
+
         .def-area { font-size: 20px; line-height: 1.6; margin-top: 12px; word-break: keep-all; }
         .def-link { color: var(--point); text-decoration: underline; cursor: pointer; font-weight: bold; }
+
         .ex-container { margin-top: 15px; border-top: 1px dashed #ddd; padding-top: 10px; }
         .ex-toggle { display: inline-flex; align-items: center; color: #777; font-size: 14px; font-weight: bold; cursor: pointer; padding: 5px 0; }
         .ex-toggle::after { content: ' ▼'; font-size: 10px; margin-left: 4px; }
@@ -51,10 +59,13 @@
         .ex-content { display: none; margin-top: 8px; }
         .ex-item { background: #f9f9f9; padding: 12px; border-radius: 8px; margin-bottom: 8px; border-left: 3px solid #ccc; font-size: 16px; }
         .ex-std { display: block; font-size: 13px; color: #888; margin-top: 5px; border-top: 1px dotted #eee; padding-top: 5px; }
+        
         .rec-container { display: flex; flex-direction: column; gap: 5px; margin-bottom: 15px; width: 100%; }
         .rec-card { background: #fff; padding: 10px 15px; border-radius: 8px; border: 1px solid #eee; font-size: 16px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
+        
         .report-btn { margin-top: 10px; display: inline-block; padding: 8px 12px; font-size: 10px; color: #888; border: 1px solid #ddd; border-radius: 3px; cursor: pointer; text-decoration: none; transition: 0.2s; }
         .report-btn:hover { background: #f9f9f9; color: var(--point); border-color: var(--point); }
+        
         .footer-info { font-size: 10px; color: #ccc; text-align: center; padding: 10px; line-height: 1.6; }
         .copyright-warning { color: #aaa; font-weight: bold; margin-top: 5px; display: block; }
     </style>
@@ -109,6 +120,8 @@
         <div class="rec-container" id="recommendList"></div>
         <div class="footer-info">데이터 저작권: 편저자 최명옥ㆍ김주석 | 소스코드: 비영리 공개 정책<span class="copyright-warning">※ 데이터 무단 크롤링 및 무단 복제를 엄격히 금지합니다.</span></div>
     </div>
+
+    
     <script>
         let dictData = [], currentItem = null, searchTimer, currentPage = 1, filteredData = [];
         const itemsPerPage = 50, DB_NAME = "GyeongjuDictDB", STORE_NAME = "dictionary", DATA_VERSION = "20260326_v2";
@@ -131,9 +144,19 @@
         function handleLinkClick(word) { const item = dictData.find(d => d.word_pure === word || d.word === word); if (item) displayDetail(item); }
         function formatWordSuperscript(word) { return word ? word.replace(/(\d+)/g, '<sup>$1</sup>') : ""; }
         function speakPronunciation() {
-            if (!currentItem || !currentItem.pronunciation || !window.speechSynthesis) return; window.speechSynthesis.cancel();
-            let raw = currentItem.pronunciation, processed = raw.replace(/([가-힣])([아-힣])/g, (match, p1, p2) => { const c1 = p1.charCodeAt(0) - 0xAC00, c2 = p2.charCodeAt(0) - 0xAC00; return (c1 % 28 === 0 && Math.floor(c2 / 588) === 11 && Math.floor((c1 % 588) / 28) === Math.floor((c2 % 588) / 28)) ? p1 + p2 : match; });
-            const utterance = new SpeechSynthesisUtterance(processed.replace(/['′]/g, "")); utterance.lang = 'ko-KR'; utterance.rate = (raw.endsWith("'") || raw.endsWith("′")) ? 0.5 : 0.7; utterance.pitch = (raw.endsWith("'") || raw.endsWith("′")) ? 1.9 : 1.0; window.speechSynthesis.speak(utterance);
+            if (!currentItem || !currentItem.pronunciation || !window.speechSynthesis) return;    window.speechSynthesis.cancel();
+            let raw = currentItem.pronunciation;
+            // 1. 장음 처리용 텍스트 생성 (기호를 제거한 순수 글자 기반)  // '가′아간′' -> '가아간'으로 만든 뒤 장음 규칙 확인
+            let textOnly = raw.replace(/['′]/g, "");
+            // 2. 강세(Accent) 여부 확인    // 텍스트 내에 '′' 기호가 하나라도 포함되어 있으면 강세 모드로 판정
+            const hasAccent = /['′]/.test(raw);
+            const utterance = new SpeechSynthesisUtterance(textOnly);
+            utterance.lang = 'ko-KR';
+             // 3. 강세 및 속도 설정  // 강조 기호가 있으면 속도를 늦추고(0.5) 피치를 높이는 엑센트 (1.6)
+            if (hasAccent) {     utterance.rate = 0.5;  utterance.pitch = 1.6; 
+            } else {            utterance.rate = 0.8;  utterance.pitch = 1.0; // 일반적인 한국어 속도 + 피치
+            }
+            window.speechSynthesis.speak(utterance);
         }
         function toggleExample() { const content = document.getElementById('v-ex-content'), toggleBtn = document.querySelector('.ex-toggle'), isHidden = content.style.display === 'none' || content.style.display === ''; content.style.display = isHidden ? 'block' : 'none'; toggleBtn.classList.toggle('active', isHidden); }
         function displayDetail(item) {
