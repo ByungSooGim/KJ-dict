@@ -151,7 +151,7 @@
             // 2. TTS용 텍스트 생성
             const endsWithAccent = raw.endsWith("'") || raw.endsWith("′");
             // 기호 제거 후, 마지막 강세가 있다면 쉼표(,)를 추가하여 억양을 변화시킴
-            let textToSpeak = raw.replace(/['′]/g, "");
+            let textToSpeak = raw // .replace(/['′]/g, "");
             if (endsWithAccent) {
                 textToSpeak += ","; 
             }
