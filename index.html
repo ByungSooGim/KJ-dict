@@ -150,10 +150,20 @@
       
             // 2. TTS용 텍스트 생성
             const endsWithAccent = raw.endsWith("'") || raw.endsWith("′");
-            // 기호 제거 후, 마지막 강세가 있다면 쉼표(,)를 추가하여 억양을 변화시킴
+            // 마지막 강세가 있다면 이, 가를 추가하여 억양을 변화시킴
             let textToSpeak = raw // .replace(/['′]/g, "");
-            if (endsWithAccent) {
-                textToSpeak += "ㅡ"; 
+            let cleanText = raw.replace(/['′]/g, "");
+            // 2. 마지막 강세가 있을 때만 '이/가' 조사 붙이기
+            if (endsWithAccent && cleanText.length > 0) {
+                const lastChar = cleanText.charAt(cleanText.length - 1);
+                const lastCharCode = lastChar.charCodeAt(0);
+    
+                // 한글 범위(가-힣) 확인 및 받침 유무 판별
+                if (lastCharCode >= 0xAC00 && lastCharCode <= 0xD7AF) {
+                    const hasBatchim = (lastCharCode - 0xAC00) % 28 !== 0;
+                    // 받침 있으면 '이', 없으면 '가' 추가
+                    textToSpeak += hasBatchim ? "이" : "가";
+                }
             }
             // 2. 강세(Accent) 여부 확인    // 텍스트 내에 '′' 기호가 하나라도 포함되어 있으면 강세 모드로 판정
             const hasAccent = /['′]/.test(raw);
