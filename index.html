@@ -149,9 +149,49 @@
         // 디바운싱 검색 (타이핑 후 지연시간을 두어 성능 최적화)
         function debounceSearch(type, val) { clearTimeout(searchTimer); searchTimer = setTimeout(() => { if (!val) return; const searchDecomposed = decomposeHangul(val); let res = []; if (type === 'dia') { res = dictData.filter(i => decomposeHangul(i.word_pure || i.word || "").includes(searchDecomposed)); res = sortResults(res, val); } else { res = dictData.filter(i => (i.definition || "").includes(val)); } displayList(res); }, 250); }
          /* --- [4. 텍스트 가공 및 링크 생성] --- */
-        function createAutoLinks(text, currentWord) { if (!text) return ""; const targetRegex = /([≒☞⇔][^.]*\.)/g; return text.replace(targetRegex, (match) => { const symbol = match[0], content = match.substring(1); const linked = content.split('/').map(part => { const trimmed = part.trim().replace(/\./g, ''); const target = dictData.find(d => d.word_pure === trimmed && d.word_pure !== currentWord); return target ? `<span class="def-link" onclick="handleLinkClick('${trimmed}')">${trimmed}</span>` : part; }).join('/'); return symbol + linked; }); }
-        function handleLinkClick(word) { const item = dictData.find(d => d.word_pure === word || d.word === word); if (item) displayDetail(item); }
-        function formatWordSuperscript(word) { return word ? word.replace(/(\d+)/g, '<sup>$1</sup>') : ""; } // 단어 옆 번호 처리
+        function createAutoLinks(text, currentWord) {
+            if (!text) return "";            
+            // 기호, 내용, 마침표를 명확히 분리해서 캡처하도록 정규식 수정
+            const targetRegex = /([≒☞⇔])([^.]+)(\.)/g; 
+            return text.replace(targetRegex, (match, symbol, content, dot) => {
+                const linked = content.split('/').map(part => {
+                    // 1. 양옆 공백 제거
+                    let rawWord = part.trim();
+                    // 2. 괄호와 괄호 안의 내용 제거 (예: "단어1(어원)" -> "단어1")
+                    // 괄호가 있건 없건 깔끔하게 단어와 숫자만 남깁니다.
+                    let searchWord = rawWord.replace(/\([^)]*\)/g, '').trim();
+                    // 3. 사전 데이터에서 매칭 (숫자가 포함된 word 또는 word_pure와 모두 비교)
+                    // 자기 자신(currentWord)과 같으면 링크를 걸지 않음
+                    const target = dictData.find(d => 
+                        (d.word === searchWord || d.word_pure === searchWord) && 
+                        (d.word !== currentWord && d.word_pure !== currentWord)
+                    );
+                    // 4. 화면에 보여줄 텍스트 (숫자는 무조건 윗첨자 처리)
+                    const displayHtml = formatWordSuperscript(searchWord);
+                    // 5. 링크 대상이 사전에 있으면 링크 <span> 생성, 없으면 텍스트만 반환
+                    if (target) {
+                        return `<span class="def-link" onclick="handleLinkClick('${searchWord}')">${displayHtml}</span>`;
+                    } else {
+                        return displayHtml;
+                    }
+                }).join(' / '); // 슬래시 사이에 공백을 넣어 가독성을 높임
+                
+                // 기호, 처리된 텍스트, 마침표를 다시 합쳐서 반환
+                return symbol + ' ' + linked + dot;
+            });
+        }
+
+        function handleLinkClick(word) {
+            // 클릭 시 숫자 포함(word) 또는 미포함(word_pure) 상태를 모두 고려해 대상 찾기
+            const item = dictData.find(d => d.word === word || d.word_pure === word);
+            if (item) displayDetail(item);
+        }
+
+        function formatWordSuperscript(word) {
+            // 단어 안의 숫자(\d+)를 <sup> 태그로 감싸줌
+            return word ? word.replace(/(\d+)/g, '<sup>$1</sup>') : "";
+        }
+     
         /* --- [5. 발음 재생 및 TTS] --- */
         function speakPronunciation() {
             if (!currentItem || !currentItem.pronunciation || !window.speechSynthesis) return;    window.speechSynthesis.cancel();
