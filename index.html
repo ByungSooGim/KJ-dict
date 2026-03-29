@@ -227,8 +227,14 @@
         function displayDetail(item) {
             currentItem = item; document.getElementById('searchList').style.display = 'none'; document.getElementById('resultView').style.display = 'block';
             document.getElementById('v-word').innerHTML = formatWordSuperscript(item.word || item.word_pure);
-            const posText = posMap[item.pos_symbol] || item.pos_symbol || "", pBadge = document.getElementById('v-pos'); pBadge.innerText = posText; pBadge.style.display = posText ? 'inline-block' : 'none';
-            if (item.pronunciation) { document.getElementById('v-pron').innerText = `[${item.pronunciation}]`; document.getElementById('v-pron-row').style.display = 'flex'; } else { document.getElementById('v-pron-row').style.display = 'none'; }
+            // 1. item.pos_symbol이 있을 경우, 각 글자를 순회하며 한글 품사로 변환합니다.
+            const posSymbol = item.pos_symbol || "";
+            const posText = posSymbol.split('') // 문자열을 한 글자씩 배열로 나눔
+                .map(symbol => posMap[symbol] || symbol) // 각 기호를 한글로 변환 (없으면 기호 그대로 유지)
+                .join('|'); // 여러 개일 경우 | 로 구분 (예: 형용사|동사)
+            const pBadge = document.getElementById('v-pos');
+            pBadge.innerText = posText;
+            pBadge.style.display = posText ? 'inline-block' : 'none';if (item.pronunciation) { document.getElementById('v-pron').innerText = `[${item.pronunciation}]`; document.getElementById('v-pron-row').style.display = 'flex'; } else { document.getElementById('v-pron-row').style.display = 'none'; }
             document.getElementById('v-def').innerHTML = createAutoLinks(item.definition, item.word_pure);
             document.getElementById('reportMail').href = `mailto:bsgim5@gmail.com?subject=${encodeURIComponent('[경주말사전 오류제보] '+item.word_pure)}&body=${encodeURIComponent('표제어: '+item.word_pure+'\n뜻풀이: '+item.definition+'\n\n내용: 이곳에 수정 내용을 적어주세요.')}`;
             const exBox = document.getElementById('v-ex-box'), exContent = document.getElementById('v-ex-content');
