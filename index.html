@@ -5,12 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>경주말 방언 사전</title>
     <style>
+        /* --- 공통 테마 및 레이아웃 정의 --- */
         :root { --point: #a33b3b; --bg: #fdfaf6; --text: #222; }
         body { background: var(--bg); margin: 0; padding: 8px; font-family: 'Malgun Gothic', sans-serif; display: flex; flex-direction: column; align-items: center; color: var(--text); }
         .container { width: 100%; max-width: 400px; position: relative; }
+        
+        /* --- 로딩 애니메이션 (Spinner) --- */
         #loadingOverlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.9); z-index: 9999; flex-direction: column; align-items: center; justify-content: center; }
         .spinner { width: 40px; height: 40px; border: 4px solid #f3f3f3; border-top: 4px solid var(--point); border-radius: 50%; animation: spin 1s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        
+        /* --- 헤더 및 로고 스타일 --- */
         .header { display: flex; align-items: center; justify-content: center; margin: 8px 0 12px; gap: 6px; }
         .logo-svg { width: 24px; height: 24px; fill: var(--point); }
         .logo-text { font-size: 18px; font-weight: bold; color: var(--point); }
@@ -23,35 +28,33 @@
         .nav-grid { display: grid; grid-template-columns: repeat(14, 1fr); gap: 2px; margin-bottom: 8px; padding: 4px; background: #fff; border-radius: 8px; border: 1px solid #eee; }
         .nav-btn { aspect-ratio: 1/1.2; display: flex; align-items: center; justify-content: center; background: #fdfdfd; border: 1px solid #eee; border-radius: 4px; font-size: 14px; font-weight: bold; cursor: pointer; color: #444; }
         
-        /* 4. 품사 버튼 높이 줄임 */
+        /* 3. 품사 버튼 높이 줄임 */
         .pos-row { display: flex; gap: 4px; margin-top: 8px; margin-bottom: 8px; }
         .pos-btn { flex: 1; padding: 4px 2px; background: #fff; border: 1px solid #ddd; border-radius: 6px; cursor: pointer; text-align: center; font-size: 14px; font-weight: bold; color: #555; display: flex; flex-direction: column; justify-content: center; height: 35px; }
         .pos-btn span { font-size: 8px; font-weight: normal; color: #999; margin-top: 1px; }
         
+        /* --- 4. 검색 결과 리스트 아이템 --- */
         .list-item { padding: 12px 15px; border-bottom: 1px solid #eee; font-size: 17px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer; }
         .list-item b { color: #000; }
         .list-item span.brief-text { font-size: 13px; color: #999; font-weight: normal; margin-left: 8px; }
-
+        /* --- 5. 페이지네이션 --- */
         .pagination { display: flex; justify-content: center; gap: 8px; margin: 15px 0; flex-wrap: wrap; }
         .page-btn { padding: 5px 10px; border: 1px solid #ddd; border-radius: 4px; background: #fff; cursor: pointer; font-size: 13px; }
         .page-btn.active { background: var(--point); color: #fff; border-color: var(--point); }
-
+        /* --- 6. 상세 보기(상세 카드) 영역 --- */
         #resultView { width: 100%; display: none; margin-bottom: 15px; }
         .result-card { background: white; padding: 18px; border-radius: 12px; border: 2px solid var(--point); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
-
         .word-title { font-size: 30px; font-weight: bold; color: var(--point); }
         .word-title sup { font-size: 0.5em; vertical-align: super; margin-left: 1px; }
-
+        /* --- 품사, 발음 --- */
         .pos-badge { font-size: 13px; background: #eee; padding: 2px 6px; border-radius: 4px; color: #666; margin-left: 6px; }
         .pron-row { display: flex; align-items: center; gap: 8px; margin-top: 4px; }
         .pron-area { font-size: 15px; color: #777; font-style: italic; }
-
         .speaker-btn { width: 24px; height: 24px; cursor: pointer; fill: #999; transition: fill 0.2s; display: flex; align-items: center; }
         .speaker-btn:hover { fill: var(--point); }
-
         .def-area { font-size: 20px; line-height: 1.6; margin-top: 12px; word-break: keep-all; }
         .def-link { color: var(--point); text-decoration: underline; cursor: pointer; font-weight: bold; }
-
+        /* --- 7. 예문 토글 및 리스트 --- */
         .ex-container { margin-top: 15px; border-top: 1px dashed #ddd; padding-top: 10px; }
         .ex-toggle { display: inline-flex; align-items: center; color: #777; font-size: 14px; font-weight: bold; cursor: pointer; padding: 5px 0; }
         .ex-toggle::after { content: ' ▼'; font-size: 10px; margin-left: 4px; }
@@ -59,7 +62,7 @@
         .ex-content { display: none; margin-top: 8px; }
         .ex-item { background: #f9f9f9; padding: 12px; border-radius: 8px; margin-bottom: 8px; border-left: 3px solid #ccc; font-size: 16px; }
         .ex-std { display: block; font-size: 13px; color: #888; margin-top: 5px; border-top: 1px dotted #eee; padding-top: 5px; }
-        
+        /* --- 8. 추천 단어 및 푸터 정보 --- */
         .rec-container { display: flex; flex-direction: column; gap: 5px; margin-bottom: 15px; width: 100%; }
         .rec-card { background: #fff; padding: 10px 15px; border-radius: 8px; border: 1px solid #eee; font-size: 16px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
         
@@ -123,11 +126,14 @@
 
     
     <script>
+        /* --- [1. 변수 및 환경 설정] --- */
         let dictData = [], currentItem = null, searchTimer, currentPage = 1, filteredData = [];
         const itemsPerPage = 50, DB_NAME = "GyeongjuDictDB", STORE_NAME = "dictionary", DATA_VERSION = "20260326_v2";
         const posMap = { '󰃃': '명사', '󰂿': '동사', '󰃰': '형용사', '󰂽': '대명사', '󰃌': '부사', '󰃲': '활용어미', '󰃥': '접사', '󰃆': '어미', '󰂴': '관형사', '󰂳': '감탄사', '󰃓': '수사', '󰃫': '참고', '󰃩': '준말' };
         const consonants = ['ㄱ', 'ㄲ', 'ㄴ', 'ㄷ', 'ㄸ', 'ㄹ', 'ㅁ', 'ㅂ', 'ㅃ', 'ㅅ', 'ㅆ', 'ㅇ', 'ㅈ', 'ㅉ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ'];
+        /* --- [2. 핵심 로직: 한글 분리 및 초기화] --- */
         function decomposeHangul(str) { return str.normalize('NFD').replace(/[\u0300-\u036f]/g, ""); }
+        // 초기 로딩: IndexedDB 연동 및 데이터 패치
         async function init() {
             const loading = document.getElementById('loadingOverlay'); loading.style.display = 'flex';
             const db = await new Promise((res) => { const req = indexedDB.open(DB_NAME, 1); req.onupgradeneeded = (e) => e.target.result.createObjectStore(STORE_NAME); req.onsuccess = (e) => res(e.target.result); });
@@ -138,26 +144,26 @@
             else { try { const response = await fetch('gyeongju_dict.json'); dictData = await response.json(); const saveTx = db.transaction(STORE_NAME, "readwrite"); saveTx.objectStore(STORE_NAME).put(dictData, "full_data"); saveTx.objectStore(STORE_NAME).put(DATA_VERSION, "data_version"); } catch (err) { alert("데이터 로드 실패."); } }
             initRecommendations(); loading.style.display = 'none';
         }
+        /* --- [3. 검색 및 정렬 기능] --- */
         function sortResults(results, query) { return results.sort((a, b) => { const aW = a.word_pure || "", bW = b.word_pure || ""; if (aW === query && bW !== query) return -1; if (bW === query && aW !== query) return 1; if (aW.startsWith(query) && !bW.startsWith(query)) return -1; if (bW.startsWith(query) && !aW.startsWith(query)) return 1; return aW.length - bW.length; }); }
+        // 디바운싱 검색 (타이핑 후 지연시간을 두어 성능 최적화)
         function debounceSearch(type, val) { clearTimeout(searchTimer); searchTimer = setTimeout(() => { if (!val) return; const searchDecomposed = decomposeHangul(val); let res = []; if (type === 'dia') { res = dictData.filter(i => decomposeHangul(i.word_pure || i.word || "").includes(searchDecomposed)); res = sortResults(res, val); } else { res = dictData.filter(i => (i.definition || "").includes(val)); } displayList(res); }, 250); }
+         /* --- [4. 텍스트 가공 및 링크 생성] --- */
         function createAutoLinks(text, currentWord) { if (!text) return ""; const targetRegex = /([≒☞⇔][^.]*\.)/g; return text.replace(targetRegex, (match) => { const symbol = match[0], content = match.substring(1); const linked = content.split('/').map(part => { const trimmed = part.trim().replace(/\./g, ''); const target = dictData.find(d => d.word_pure === trimmed && d.word_pure !== currentWord); return target ? `<span class="def-link" onclick="handleLinkClick('${trimmed}')">${trimmed}</span>` : part; }).join('/'); return symbol + linked; }); }
         function handleLinkClick(word) { const item = dictData.find(d => d.word_pure === word || d.word === word); if (item) displayDetail(item); }
-        function formatWordSuperscript(word) { return word ? word.replace(/(\d+)/g, '<sup>$1</sup>') : ""; }
+        function formatWordSuperscript(word) { return word ? word.replace(/(\d+)/g, '<sup>$1</sup>') : ""; } // 단어 옆 번호 처리
+        /* --- [5. 발음 재생 및 TTS] --- */
         function speakPronunciation() {
             if (!currentItem || !currentItem.pronunciation || !window.speechSynthesis) return;    window.speechSynthesis.cancel();
             let raw = currentItem.pronunciation;
-            // 1. 장음 처리용 텍스트 생성 (기호를 제거한 순수 글자 기반)  // '가′아간′' -> '가아간'으로 만든 뒤 장음 규칙 확인
-      
-            // 2. TTS용 텍스트 생성
+            // 1. TTS용 텍스트 생성, 강세를 그대로 TTS에 보냄, 마지막 강세가 있다면 이, 가를 추가하여 억양을 변화시킴
             const endsWithAccent = raw.endsWith("'") || raw.endsWith("′");
-            // 마지막 강세가 있다면 이, 가를 추가하여 억양을 변화시킴
             let textToSpeak = raw // .replace(/['′]/g, "");
             let cleanText = raw.replace(/['′]/g, "");
-            // 2. 마지막 강세가 있을 때만 '이/가' 조사 붙이기
+            // 2. 경상도 특유의 성조 표현을 위한 조사 '이/가' 붙여 단어 끝 강세 처리
             if (endsWithAccent && cleanText.length > 0) {
                 const lastChar = cleanText.charAt(cleanText.length - 1);
                 const lastCharCode = lastChar.charCodeAt(0);
-    
                 // 한글 범위(가-힣) 확인 및 받침 유무 판별
                 if (lastCharCode >= 0xAC00 && lastCharCode <= 0xD7AF) {
                     const hasBatchim = (lastCharCode - 0xAC00) % 28 !== 0;
@@ -176,6 +182,7 @@
             // }
             window.speechSynthesis.speak(utterance);
         }
+        /* --- [6. UI 렌더링: 리스트 및 상세화면] --- */
         function toggleExample() { const content = document.getElementById('v-ex-content'), toggleBtn = document.querySelector('.ex-toggle'), isHidden = content.style.display === 'none' || content.style.display === ''; content.style.display = isHidden ? 'block' : 'none'; toggleBtn.classList.toggle('active', isHidden); }
         function displayDetail(item) {
             currentItem = item; document.getElementById('searchList').style.display = 'none'; document.getElementById('resultView').style.display = 'block';
@@ -194,6 +201,7 @@
             items.slice((page - 1) * itemsPerPage, page * itemsPerPage).forEach(item => { const div = document.createElement('div'); div.className = 'list-item'; div.innerHTML = `<b>${formatWordSuperscript(item.word)}</b><span class="brief-text">${item.definition.replace(/<[^>]*>?/gm, '').substring(0, 20)}...</span>`; div.onclick = () => displayDetail(item); list.appendChild(div); });
             renderPagination(items.length);
         }
+        /* --- [7. 내비게이션 및 추천 기능] --- */
         function renderPagination(totalItems) {
             const totalPages = Math.ceil(totalItems / itemsPerPage); if (totalPages <= 1) return;
             const nav = document.createElement('div'); nav.className = 'pagination';
@@ -211,10 +219,11 @@
         function searchByPosOther() { let filtered = dictData.filter(item => item.pos_symbol && !['󰃃', '󰂽', '󰃓', '󰂿', '󰃰'].includes(item.pos_symbol)); filtered.sort(() => Math.random() - 0.5); displayList(filtered); }
         
         function initRecommendations() { const container = document.getElementById('recommendList'); [...dictData].sort(() => 0.5 - Math.random()).slice(0, 3).forEach(item => { const div = document.createElement('div'); div.className = 'rec-card'; div.innerHTML = `<b>${formatWordSuperscript(item.word)}</b> <span style="font-size:12px; color:#999;">${item.definition.substring(0, 10)}...</span>`; div.onclick = () => displayDetail(item); container.appendChild(div); }); }
+        /* --- [8. 이벤트 리스너 및 실행] --- */
         document.getElementById('diaSearch').addEventListener('input', (e) => debounceSearch('dia', e.target.value.trim()));
         document.getElementById('stdSearch').addEventListener('input', (e) => debounceSearch('std', e.target.value.trim()));
         ['ㄱ','ㄴ','ㄷ','ㄹ','ㅁ','ㅂ','ㅅ','ㅇ','ㅈ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ'].forEach(c => { const btn = document.createElement('div'); btn.className = 'nav-btn'; btn.innerText = c; btn.onclick = () => searchByInitial(c); document.getElementById('consonantNav').appendChild(btn); });
-        init();
+        init(); // 앱 시작
     </script>
 </body>
 </html>
