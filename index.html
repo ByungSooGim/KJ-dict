@@ -148,9 +148,22 @@
         function sortResults(results, query) { return results.sort((a, b) => { const aW = a.word_pure || "", bW = b.word_pure || ""; if (aW === query && bW !== query) return -1; if (bW === query && aW !== query) return 1; if (aW.startsWith(query) && !bW.startsWith(query)) return -1; if (bW.startsWith(query) && !aW.startsWith(query)) return 1; return aW.length - bW.length; }); }
         // 디바운싱 검색 (타이핑 후 지연시간을 두어 성능 최적화)
         function debounceSearch(type, val) { clearTimeout(searchTimer); searchTimer = setTimeout(() => { if (!val) return; const searchDecomposed = decomposeHangul(val); let res = []; if (type === 'dia') { res = dictData.filter(i => decomposeHangul(i.word_pure || i.word || "").includes(searchDecomposed)); res = sortResults(res, val); } else { res = dictData.filter(i => (i.definition || "").includes(val)); } displayList(res); }, 250); }
-         /* --- [4. 텍스트 가공 및 링크 생성] --- */
+        /* --- [4. 텍스트 가공 및 링크 생성] --- */
+        // 추가: 품사 기호를 한글로 일괄 치환하는 헬퍼 함수
+        function replacePosSymbols(text) {
+            if (!text) return "";
+            let replacedText = text;
+            Object.keys(posMap).forEach(symbol => {
+                // 정규표현식을 사용하여 문장 내 모든 해당 기호를 한글로 변경
+                const reg = new RegExp(symbol, 'g');
+                replacedText = replacedText.replace(reg, posMap[symbol]);
+            });
+            return replacedText;
+        }
         function createAutoLinks(text, currentWord) {
             if (!text) return "";            
+            // 1. 먼저 뜻풀이 내의 모든 품사 기호를 한글로 치환합니다.
+            let processedText = replacePosSymbols(text);    
             // 기호, 내용, 마침표를 명확히 분리해서 캡처하도록 정규식 수정
             const targetRegex = /([≒☞⇔])([^.]+)(\.)/g; 
             return text.replace(targetRegex, (match, symbol, content, dot) => {
@@ -228,8 +241,14 @@
             currentItem = item; document.getElementById('searchList').style.display = 'none'; document.getElementById('resultView').style.display = 'block';
             document.getElementById('v-word').innerHTML = formatWordSuperscript(item.word || item.word_pure);
             // 1. item.pos_symbol이 있을 경우, 각 글자를 순회하며 한글 품사로 변환합니다.
-            const posText = posMap[item.pos_symbol] || item.pos_symbol || "", pBadge = document.getElementById('v-pos'); pBadge.innerText = posText; pBadge.style.display = posText ? 'inline-block' : 'none';
-            if (item.pronunciation) { document.getElementById('v-pron').innerText = `[${item.pronunciation}]`; document.getElementById('v-pron-row').style.display = 'flex'; } else { document.getElementById('v-pron-row').style.display = 'none'; }
+            /*const posText = posMap[item.pos_symbol] || item.pos_symbol || "", pBadge = document.getElementById('v-pos'); pBadge.innerText = posText; pBadge.style.display = posText ? 'inline-block' : 'none';*/
+            const posSymbol = item.pos_symbol || "";
+            const posText = posSymbol.split('') // 문자열을 한 글자씩 배열로 나눔
+                .map(s => posMap[s] || s) // 각 기호를 한글로 변환 (없으면 기호 그대로 유지)
+                .join('|'); // 여러 개일 경우 쉼표로 구분 (예: 명사, 동사)
+            const pBadge = document.getElementById('v-pos');
+            pBadge.innerText = posText;
+            pBadge.style.display = posText ? 'inline-block' : 'none'; if (item.pronunciation) { document.getElementById('v-pron').innerText = `[${item.pronunciation}]`; document.getElementById('v-pron-row').style.display = 'flex'; } else { document.getElementById('v-pron-row').style.display = 'none'; }
             document.getElementById('v-def').innerHTML = createAutoLinks(item.definition, item.word_pure);
             document.getElementById('reportMail').href = `mailto:bsgim5@gmail.com?subject=${encodeURIComponent('[경주말사전 오류제보] '+item.word_pure)}&body=${encodeURIComponent('표제어: '+item.word_pure+'\n뜻풀이: '+item.definition+'\n\n내용: 이곳에 수정 내용을 적어주세요.')}`;
             const exBox = document.getElementById('v-ex-box'), exContent = document.getElementById('v-ex-content');
