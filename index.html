@@ -241,31 +241,8 @@
             currentItem = item; document.getElementById('searchList').style.display = 'none'; document.getElementById('resultView').style.display = 'block';
             document.getElementById('v-word').innerHTML = formatWordSuperscript(item.word || item.word_pure);
             // 1. item.pos_symbol이 있을 경우, 각 글자를 순회하며 한글 품사로 변환합니다.
-            /*const posText = posMap[item.pos_symbol] || item.pos_symbol || "", pBadge = document.getElementById('v-pos'); pBadge.innerText = posText; pBadge.style.display = posText ? 'inline-block' : 'none';*/
-            // displayDetail 함수 내의 품사 처리 부분
-            const posSymbol = item.pos_symbol || "";
-            let posText = posSymbol;
-            // posMap을 순회하며 존재하는 기호만 한글로 치환
-            if (posText) {
-                Object.keys(posMap).forEach(symbol => {
-                    // 해당 기호가 문자열에 포함되어 있으면 모두 치환
-                    // 예: "󰃃󰂿" 문자열 내의 "󰃃"를 "명사"로, "󰂿"를 "동사"로 바꿈
-                    if (posText.includes(symbol)) {
-                        // 여러 개가 붙어 있을 때 구분하기 위해 뒤에 공백이나 구분자를 추가할 수 있습니다.
-                        posText = posText.split(symbol).join(posMap[symbol] + " ");
-                    }
-                });
-                // 마지막에 남은 공백을 제거하고, 여러 품사일 경우 쉼표(,)로 예쁘게 정리
-                posText = posText.trim().replace(/\s+/g, ', ');
-            }
-            /*const posSymbol = item.pos_symbol || "";
-            const posText = posSymbol.split('') // 문자열을 한 글자씩 배열로 나눔
-                .map(s => posMap[s] || s) // 각 기호를 한글로 변환 (없으면 기호 그대로 유지)
-                .join('|'); // 여러 개일 경우 쉼표로 구분 (예: 명사, 동사)
-            const pBadge = document.getElementById('v-pos');
-            pBadge.innerText = posText;
-            pBadge.style.display = posText ? 'inline-block' : 'none'; if (item.pronunciation) { document.getElementById('v-pron').innerText = `[${item.pronunciation}]`; document.getElementById('v-pron-row').style.display = 'flex'; } else { document.getElementById('v-pron-row').style.display = 'none'; }
-            */
+            const posText = posMap[item.pos_symbol] || item.pos_symbol || "", pBadge = document.getElementById('v-pos'); pBadge.innerText = posText; pBadge.style.display = posText ? 'inline-block' : 'none';
+            
             document.getElementById('v-def').innerHTML = createAutoLinks(item.definition, item.word_pure);
             document.getElementById('reportMail').href = `mailto:bsgim5@gmail.com?subject=${encodeURIComponent('[경주말사전 오류제보] '+item.word_pure)}&body=${encodeURIComponent('표제어: '+item.word_pure+'\n뜻풀이: '+item.definition+'\n\n내용: 이곳에 수정 내용을 적어주세요.')}`;
             const exBox = document.getElementById('v-ex-box'), exContent = document.getElementById('v-ex-content');
