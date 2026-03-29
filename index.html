@@ -220,8 +220,8 @@
                 // 한글 범위(가-힣) 확인 및 받침 유무 판별
                 if (lastCharCode >= 0xAC00 && lastCharCode <= 0xD7AF) {
                     const hasBatchim = (lastCharCode - 0xAC00) % 28 !== 0;
-                    // 받침 있으면 '이', 없으면 '가' 추가
-                    textToSpeak += hasBatchim ? "이" : "가";
+                    // 받침 있으면 '은/이', 없으면 '는/가' 추가
+                    textToSpeak += hasBatchim ? "은" : "는";
                 }
             }
             // 2. 강세(Accent) 여부 확인    // 텍스트 내에 '′' 기호가 하나라도 포함되어 있으면 강세 모드로 판정
