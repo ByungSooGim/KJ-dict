@@ -16,7 +16,7 @@
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         
         /* --- 헤더 및 로고 스타일 --- */
-        .header { display: flex; align-items: center; justify-content: center; margin: 8px 0 12px; gap: 6px; }
+        .header { display: flex; align-items: left; justify-content: center; margin: 8px 0 12px; gap: 6px; }
         .logo-svg { width: 24px; height: 24px; fill: var(--point); }
         .logo-text { font-size: 18px; font-weight: bold; color: var(--point); }
         
@@ -84,7 +84,7 @@
             <div class="logo-text">경주말 방언 사전</div>
         </div>
         <div class="search-row">
-            <input type="text" id="diaSearch" placeholder="방언 검색 (고어 포함)">
+            <input type="text" id="diaSearch" placeholder="방언 표제어 검색 ">
             <input type="text" id="stdSearch" placeholder="표준어 검색">
         </div>
         <div id="consonantNav" class="nav-grid"></div>
