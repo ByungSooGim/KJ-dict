@@ -148,8 +148,69 @@
         }
         /* --- [3. 검색 및 정렬 기능] --- */
         function sortResults(results, query) { return results.sort((a, b) => { const aW = a.word_pure || "", bW = b.word_pure || ""; if (aW === query && bW !== query) return -1; if (bW === query && aW !== query) return 1; if (aW.startsWith(query) && !bW.startsWith(query)) return -1; if (bW.startsWith(query) && !aW.startsWith(query)) return 1; return aW.length - bW.length; }); }
+
+        // 두 단어 사이의 유사도를 계산하는 함수 (레벤슈타인 거리)
+        function getSimilarity(s1, s2) {
+            const len1 = s1.length, len2 = s2.length;
+            const matrix = Array.from({ length: len1 + 1 }, () => Array(len2 + 1).fill(0));
+            for (let i = 0; i <= len1; i++) matrix[i][0] = i;
+            for (let j = 0; j <= len2; j++) matrix[0][j] = j;
+            for (let i = 1; i <= len1; i++) {
+                for (let j = 1; j <= len2; j++) {
+                    const cost = s1[i - 1] === s2[j - 1] ? 0 : 1;
+                    matrix[i][j] = Math.min(matrix[i - 1][j] + 1, matrix[i][j - 1] + 1, matrix[i - 1][j - 1] + cost);
+                }
+            }
+            return matrix[len1][len2];
+        }
         // 디바운싱 검색 (타이핑 후 지연시간을 두어 성능 최적화)
-        function debounceSearch(type, val) { clearTimeout(searchTimer); searchTimer = setTimeout(() => { if (!val) return; const searchDecomposed = decomposeHangul(val); let res = []; if (type === 'dia') { res = dictData.filter(i => decomposeHangul(i.word_pure || i.word || "").includes(searchDecomposed)); res = sortResults(res, val); } else { res = dictData.filter(i => (i.definition || "").includes(val)); } displayList(res); }, 250); }
+        // function debounceSearch(type, val) { clearTimeout(searchTimer); searchTimer = setTimeout(() => { if (!val) return; const searchDecomposed = decomposeHangul(val); let res = []; if (type === 'dia') { res = dictData.filter(i => decomposeHangul(i.word_pure || i.word || "").includes(searchDecomposed)); res = sortResults(res, val); } else { res = dictData.filter(i => (i.definition || "").includes(val)); } displayList(res); }, 250); }
+        
+        function debounceSearch(type, val) {
+            clearTimeout(searchTimer);
+            searchTimer = setTimeout(() => {
+            if (!val) return;
+                let res = [];
+
+        // --- 초성 검색 로직 (-ㄱㄹㄷ 패턴) ---
+            if (type === 'dia' && val.startsWith('-')) {
+                const chosungQuery = val.substring(1); // '-' 제외한 'ㄱㄹㄷ' 추출
+                res = dictData.filter(i => {
+                    const word = i.word_pure || i.word || "";
+                // 각 글자의 초성만 합쳐서 검색어와 비교
+                    const wordChosung = word.split('').map(char => getInitialConsonant(char)).join('');
+                    return wordChosung.includes(chosungQuery);
+                });
+            } 
+            // --- 일반 검색 로직 ---
+            else if (type === 'dia') {
+                const searchDecomposed = decomposeHangul(val);
+                res = dictData.filter(i => decomposeHangul(i.word_pure || i.word || "").includes(searchDecomposed));
+                res = sortResults(res, val);
+            } else {
+                res = dictData.filter(i => (i.definition || "").includes(val));
+            }
+
+        // --- 결과가 없을 때 유사 단어 추천 ---
+            if (res.length === 0 && type === 'dia') {
+                const suggestions = dictData
+                    .map(item => ({ item, distance: getSimilarity(val, item.word_pure || item.word) }))
+                    .filter(obj => obj.distance <= 2) // 차이가 2글자 이내인 것만
+                    .sort((a, b) => a.distance - b.distance)
+                    .slice(0, 10) // 상위 10개
+                    .map(obj => obj.item);
+            
+                if (suggestions.length > 0) {
+                    alert(`'${val}'에 대한 결과가 없습니다. 비슷한 단어를 보여드립니다.`);
+                    displayList(suggestions);
+                    return;
+                }
+            }
+            displayList(res);
+            }, 250);
+        }
+
+        
         /* --- [4. 텍스트 가공 및 링크 생성] --- */
         // 추가: 품사 기호를 한글로 일괄 치환하는 헬퍼 함수
         function replacePosSymbols(text) {
