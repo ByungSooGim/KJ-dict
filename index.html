@@ -326,7 +326,43 @@
             document.getElementById('v-def').innerHTML = createAutoLinks(item.definition, item.word_pure);
             document.getElementById('reportMail').href = `mailto:bsgim5@gmail.com?subject=${encodeURIComponent('[경주말사전 오류제보] '+item.word_pure)}&body=${encodeURIComponent('표제어: '+item.word_pure+'\n뜻풀이: '+item.definition+'\n\n내용: 이곳에 수정 내용을 적어주세요.')}`;
             const exBox = document.getElementById('v-ex-box'), exContent = document.getElementById('v-ex-content');
-            if (item.examples && item.examples.length > 0) { exBox.style.display = 'block'; exContent.innerHTML = item.examples.map(ex => `<div class="ex-item">${ex.dialect}<span class="ex-std">표준어: ${ex.standard}</span></div>`).join(''); exContent.style.display = 'none'; document.querySelector('.ex-toggle').classList.remove('active'); } else { exBox.style.display = 'none'; }
+            //if (item.examples && item.examples.length > 0) { exBox.style.display = 'block'; exContent.innerHTML = item.examples.map(ex => `<div class="ex-item">${ex.dialect}<span class="ex-std">표준어: ${ex.standard}</span></div>`).join(''); exContent.style.display = 'none'; document.querySelector('.ex-toggle').classList.remove('active'); } else { exBox.style.display = 'none'; }
+            let htmlContent = "";
+
+    // 1. 구절(Idioms) 추가
+    if (item.idioms && item.idioms.length > 0) {
+        htmlContent += item.idioms.map(idm => `
+            <div class="ex-item" style="border-left: 3px solid #7ea1c4; background: #f4f7fa;">
+                <span style="font-size:12px; color:#7ea1c4; font-weight:bold; display:block; margin-bottom:2px;">[구절]</span>
+                <b style="color:#4a6fa5;">${idm.idiom}</b>
+                <div style="font-size:15px; margin-top:4px; color:#444;">${idm.definition}</div>
+            </div>
+        `).join('');
+    }
+
+    // 2. 예문(Examples) 추가
+    if (item.examples && item.examples.length > 0) {
+        htmlContent += item.examples.map(ex => `
+            <div class="ex-item">
+                <span style="font-size:12px; color:#999; font-weight:bold; display:block; margin-bottom:2px;">[예문]</span>
+                ${ex.dialect}
+                <span class="ex-std">표준어: ${ex.standard}</span>
+            </div>
+        `).join('');
+    }
+
+    // 3. 데이터가 하나라도 있으면 출력, 없으면 숨김
+    if (htmlContent) {
+        combinedBox.style.display = 'block';
+        combinedContent.innerHTML = htmlContent;
+        combinedContent.style.display = 'none'; // 초기 상태는 닫힘
+        document.querySelector('.ex-toggle').classList.remove('active');
+    } else {
+        combinedBox.style.display = 'none';
+    }
+            
+            
+            
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
