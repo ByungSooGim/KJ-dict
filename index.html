@@ -339,7 +339,9 @@ function toggleCombined() {
             //const exBox = document.getElementById('v-ex-box'), exContent = document.getElementById('v-ex-content');
             //if (item.examples && item.examples.length > 0) { exBox.style.display = 'block'; exContent.innerHTML = item.examples.map(ex => `<div class="ex-item">${ex.dialect}<span class="ex-std">표준어: ${ex.standard}</span></div>`).join(''); exContent.style.display = 'none'; document.querySelector('.ex-toggle').classList.remove('active'); } else { exBox.style.display = 'none'; }
             //document.getElementById('v-def').innerHTML = createAutoLinks(item.definition, item.word_pure);
-
+    // ... (상단 표제어, 품사, 발음, 뜻풀이 로직은 그대로 유지) ...
+    document.getElementById('v-def').innerHTML = createAutoLinks(item.definition, item.word_pure);
+            
     const combinedBox = document.getElementById('v-combined-box');
     const combinedContent = document.getElementById('v-combined-content');
             
