@@ -347,17 +347,6 @@ function toggleCombined() {
             
             let htmlContent = "";
 
-    // 1. 구절(Idioms) 추가
-    if (item.idioms && item.idioms.length > 0) {
-        htmlContent += item.idioms.map(idm => `
-            <div class="ex-item" style="border-left: 3px solid #7ea1c4; background: #f4f7fa;">
-                <span style="font-size:12px; color:#7ea1c4; font-weight:bold; display:block; margin-bottom:2px;">[구절]</span>
-                <b style="color:#4a6fa5;">${idm.phrase}</b>
-                <div style="font-size:15px; margin-top:4px; color:#444;">${idm.meaning}</div>
-            </div>
-        `).join('');
-    }
-
     // 2. 예문(Examples) 추가
     if (item.examples && item.examples.length > 0) {
         htmlContent += item.examples.map(ex => `
@@ -365,6 +354,16 @@ function toggleCombined() {
                 <span style="font-size:12px; color:#999; font-weight:bold; display:block; margin-bottom:2px;">[예문]</span>
                 ${ex.dialect}
                 <span class="ex-std">표준어: ${ex.standard}</span>
+            </div>
+        `).join('');
+    }
+    // 1. 구절(Idioms) 추가
+    if (item.idioms && item.idioms.length > 0) {
+        htmlContent += item.idioms.map(idm => `
+            <div class="ex-item" style="border-left: 3px solid #7ea1c4; background: #f4f7fa;">
+                <span style="font-size:12px; color:#7ea1c4; font-weight:bold; display:block; margin-bottom:2px;">[구절]</span>
+                <b style="color:#4a6fa5;">${idm.phrase}</b>
+                <div style="font-size:15px; margin-top:4px; color:#444;">${idm.meaning}</div>
             </div>
         `).join('');
     }
