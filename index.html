@@ -109,8 +109,8 @@
                 </div>
                 <div id="v-def" class="def-area"></div>
                 <div id="v-ex-box" class="ex-container" style="display:none;">
-                    <div class="ex-toggle" onclick="toggleExample()">📜 예문 보기</div>
-                    <div id="v-ex-content" class="ex-content"></div>
+                    <div class="ex-toggle" onclick="toggleCombined()">📜 예문 구절 보기</div>
+                    <div id="v-combined-content" class="ex-content"></div>
                 </div>
             </div>
             <button onclick="goBackToList()" style="margin-bottom:10px; padding:8px 12px; background:#eee; border:none; border-radius:6px; cursor:pointer; font-weight:bold; color:#555;">← 목록으로 돌아가기</button>
@@ -309,6 +309,16 @@
 
         /* --- [6. UI 렌더링: 리스트 및 상세화면] --- */
         function toggleExample() { const content = document.getElementById('v-ex-content'), toggleBtn = document.querySelector('.ex-toggle'), isHidden = content.style.display === 'none' || content.style.display === ''; content.style.display = isHidden ? 'block' : 'none'; toggleBtn.classList.toggle('active', isHidden); }
+        /* --- 통합 토글 함수 --- */
+function toggleCombined() {
+    const content = document.getElementById('v-combined-content');
+    const toggleBtn = document.querySelector('.ex-toggle');
+    const isHidden = content.style.display === 'none' || content.style.display === '';
+    content.style.display = isHidden ? 'block' : 'none';
+    toggleBtn.classList.toggle('active', isHidden);
+}
+
+        
         function displayDetail(item) {
             currentItem = item; 
             document.getElementById('searchList').style.display = 'none'; 
@@ -325,8 +335,13 @@
             if (item.pronunciation) { document.getElementById('v-pron').innerText = `[${item.pronunciation}]`; document.getElementById('v-pron-row').style.display = 'flex'; } else { document.getElementById('v-pron-row').style.display = 'none'; }
             document.getElementById('v-def').innerHTML = createAutoLinks(item.definition, item.word_pure);
             document.getElementById('reportMail').href = `mailto:bsgim5@gmail.com?subject=${encodeURIComponent('[경주말사전 오류제보] '+item.word_pure)}&body=${encodeURIComponent('표제어: '+item.word_pure+'\n뜻풀이: '+item.definition+'\n\n내용: 이곳에 수정 내용을 적어주세요.')}`;
-            const exBox = document.getElementById('v-ex-box'), exContent = document.getElementById('v-ex-content');
+            //const exBox = document.getElementById('v-ex-box'), exContent = document.getElementById('v-ex-content');
             //if (item.examples && item.examples.length > 0) { exBox.style.display = 'block'; exContent.innerHTML = item.examples.map(ex => `<div class="ex-item">${ex.dialect}<span class="ex-std">표준어: ${ex.standard}</span></div>`).join(''); exContent.style.display = 'none'; document.querySelector('.ex-toggle').classList.remove('active'); } else { exBox.style.display = 'none'; }
+            //document.getElementById('v-def').innerHTML = createAutoLinks(item.definition, item.word_pure);
+
+    const combinedBox = document.getElementById('v-combined-box');
+    const combinedContent = document.getElementById('v-combined-content');
+            
             let htmlContent = "";
 
     // 1. 구절(Idioms) 추가
