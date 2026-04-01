@@ -311,7 +311,7 @@
         /* --- [6. UI 렌더링: 리스트 및 상세화면] --- */
         function toggleExample() { const content = document.getElementById('v-ex-content'), toggleBtn = document.querySelector('.ex-toggle'), isHidden = content.style.display === 'none' || content.style.display === ''; content.style.display = isHidden ? 'block' : 'none'; toggleBtn.classList.toggle('active', isHidden); }
         /* --- 통합 토글 함수 --- */
-function toggleCombined() {
+        function toggleCombined() {
     const content = document.getElementById('v-combined-content');
     const toggleBtn = document.querySelector('.ex-toggle');
     const isHidden = content.style.display === 'none' || content.style.display === '';
@@ -351,7 +351,6 @@ function toggleCombined() {
     if (item.examples && item.examples.length > 0) {
         htmlContent += item.examples.map(ex => `
             <div class="ex-item">
-                <span style="font-size:12px; color:#999; font-weight:bold; display:block; margin-bottom:2px;">[예문]</span>
                 ${ex.dialect}
                 <span class="ex-std">표준어: ${ex.standard}</span>
             </div>
