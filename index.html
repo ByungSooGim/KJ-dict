@@ -377,9 +377,77 @@
             // 단어 안의 숫자(\d+)를 <sup> 태그로 감싸줌
             return word ? word.replace(/(\d+)/g, '<sup>$1</sup>') : "";
         }
-     
+
+/* --- [5. 발음 재생 및 TTS] --- */
+function speakPronunciation() {
+    if (!currentItem || !currentItem.pronunciation || !window.speechSynthesis) return;
+    window.speechSynthesis.cancel();
+    
+    let raw = currentItem.pronunciation;
+    
+    // 1. {A/B} 또는 {A>B} 형태에서 A만 추출
+    let processedText = raw.replace(/\{([^/>]+)[/>][^}]+\}/g, '$1');
+
+    // 강세 기호(' 또는 ′)가 마지막에 있는지 확인
+    const endsWithAccent = /['′]$/.test(processedText);
+    let textToSpeak = processedText;
+
+    if (endsWithAccent) {
+        // 마지막 강세 기호를 제외한 순수 텍스트 추출
+        let cleanText = processedText.replace(/['′]$/, "");
+        const lastChar = cleanText.slice(-1);
+        const lastCharCode = lastChar.charCodeAt(0);
+
+        // 한글 범위 확인 (가-힣)
+        if (lastCharCode >= 0xAC00 && lastCharCode <= 0xD7AF) {
+            const charCodeOffset = lastCharCode - 0xAC00;
+            const jongseongIndex = charCodeOffset % 28; // 받침 인덱스
+            const jungseongIndex = Math.floor((charCodeOffset % 588) / 28); // 중성(모음) 인덱스
+            const choseongIndex = Math.floor(charCodeOffset / 588); // 초성 인덱스
+
+            if (jongseongIndex !== 0) {
+                /* --- 받침이 있는 경우: 간' -> 가'안 / 견' -> 겨'언 --- */
+                // 받침을 제거한 글자 생성
+                const charWithoutBatchim = String.fromCharCode(0xAC00 + (choseongIndex * 588) + (jungseongIndex * 28));
+                // 받침만 있는 글자 생성 (ㅇ 초성 + 기존 받침)
+                const batchimOnlyChar = String.fromCharCode(0xAC00 + (11 * 588) + (0 * 28) + jongseongIndex);
+                
+                textToSpeak = cleanText.slice(0, -1) + charWithoutBatchim + "'" + batchimOnlyChar;
+            } else {
+                /* --- 받침이 없는 경우: 모음 연장 및 단모음화 --- */
+                // ㅑ(2) -> 아(0), ㅕ(4) -> 어(1), ㅞ(15) -> 에(7) 등 매핑
+                const vowelMap = {
+                    2: 0,  // ㅑ -> 아
+                    4: 1,  // ㅕ -> 어
+                    15: 7, // ㅞ -> 에
+                    10: 5, // ㅖ -> 에
+                    12: 8, // ㅘ -> 아
+                    13: 1, // ㅙ -> 애 (상황에 따라 '에'로 변경 가능)
+                };
+
+                let extensionVowelIndex = vowelMap[jungseongIndex] !== undefined ? vowelMap[jungseongIndex] : jungseongIndex;
+                // 'ㅇ' 초성(11) + 매핑된 모음 + 받침 없음(0)
+                const extensionChar = String.fromCharCode(0xAC00 + (11 * 588) + (extensionVowelIndex * 28));
+                
+                textToSpeak = cleanText + "'" + extensionChar;
+            }
+        }
+    }
+
+    const utterance = new SpeechSynthesisUtterance(textToSpeak);
+    utterance.lang = 'ko-KR';
+    
+    // 강세 표현을 위해 속도를 늦추고 피치를 조절
+    utterance.rate = 0.7;
+    utterance.pitch = 1.0; 
+    
+    window.speechSynthesis.speak(utterance);
+}
+
+
+        
         /* --- [5. 발음 재생 및 TTS] --- */
-        function speakPronunciation() {
+      /*  function speakPronunciation() {
             if (!currentItem || !currentItem.pronunciation || !window.speechSynthesis) return;    window.speechSynthesis.cancel();
             let raw = currentItem.pronunciation;
             
@@ -414,7 +482,7 @@
             // }
             window.speechSynthesis.speak(utterance);
         }
-
+*/
         /* --- [6. UI 렌더링: 리스트 및 상세화면] --- */
         function toggleExample() { const content = document.getElementById('v-ex-content'), toggleBtn = document.querySelector('.ex-toggle'), isHidden = content.style.display === 'none' || content.style.display === ''; content.style.display = isHidden ? 'block' : 'none'; toggleBtn.classList.toggle('active', isHidden); }
         /* --- 통합 토글 함수 --- */
