@@ -417,14 +417,18 @@ function speakPronunciation() {
                 /* --- 받침이 없는 경우: 모음 연장 및 단모음화 --- */
                 // ㅑ(2) -> 아(0), ㅕ(4) -> 어(1), ㅞ(15) -> 에(7) 등 매핑
                 const vowelMap = {
-                    2: 0,  // ㅑ -> 아
-                    4: 1,  // ㅕ -> 어
-                    15: 7, // ㅞ -> 에
-                    10: 5, // ㅖ -> 에
-                    12: 8, // ㅘ -> 아
-                    13: 1, // ㅙ -> 애 (상황에 따라 '에'로 변경 가능)
+                    2: 0,   // ㅑ -> 아
+                    4: 3,   // ㅕ -> 어
+                    6: 5,   // ㅛ -> 오
+                    13: 3, // ㅝ -> 오 (또는 우)
+                    17: 14, // ㅠ -> 우
+                    10: 7,  // ㅖ -> 에
+                    15: 7,  // ㅞ -> 에
+                    11: 0,  // ㅘ -> 아
+                    12: 1,  // ㅙ -> 애
+                    14: 7,  // ㅚ -> 에
+                    19: 18, // ㅢ -> 이
                 };
-
                 let extensionVowelIndex = vowelMap[jungseongIndex] !== undefined ? vowelMap[jungseongIndex] : jungseongIndex;
                 // 'ㅇ' 초성(11) + 매핑된 모음 + 받침 없음(0)
                 const extensionChar = String.fromCharCode(0xAC00 + (11 * 588) + (extensionVowelIndex * 28));
