@@ -379,7 +379,7 @@
         }
 
 /* --- [5. 발음 재생 및 TTS] --- */
-function speakPronunciation() {
+/*function speakPronunciation() {
     if (!currentItem || !currentItem.pronunciation || !window.speechSynthesis) return;
     window.speechSynthesis.cancel();
     
@@ -406,7 +406,7 @@ function speakPronunciation() {
             const choseongIndex = Math.floor(charCodeOffset / 588); // 초성 인덱스
 
             if (jongseongIndex !== 0) {
-                /* --- 받침이 있는 경우: 간' -> 가'안 / 견' -> 겨'언 --- */
+                //--- 받침이 있는 경우: 간' -> 가'안 / 견' -> 겨'언 --- //
                 // 받침을 제거한 글자 생성
                 const charWithoutBatchim = String.fromCharCode(0xAC00 + (choseongIndex * 588) + (jungseongIndex * 28));
                 // 받침만 있는 글자 생성 (ㅇ 초성 + 기존 받침)
@@ -414,7 +414,7 @@ function speakPronunciation() {
                 
                 textToSpeak = cleanText.slice(0, -1) + charWithoutBatchim + "'" + batchimOnlyChar;
             } else {
-                /* --- 받침이 없는 경우: 모음 연장 및 단모음화 --- */
+                // --- 받침이 없는 경우: 모음 연장 및 단모음화 --- //
                 // ㅑ(2) -> 아(0), ㅕ(4) -> 어(1), ㅞ(15) -> 에(7) 등 매핑
                 const vowelMap = {
                     2: 0,   // ㅑ -> 아
@@ -448,7 +448,75 @@ function speakPronunciation() {
     
     window.speechSynthesis.speak(utterance);
 }
+*/
 
+/* --- [5. 발음 재생 및 TTS] --- */
+function speakPronunciation() {
+    if (!currentItem || !currentItem.pronunciation || !window.speechSynthesis) return;
+    window.speechSynthesis.cancel();
+    
+    let raw = currentItem.pronunciation;
+    
+    // 1. {A/B} 또는 {A>B} 형태에서 A만 추출
+    let processedText = raw.replace(/\{([^/>]+)[/>][^}]+\}/g, '$1');
+
+    const endsWithAccent = /['′]$/.test(processedText);
+    let textToSpeak = processedText;
+
+    if (endsWithAccent) {
+        let cleanText = processedText.replace(/['′]$/, "");
+        const lastChar = cleanText.slice(-1);
+        const lastCharCode = lastChar.charCodeAt(0);
+
+        if (lastCharCode >= 0xAC00 && lastCharCode <= 0xD7AF) {
+            const charCodeOffset = lastCharCode - 0xAC00;
+            const jongseongIndex = charCodeOffset % 28;
+            const jungseongIndex = Math.floor((charCodeOffset % 588) / 28);
+            const choseongIndex = Math.floor(charCodeOffset / 588);
+
+            // --- [공통 모음 변환 맵: 표준 유니코드 인덱스 기준] ---
+            const vowelMap = {
+                2: 0,   // ㅑ(2) -> ㅏ(0)
+                3: 1,   // ㅒ(3) -> ㅐ(1)
+                6: 4,   // ㅕ(6) -> ㅓ(4)
+                7: 5,   // ㅖ(7) -> ㅔ(5)
+                9: 8,   // ㅛ(9) -> ㅗ(8)
+                12: 10, // ㅝ(12) -> ㅜ(10)
+                13: 5,  // ㅞ(13) -> ㅔ(5)
+                17: 10, // ㅠ(17) -> ㅜ(10)
+                19: 20, // ㅢ(19) -> ㅣ(20)
+                11: 8,  // ㅘ(11) -> ㅗ(8) 또는 ㅏ(0)
+                14: 10, // ㅟ(14) -> ㅜ(10) 또는 ㅣ(20)
+                15: 10  // ㅝ(15) -> ㅜ(10)
+            };
+
+            // 변환할 모음 결정 (맵에 없으면 원래 모음 유지)
+            let targetVowelIndex = vowelMap[jungseongIndex] !== undefined ? vowelMap[jungseongIndex] : jungseongIndex;
+
+            if (jongseongIndex !== 0) {
+                /* --- 받침이 있는 경우 (예: 견' -> 겨'언) --- */
+                // 1. 초성 + 원래모음 (받침 제거)
+                const baseChar = String.fromCharCode(0xAC00 + (choseongIndex * 588) + (jungseongIndex * 28));
+                // 2. ㅇ + 변환된 모음 + 원래 받침
+                const extensionWithBatchim = String.fromCharCode(0xAC00 + (11 * 588) + (targetVowelIndex * 28) + jongseongIndex);
+                
+                textToSpeak = cleanText.slice(0, -1) + baseChar + "'" + extensionWithBatchim;
+            } else {
+                /* --- 받침이 없는 경우 (예: 교' -> 교'오) --- */
+                // ㅇ + 변환된 모음
+                const extensionChar = String.fromCharCode(0xAC00 + (11 * 588) + (targetVowelIndex * 28));
+                
+                textToSpeak = cleanText + "'" + extensionChar;
+            }
+        }
+    }
+
+    const utterance = new SpeechSynthesisUtterance(textToSpeak);
+    utterance.lang = 'ko-KR';
+    utterance.rate = 0.7; // 속도는 사용자님의 설정 유지
+    utterance.pitch = 1.0; 
+    window.speechSynthesis.speak(utterance);
+}
 
         
         /* --- [5. 발음 재생 및 TTS] --- */
