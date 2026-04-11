@@ -15,24 +15,34 @@
         .spinner { width: 40px; height: 40px; border: 4px solid #f3f3f3; border-top: 4px solid var(--point); border-radius: 50%; animation: spin 1s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         
-        /* --- 헤더 및 검색창 스타일 --- */
+         /* --- 헤더 및 로고 스타일 --- */
         .header { display: flex; align-items: left; justify-content: left; margin: 8px 0 12px; gap: 6px; }
         .logo-svg { width: 24px; height: 24px; fill: var(--point); }
         .logo-text { font-size: 18px; font-weight: bold; color: var(--point); }
+        
+        /* 1. 검색창 글씨 크기 20px */
         .search-row { display: flex; gap: 4px; margin-bottom: 8px; width: 100%; }
         .search-row input { flex: 1; width: 50%; padding: 10px 8px; border: 1.5px solid #ddd; border-radius: 8px; font-size: 20px; box-sizing: border-box; background: #fff; }
         
-        /* --- 내비게이션 (자음/품사) --- */
+        /* 2. 자음 버튼 한 줄에 14개 */
         .nav-grid { display: grid; grid-template-columns: repeat(14, 1fr); gap: 2px; margin-bottom: 8px; padding: 4px; background: #fff; border-radius: 8px; border: 1px solid #eee; }
         .nav-btn { aspect-ratio: 1/1.2; display: flex; align-items: center; justify-content: center; background: #fdfdfd; border: 1px solid #eee; border-radius: 4px; font-size: 14px; font-weight: bold; cursor: pointer; color: #444; }
+        
+        /* 3. 품사 버튼 높이 줄임 */
         .pos-row { display: flex; gap: 4px; margin-top: 8px; margin-bottom: 8px; }
         .pos-btn { flex: 1; padding: 4px 2px; background: #fff; border: 1px solid #ddd; border-radius: 6px; cursor: pointer; text-align: center; font-size: 14px; font-weight: bold; color: #555; display: flex; flex-direction: column; justify-content: center; height: 35px; }
         .pos-btn span { font-size: 8px; font-weight: normal; color: #999; margin-top: 1px; }
         
-        /* --- 리스트 및 결과 카드 --- */
+        /* --- 4. 검색 결과 리스트 아이템 --- */
         .list-item { padding: 12px 15px; border-bottom: 1px solid #eee; font-size: 17px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer; }
         .list-item b { color: #000; }
         .list-item span.brief-text { font-size: 13px; color: #999; font-weight: normal; margin-left: 8px; }
+        /* --- 5. 페이지네이션 --- */
+        .pagination { display: flex; justify-content: center; gap: 8px; margin: 15px 0; flex-wrap: wrap; }
+        .page-btn { padding: 5px 10px; border: 1px solid #ddd; border-radius: 4px; background: #fff; cursor: pointer; font-size: 13px; }
+        .page-btn.active { background: var(--point); color: #fff; border-color: var(--point); }
+         /* --- 6. 상세 보기(상세 카드) 영역 --- */
+
         #resultView { width: 100%; display: none; margin-bottom: 15px; }
         .result-card { background: white; padding: 18px; border-radius: 12px; border: 2px solid var(--point); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
         .word-title { font-size: 30px; font-weight: bold; color: var(--point); }
@@ -45,19 +55,23 @@
         .pron-row { display: flex; align-items: center; gap: 8px; margin-top: 4px; }
         .pron-area { font-size: 15px; color: #777; font-style: italic; }
         
-        /* --- 예문 스타일 --- */
+        /* --- 7. 예문 토글 및 리스트 --- */
         .ex-container { margin-top: 15px; border-top: 1px dashed #ddd; padding-top: 10px; }
         .ex-toggle { display: inline-flex; align-items: center; color: #777; font-size: 14px; font-weight: bold; cursor: pointer; padding: 5px 0; }
         .ex-toggle::after { content: ' ▼'; font-size: 10px; margin-left: 4px; }
         .ex-toggle.active::after { content: ' ▲'; }
         .ex-content { display: none; margin-top: 8px; }
-        .ex-item { background: #f9f9f9; padding: 12px; border-radius: 8px; margin-bottom: 8px; border-left: 3px solid #ccc; font-size: 16px; line-height: 1.5; }
+        .ex-item { background: #f9f9f9; padding: 12px; border-radius: 8px; margin-bottom: 8px; border-left: 3px solid #ccc; font-size: 16px; }
         .ex-std { display: block; font-size: 13px; color: #888; margin-top: 5px; border-top: 1px dotted #eee; padding-top: 5px; }
+        /* --- 8. 추천 단어 및 푸터 정보 --- */
+        .rec-container { display: flex; flex-direction: column; gap: 5px; margin-bottom: 15px; width: 100%; }
+        .rec-card { background: #fff; padding: 10px 15px; border-radius: 8px; border: 1px solid #eee; font-size: 16px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
         
-        /* --- 푸터 및 기타 --- */
+        .report-btn { margin-top: 10px; display: inline-block; padding: 8px 12px; font-size: 10px; color: #888; border: 1px solid #ddd; border-radius: 3px; cursor: pointer; text-decoration: none; transition: 0.2s; }
+        .report-btn:hover { background: #f9f9f9; color: var(--point); border-color: var(--point); }
+        
         .footer-info { font-size: 10px; color: #ccc; text-align: center; padding: 10px; line-height: 1.6; }
-        body { -webkit-user-select: none; user-select: none; }
-        input { user-select: auto !important; }
+        .copyright-warning { color: #aaa; font-weight: bold; margin-top: 5px; display: block; }
     </style>
 </head>
 <body>
@@ -91,16 +105,14 @@
                         <span id="v-word" class="word-title"></span>
                         <span id="v-pos" class="pos-badge"></span>
                     </div>
-                    <a id="reportMail" class="report-btn" style="text-decoration:none; font-size:11px; border:1px solid #ddd; padding:4px 8px; border-radius:4px; color:#888;">오류제보</a>
+                    <a id="reportMail" class="report-btn" style="margin-left: auto;">오류제보</a>
                 </div>
-                
                 <div id="v-pron-row" class="pron-row" style="display:none;">
                     <div id="v-pron" class="pron-area"></div>
                     <div class="speaker-btn" onclick="speakPronunciation()">
-                        <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
+                        <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
                     </div>
                 </div>
-
                 <div id="v-def" class="def-area"></div>
 
                 <div id="v-combined-box" class="ex-container" style="display:none;">
@@ -125,8 +137,8 @@
         /* --- [1. 변수 및 환경 설정] --- */
         let dictData = [], currentItem = null, searchTimer, currentPage = 1, filteredData = [];
         const itemsPerPage = 50, DB_NAME = "GyeongjuDictDB", STORE_NAME = "dictionary";
-        // DB 버전 번호 업데이트 (2026-04-10 버전)
-        const DATA_VERSION = "20260410_v1"; 
+        // DB 버전 번호 업데이트 (2026-04-08 버전)
+        const DATA_VERSION = "20260408_v1"; 
         const XOR_KEY = "gyeongju_secret"; 
         const posMap = { '󰃃': '명사', '󰂿': '동사', '󰃰': '형용사', '󰂽': '대명사', '󰃌': '부사', '󰃲': '활용어미', '󰃥': '접사', '󰃆': '어미', '󰂴': '관형사', '󰂳': '감탄사', '󰃓': '수사', '󰃫': '참고', '󰃩': '준말' };
         const consonants = ['ㄱ', 'ㄲ', 'ㄴ', 'ㄷ', 'ㄸ', 'ㄹ', 'ㅁ', 'ㅂ', 'ㅃ', 'ㅅ', 'ㅆ', 'ㅇ', 'ㅈ', 'ㅉ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ'];
@@ -195,6 +207,25 @@
         function decomposeHangul(str) { return str.normalize('NFD').replace(/[\u0300-\u036f]/g, ""); }
         function getInitialConsonant(str) { if (!str) return ""; const code = str.charCodeAt(0) - 44032; return (code < 0 || code > 11171) ? str[0] : consonants[Math.floor(code / 588)]; }
         
+        
+               /* --- [3. 검색 및 정렬 기능] --- */
+        function sortResults(results, query) { return results.sort((a, b) => { const aW = a.word_pure || "", bW = b.word_pure || ""; if (aW === query && bW !== query) return -1; if (bW === query && aW !== query) return 1; if (aW.startsWith(query) && !bW.startsWith(query)) return -1; if (bW.startsWith(query) && !aW.startsWith(query)) return 1; return aW.length - bW.length; }); }
+
+        // 두 단어 사이의 유사도를 계산하는 함수 (레벤슈타인 거리)
+        function getSimilarity(s1, s2) {
+            const len1 = s1.length, len2 = s2.length;
+            const matrix = Array.from({ length: len1 + 1 }, () => Array(len2 + 1).fill(0));
+            for (let i = 0; i <= len1; i++) matrix[i][0] = i;
+            for (let j = 0; j <= len2; j++) matrix[0][j] = j;
+            for (let i = 1; i <= len1; i++) {
+                for (let j = 1; j <= len2; j++) {
+                    const cost = s1[i - 1] === s2[j - 1] ? 0 : 1;
+                    matrix[i][j] = Math.min(matrix[i - 1][j] + 1, matrix[i][j - 1] + 1, matrix[i - 1][j - 1] + cost);
+                }
+            }
+            return matrix[len1][len2];
+        }
+        
         // 검색 딜레이 처리 (Debounce)
         function debounceSearch(type, val) {
             clearTimeout(searchTimer);
@@ -209,6 +240,107 @@
                 }
                 displayList(res);
             }, 250);
+        }
+        // 디바운싱 검색 (타이핑 후 지연시간을 두어 성능 최적화)
+        // function debounceSearch(type, val) { clearTimeout(searchTimer); searchTimer = setTimeout(() => { if (!val) return; const searchDecomposed = decomposeHangul(val); let res = []; if (type === 'dia') { res = dictData.filter(i => decomposeHangul(i.word_pure || i.word || "").includes(searchDecomposed)); res = sortResults(res, val); } else { res = dictData.filter(i => (i.definition || "").includes(val)); } displayList(res); }, 250); }
+        function debounceSearch(type, val) {
+    clearTimeout(searchTimer);
+    searchTimer = setTimeout(() => {
+        if (!val) return;
+        
+        let res = [];
+        const isChosungOnly = /^[ㄱ-ㅎ]+$/.test(val); // 입력이 오직 초성으로만 구성되었는지 확인
+
+        if (type === 'dia') {
+            if (isChosungOnly) {
+                // 1. 초성만 입력했을 경우 (예: ㄱㄹㄷ) -> 초성 일치 검색
+                res = dictData.filter(i => {
+                    const word = i.word_pure || i.word || "";
+                    const wordChosung = word.split('').map(char => getInitialConsonant(char)).join('');
+                    return wordChosung.includes(val);
+                });
+            } else {
+                // 2. 일반 단어 입력 시 -> 포함 검색
+                const searchDecomposed = decomposeHangul(val);
+                res = dictData.filter(i => decomposeHangul(i.word_pure || i.word || "").includes(searchDecomposed));
+                res = sortResults(res, val);
+
+                // 3. 일반 검색 결과가 0건일 때 -> 입력된 글자의 초성을 유지하는 유사어 검색
+                if (res.length === 0) {
+                    const inputChosung = val.split('').map(char => getInitialConsonant(char)).join('');
+                    res = dictData.filter(i => {
+                        const word = i.word_pure || i.word || "";
+                        const wordChosung = word.split('').map(char => getInitialConsonant(char)).join('');
+                        // 초성 구조가 완전히 같거나 포함되는 것들 추출
+                        return wordChosung === inputChosung || wordChosung.includes(inputChosung);
+                    });
+                    
+                    if (res.length > 0) {
+                        console.log("일반 결과 없음: 초성 일치 단어로 대체 제안");
+                        // 사용자에게 안내 메시지를 주고 싶다면 여기에 추가 (예: resCount 레이블 수정)
+                    }
+                }
+            }
+        } else {
+            // 표준어(뜻풀이) 검색
+            res = dictData.filter(i => (i.definition || "").includes(val));
+        }
+
+        displayList(res);
+    }, 250);
+}
+
+        
+        /* --- [4. 텍스트 가공 및 링크 생성] --- */
+        // 추가: 품사 기호를 한글로 일괄 치환하는 헬퍼 함수
+        function replacePosSymbols(text) {
+            if (!text) return "";
+            let replacedText = text;
+            Object.keys(posMap).forEach(symbol => {
+                // 정규표현식을 사용하여 문장 내 모든 해당 기호를 한글로 변경
+                const reg = new RegExp(symbol, 'g');
+                replacedText = replacedText.replace(reg, posMap[symbol]);
+            });
+            return replacedText;
+        }
+        function createAutoLinks(text, currentWord) {
+            if (!text) return "";            
+            // 1. 먼저 뜻풀이 내의 모든 품사 기호를 한글로 치환합니다.
+            let processedText = replacePosSymbols(text);    
+            // 기호, 내용, 마침표를 명확히 분리해서 캡처하도록 정규식 수정
+            const targetRegex = /([≒☞⇔])([^.]+)(\.)/g; 
+            return text.replace(targetRegex, (match, symbol, content, dot) => {
+                const linked = content.split('/').map(part => {
+                    // 1. 양옆 공백 제거
+                    let rawWord = part.trim();
+                    // 2. 괄호와 괄호 안의 내용 제거 (예: "단어1(어원)" -> "단어1")
+                    // 괄호가 있건 없건 깔끔하게 단어와 숫자만 남깁니다.
+                    let searchWord = rawWord.replace(/\([^)]*\)/g, '').trim();
+                    // 3. 사전 데이터에서 매칭 (숫자가 포함된 word 또는 word_pure와 모두 비교)
+                    // 자기 자신(currentWord)과 같으면 링크를 걸지 않음
+                    const target = dictData.find(d => 
+                        (d.word === searchWord || d.word_pure === searchWord) && 
+                        (d.word !== currentWord && d.word_pure !== currentWord)
+                    );
+                    // 4. 화면에 보여줄 텍스트 (숫자는 무조건 윗첨자 처리)
+                    const displayHtml = formatWordSuperscript(searchWord);
+                    // 5. 링크 대상이 사전에 있으면 링크 <span> 생성, 없으면 텍스트만 반환
+                    if (target) {
+                        return `<span class="def-link" onclick="handleLinkClick('${searchWord}')">${displayHtml}</span>`;
+                    } else {
+                        return displayHtml;
+                    }
+                }).join(' / '); // 슬래시 사이에 공백을 넣어 가독성을 높임
+                
+                // 기호, 처리된 텍스트, 마침표를 다시 합쳐서 반환
+                return symbol + ' ' + linked + dot;
+            });
+        }
+
+        function handleLinkClick(word) {
+            // 클릭 시 숫자 포함(word) 또는 미포함(word_pure) 상태를 모두 고려해 대상 찾기
+            const item = dictData.find(d => d.word === word || d.word_pure === word);
+            if (item) displayDetail(item);
         }
 
         /* --- [4. UI 렌더링 및 가공] --- */
@@ -231,18 +363,16 @@
             document.getElementById('recommendList').style.display = 'none';
             
             document.getElementById('v-word').innerHTML = formatWordSuperscript(item.word || item.word_pure);
+            // 상세 보기 진입 시 추천 단어 목록 숨기기 (추가)
+            const recList = document.getElementById('recommendList');
+            if(recList) recList.style.display = 'none';
             const posText = posMap[item.pos_symbol] || "";
             document.getElementById('v-pos').innerText = posText;
             document.getElementById('v-pos').style.display = posText ? 'inline-block' : 'none';
 
-            if (item.pronunciation) {
-                document.getElementById('v-pron').innerText = `[${item.pronunciation}]`;
-                document.getElementById('v-pron-row').style.display = 'flex';
-            } else {
-                document.getElementById('v-pron-row').style.display = 'none';
-            }
-
-            document.getElementById('v-def').innerHTML = item.definition; 
+            if (item.pronunciation) { document.getElementById('v-pron').innerText = `[${item.pronunciation}]`; document.getElementById('v-pron-row').style.display = 'flex'; } else { document.getElementById('v-pron-row').style.display = 'none'; }
+            document.getElementById('v-def').innerHTML = createAutoLinks(item.definition, item.word_pure);
+            document.getElementById('reportMail').href = `mailto:bsgim5@gmail.com?subject=${encodeURIComponent('[경주말사전 오류제보] '+item.word_pure)}&body=${encodeURIComponent('표제어: '+item.word_pure+'\n뜻풀이: '+item.definition+'\n\n내용: 이곳에 수정 내용을 적어주세요.')}`;
 
             // 예문 및 구절 가공
             const combinedContent = document.getElementById('v-combined-content');
@@ -303,36 +433,48 @@
             if (!currentItem || !currentItem.pronunciation) return;
             // 기존 사용자님의 성조 처리 로직 유지
             let raw = currentItem.pronunciation.replace(/\{([^/>-]+)[/>-][^}]+\}/g, '$1');
-            speakText(raw);
+            #speakText(raw);
+            // 3. 강세 및 속도 설정  속도를 늦추고(0.5) 피치를 높이는 엑센트 (1.3)
+            utterance.rate = 0.5;  utterance.pitch = 1.0; // 속도 + 피치
+            window.speechSynthesis.speak(utterance);
         }
-
+        /* --- [6. UI 렌더링: 리스트 및 상세화면] --- */
+        function toggleExample() { const content = document.getElementById('v-ex-content'), toggleBtn = document.querySelector('.ex-toggle'), isHidden = content.style.display === 'none' || content.style.display === ''; content.style.display = isHidden ? 'block' : 'none'; toggleBtn.classList.toggle('active', isHidden); }
         /* --- [6. 기타 UI 제어] --- */
         function toggleCombined() {
             const content = document.getElementById('v-combined-content');
             const toggleBtn = document.querySelector('.ex-toggle');
-            const isHidden = content.style.display === 'none';
+            const isHidden = content.style.display === 'none' || content.style.display === '';
             content.style.display = isHidden ? 'block' : 'none';
             toggleBtn.classList.toggle('active', isHidden);
         }
 
+        /* --- [추가] 상세 보기에서 목록으로 돌아가는 기능 --- */
         function goBackToList() {
+        // 상세 보기 화면 숨기기
             document.getElementById('resultView').style.display = 'none';
+        // 검색 결과 리스트 화면 다시 보이기
             document.getElementById('searchList').style.display = 'block';
+        // 추천 단어 목록도 다시 보여주고 싶다면 (선택 사항)
             document.getElementById('recommendList').style.display = 'flex';
+        // (팁) 사용자가 리스트에서 보던 위치로 부드럽게 스크롤을 되돌릴 수도 있습니다.
+        // 하지만 현재는 display: none/block 전환이므로 브라우저가 스크롤 위치를 기억하는 편입니다.
         }
-
-        function searchByInitial(char) {
-            displayList(dictData.filter(item => getInitialConsonant(item.word_pure || item.word) === char));
+        /* --- [7. 내비게이션 및 추천 기능] --- */
+        function renderPagination(totalItems) {
+            const totalPages = Math.ceil(totalItems / itemsPerPage); if (totalPages <= 1) return;
+            const nav = document.createElement('div'); nav.className = 'pagination';
+            for (let i = Math.max(1, currentPage - 2); i <= Math.min(totalPages, Math.max(1, currentPage - 2) + 4); i++) {
+                const btn = document.createElement('button'); btn.className = `page-btn ${i === currentPage ? 'active' : ''}`; btn.innerText = i; btn.onclick = () => { displayList(filteredData, i); window.scrollTo(0, 0); }; nav.appendChild(btn);
+            }
+            document.getElementById('listItems').appendChild(nav);
         }
+        function searchByInitial(char) { const sets = { 'ㄱ': ['ㄱ', 'ㄲ'], 'ㄷ': ['ㄷ', 'ㄸ'], 'ㅂ': ['ㅂ', 'ㅃ'], 'ㅅ': ['ㅅ', 'ㅆ'], 'ㅈ': ['ㅈ', 'ㅉ'] }; displayList(dictData.filter(item => { const initial = getInitialConsonant(item.word_pure || item.word); return sets[char] ? sets[char].includes(initial) : initial === char; })); }
 
-        function searchByPosGroup(symbols) {
-            displayList(dictData.filter(item => symbols.includes(item.pos_symbol)));
-        }
-
-        function searchByPosOther() {
-            displayList(dictData.filter(item => item.pos_symbol && !['󰃃', '󰂽', '󰃓', '󰂿', '󰃰'].includes(item.pos_symbol)));
-        }
-
+        function searchByPosGroup(symbols) { let filtered = dictData.filter(item => symbols.includes(item.pos_symbol)); filtered.sort(() => Math.random() - 0.5); displayList(filtered); }
+        
+        function searchByPosOther() { let filtered = dictData.filter(item => item.pos_symbol && !['󰃃', '󰂽', '󰃓', '󰂿', '󰃰'].includes(item.pos_symbol)); filtered.sort(() => Math.random() - 0.5); displayList(filtered); }
+        
         function initRecommendations() {
             const container = document.getElementById('recommendList');
             [...dictData].sort(() => 0.5 - Math.random()).slice(0, 3).forEach(item => {
