@@ -582,72 +582,40 @@
             utterance.rate = 0.8;
             window.speechSynthesis.speak(utterance);
         }
-        // 표제어 발음 재생 (특수 규칙 포함)
+        // 표제어 발음 재생 (강세 및 억양 최적화)
         function speakPronunciation() {
             if (!currentItem || !currentItem.pronunciation || !window.speechSynthesis) return;
             window.speechSynthesis.cancel();
             
             let raw = currentItem.pronunciation;
             
-            // 1. {A/B} 또는 {A>B} 형태에서 A만 추출
-            let processedText = raw.replace(/\{([^/>-]+)[/>-][^}]+\}/g, '$1');
+            // 1. 쉼표로 나뉜 여러 발음(활용형 목록 등)이 있는 경우 첫 번째 대표 발음 추출
+            let firstPron = raw.split(',')[0].trim();
 
-            const endsWithAccent = /['′]$/.test(processedText);
-            let textToSpeak = processedText;
+            // 2. {A/B} 또는 {A>B} 형태에서 대표형 A만 추출
+            let processedText = firstPron.replace(/\{([^/>-]+)[/>-][^}]+\}/g, '$1');
+
+            // 3. 끝음절에 강세(' 또는 ′)가 있는지 확인
+            const endsWithAccent = /['′]\s*$/.test(processedText);
+
+            // 4. 모든 성조 기호(' ′ ː), 대괄호 등 특수문자 제거하여 순수 한글 텍스트 추출
+            let cleanText = processedText.replace(/['′ː]/g, '').replace(/[\[\]]/g, '').trim();
+
+            const utterance = new SpeechSynthesisUtterance();
+            utterance.lang = 'ko-KR';
 
             if (endsWithAccent) {
-                let cleanText = processedText.replace(/['′]$/, "");
-                const lastChar = cleanText.slice(-1);
-                const lastCharCode = lastChar.charCodeAt(0);
-
-                if (lastCharCode >= 0xAC00 && lastCharCode <= 0xD7AF) {
-                    const charCodeOffset = lastCharCode - 0xAC00;
-                    const jongseongIndex = charCodeOffset % 28;
-                    const jungseongIndex = Math.floor((charCodeOffset % 588) / 28);
-                    const choseongIndex = Math.floor(charCodeOffset / 588);
-
-                    // --- [공통 모음 변환 맵: 표준 유니코드 인덱스 기준] ---
-                                   // --- [공통 모음 변환 맵: 표준 유니코드 인덱스 기준] ---
-                    const vowelMap = {
-                        2: 0,   // ㅑ(2) -> ㅏ(0)
-                        6: 4,   // ㅕ(6) -> ㅓ(4)
-                        9: 8,   // ㅛ(9) -> ㅗ(8)
-                        7: 5,   // ㅖ(7) -> ㅔ(5)
-                        11: 4,  // ㅝ(11) -> ㅓ(4)
-                        17: 13, // ㅠ(17) -> ㅜ(13)
-                        14: 20, // ㅟ(14) -> ㅣ(20)
-                        15: 5,  // ㅞ(15) -> ㅔ(5)
-                        10: 0,  // ㅘ(10) -> ㅏ(0)
-                        12: 1,  // ㅙ(12) -> ㅐ(1)
-                        13: 5,  // ㅚ(13) -> ㅔ(5)
-                        19: 20, // ㅢ(19) -> ㅣ(20)
-                    };
-
-                    // 변환할 모음 결정 (맵에 없으면 원래 모음 유지)
-                    let targetVowelIndex = vowelMap[jungseongIndex] !== undefined ? vowelMap[jungseongIndex] : jungseongIndex;
-
-                    if (jongseongIndex !== 0) {
-                        /* --- 받침이 있는 경우 (예: 견' -> 겨'언) --- */
-                        // 1. 초성 + 원래모음 (받침 제거)
-                        const baseChar = String.fromCharCode(0xAC00 + (choseongIndex * 588) + (jungseongIndex * 28));
-                        // 2. ㅇ + 변환된 모음 + 원래 받침
-                        const extensionWithBatchim = String.fromCharCode(0xAC00 + (11 * 588) + (targetVowelIndex * 28) + jongseongIndex);
-                        
-                        textToSpeak = cleanText.slice(0, -1) + baseChar + "'" + extensionWithBatchim;
-                    } else {
-                        /* --- 받침이 없는 경우 (예: 교' -> 교'오) --- */
-                        // ㅇ + 변환된 모음
-                        const extensionChar = String.fromCharCode(0xAC00 + (11 * 588) + (targetVowelIndex * 28));
-                        
-                        textToSpeak = cleanText + "'" + extensionChar;
-                    }
-                }
+                // 끝 강세: 느낌표(!)를 붙여 끝음절을 처지지 않고 또렷하게 살림
+                utterance.text = cleanText + '!';
+                utterance.rate = 0.88;  // 늘어지지 않는 자연스러운 템포
+                utterance.pitch = 1.15; // 고조(High tone) 성조를 반영한 톤
+            } else {
+                // 일반 발음: 평서조로 안정감 있게
+                utterance.text = cleanText;
+                utterance.rate = 0.85;
+                utterance.pitch = 1.0;
             }
 
-            const utterance = new SpeechSynthesisUtterance(textToSpeak);
-            utterance.lang = 'ko-KR';
-            utterance.rate = 0.7; // 속도는 사용자님의 설정 유지
-            utterance.pitch = 1.0; 
             window.speechSynthesis.speak(utterance);
         }
 
