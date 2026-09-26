@@ -114,6 +114,7 @@
                     </div>
                     <a id="reportMail" class="report-btn" style="margin-left: auto;">오류제보</a>
                 </div>
+                <div id="v-expands" style="display:none; font-size:13px; color:var(--point); margin-top:2px; font-weight:bold;"></div>
                 <div id="v-pron-row" class="pron-row" style="display:none;">
                     <div id="v-pron" class="pron-area"></div>
                     <div class="speaker-btn" onclick="speakPronunciation()">
@@ -163,22 +164,159 @@
         const itemsPerPage = 50, DB_NAME = "GyeongjuDictDB", STORE_NAME = "dictionary", DATA_VERSION = "20260923_v1";
         const posMap = { '󰃃': '명사', '󰂿': '동사', '󰃰': '형용사', '󰂽': '대명사', '󰃌': '부사', '󰃲': '활용어미', '󰃥': '접사', '󰃆': '어미', '󰂴': '관형사', '󰂳': '감탄사', '󰃓': '수사', '󰃫': '참고', '󰃩': '준말' };
         const consonants = ['ㄱ', 'ㄲ', 'ㄴ', 'ㄷ', 'ㄸ', 'ㄹ', 'ㅁ', 'ㅂ', 'ㅃ', 'ㅅ', 'ㅆ', 'ㅇ', 'ㅈ', 'ㅉ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ'];
+        const CHOSUNG = ['ㄱ', 'ㄲ', 'ㄴ', 'ㄷ', 'ㄸ', 'ㄹ', 'ㅁ', 'ㅂ', 'ㅃ', 'ㅅ', 'ㅆ', 'ㅇ', 'ㅈ', 'ㅉ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ'];
+        const JUNGSUNG = ['ㅏ', 'ㅐ', 'ㅑ', 'ㅒ', 'ㅓ', 'ㅔ', 'ㅕ', 'ㅖ', 'ㅗ', 'ㅘ', 'ㅙ', 'ㅚ', 'ㅛ', 'ㅜ', 'ㅝ', 'ㅞ', 'ㅟ', 'ㅠ', 'ㅡ', 'ㅢ', 'ㅣ'];
+        const JONGSUNG = ['', 'ㄱ', 'ㄲ', 'ㄳ', 'ㄴ', 'ㄵ', 'ㄶ', 'ㄷ', 'ㄹ', 'ㄺ', 'ㄻ', 'ㄼ', 'ㄽ', 'ㄾ', 'ㄿ', 'ㅀ', 'ㅁ', 'ㅂ', 'ㅄ', 'ㅅ', 'ㅆ', 'ㅇ', 'ㅈ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ'];
+        const CHO_MAP = {};
+        CHOSUNG.forEach((c, i) => CHO_MAP[c] = i);
+        const JONG_MAP = {};
+        JONGSUNG.forEach((c, i) => JONG_MAP[c] = i);
+
         /* --- [환경 설정 추가] --- */
         const XOR_KEY = "gyeongju_secret"; // 파이썬에서 설정한 키와 동일해야 함
 
-        /* --- [2. 핵심 로직: 한글 분리 및 초기화] --- */
+        /* --- [2. 핵심 로직: 한글 분리, 음운 결합 및 초기화] --- */
         function decomposeHangul(str) { return str.normalize('NFD').replace(/[\u0300-\u036f]/g, ""); }
-        // 초기 로딩: IndexedDB 연동 및 데이터 패치
-        /*         async function init() {
-            const loading = document.getElementById('loadingOverlay'); loading.style.display = 'flex';
-            const db = await new Promise((res) => { const req = indexedDB.open(DB_NAME, 1); req.onupgradeneeded = (e) => e.target.result.createObjectStore(STORE_NAME); req.onsuccess = (e) => res(e.target.result); });
-            const tx = db.transaction(STORE_NAME, "readonly");
-            const localVer = await new Promise(res => { const req = tx.objectStore(STORE_NAME).get("data_version"); req.onsuccess = () => res(req.result); });
-            const cached = await new Promise(res => { const req = db.transaction(STORE_NAME, "readonly").objectStore(STORE_NAME).get("full_data"); req.onsuccess = () => res(req.result); });
-            if (cached && localVer === DATA_VERSION) { dictData = cached; } 
-            else { try { const response = await fetch('gyeongju_dict.json'); dictData = await response.json(); const saveTx = db.transaction(STORE_NAME, "readwrite"); saveTx.objectStore(STORE_NAME).put(dictData, "full_data"); saveTx.objectStore(STORE_NAME).put(DATA_VERSION, "data_version"); } catch (err) { alert("데이터 로드 실패."); } }
-            initRecommendations(); loading.style.display = 'none';
-        } */
+
+        function decomposeHangulChar(ch) {
+            if (!ch) return null;
+            const code = ch.charCodeAt(0);
+            if (code >= 0xAC00 && code <= 0xD7A3) {
+                const offset = code - 0xAC00;
+                const jong = offset % 28;
+                const jung = Math.floor((offset % 588) / 28);
+                const cho = Math.floor(offset / 588);
+                return { cho, jung, jong };
+            }
+            return null;
+        }
+
+        function composeHangulChar(cho, jung, jong = 0) {
+            return String.fromCharCode(0xAC00 + (cho * 21 + jung) * 28 + jong);
+        }
+
+        // {} 안의 옵션과 앞부분을 결합하는 함수
+        function combinePrefixOption(prefix, opt) {
+            if (!prefix) return [opt];
+            if (!opt || opt === '∅') return [prefix];
+
+            const lastChar = prefix.slice(-1);
+            const preRest = prefix.slice(0, -1);
+
+            // 1. prefix 끝이 자음 단독인 경우 (예: '꿈ㄲ', '가ㅁ')
+            if (CHO_MAP[lastChar] !== undefined) {
+                const choIdx = CHO_MAP[lastChar];
+                const firstOpt = opt[0];
+                const optRest = opt.slice(1);
+                const dec = decomposeHangulChar(firstOpt);
+                if (dec) {
+                    if (dec.cho === 11) { // 초성이 'ㅇ' (예: 우, 오, 앟, 애, 아)
+                        const combined = composeHangulChar(choIdx, dec.jung, dec.jong) + optRest;
+                        return [preRest + combined];
+                    }
+                }
+                const jungIdx = JUNGSUNG.indexOf(firstOpt);
+                if (jungIdx !== -1) {
+                    const combined = composeHangulChar(choIdx, jungIdx, 0) + optRest;
+                    return [preRest + combined];
+                }
+            }
+
+            // 2. prefix 끝이 'ㄹ'이고, 그 앞 글자가 있는 경우 (예: '가ㄹ{이-르}다')
+            if (lastChar === 'ㄹ' && preRest.length > 0 && decomposeHangulChar(preRest.slice(-1))) {
+                const pDec = decomposeHangulChar(preRest.slice(-1));
+                const firstOpt = opt[0];
+                const optRest = opt.slice(1);
+                const optDec = decomposeHangulChar(firstOpt);
+
+                if (optDec) {
+                    if (optDec.cho === 11) { // 초성이 'ㅇ' (이 -> 리, 아 -> 라)
+                        const combined = composeHangulChar(CHO_MAP['ㄹ'], optDec.jung, optDec.jong) + optRest;
+                        return [preRest + combined];
+                    } else { // 자음으로 시작하는 옵션 (르 -> 갈르)
+                        if (pDec.jong === 0) {
+                            const newPrev = composeHangulChar(pDec.cho, pDec.jung, JONG_MAP['ㄹ']);
+                            return [preRest.slice(0, -1) + newPrev + opt];
+                        } else {
+                            return [preRest + lastChar + opt];
+                        }
+                    }
+                } else {
+                    return [prefix + opt];
+                }
+            }
+
+            // 3. prefix 끝이 완성형 한글(받침 없음)이고, opt가 자음인 경우 (예: '가마소' + 'ㅊ'/'ㅌ')
+            const pDec = decomposeHangulChar(lastChar);
+            if (pDec && pDec.jong === 0) {
+                if (JONG_MAP[opt] !== undefined && JONG_MAP[opt] > 0) {
+                    return [preRest + composeHangulChar(pDec.cho, pDec.jung, JONG_MAP[opt])];
+                }
+                if (opt === 'ㅭ') {
+                    return [preRest + composeHangulChar(pDec.cho, pDec.jung, JONG_MAP['ㄹ'])];
+                }
+                if (opt === 'ㅎ') {
+                    return [preRest + composeHangulChar(pDec.cho, pDec.jung, JONG_MAP['ㅎ'])];
+                }
+            }
+
+            return [prefix + opt];
+        }
+
+        // {}가 포함된 표제어를 모든 가능한 조합으로 확장하는 함수
+        function expandCurlyWord(word) {
+            if (!word || !word.includes('{')) return [];
+            const cleanWord = word.replace(/\([^)]*\)/g, '').replace(/\d+$/, '').trim();
+
+            const m = cleanWord.match(/([^{}]*)\{([^{}]+)\}(.*)/);
+            if (!m) return [];
+
+            const prefix = m[1];
+            const optionsRaw = m[2];
+            const suffix = m[3];
+
+            let options = [];
+            if (optionsRaw.includes('-')) {
+                options = optionsRaw.split('-');
+            } else if (optionsRaw.includes('/')) {
+                options = optionsRaw.split('/');
+            } else {
+                options = [optionsRaw];
+            }
+
+            const expandedSet = new Set();
+            options.forEach(opt => {
+                opt = opt.trim();
+                const combos = combinePrefixOption(prefix, opt);
+                combos.forEach(c => {
+                    if (c.includes('{')) {
+                        const subExpands = expandCurlyWord(c + suffix);
+                        subExpands.forEach(se => expandedSet.add(se));
+                    } else {
+                        expandedSet.add(c + suffix);
+                    }
+                });
+            });
+
+            if (optionsRaw.includes('ㅎ-우') || optionsRaw.includes('우-ㅎ')) {
+                expandedSet.add(prefix + suffix);
+            }
+
+            return Array.from(expandedSet);
+        }
+
+        // 사전 데이터 전처리 (각 단어별 확장 단어 목록 생성)
+        function preprocessDictData(data) {
+            data.forEach(item => {
+                const rawWord = item.word || item.word_pure || "";
+                if (rawWord.includes('{')) {
+                    item.expanded_words = expandCurlyWord(rawWord);
+                } else {
+                    item.expanded_words = [];
+                }
+            });
+        }
+
         async function init() {
             const loading = document.getElementById('loadingOverlay'); 
             loading.style.display = 'flex';
@@ -205,6 +343,7 @@
             // 3. 캐시 데이터 사용 또는 새로 받아오기
             if (cached && localVer === DATA_VERSION) { 
                 dictData = cached; 
+                preprocessDictData(dictData);
             } else { 
                 try { 
                     console.log("새 데이터를 암호화 해제하여 로드합니다...");
@@ -241,6 +380,7 @@
                     const response = new Response(ds.readable);
                     const jsonString = await response.text();
                     dictData = JSON.parse(jsonString);
+                    preprocessDictData(dictData);
 
                     // E. 새로운 데이터와 버전 저장
                     const saveTx = db.transaction(STORE_NAME, "readwrite");
@@ -258,7 +398,26 @@
         }
 
         /* --- [3. 검색 및 정렬 기능] --- */
-        function sortResults(results, query) { return results.sort((a, b) => { const aW = a.word_pure || "", bW = b.word_pure || ""; if (aW === query && bW !== query) return -1; if (bW === query && aW !== query) return 1; if (aW.startsWith(query) && !bW.startsWith(query)) return -1; if (bW.startsWith(query) && !aW.startsWith(query)) return 1; return aW.length - bW.length; }); }
+        function sortResults(results, query) {
+            return results.sort((a, b) => {
+                const aWords = [a.word_pure || a.word || "", ...(a.expanded_words || [])];
+                const bWords = [b.word_pure || b.word || "", ...(b.expanded_words || [])];
+
+                const aExact = aWords.some(w => w === query);
+                const bExact = bWords.some(w => w === query);
+                if (aExact && !bExact) return -1;
+                if (bExact && !aExact) return 1;
+
+                const aStart = aWords.some(w => w.startsWith(query));
+                const bStart = bWords.some(w => w.startsWith(query));
+                if (aStart && !bStart) return -1;
+                if (bStart && !aStart) return 1;
+
+                const aLen = Math.min(...aWords.map(w => w.length));
+                const bLen = Math.min(...bWords.map(w => w.length));
+                return aLen - bLen;
+            });
+        }
 
         // 두 단어 사이의 유사도를 계산하는 함수 (레벤슈타인 거리)
         function getSimilarity(s1, s2) {
@@ -274,8 +433,8 @@
             }
             return matrix[len1][len2];
         }
+
         // 디바운싱 검색 (타이핑 후 지연시간을 두어 성능 최적화)
-        // function debounceSearch(type, val) { clearTimeout(searchTimer); searchTimer = setTimeout(() => { if (!val) return; const searchDecomposed = decomposeHangul(val); let res = []; if (type === 'dia') { res = dictData.filter(i => decomposeHangul(i.word_pure || i.word || "").includes(searchDecomposed)); res = sortResults(res, val); } else { res = dictData.filter(i => (i.definition || "").includes(val)); } displayList(res); }, 250); }
         function debounceSearch(type, val) {
             clearTimeout(searchTimer);
             searchTimer = setTimeout(() => {
@@ -286,16 +445,30 @@
 
                 if (type === 'dia') {
                     if (isChosungOnly) {
-                        // 1. 초성만 입력했을 경우 (예: ㄱㄹㄷ) -> 초성 일치 검색
+                        // 1. 초성만 입력했을 경우 (예: ㄱㄹㄷ, ㄲㄲㄷ) -> 초성 일치 검색
                         res = dictData.filter(i => {
                             const word = i.word_pure || i.word || "";
                             const wordChosung = word.split('').map(char => getInitialConsonant(char)).join('');
-                            return wordChosung.includes(val);
+                            if (wordChosung.includes(val)) return true;
+                            if (i.expanded_words && i.expanded_words.length > 0) {
+                                return i.expanded_words.some(ew => {
+                                    const ewChosung = ew.split('').map(char => getInitialConsonant(char)).join('');
+                                    return ewChosung.includes(val);
+                                });
+                            }
+                            return false;
                         });
                     } else {
-                        // 2. 일반 단어 입력 시 -> 포함 검색
+                        // 2. 일반 단어 입력 시 -> 포함 검색 (표제어 및 {} 조합 단어 모두 매칭)
                         const searchDecomposed = decomposeHangul(val);
-                        res = dictData.filter(i => decomposeHangul(i.word_pure || i.word || "").includes(searchDecomposed));
+                        res = dictData.filter(i => {
+                            const mainWord = i.word_pure || i.word || "";
+                            if (decomposeHangul(mainWord).includes(searchDecomposed)) return true;
+                            if (i.expanded_words && i.expanded_words.length > 0) {
+                                return i.expanded_words.some(ew => decomposeHangul(ew).includes(searchDecomposed));
+                            }
+                            return false;
+                        });
                         res = sortResults(res, val);
 
                         // 3. 일반 검색 결과가 0건일 때 -> 입력된 글자의 초성을 유지하는 유사어 검색
@@ -304,13 +477,18 @@
                             res = dictData.filter(i => {
                                 const word = i.word_pure || i.word || "";
                                 const wordChosung = word.split('').map(char => getInitialConsonant(char)).join('');
-                                // 초성 구조가 완전히 같거나 포함되는 것들 추출
-                                return wordChosung === inputChosung || wordChosung.includes(inputChosung);
+                                if (wordChosung === inputChosung || wordChosung.includes(inputChosung)) return true;
+                                if (i.expanded_words && i.expanded_words.length > 0) {
+                                    return i.expanded_words.some(ew => {
+                                        const ewChosung = ew.split('').map(char => getInitialConsonant(char)).join('');
+                                        return ewChosung === inputChosung || ewChosung.includes(inputChosung);
+                                    });
+                                }
+                                return false;
                             });
                             
                             if (res.length > 0) {
                                 console.log("일반 결과 없음: 초성 일치 단어로 대체 제안");
-                                // 사용자에게 안내 메시지를 주고 싶다면 여기에 추가 (예: resCount 레이블 수정)
                             }
                         }
                     }
@@ -371,8 +549,12 @@
         }
 
         function handleLinkClick(word) {
-            // 클릭 시 숫자 포함(word) 또는 미포함(word_pure) 상태를 모두 고려해 대상 찾기
-            const item = dictData.find(d => d.word === word || d.word_pure === word);
+            // 클릭 시 숫자 포함(word) 또는 미포함(word_pure) 및 expanded_words 상태를 모두 고려해 대상 찾기
+            const item = dictData.find(d => 
+                d.word === word || 
+                d.word_pure === word || 
+                (d.expanded_words && d.expanded_words.includes(word))
+            );
             if (item) displayDetail(item);
         }
 
@@ -488,6 +670,17 @@
             document.getElementById('resultView').style.display = 'block';
             document.getElementById('v-word').innerHTML = formatWordSuperscript(item.word || item.word_pure);
 
+            // 조합 단어 표시 (예: {우-오} -> 꿈꼬다, 꿈꾸다)
+            const expDiv = document.getElementById('v-expands');
+            if (expDiv) {
+                if (item.expanded_words && item.expanded_words.length > 0 && (item.word.includes('{') || (item.word_pure && item.word_pure.includes('{')))) {
+                    expDiv.innerText = `조합 표기: ${item.expanded_words.join(', ')}`;
+                    expDiv.style.display = 'block';
+                } else {
+                    expDiv.style.display = 'none';
+                }
+            }
+
             // 상세 보기 진입 시 추천 단어 목록 숨기기 (추가)
             const recList = document.getElementById('recommendList');
             if(recList) recList.style.display = 'none';
@@ -533,15 +726,23 @@
                 combinedBox.style.display = 'none';
             }
                     
-                    
-                    
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         function displayList(items, page = 1) {
             filteredData = items; currentPage = page; document.getElementById('searchList').style.display = 'block'; document.getElementById('resultView').style.display = 'none'; document.getElementById('resCount').innerText = `${items.length}건 (현재 ${page}페이지)`;
             const list = document.getElementById('listItems'); list.innerHTML = '';
-            items.slice((page - 1) * itemsPerPage, page * itemsPerPage).forEach(item => { const div = document.createElement('div'); div.className = 'list-item'; div.innerHTML = `<b>${formatWordSuperscript(item.word)}</b><span class="brief-text">${item.definition.replace(/<[^>]*>?/gm, '').substring(0, 20)}...</span>`; div.onclick = () => displayDetail(item); list.appendChild(div); });
+            items.slice((page - 1) * itemsPerPage, page * itemsPerPage).forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'list-item';
+                let expandHint = '';
+                if (item.expanded_words && item.expanded_words.length > 0 && (item.word.includes('{') || (item.word_pure && item.word_pure.includes('{')))) {
+                    expandHint = `<span style="font-size:12px; color:var(--point); font-weight:normal; margin-left:6px;">(${item.expanded_words.join(', ')})</span>`;
+                }
+                div.innerHTML = `<b>${formatWordSuperscript(item.word)}</b>${expandHint}<span class="brief-text">${item.definition.replace(/<[^>]*>?/gm, '').substring(0, 20)}...</span>`;
+                div.onclick = () => displayDetail(item);
+                list.appendChild(div);
+            });
             renderPagination(items.length);
         }
         /* --- [7. 내비게이션 및 추천 기능] --- */
@@ -567,7 +768,16 @@
 
         
         function getInitialConsonant(str) { if (!str) return ""; const code = str.charCodeAt(0) - 44032; return (code < 0 || code > 11171) ? str[0] : consonants[Math.floor(code / 588)]; }
-        function searchByInitial(char) { const sets = { 'ㄱ': ['ㄱ', 'ㄲ'], 'ㄷ': ['ㄷ', 'ㄸ'], 'ㅂ': ['ㅂ', 'ㅃ'], 'ㅅ': ['ㅅ', 'ㅆ'], 'ㅈ': ['ㅈ', 'ㅉ'] }; displayList(dictData.filter(item => { const initial = getInitialConsonant(item.word_pure || item.word); return sets[char] ? sets[char].includes(initial) : initial === char; })); }
+        function searchByInitial(char) {
+            const sets = { 'ㄱ': ['ㄱ', 'ㄲ'], 'ㄷ': ['ㄷ', 'ㄸ'], 'ㅂ': ['ㅂ', 'ㅃ'], 'ㅅ': ['ㅅ', 'ㅆ'], 'ㅈ': ['ㅈ', 'ㅉ'] };
+            displayList(dictData.filter(item => {
+                const words = [item.word_pure || item.word || "", ...(item.expanded_words || [])];
+                return words.some(w => {
+                    const initial = getInitialConsonant(w);
+                    return sets[char] ? sets[char].includes(initial) : initial === char;
+                });
+            }));
+        }
         
         function searchByPosGroup(symbols) { let filtered = dictData.filter(item => symbols.includes(item.pos_symbol)); filtered.sort(() => Math.random() - 0.5); displayList(filtered); }
         
