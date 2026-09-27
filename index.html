@@ -637,7 +637,7 @@
                 u.rate = 0.8;
                 // 앞이나 중간에 강세가 있는 경우에도 높은 피치(1.45) 적용
                 const anyAccent = syllables.some(s => s.hasAccent);
-                u.pitch = anyAccent ? 1.45 : 1.0;
+                u.pitch = anyAccent ? 1.25 : 1.0;
                 window.speechSynthesis.speak(u);
                 return;
             }
@@ -660,8 +660,8 @@
             const lastSyllable = syllables[lastIndex];
             const uLast = new SpeechSynthesisUtterance(lastSyllable.char);
             uLast.lang = 'ko-KR';
-            uLast.rate = 0.95;  // 안정적인 속도로 또렷하게 발음
-            uLast.pitch = 1.45;  // 뒷 강세를 시원한 고조(High Pitch)로 분출
+            uLast.rate = 1.15;  // 안정적인 속도로 또렷하게 발음
+            uLast.pitch = 1.35;  // 뒷 강세를 시원한 고조(High Pitch)로 분출
 
             window.speechSynthesis.speak(uFront);
             window.speechSynthesis.speak(uLast);
