@@ -582,40 +582,23 @@
             utterance.rate = 0.8;
             window.speechSynthesis.speak(utterance);
         }
-        // 표제어 발음 재생 (강세 및 억양 최적화)
+        // 표제어 발음 재생
         function speakPronunciation() {
             if (!currentItem || !currentItem.pronunciation || !window.speechSynthesis) return;
             window.speechSynthesis.cancel();
             
             let raw = currentItem.pronunciation;
             
-            // 1. 쉼표로 나뉜 여러 발음(활용형 목록 등)이 있는 경우 첫 번째 대표 발음 추출
-            let firstPron = raw.split(',')[0].trim();
+            // 1. {A/B} 또는 {A>B} 형태에서 대표형 A만 추출
+            let processedText = raw.replace(/\{([^/>-]+)[/>-][^}]+\}/g, '$1');
 
-            // 2. {A/B} 또는 {A>B} 형태에서 대표형 A만 추출
-            let processedText = firstPron.replace(/\{([^/>-]+)[/>-][^}]+\}/g, '$1');
+            // 2. 강세 및 성조 기호(' ′ ː)만 제거하여 전체 발음을 그대로 읽음 (장음화 및 ! 미적용)
+            let textToSpeak = processedText.replace(/['′ː]/g, '').trim();
 
-            // 3. 끝음절에 강세(' 또는 ′)가 있는지 확인
-            const endsWithAccent = /['′]\s*$/.test(processedText);
-
-            // 4. 모든 성조 기호(' ′ ː), 대괄호 등 특수문자 제거하여 순수 한글 텍스트 추출
-            let cleanText = processedText.replace(/['′ː]/g, '').replace(/[\[\]]/g, '').trim();
-
-            const utterance = new SpeechSynthesisUtterance();
+            const utterance = new SpeechSynthesisUtterance(textToSpeak);
             utterance.lang = 'ko-KR';
-
-            if (endsWithAccent) {
-                // 끝 강세: 느낌표(!)를 붙여 끝음절을 처지지 않고 또렷하게 살림
-                utterance.text = cleanText + '!';
-                utterance.rate = 0.88;  // 늘어지지 않는 자연스러운 템포
-                utterance.pitch = 1.15; // 고조(High tone) 성조를 반영한 톤
-            } else {
-                // 일반 발음: 평서조로 안정감 있게
-                utterance.text = cleanText;
-                utterance.rate = 0.85;
-                utterance.pitch = 1.0;
-            }
-
+            utterance.rate = 0.7;
+            utterance.pitch = 1.0; 
             window.speechSynthesis.speak(utterance);
         }
 
