@@ -645,7 +645,7 @@
             // [상황 2] 마지막 음절에 강세가 있는 경우 (예: '얼′매′'):
             // 1) 마지막 음절 직전까지의 앞부분을 한 덩어리로 묶음
             // 2) 앞부분 속도(rate)를 1.35로 대폭 올려 음절 끝 여운을 없애 뒷음절과 끊김 없이 초밀착
-            // 3) 앞부분 강세도 pitch 1.45로 시원하게 높이고, 마지막 음절은 pitch 1.8로 최고조 부여
+            // 3) 앞부분 강세도 pitch 1.25로 시원하게 높이고, 마지막 음절은 pitch 1.45로 최고조 부여
             const frontSyllables = syllables.slice(0, lastIndex);
             const frontText = frontSyllables.map(s => s.char).join('');
             const frontHasAccent = frontSyllables.some(s => s.hasAccent);
@@ -654,14 +654,14 @@
             const uFront = new SpeechSynthesisUtterance(frontText);
             uFront.lang = 'ko-KR';
             uFront.rate = 1.35; // 앞 음절을 재빠르게 끝내어 뒤 음절과의 pause를 거의 0에 가깝게 단축
-            uFront.pitch = frontHasAccent ? 1.45 : 1.0; // 앞/중간 강세도 확실하게 높은 고음
+            uFront.pitch = frontHasAccent ? 1.25 : 1.0; // 앞/중간 강세도 확실하게 높은 고음
 
             // 2. 마지막 강세 음절 재생
             const lastSyllable = syllables[lastIndex];
             const uLast = new SpeechSynthesisUtterance(lastSyllable.char);
             uLast.lang = 'ko-KR';
             uLast.rate = 0.95;  // 안정적인 속도로 또렷하게 발음
-            uLast.pitch = 1.8;  // 뒷 강세를 시원한 고조(High Pitch)로 분출
+            uLast.pitch = 1.45;  // 뒷 강세를 시원한 고조(High Pitch)로 분출
 
             window.speechSynthesis.speak(uFront);
             window.speechSynthesis.speak(uLast);
