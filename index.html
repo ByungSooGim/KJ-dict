@@ -115,10 +115,17 @@
                     <a id="reportMail" class="report-btn" style="margin-left: auto;">오류제보</a>
                 </div>
                 <div id="v-expands" style="display:none; font-size:13px; color:var(--point); margin-top:2px; font-weight:bold;"></div>
-                <div id="v-pron-row" class="pron-row" style="display:none;">
+                <div id="v-pron-row" class="pron-row" style="display:none; align-items:center; flex-wrap:wrap; gap:8px;">
                     <div id="v-pron" class="pron-area"></div>
-                    <div class="speaker-btn" onclick="speakPronunciation()">
-                        <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+                    <div class="tts-mode-group" style="display:inline-flex; gap:6px; align-items:center;">
+                        <button type="button" class="pron-btn" onclick="speakPronunciation('question')" title="물음표(?) 상승 억양 모드로 발음" style="display:inline-flex; align-items:center; gap:3px; padding:3px 8px; font-size:12px; border-radius:12px; border:1px solid #c97a7e; background:#fff5f5; color:#a33b3b; cursor:pointer; font-weight:bold;">
+                            <svg viewBox="0 0 24 24" style="width:14px; height:14px; fill:currentColor;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
+                            물음표형
+                        </button>
+                        <button type="button" class="pron-btn" onclick="speakPronunciation('split')" title="음절별 독립 Pitch 분할 모드로 발음" style="display:inline-flex; align-items:center; gap:3px; padding:3px 8px; font-size:12px; border-radius:12px; border:1px solid #7ea1c4; background:#f0f5fa; color:#2c5e8a; cursor:pointer; font-weight:bold;">
+                            <svg viewBox="0 0 24 24" style="width:14px; height:14px; fill:currentColor;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
+                            음절분할형
+                        </button>
                     </div>
                 </div>
                 <div id="v-def" class="def-area"></div>
@@ -582,40 +589,88 @@
             utterance.rate = 0.8;
             window.speechSynthesis.speak(utterance);
         }
-        // 표제어 발음 재생
-        function speakPronunciation() {
+        // 표제어 발음 재생 (mode: 'question' | 'split')
+        function speakPronunciation(mode = 'question') {
             if (!currentItem || !currentItem.pronunciation || !window.speechSynthesis) return;
             window.speechSynthesis.cancel();
             
-            let text = currentItem.pronunciation.trim();
+            let raw = currentItem.pronunciation.trim();
             
             // 1. 전체를 둘러싼 가장 바깥쪽 대괄호 [ ... ] 가 있다면 벗겨내기
-            if (text.startsWith('[') && text.endsWith(']')) {
-                text = text.slice(1, -1).trim();
+            if (raw.startsWith('[') && raw.endsWith(']')) {
+                raw = raw.slice(1, -1).trim();
             }
 
             // 2. 발음 기호 내부에 중첩된 또 다른 대괄호 [...] 및 그 안의 내용(IPA, 로마자 음성 기호 등)을 통째로 덜어내기
-            while (/\[[^\]]*\]/.test(text)) {
-                text = text.replace(/\[[^\]]*\]/g, '');
+            while (/\[[^\]]*\]/.test(raw)) {
+                raw = raw.replace(/\[[^\]]*\]/g, '');
             }
 
             // 3. {A/B} 또는 {A>B} 형태에서 대표형 A만 추출
-            text = text.replace(/\{([^/>-]+)[/>-][^}]+\}/g, '$1');
+            let text = raw.replace(/\{([^/>-]+)[/>-][^}]+\}/g, '$1');
 
-            // 4. 슬래시(/)는 "슬래시"라고 읽지 않도록 쉼표로 변환하여 자연스럽게 연결
+            // 4. 슬래시(/)는 쉼표로 변환하여 자연스럽게 연결
             text = text.replace(/\//g, ', ');
 
-            // 5. 강세 및 성조 기호(' ′ ː) 제거
-            text = text.replace(/['′ː]/g, '');
+            if (mode === 'split') {
+                /* --- [모드 2: 음절 분할형 (음절마다 독립적인 Pitch 강제 부여)] --- */
+                // 한글 음절 및 바로 뒤따르는 강세/성조 기호(' or ′) 매칭
+                const syllableRegex = /([가-힣])(['′]?)/g;
+                let match;
+                const syllables = [];
+                while ((match = syllableRegex.exec(text)) !== null) {
+                    syllables.push({
+                        char: match[1],
+                        hasAccent: (match[2] === "'" || match[2] === "′")
+                    });
+                }
 
-            // 6. 혹시 남아있을 수 있는 대괄호 잔여물 제거 및 공백 정리
-            text = text.replace(/[\[\]]/g, '').trim();
+                if (syllables.length === 0) {
+                    const clean = text.replace(/['′ː[\]]/g, '').trim();
+                    const u = new SpeechSynthesisUtterance(clean);
+                    u.lang = 'ko-KR';
+                    u.rate = 0.75;
+                    window.speechSynthesis.speak(u);
+                    return;
+                }
 
-            const utterance = new SpeechSynthesisUtterance(text);
-            utterance.lang = 'ko-KR';
-            utterance.rate = 0.7;
-            utterance.pitch = 1.0; 
-            window.speechSynthesis.speak(utterance);
+                syllables.forEach((s, idx) => {
+                    const isLast = (idx === syllables.length - 1);
+                    const u = new SpeechSynthesisUtterance(s.char);
+                    u.lang = 'ko-KR';
+                    u.rate = 0.8; // 분할 시 음절 간 딜레이를 최소화하기 위해 0.8 설정
+
+                    if (s.hasAccent) {
+                        // 강세 음절: 끝 음절이면 높은 고조(1.6), 앞/중간 강세면 1.35
+                        u.pitch = isLast ? 1.6 : 1.35;
+                    } else {
+                        // 비강세 음절: 저음(0.85)
+                        u.pitch = 0.85;
+                    }
+
+                    window.speechSynthesis.speak(u);
+                });
+
+            } else {
+                /* --- [모드 1: 물음표형 (의문문 억양을 활용해 끝 음절을 상승시킴)] --- */
+                // 마지막 유의미한 한글 음절에 강세(' or ′)가 있는지 검사
+                const hasEndAccent = /['′]\s*$/.test(text) || /([가-힣]['′])(?:\s*[!?.~]*)$/.test(text);
+
+                // 강세 및 장음 기호 제거
+                let cleanText = text.replace(/['′ː[\]]/g, '').trim();
+
+                // 마지막 음절에 강세가 있다면 물음표(?)를 붙여 Google TTS의 끝음 상승(Rising Intonation) 유도
+                let textToSpeak = cleanText;
+                if (hasEndAccent) {
+                    textToSpeak = cleanText + "?";
+                }
+
+                const utterance = new SpeechSynthesisUtterance(textToSpeak);
+                utterance.lang = 'ko-KR';
+                utterance.rate = 0.7;
+                utterance.pitch = hasEndAccent ? 1.1 : 1.0; 
+                window.speechSynthesis.speak(utterance);
+            }
         }
 
      
