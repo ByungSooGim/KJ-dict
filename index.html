@@ -587,15 +587,31 @@
             if (!currentItem || !currentItem.pronunciation || !window.speechSynthesis) return;
             window.speechSynthesis.cancel();
             
-            let raw = currentItem.pronunciation;
+            let text = currentItem.pronunciation.trim();
             
-            // 1. {A/B} 또는 {A>B} 형태에서 대표형 A만 추출
-            let processedText = raw.replace(/\{([^/>-]+)[/>-][^}]+\}/g, '$1');
+            // 1. 전체를 둘러싼 가장 바깥쪽 대괄호 [ ... ] 가 있다면 벗겨내기
+            if (text.startsWith('[') && text.endsWith(']')) {
+                text = text.slice(1, -1).trim();
+            }
 
-            // 2. 강세 및 성조 기호(' ′ ː)만 제거하여 전체 발음을 그대로 읽음 (장음화 및 ! 미적용)
-            let textToSpeak = processedText.replace(/['′ː]/g, '').trim();
+            // 2. 발음 기호 내부에 중첩된 또 다른 대괄호 [...] 및 그 안의 내용(IPA, 로마자 음성 기호 등)을 통째로 덜어내기
+            while (/\[[^\]]*\]/.test(text)) {
+                text = text.replace(/\[[^\]]*\]/g, '');
+            }
 
-            const utterance = new SpeechSynthesisUtterance(textToSpeak);
+            // 3. {A/B} 또는 {A>B} 형태에서 대표형 A만 추출
+            text = text.replace(/\{([^/>-]+)[/>-][^}]+\}/g, '$1');
+
+            // 4. 슬래시(/)는 "슬래시"라고 읽지 않도록 쉼표로 변환하여 자연스럽게 연결
+            text = text.replace(/\//g, ', ');
+
+            // 5. 강세 및 성조 기호(' ′ ː) 제거
+            text = text.replace(/['′ː]/g, '');
+
+            // 6. 혹시 남아있을 수 있는 대괄호 잔여물 제거 및 공백 정리
+            text = text.replace(/[\[\]]/g, '').trim();
+
+            const utterance = new SpeechSynthesisUtterance(text);
             utterance.lang = 'ko-KR';
             utterance.rate = 0.7;
             utterance.pitch = 1.0; 
