@@ -498,7 +498,7 @@
         });
         /* --- [1. 변수 및 환경 설정] --- */
         let dictData = [], currentItem = null, searchTimer, currentPage = 1, filteredData = [];
-        const itemsPerPage = 50, DB_NAME = "GyeongjuDictDB", STORE_NAME = "dictionary", DATA_VERSION = "20260927_v2";
+        const itemsPerPage = 50, DB_NAME = "GyeongjuDictDB", STORE_NAME = "dictionary", DATA_VERSION = "20260927_v3";
         const posMap = { '󰃃': '명사', '󰂿': '동사', '󰃰': '형용사', '󰂽': '대명사', '󰃌': '부사', '󰃲': '활용어미', '󰃥': '접사', '󰃆': '어미', '󰂴': '관형사', '󰂳': '감탄사', '󰃓': '수사', '󰃫': '참고', '󰃩': '준말' };
         const consonants = ['ㄱ', 'ㄲ', 'ㄴ', 'ㄷ', 'ㄸ', 'ㄹ', 'ㅁ', 'ㅂ', 'ㅃ', 'ㅅ', 'ㅆ', 'ㅇ', 'ㅈ', 'ㅉ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ'];
         const CHOSUNG = ['ㄱ', 'ㄲ', 'ㄴ', 'ㄷ', 'ㄸ', 'ㄹ', 'ㅁ', 'ㅂ', 'ㅃ', 'ㅅ', 'ㅆ', 'ㅇ', 'ㅈ', 'ㅉ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ'];
@@ -686,10 +686,10 @@
                     console.log("새 데이터를 암호화 해제하여 로드합니다...");
 
                     // [복호화 프로세스 시작]
-                    // A. 4개의 분할 파일 병렬 Fetch
+                    // A. 4개의 분할 파일 병렬 Fetch (캐시 방지를 위해 버전 쿼리스트링 추가)
                     const fileNumbers = [1, 2, 3, 4];
                     const fetchPromises = fileNumbers.map(num =>
-                        fetch(`gyeongju_data_${num}.bin`).then(res => {
+                        fetch(`gyeongju_data_${num}.bin?v=${DATA_VERSION}`).then(res => {
                             if (!res.ok) throw new Error(`${num}번 파일 로드 실패`);
                             return res.text();
                         })
@@ -1070,10 +1070,21 @@
             // 1. 구절(Idioms) 추가
             if (item.idioms && item.idioms.length > 0) {
                 htmlContent += item.idioms.map(idm => {
-                    const fullText = (typeof idm === 'string') ? idm : (idm.full || `${idm.phrase || ''} <${idm.standard || ''}> ${idm.meaning || ''}`.trim());
+                    let text = "";
+                    if (typeof idm === 'string') {
+                        text = idm;
+                    } else if (idm.full) {
+                        text = idm.full;
+                    } else if (idm.phrase) {
+                        text = idm.phrase;
+                        if (idm.standard) text += ` <${idm.standard}>`;
+                        if (idm.meaning && idm.meaning !== idm.standard) text += ` ${idm.meaning}`;
+                    } else {
+                        text = idm.meaning || "";
+                    }
                     return `
                     <div class="ex-item" style="border-left: 3px solid #7ea1c4; background: #f4f7fa; line-height: 1.6;">
-                        <div style="font-size:15px; color:#333;">${processIdiomTTS(fullText)}</div>
+                        <div style="font-size:15px; color:#333;">${processIdiomTTS(text)}</div>
                     </div>
                 `;
                 }).join('');
