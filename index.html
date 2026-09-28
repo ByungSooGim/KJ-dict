@@ -262,6 +262,15 @@
             fill: var(--point);
         }
 
+        /* 신규 비교 테스트용 스피커 버튼 (파란색) */
+        .speaker-btn-new {
+            fill: #2b6cb0;
+        }
+
+        .speaker-btn-new:hover {
+            fill: #1a4971;
+        }
+
         .pron-row {
             display: flex;
             align-items: center;
@@ -448,7 +457,13 @@
                     style="display:none; font-size:13px; color:var(--point); margin-top:2px; font-weight:bold;"></div>
                 <div id="v-pron-row" class="pron-row" style="display:none;">
                     <div id="v-pron" class="pron-area"></div>
-                    <div class="speaker-btn" onclick="speakPronunciation()" title="발음 듣기">
+                    <div class="speaker-btn" onclick="speakPronunciation()" title="기존 TTS">
+                        <svg viewBox="0 0 24 24">
+                            <path
+                                d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" />
+                        </svg>
+                    </div>
+                    <div class="speaker-btn speaker-btn-new" onclick="speakPronunciationSyllable()" title="음절별 피치/속도 제어 TTS (신규)">
                         <svg viewBox="0 0 24 24">
                             <path
                                 d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" />
@@ -900,28 +915,30 @@
             return word ? word.replace(/(\d+)/g, '<sup>$1</sup>') : "";
         }
 
-        // 예문 내 [ ] 텍스트 추출 및 스피커 버튼 삽입 함수
+        // 예문 내 [ ] 텍스트 추출 및 스피커 버튼 삽입 함수 (기존 및 신규 듀얼 스피커 제공)
         function processDialectTTS(text) {
             if (!text) return "";
             // [ ] 안의 텍스트를 찾아서 아이콘과 함께 감쌈
             return text.replace(/\[(.*?)\]/g, (match, p1) => {
                 const cleanText = p1.replace(/['′]/g, "").trim().replace(/'/g, "\\'");
-                return `<b style="color:var(--point)">${p1}</b><span class="speaker-btn" onclick="event.stopPropagation(); speakText('${cleanText}')"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg></span>`;
+                const rawPron = p1.trim().replace(/'/g, "\\'");
+                return `<b style="color:var(--point)">${p1}</b><span class="speaker-btn" title="기존 TTS" onclick="event.stopPropagation(); speakText('${cleanText}')"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg></span><span class="speaker-btn speaker-btn-new" title="음절별 제어 TTS (신규)" onclick="event.stopPropagation(); speakSyllableTTS('${rawPron}')"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span>`;
             });
         }
 
-        // 관용구/속담 내 full text 렌더링 및 [ ] 발음 TTS 스피커 버튼 삽입 함수
+        // 관용구/속담 내 full text 렌더링 및 [ ] 발음 TTS 스피커 버튼 삽입 함수 (기존 및 신규 듀얼 스피커 제공)
         function processIdiomTTS(text) {
             if (!text) return "";
             // < 와 > 를 HTML 엔티티(&lt;, &gt;)로 변환하여 브라우저에서 태그로 오인하지 않도록 방지
             let safeText = text.replace(/</g, "&lt;").replace(/>/g, "&gt;");
             return safeText.replace(/\[(.*?)\]/g, (match, p1) => {
                 const cleanText = p1.replace(/['′]/g, "").trim().replace(/'/g, "\\'");
-                return `<b style="color:var(--point)">[${p1}]</b><span class="speaker-btn" onclick="event.stopPropagation(); speakText('${cleanText}')"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg></span>`;
+                const rawPron = p1.trim().replace(/'/g, "\\'");
+                return `<b style="color:var(--point)">[${p1}]</b><span class="speaker-btn" title="기존 TTS" onclick="event.stopPropagation(); speakText('${cleanText}')"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg></span><span class="speaker-btn speaker-btn-new" title="음절별 제어 TTS (신규)" onclick="event.stopPropagation(); speakSyllableTTS('${rawPron}')"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span>`;
             });
         }
         /* --- [5. TTS 음성 재생 기능] --- */
-        // 일반 텍스트 읽기 함수 (예문 전용)
+        // 일반 텍스트 읽기 함수 (예문 전용 - 기존 버전)
         function speakText(text) {
             if (!text || !window.speechSynthesis) return;
             window.speechSynthesis.cancel();
@@ -929,6 +946,118 @@
             utterance.lang = 'ko-KR';
             utterance.rate = 0.8;
             window.speechSynthesis.speak(utterance);
+        }
+
+        /* --- [신규: 음절별 pitch, rate, pause 세부 제어 TTS 엔진] --- */
+        let syllablePlaybackToken = 0;
+
+        async function speakSyllableTTS(rawText) {
+            if (!rawText || !window.speechSynthesis) return;
+            window.speechSynthesis.cancel();
+            const currentToken = ++syllablePlaybackToken;
+
+            let text = rawText.trim();
+            if (text.startsWith('[') && text.endsWith(']')) {
+                text = text.slice(1, -1).trim();
+            }
+            // 발음 기호 내부의 중첩 대괄호 [...] 제거
+            while (/\[[^\]]*\]/.test(text)) {
+                text = text.replace(/\[[^\]]*\]/g, '');
+            }
+            // {A/B} 형태에서 A 추출
+            text = text.replace(/\{([^/>-]+)[/>-][^}]+\}/g, '$1');
+            text = text.replace(/\//g, ', ');
+
+            // 토큰 정규식: 한글음절(+강세기호), 공백, 쉼표/구두점
+            const tokenRegex = /([가-힣])(['′]?)|(\s+)|([,;:.?!~])/g;
+            let m;
+            const tokens = [];
+            while ((m = tokenRegex.exec(text)) !== null) {
+                if (m[1]) {
+                    tokens.push({
+                        type: 'syllable',
+                        char: m[1],
+                        hasAccent: m[2] === "'" || m[2] === "′"
+                    });
+                } else if (m[3]) {
+                    tokens.push({
+                        type: 'pause',
+                        duration: 100 // 단어 사이 자연스러운 공백
+                    });
+                } else if (m[4]) {
+                    tokens.push({
+                        type: 'pause',
+                        duration: (m[4] === ',' || m[4] === ';') ? 160 : 220
+                    });
+                }
+            }
+
+            if (tokens.length === 0) {
+                const clean = text.replace(/['′ː[\]]/g, '').trim();
+                const u = new SpeechSynthesisUtterance(clean);
+                u.lang = 'ko-KR';
+                u.rate = 0.85;
+                window.speechSynthesis.speak(u);
+                return;
+            }
+
+            // 음절 및 휴지 순차 발화 실행
+            for (let i = 0; i < tokens.length; i++) {
+                if (currentToken !== syllablePlaybackToken) break;
+                const item = tokens[i];
+
+                if (item.type === 'pause') {
+                    await new Promise(r => setTimeout(r, item.duration));
+                    continue;
+                }
+
+                // 음절 발화 (Promise로 완료 대기)
+                await new Promise((resolve) => {
+                    if (currentToken !== syllablePlaybackToken) { resolve(); return; }
+
+                    const u = new SpeechSynthesisUtterance(item.char);
+                    u.lang = 'ko-KR';
+
+                    // 음절별 pitch, rate 차등 적용
+                    if (item.hasAccent) {
+                        // 고조(강세) 음절: 확실하게 높은 톤과 선명한 발음
+                        u.pitch = 1.38;
+                        u.rate = 1.0;
+                    } else {
+                        // 평조(기본) 음절: 자연스러운 기본 톤과 신속한 연결
+                        u.pitch = 0.98;
+                        u.rate = 1.15;
+                    }
+
+                    let finished = false;
+                    const done = () => {
+                        if (!finished) {
+                            finished = true;
+                            resolve();
+                        }
+                    };
+
+                    u.onend = done;
+                    u.onerror = done;
+                    // 타임아웃 가드 (모바일 브라우저 onend 미발생 버그 대비)
+                    setTimeout(done, 900);
+
+                    window.speechSynthesis.speak(u);
+                });
+
+                // 동일 단어 내 다음 음절과의 미세 pause (초밀착 연결)
+                const nextItem = tokens[i + 1];
+                if (nextItem && nextItem.type === 'syllable') {
+                    const microPause = item.hasAccent ? 20 : 10;
+                    await new Promise(r => setTimeout(r, microPause));
+                }
+            }
+        }
+
+        // 표제어 전용 신규 음절 제어 발음 재생
+        function speakPronunciationSyllable() {
+            if (!currentItem || !currentItem.pronunciation) return;
+            speakSyllableTTS(currentItem.pronunciation);
         }
         // 표제어 발음 재생 (음절 간 띄어 읽기 최소화 및 끝 음절 강세 최적화)
         function speakPronunciation() {
