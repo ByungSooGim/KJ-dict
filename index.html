@@ -948,109 +948,113 @@
             window.speechSynthesis.speak(utterance);
         }
 
-        /* --- [신규: 음절별 pitch, rate, pause 세부 제어 TTS 엔진] --- */
-        let syllablePlaybackToken = 0;
+        /* --- [신규: 사용자 제안 기반 부드러운 청크 연결 speakDialect 엔진] --- */
+        let dialectPlaybackToken = 0;
 
-        async function speakSyllableTTS(rawText) {
-            if (!rawText || !window.speechSynthesis) return;
+        function speakDialect(parts) {
+            if (!window.speechSynthesis || !parts || parts.length === 0) return;
             window.speechSynthesis.cancel();
-            const currentToken = ++syllablePlaybackToken;
 
+            const currentToken = ++dialectPlaybackToken;
+            let index = 0;
+
+            function speakNext() {
+                if (currentToken !== dialectPlaybackToken) return;
+                if (index >= parts.length) return;
+
+                const part = parts[index++];
+                if (!part.text || !part.text.trim()) {
+                    speakNext();
+                    return;
+                }
+
+                const utterance = new SpeechSynthesisUtterance(part.text);
+                utterance.lang = 'ko-KR';
+                utterance.rate = part.rate || 0.95;
+                utterance.pitch = part.pitch || 1.0;
+                utterance.volume = 1.0;
+
+                utterance.onend = speakNext;
+                utterance.onerror = speakNext;
+
+                window.speechSynthesis.speak(utterance);
+            }
+
+            speakNext();
+        }
+
+        // 발음 기호(예: '가아′날′ 드을′다')를 분석하여 speakDialect용 parts 배열로 자동 변환하는 함수
+        function parsePronToParts(rawText) {
+            if (!rawText) return [];
             let text = rawText.trim();
             if (text.startsWith('[') && text.endsWith(']')) {
                 text = text.slice(1, -1).trim();
             }
-            // 발음 기호 내부의 중첩 대괄호 [...] 제거
             while (/\[[^\]]*\]/.test(text)) {
                 text = text.replace(/\[[^\]]*\]/g, '');
             }
-            // {A/B} 형태에서 A 추출
             text = text.replace(/\{([^/>-]+)[/>-][^}]+\}/g, '$1');
             text = text.replace(/\//g, ', ');
 
-            // 토큰 정규식: 한글음절(+강세기호), 공백, 쉼표/구두점
-            const tokenRegex = /([가-힣])(['′]?)|(\s+)|([,;:.?!~])/g;
-            let m;
-            const tokens = [];
-            while ((m = tokenRegex.exec(text)) !== null) {
-                if (m[1]) {
-                    tokens.push({
-                        type: 'syllable',
-                        char: m[1],
-                        hasAccent: m[2] === "'" || m[2] === "′"
-                    });
-                } else if (m[3]) {
-                    tokens.push({
-                        type: 'pause',
-                        duration: 100 // 단어 사이 자연스러운 공백
-                    });
-                } else if (m[4]) {
-                    tokens.push({
-                        type: 'pause',
-                        duration: (m[4] === ',' || m[4] === ';') ? 160 : 220
-                    });
-                }
-            }
+            // 어절(단어, 공백 구분) 단위로 1차 분리
+            const words = text.split(/(\s+)/);
+            const parts = [];
 
-            if (tokens.length === 0) {
-                const clean = text.replace(/['′ː[\]]/g, '').trim();
-                const u = new SpeechSynthesisUtterance(clean);
-                u.lang = 'ko-KR';
-                u.rate = 0.85;
-                window.speechSynthesis.speak(u);
-                return;
-            }
-
-            // 음절 및 휴지 순차 발화 실행
-            for (let i = 0; i < tokens.length; i++) {
-                if (currentToken !== syllablePlaybackToken) break;
-                const item = tokens[i];
-
-                if (item.type === 'pause') {
-                    await new Promise(r => setTimeout(r, item.duration));
-                    continue;
+            words.forEach(word => {
+                if (!word) return;
+                // 공백일 경우 이전 덩어리 뒤에 붙여 자연스러운 어절 구분 호흡 유도
+                if (/^\s+$/.test(word)) {
+                    if (parts.length > 0) {
+                        parts[parts.length - 1].text += ' ';
+                    }
+                    return;
                 }
 
-                // 음절 발화 (Promise로 완료 대기)
-                await new Promise((resolve) => {
-                    if (currentToken !== syllablePlaybackToken) { resolve(); return; }
+                // 어절 내부에서 음절 및 성조 분석
+                const syllableRegex = /([가-힣])(['′]?)|([^가-힣'′]+)/g;
+                let match;
+                let currentPlain = '';
 
-                    const u = new SpeechSynthesisUtterance(item.char);
-                    u.lang = 'ko-KR';
+                while ((match = syllableRegex.exec(word)) !== null) {
+                    const char = match[1];
+                    const accent = match[2];
+                    const nonHangul = match[3];
 
-                    // 음절별 pitch, rate 차등 적용
-                    if (item.hasAccent) {
-                        // 고조(강세) 음절: 확실하게 높은 톤과 선명한 발음
-                        u.pitch = 1.38;
-                        u.rate = 1.0;
-                    } else {
-                        // 평조(기본) 음절: 자연스러운 기본 톤과 신속한 연결
-                        u.pitch = 0.98;
-                        u.rate = 1.15;
+                    if (nonHangul) {
+                        currentPlain += nonHangul;
+                        continue;
                     }
 
-                    let finished = false;
-                    const done = () => {
-                        if (!finished) {
-                            finished = true;
-                            resolve();
+                    const hasAccent = (accent === "'" || accent === "′");
+                    if (hasAccent) {
+                        // 이전에 누적된 평음 덩어리가 있으면 묶어서 추가 (예: '묵었')
+                        if (currentPlain) {
+                            parts.push({ text: currentPlain, pitch: 0.90, rate: 1.05 });
+                            currentPlain = '';
                         }
-                    };
-
-                    u.onend = done;
-                    u.onerror = done;
-                    // 타임아웃 가드 (모바일 브라우저 onend 미발생 버그 대비)
-                    setTimeout(done, 900);
-
-                    window.speechSynthesis.speak(u);
-                });
-
-                // 동일 단어 내 다음 음절과의 미세 pause (초밀착 연결)
-                const nextItem = tokens[i + 1];
-                if (nextItem && nextItem.type === 'syllable') {
-                    const microPause = item.hasAccent ? 20 : 10;
-                    await new Promise(r => setTimeout(r, microPause));
+                        // 강세 음절 단독 추가 (예: '밥', '나?')
+                        parts.push({ text: char, pitch: 1.35, rate: 0.95 });
+                    } else {
+                        // 평음은 연속 덩어리로 묶음
+                        currentPlain += char;
+                    }
                 }
+
+                if (currentPlain) {
+                    parts.push({ text: currentPlain, pitch: 0.90, rate: 1.05 });
+                }
+            });
+
+            return parts;
+        }
+
+        // 신규 스피커 버튼 클릭 핸들러
+        function speakSyllableTTS(rawText) {
+            const parts = parsePronToParts(rawText);
+            if (parts.length > 0) {
+                speakDialect(parts);
+            } else {
+                speakText(rawText.replace(/['′ː[\]]/g, ''));
             }
         }
 
