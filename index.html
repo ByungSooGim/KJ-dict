@@ -271,6 +271,15 @@
             fill: #1a4971;
         }
 
+        /* Cloud TTS 스피커 버튼 (빨간색) */
+        .speaker-btn-cloud {
+            fill: #e53e3e;
+        }
+
+        .speaker-btn-cloud:hover {
+            fill: #9b2c2c;
+        }
+
         .pron-row {
             display: flex;
             align-items: center;
@@ -463,7 +472,15 @@
                                 d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" />
                         </svg>
                     </div>
-                    <div class="speaker-btn speaker-btn-new" onclick="speakPronunciationSyllable()" title="음절별 피치/속도 제어 TTS (신규)">
+                    <div class="speaker-btn speaker-btn-new" onclick="speakPronunciationSyllable()"
+                        title="음절별 피치/속도 제어 TTS (신규)">
+                        <svg viewBox="0 0 24 24">
+                            <path
+                                d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" />
+                        </svg>
+                    </div>
+                    <div class="speaker-btn speaker-btn-cloud" onclick="speakPronunciationCloud()"
+                        title="Google Cloud TTS (SSML 신경망)">
                         <svg viewBox="0 0 24 24">
                             <path
                                 d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" />
@@ -915,18 +932,18 @@
             return word ? word.replace(/(\d+)/g, '<sup>$1</sup>') : "";
         }
 
-        // 예문 내 [ ] 텍스트 추출 및 스피커 버튼 삽입 함수 (기존 및 신규 듀얼 스피커 제공)
+        // 예문 내 [ ] 텍스트 추출 및 스피커 버튼 삽입 함수 (기존, 신규, Cloud 3종 스피커 제공)
         function processDialectTTS(text) {
             if (!text) return "";
             // [ ] 안의 텍스트를 찾아서 아이콘과 함께 감쌈
             return text.replace(/\[(.*?)\]/g, (match, p1) => {
                 const cleanText = p1.replace(/['′]/g, "").trim().replace(/'/g, "\\'");
                 const rawPron = p1.trim().replace(/'/g, "\\'");
-                return `<b style="color:var(--point)">${p1}</b><span class="speaker-btn" title="기존 TTS" onclick="event.stopPropagation(); speakText('${cleanText}')"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg></span><span class="speaker-btn speaker-btn-new" title="음절별 제어 TTS (신규)" onclick="event.stopPropagation(); speakSyllableTTS('${rawPron}')"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span>`;
+                return `<b style="color:var(--point)">${p1}</b><span class="speaker-btn" title="기존 TTS" onclick="event.stopPropagation(); speakText('${cleanText}')"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg></span><span class="speaker-btn speaker-btn-new" title="음절별 제어 TTS (신규)" onclick="event.stopPropagation(); speakSyllableTTS('${rawPron}')"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span><span class="speaker-btn speaker-btn-cloud" title="Google Cloud TTS (SSML 신경망)" onclick="event.stopPropagation(); speakCloudTTS('${rawPron}')"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span>`;
             });
         }
 
-        // 관용구/속담 내 full text 렌더링 및 [ ] 발음 TTS 스피커 버튼 삽입 함수 (기존 및 신규 듀얼 스피커 제공)
+        // 관용구/속담 내 full text 렌더링 및 [ ] 발음 TTS 스피커 버튼 삽입 함수 (기존, 신규, Cloud 3종 스피커 제공)
         function processIdiomTTS(text) {
             if (!text) return "";
             // < 와 > 를 HTML 엔티티(&lt;, &gt;)로 변환하여 브라우저에서 태그로 오인하지 않도록 방지
@@ -934,7 +951,7 @@
             return safeText.replace(/\[(.*?)\]/g, (match, p1) => {
                 const cleanText = p1.replace(/['′]/g, "").trim().replace(/'/g, "\\'");
                 const rawPron = p1.trim().replace(/'/g, "\\'");
-                return `<b style="color:var(--point)">[${p1}]</b><span class="speaker-btn" title="기존 TTS" onclick="event.stopPropagation(); speakText('${cleanText}')"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg></span><span class="speaker-btn speaker-btn-new" title="음절별 제어 TTS (신규)" onclick="event.stopPropagation(); speakSyllableTTS('${rawPron}')"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span>`;
+                return `<b style="color:var(--point)">[${p1}]</b><span class="speaker-btn" title="기존 TTS" onclick="event.stopPropagation(); speakText('${cleanText}')"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg></span><span class="speaker-btn speaker-btn-new" title="음절별 제어 TTS (신규)" onclick="event.stopPropagation(); speakSyllableTTS('${rawPron}')"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span><span class="speaker-btn speaker-btn-cloud" title="Google Cloud TTS (SSML 신경망)" onclick="event.stopPropagation(); speakCloudTTS('${rawPron}')"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span>`;
             });
         }
         /* --- [5. TTS 음성 재생 기능] --- */
@@ -1056,6 +1073,171 @@
             } else {
                 speakText(rawText.replace(/['′ː[\]]/g, ''));
             }
+        }
+
+        /* --- [신규: Google Cloud TTS REST API 연동 및 SSML 재생 엔진] --- */
+        let currentCloudAudio = null;
+
+        // 방언 발음 기호를 Google Cloud TTS용 SSML로 자동 변환하는 함수
+        function convertDialectToSSML(rawText) {
+            if (!rawText) return "<speak></speak>";
+
+            let text = rawText.trim();
+            if (text.startsWith('[') && text.endsWith(']')) {
+                text = text.slice(1, -1).trim();
+            }
+            while (/\[[^\]]*\]/.test(text)) {
+                text = text.replace(/\[[^\]]*\]/g, '');
+            }
+            text = text.replace(/\{([^/>-]+)[/>-][^}]+\}/g, '$1');
+            text = text.replace(/\//g, ', ');
+
+            const words = text.split(/\s+/);
+            const ssmlParts = [];
+
+            for (let i = 0; i < words.length; i++) {
+                let w = words[i];
+                if (!w) continue;
+
+                let hasComma = w.includes(',');
+                let hasDot = w.includes('.');
+                let hasQuestion = w.includes('?');
+                let core = w.replace(/[,.?!]+$/, '');
+
+                let converted = "";
+
+                if (core.includes("'") || core.includes("′")) {
+                    if (core === '그′런' || core === "그'런") {
+                        converted = '그<prosody pitch="+7st">런</prosody>';
+                    } else {
+                        const m = core.match(/^(.*?)(['′])(.*)$/);
+                        if (m) {
+                            const before = m[1];
+                            const after = m[3];
+
+                            if (after.length >= 2 && after.startsWith('까아')) {
+                                converted = `${before}<prosody pitch="+8st" rate="85%">까아</prosody><prosody pitch="-3st">${after.slice(2)}</prosody>`;
+                            } else if (after.length >= 2) {
+                                const highChar = after[0];
+                                const lowPart = after.slice(1);
+                                const rateAttr = (highChar === '찌' || highChar === '날') ? ' rate="90%"' : '';
+                                converted = `${before}<prosody pitch="+8st"${rateAttr}>${highChar}</prosody><prosody pitch="-2st">${lowPart}</prosody>`;
+                            } else if (before.length === 1 && after.length >= 1) {
+                                const pitchVal = (before === '가') ? '+7st' : '+8st';
+                                converted = `<prosody pitch="${pitchVal}">${before}</prosody><prosody pitch="-2st">${after}</prosody>`;
+                            } else if (before.length >= 2 && after.length === 1) {
+                                const prePlain = before.slice(0, -1);
+                                const highChar = before.slice(-1);
+                                converted = `${prePlain}<prosody pitch="+8st">${highChar}</prosody><prosody pitch="-5st">${after}</prosody>`;
+                            } else {
+                                if (before.length > 0) {
+                                    converted = `<prosody pitch="+8st">${before}</prosody>${after ? `<prosody pitch="-2st">${after}</prosody>` : ''}`;
+                                } else {
+                                    converted = `<prosody pitch="+8st">${after}</prosody>`;
+                                }
+                            }
+                        } else {
+                            converted = core.replace(/['′]/g, '');
+                        }
+                    }
+                } else {
+                    converted = core;
+                }
+
+                // 구두점 및 휴지(break) 자동 처리
+                if (core === '조갑′찌사' || core === "조갑'찌사") {
+                    converted += ', <break time="160ms"/>';
+                } else if (core === '가′머' || core === "가'머") {
+                    converted += ', <break time="200ms"/>';
+                } else if (core === '거' && words[i - 1] && words[i - 1].includes('빠징')) {
+                    converted += ', <break time="160ms"/>';
+                } else if (hasComma) {
+                    converted += ', <break time="160ms"/>';
+                } else if (hasDot || hasQuestion || (core.includes('가') && i === words.length - 1)) {
+                    converted += '?';
+                }
+
+                ssmlParts.push(converted);
+            }
+
+            return `<speak>\n  ${ssmlParts.join('\n  ')}\n</speak>`;
+        }
+
+        // Google Cloud TTS REST API 호출 및 재생 함수
+        async function speakCloudTTS(rawText) {
+            if (!rawText) return;
+
+            // 1. API 키 확인 (localStorage에 저장 또는 prompt 입력)
+            let apiKey = localStorage.getItem('gcloud_tts_api_key');
+            if (!apiKey) {
+                apiKey = prompt("Google Cloud TTS API Key를 입력해주세요:\n(입력하신 키는 브라우저 localStorage에 안전하게 보관됩니다)");
+                if (!apiKey || !apiKey.trim()) {
+                    alert("Google Cloud API Key가 필요합니다.");
+                    return;
+                }
+                apiKey = apiKey.trim();
+                localStorage.setItem('gcloud_tts_api_key', apiKey);
+            }
+
+            // 2. SSML 생성
+            const ssml = convertDialectToSSML(rawText);
+            console.log("생성된 SSML:\n", ssml);
+
+            // 3. 기존 오디오 및 브라우저 TTS 정지
+            if (currentCloudAudio) {
+                currentCloudAudio.pause();
+                currentCloudAudio = null;
+            }
+            if (window.speechSynthesis) {
+                window.speechSynthesis.cancel();
+            }
+
+            // 4. REST API 요청
+            try {
+                const endpoint = `https://texttospeech.googleapis.com/v1/text:synthesize?key=${apiKey}`;
+                const response = await fetch(endpoint, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        input: { ssml: ssml },
+                        voice: {
+                            languageCode: 'ko-KR',
+                            name: 'ko-KR-Neural2-c' // 고품질 한국어 신경망 보이스
+                        },
+                        audioConfig: {
+                            audioEncoding: 'MP3'
+                        }
+                    })
+                });
+
+                if (!response.ok) {
+                    const errData = await response.json().catch(() => ({}));
+                    if (response.status === 400 || response.status === 403) {
+                        localStorage.removeItem('gcloud_tts_api_key');
+                        throw new Error(`API 오류 (${response.status}): ${errData.error ? errData.error.message : 'API 키 권한 또는 설정을 확인해주세요.'}`);
+                    }
+                    throw new Error(`Cloud TTS 요청 실패: ${response.statusText}`);
+                }
+
+                const data = await response.json();
+                if (data.audioContent) {
+                    currentCloudAudio = new Audio(`data:audio/mp3;base64,${data.audioContent}`);
+                    currentCloudAudio.play();
+                } else {
+                    alert("음성 데이터를 받아오지 못했습니다.");
+                }
+            } catch (err) {
+                console.error("Cloud TTS Error:", err);
+                alert(`Google Cloud TTS 재생 실패:\n${err.message}`);
+            }
+        }
+
+        // 표제어 전용 Cloud TTS 재생
+        function speakPronunciationCloud() {
+            if (!currentItem || !currentItem.pronunciation) return;
+            speakCloudTTS(currentItem.pronunciation);
         }
 
         // 표제어 전용 신규 음절 제어 발음 재생
