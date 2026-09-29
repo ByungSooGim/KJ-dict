@@ -271,13 +271,22 @@
             fill: #1a4971;
         }
 
-        /* Cloud TTS 스피커 버튼 (빨간색) */
+        /* 3번째 Cloud TTS 스피커 버튼 (빨간색) */
         .speaker-btn-cloud {
             fill: #e53e3e;
         }
 
         .speaker-btn-cloud:hover {
             fill: #9b2c2c;
+        }
+
+        /* 4번째 Microsoft Edge TTS 스피커 버튼 (초록색) */
+        .speaker-btn-edge {
+            fill: #2ecc71;
+        }
+
+        .speaker-btn-edge:hover {
+            fill: #27ae60;
         }
 
         .pron-row {
@@ -466,21 +475,28 @@
                     style="display:none; font-size:13px; color:var(--point); margin-top:2px; font-weight:bold;"></div>
                 <div id="v-pron-row" class="pron-row" style="display:none;">
                     <div id="v-pron" class="pron-area"></div>
-                    <div class="speaker-btn" onclick="speakPronunciation()" title="기존 TTS">
+                    <div class="speaker-btn" onclick="speakPronunciation()" title="1. 기존 TTS (강세제거)">
                         <svg viewBox="0 0 24 24">
                             <path
                                 d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" />
                         </svg>
                     </div>
-                    <div class="speaker-btn speaker-btn-new" onclick="speakPronunciationSyllable()"
-                        title="음절별 피치/속도 제어 TTS (신규)">
+                    <div class="speaker-btn speaker-btn-new" onclick="speakPronunciationDoubleAccent()"
+                        title="2. 강세 2개짜리(″) 치환 TTS">
                         <svg viewBox="0 0 24 24">
                             <path
                                 d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" />
                         </svg>
                     </div>
                     <div class="speaker-btn speaker-btn-cloud" onclick="speakPronunciationCloud()"
-                        title="Google Cloud TTS (SSML 신경망)">
+                        title="3. Google Cloud TTS (SSML 신경망)">
+                        <svg viewBox="0 0 24 24">
+                            <path
+                                d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" />
+                        </svg>
+                    </div>
+                    <div class="speaker-btn speaker-btn-edge" onclick="speakPronunciationEdge()"
+                        title="4. Microsoft Edge TTS (무료 / SSML)">
                         <svg viewBox="0 0 24 24">
                             <path
                                 d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" />
@@ -932,26 +948,24 @@
             return word ? word.replace(/(\d+)/g, '<sup>$1</sup>') : "";
         }
 
-        // 예문 내 [ ] 텍스트 추출 및 스피커 버튼 삽입 함수 (기존, 신규, Cloud 3종 스피커 제공)
+        // 예문 내 [ ] 텍스트 추출 및 스피커 버튼 삽입 함수 (1.기존, 2.강세더블, 3.Cloud, 4.Edge 4종 스피커)
         function processDialectTTS(text) {
             if (!text) return "";
-            // [ ] 안의 텍스트를 찾아서 아이콘과 함께 감쌈
             return text.replace(/\[(.*?)\]/g, (match, p1) => {
                 const cleanText = p1.replace(/['′]/g, "").trim().replace(/'/g, "\\'");
                 const rawPron = p1.trim().replace(/'/g, "\\'");
-                return `<b style="color:var(--point)">${p1}</b><span class="speaker-btn" title="기존 TTS" onclick="event.stopPropagation(); speakText('${cleanText}')"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg></span><span class="speaker-btn speaker-btn-new" title="음절별 제어 TTS (신규)" onclick="event.stopPropagation(); speakSyllableTTS('${rawPron}')"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span><span class="speaker-btn speaker-btn-cloud" title="Google Cloud TTS (SSML 신경망)" onclick="event.stopPropagation(); speakCloudTTS('${rawPron}')"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span>`;
+                return `<b style="color:var(--point)">${p1}</b><span class="speaker-btn" title="1. 기존 TTS (강세제거)" onclick="event.stopPropagation(); speakText('${cleanText}')"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg></span><span class="speaker-btn speaker-btn-new" title="2. 강세 2개짜리(″) 치환 TTS" onclick="event.stopPropagation(); speakTextDoubleAccent('${rawPron}')"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span><span class="speaker-btn speaker-btn-cloud" title="3. Google Cloud TTS (SSML 신경망)" onclick="event.stopPropagation(); speakCloudTTS('${rawPron}')"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span><span class="speaker-btn speaker-btn-edge" title="4. Microsoft Edge TTS (무료 / SSML)" onclick="event.stopPropagation(); speakEdgeTTS('${rawPron}')"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span>`;
             });
         }
 
-        // 관용구/속담 내 full text 렌더링 및 [ ] 발음 TTS 스피커 버튼 삽입 함수 (기존, 신규, Cloud 3종 스피커 제공)
+        // 관용구/속담 내 full text 렌더링 및 [ ] 발음 TTS 스피커 버튼 삽입 함수 (1.기존, 2.강세더블, 3.Cloud, 4.Edge 4종 스피커)
         function processIdiomTTS(text) {
             if (!text) return "";
-            // < 와 > 를 HTML 엔티티(&lt;, &gt;)로 변환하여 브라우저에서 태그로 오인하지 않도록 방지
             let safeText = text.replace(/</g, "&lt;").replace(/>/g, "&gt;");
             return safeText.replace(/\[(.*?)\]/g, (match, p1) => {
                 const cleanText = p1.replace(/['′]/g, "").trim().replace(/'/g, "\\'");
                 const rawPron = p1.trim().replace(/'/g, "\\'");
-                return `<b style="color:var(--point)">[${p1}]</b><span class="speaker-btn" title="기존 TTS" onclick="event.stopPropagation(); speakText('${cleanText}')"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg></span><span class="speaker-btn speaker-btn-new" title="음절별 제어 TTS (신규)" onclick="event.stopPropagation(); speakSyllableTTS('${rawPron}')"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span><span class="speaker-btn speaker-btn-cloud" title="Google Cloud TTS (SSML 신경망)" onclick="event.stopPropagation(); speakCloudTTS('${rawPron}')"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span>`;
+                return `<b style="color:var(--point)">[${p1}]</b><span class="speaker-btn" title="1. 기존 TTS (강세제거)" onclick="event.stopPropagation(); speakText('${cleanText}')"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg></span><span class="speaker-btn speaker-btn-new" title="2. 강세 2개짜리(″) 치환 TTS" onclick="event.stopPropagation(); speakTextDoubleAccent('${rawPron}')"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span><span class="speaker-btn speaker-btn-cloud" title="3. Google Cloud TTS (SSML 신경망)" onclick="event.stopPropagation(); speakCloudTTS('${rawPron}')"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span><span class="speaker-btn speaker-btn-edge" title="4. Microsoft Edge TTS (무료 / SSML)" onclick="event.stopPropagation(); speakEdgeTTS('${rawPron}')"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span>`;
             });
         }
         /* --- [5. TTS 음성 재생 기능] --- */
@@ -965,114 +979,24 @@
             window.speechSynthesis.speak(utterance);
         }
 
-        /* --- [신규: 사용자 제안 기반 부드러운 청크 연결 speakDialect 엔진] --- */
-        let dialectPlaybackToken = 0;
-
-        function speakDialect(parts) {
-            if (!window.speechSynthesis || !parts || parts.length === 0) return;
+        /* --- [2번째 스피커: 강세 기호(' 또는 ′)를 ″(더블 프라임, 2개짜리)로 치환하여 발화] --- */
+        function speakTextDoubleAccent(text) {
+            if (!text || !window.speechSynthesis) return;
             window.speechSynthesis.cancel();
 
-            const currentToken = ++dialectPlaybackToken;
-            let index = 0;
+            // 전달받은 텍스트의 강세 ' 또는 ′를 ″(더블 프라임)로 치환
+            let doubleAccentText = text.replace(/['′]/g, "″").trim();
 
-            function speakNext() {
-                if (currentToken !== dialectPlaybackToken) return;
-                if (index >= parts.length) return;
-
-                const part = parts[index++];
-                if (!part.text || !part.text.trim()) {
-                    speakNext();
-                    return;
-                }
-
-                const utterance = new SpeechSynthesisUtterance(part.text);
-                utterance.lang = 'ko-KR';
-                utterance.rate = part.rate || 0.95;
-                utterance.pitch = part.pitch || 1.0;
-                utterance.volume = 1.0;
-
-                utterance.onend = speakNext;
-                utterance.onerror = speakNext;
-
-                window.speechSynthesis.speak(utterance);
-            }
-
-            speakNext();
+            const utterance = new SpeechSynthesisUtterance(doubleAccentText);
+            utterance.lang = 'ko-KR';
+            utterance.rate = 0.8;
+            window.speechSynthesis.speak(utterance);
         }
 
-        // 발음 기호(예: '가아′날′ 드을′다')를 분석하여 speakDialect용 parts 배열로 자동 변환하는 함수
-        function parsePronToParts(rawText) {
-            if (!rawText) return [];
-            let text = rawText.trim();
-            if (text.startsWith('[') && text.endsWith(']')) {
-                text = text.slice(1, -1).trim();
-            }
-            while (/\[[^\]]*\]/.test(text)) {
-                text = text.replace(/\[[^\]]*\]/g, '');
-            }
-            text = text.replace(/\{([^/>-]+)[/>-][^}]+\}/g, '$1');
-            text = text.replace(/\//g, ', ');
-
-            // 어절(단어, 공백 구분) 단위로 1차 분리
-            const words = text.split(/(\s+)/);
-            const parts = [];
-
-            words.forEach(word => {
-                if (!word) return;
-                // 공백일 경우 이전 덩어리 뒤에 붙여 자연스러운 어절 구분 호흡 유도
-                if (/^\s+$/.test(word)) {
-                    if (parts.length > 0) {
-                        parts[parts.length - 1].text += ' ';
-                    }
-                    return;
-                }
-
-                // 어절 내부에서 음절 및 성조 분석
-                const syllableRegex = /([가-힣])(['′]?)|([^가-힣'′]+)/g;
-                let match;
-                let currentPlain = '';
-
-                while ((match = syllableRegex.exec(word)) !== null) {
-                    const char = match[1];
-                    const accent = match[2];
-                    const nonHangul = match[3];
-
-                    if (nonHangul) {
-                        currentPlain += nonHangul;
-                        continue;
-                    }
-
-                    const hasAccent = (accent === "'" || accent === "′");
-                    if (hasAccent) {
-                        // 이전에 누적된 평음 덩어리가 있으면 묶어서 추가 (예: '묵었')
-                        if (currentPlain) {
-                            parts.push({ text: currentPlain, pitch: 0.90, rate: 1.05 });
-                            currentPlain = '';
-                        }
-                        // 강세 음절 단독 추가 (예: '밥', '나?')
-                        parts.push({ text: char, pitch: 1.35, rate: 0.95 });
-                    } else {
-                        // 평음은 연속 덩어리로 묶음
-                        currentPlain += char;
-                    }
-                }
-
-                if (currentPlain) {
-                    parts.push({ text: currentPlain, pitch: 0.90, rate: 1.05 });
-                }
-            });
-
-            return parts;
-        }
-
-        // 신규 스피커 버튼 클릭 핸들러
-        function speakSyllableTTS(rawText) {
-            const parts = parsePronToParts(rawText);
-            if (parts.length > 0) {
-                speakDialect(parts);
-            } else {
-                speakText(rawText.replace(/['′ː[\]]/g, ''));
-            }
+        // 표제어 전용 2번째 스피커 (강세 2개짜리 치환 발화)
+        function speakPronunciationDoubleAccent() {
+            if (!currentItem || !currentItem.pronunciation) return;
+            speakTextDoubleAccent(currentItem.pronunciation);
         }
 
         /* --- [신규: Google Cloud TTS REST API 연동 및 SSML 재생 엔진] --- */
@@ -1240,10 +1164,209 @@
             speakCloudTTS(currentItem.pronunciation);
         }
 
-        // 표제어 전용 신규 음절 제어 발음 재생
-        function speakPronunciationSyllable() {
+        /* --- [4번째 스피커: Microsoft Edge TTS (무료 및 SSML 지원) 엔진] --- */
+        let currentEdgeAudio = null;
+
+        // 방언 발음 기호를 Microsoft Edge/Azure 표준 SSML로 변환하는 함수
+        function convertDialectToEdgeSSML(rawText, voice = "ko-KR-SunHiNeural") {
+            if (!rawText) return "";
+            let text = rawText.trim();
+            if (text.startsWith('[') && text.endsWith(']')) {
+                text = text.slice(1, -1).trim();
+            }
+            while (/\[[^\]]*\]/.test(text)) {
+                text = text.replace(/\[[^\]]*\]/g, '');
+            }
+            text = text.replace(/\{([^/>-]+)[/>-][^}]+\}/g, '$1');
+            text = text.replace(/\//g, ', ');
+
+            const words = text.split(/\s+/);
+            const ssmlParts = [];
+
+            for (let i = 0; i < words.length; i++) {
+                let w = words[i];
+                if (!w) continue;
+
+                let hasComma = w.includes(',');
+                let hasDot = w.includes('.');
+                let hasQuestion = w.includes('?');
+                let core = w.replace(/[,.?!]+$/, '');
+
+                let converted = "";
+
+                if (core.includes("'") || core.includes("′")) {
+                    if (core === '그′런' || core === "그'런") {
+                        converted = '그<prosody pitch="+7st">런</prosody>';
+                    } else {
+                        const m = core.match(/^(.*?)(['′])(.*)$/);
+                        if (m) {
+                            const before = m[1];
+                            const after = m[3];
+
+                            if (after.length >= 2 && after.startsWith('까아')) {
+                                converted = `${before}<prosody pitch="+8st" rate="-15%">까아</prosody><prosody pitch="-3st">${after.slice(2)}</prosody>`;
+                            } else if (after.length >= 2) {
+                                const highChar = after[0];
+                                const lowPart = after.slice(1);
+                                const rateAttr = (highChar === '찌' || highChar === '날') ? ' rate="-10%"' : '';
+                                converted = `${before}<prosody pitch="+8st"${rateAttr}>${highChar}</prosody><prosody pitch="-2st">${lowPart}</prosody>`;
+                            } else if (before.length === 1 && after.length >= 1) {
+                                const pitchVal = (before === '가') ? '+7st' : '+8st';
+                                converted = `<prosody pitch="${pitchVal}">${before}</prosody><prosody pitch="-2st">${after}</prosody>`;
+                            } else if (before.length >= 2 && after.length === 1) {
+                                const prePlain = before.slice(0, -1);
+                                const highChar = before.slice(-1);
+                                converted = `${prePlain}<prosody pitch="+8st">${highChar}</prosody><prosody pitch="-5st">${after}</prosody>`;
+                            } else {
+                                if (before.length > 0) {
+                                    converted = `<prosody pitch="+8st">${before}</prosody>${after ? `<prosody pitch="-2st">${after}</prosody>` : ''}`;
+                                } else {
+                                    converted = `<prosody pitch="+8st">${after}</prosody>`;
+                                }
+                            }
+                        } else {
+                            converted = core.replace(/['′]/g, '');
+                        }
+                    }
+                } else {
+                    converted = core;
+                }
+
+                if (core === '조갑′찌사' || core === "조갑'찌사") {
+                    converted += ', <break time="160ms"/>';
+                } else if (core === '가′머' || core === "가'머") {
+                    converted += ', <break time="200ms"/>';
+                } else if (core === '거' && words[i - 1] && words[i - 1].includes('빠징')) {
+                    converted += ', <break time="160ms"/>';
+                } else if (hasComma) {
+                    converted += ', <break time="160ms"/>';
+                } else if (hasDot || hasQuestion || (core.includes('가') && i === words.length - 1)) {
+                    converted += '?';
+                }
+
+                ssmlParts.push(converted);
+            }
+
+            return `<speak version="1.0" xmlns="http://www.w3.org/2001/10/synthesis" xmlns:mstts="https://www.w3.org/2001/mstts" xml:lang="ko-KR">
+  <voice name="${voice}">
+    ${ssmlParts.join('\n    ')}
+  </voice>
+</speak>`;
+        }
+
+        // Microsoft Edge 무료 TTS WebSocket 호출 및 재생 함수
+        async function speakEdgeTTS(rawText) {
+            if (!rawText) return;
+
+            // 1. 기존 오디오 및 발화 정지
+            if (currentEdgeAudio) {
+                currentEdgeAudio.pause();
+                currentEdgeAudio = null;
+            }
+            if (currentCloudAudio) {
+                currentCloudAudio.pause();
+                currentCloudAudio = null;
+            }
+            if (window.speechSynthesis) {
+                window.speechSynthesis.cancel();
+            }
+
+            const ssml = convertDialectToEdgeSSML(rawText, "ko-KR-SunHiNeural");
+            console.log("Edge TTS SSML:\n", ssml);
+
+            // Edge Read Aloud WebSocket 연결 시도
+            function makeUuid() {
+                return 'xxxxxxxxxxxx4xxxyxxxxxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+                    const r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
+                    return v.toString(16);
+                });
+            }
+
+            const connId = makeUuid();
+            const wsUrl = `wss://speech.platform.bing.com/consumer/speech/synthesize/readaloud/edge/v1?TrustedClientToken=6A5AA1D4EA654941A6D36E6EAD0414CF&ConnectionId=${connId}`;
+
+            let audioChunks = [];
+            let wsSuccess = false;
+
+            try {
+                const ws = new WebSocket(wsUrl);
+                ws.binaryType = 'arraybuffer';
+
+                const playPromise = new Promise((resolve, reject) => {
+                    const timeout = setTimeout(() => {
+                        ws.close();
+                        reject(new Error("Edge TTS 응답 시간 초과 (브라우저 내장 음성으로 대체)"));
+                    }, 4500);
+
+                    ws.onopen = () => {
+                        // 1) Config 메시지 전송
+                        const configMsg = `Content-Type:application/json; charset=utf-8\r\nPath:speech.config\r\n\r\n{"context":{"synthesis":{"audio":{"metadataoptions":{"sentenceBoundaryEnabled":"false","wordBoundaryEnabled":"false"},"outputFormat":"audio-24khz-48kbitrate-mono-mp3"}}}}`;
+                        ws.send(configMsg);
+
+                        // 2) SSML 메시지 전송
+                        const ssmlMsg = `X-RequestId:${makeUuid()}\r\nContent-Type:application/ssml+xml\r\nPath:ssml\r\n\r\n${ssml}`;
+                        ws.send(ssmlMsg);
+                    };
+
+                    ws.onmessage = (event) => {
+                        if (typeof event.data === 'string') {
+                            if (event.data.includes("Path:turn.end")) {
+                                clearTimeout(timeout);
+                                wsSuccess = true;
+                                ws.close();
+                                resolve();
+                            }
+                        } else if (event.data instanceof ArrayBuffer) {
+                            // 바이너리 오디오 수신: 첫 2바이트는 헤더 길이(Big Endian)
+                            const view = new DataView(event.data);
+                            if (view.byteLength >= 2) {
+                                const headerLen = view.getUint16(0);
+                                if (view.byteLength > headerLen + 2) {
+                                    const audioData = event.data.slice(headerLen + 2);
+                                    audioChunks.push(audioData);
+                                }
+                            }
+                        }
+                    };
+
+                    ws.onerror = (e) => {
+                        clearTimeout(timeout);
+                        reject(new Error("Edge TTS WebSocket 연결 오류"));
+                    };
+                });
+
+                await playPromise;
+
+                if (audioChunks.length > 0) {
+                    const audioBlob = new Blob(audioChunks, { type: 'audio/mp3' });
+                    const audioUrl = URL.createObjectURL(audioBlob);
+                    currentEdgeAudio = new Audio(audioUrl);
+                    currentEdgeAudio.play();
+                    return;
+                }
+            } catch (wsErr) {
+                console.warn("Edge WebSocket TTS 미지원/오류 -> Web Speech Natural Voice Fallback 시도:", wsErr);
+            }
+
+            // Fallback: 브라우저 내장 SpeechSynthesis에서 Microsoft Natural 음성 찾아 발화
+            if (window.speechSynthesis) {
+                const clean = rawText.replace(/['′ː[\]]/g, '').trim();
+                const u = new SpeechSynthesisUtterance(clean);
+                u.lang = 'ko-KR';
+                u.rate = 0.85;
+
+                const voices = window.speechSynthesis.getVoices();
+                const msVoice = voices.find(v => v.lang.startsWith('ko') && (v.name.includes('Natural') || v.name.includes('SunHi') || v.name.includes('Microsoft')));
+                if (msVoice) u.voice = msVoice;
+
+                window.speechSynthesis.speak(u);
+            }
+        }
+
+        // 표제어 전용 Microsoft Edge TTS 재생
+        function speakPronunciationEdge() {
             if (!currentItem || !currentItem.pronunciation) return;
-            speakSyllableTTS(currentItem.pronunciation);
+            speakEdgeTTS(currentItem.pronunciation);
         }
         // 표제어 발음 재생 (음절 간 띄어 읽기 최소화 및 끝 음절 강세 최적화)
         function speakPronunciation() {
