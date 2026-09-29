@@ -1113,9 +1113,18 @@
                 localStorage.setItem('gcloud_tts_api_key', apiKey);
             }
 
-            // 2. SSML 생성
-            const ssml = convertDialectToSSML(rawText);
-            console.log("생성된 SSML:\n", ssml);
+            // 2. 성조/강세 기호(' 또는 ′)를 완전히 제거한 순수 텍스트 생성 (부자연스러움 제거)
+            let cleanText = rawText.trim();
+            if (cleanText.startsWith('[') && cleanText.endsWith(']')) {
+                cleanText = cleanText.slice(1, -1).trim();
+            }
+            while (/\[[^\]]*\]/.test(cleanText)) {
+                cleanText = cleanText.replace(/\[[^\]]*\]/g, '');
+            }
+            cleanText = cleanText.replace(/\{([^/>-]+)[/>-][^}]+\}/g, '$1');
+            cleanText = cleanText.replace(/\//g, ', ');
+            cleanText = cleanText.replace(/['′]/g, '').trim();
+            console.log("Google Cloud TTS 순수 텍스트(강세 제거):", cleanText);
 
             // 3. 기존 오디오 및 브라우저 TTS 정지
             if (currentCloudAudio) {
@@ -1130,7 +1139,7 @@
                 window.speechSynthesis.cancel();
             }
 
-            // 4. REST API 요청
+            // 4. REST API 요청 (자연스러운 한국어 여성 신경망 음성으로 발화)
             try {
                 const endpoint = `https://texttospeech.googleapis.com/v1/text:synthesize?key=${apiKey}`;
                 const response = await fetch(endpoint, {
@@ -1139,14 +1148,15 @@
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        input: { ssml: ssml },
+                        input: { text: cleanText },
                         voice: {
                             languageCode: 'ko-KR',
                             name: 'ko-KR-Neural2-A', // 고품질 한국어 여성 신경망 보이스
                             ssmlGender: 'FEMALE'
                         },
                         audioConfig: {
-                            audioEncoding: 'MP3'
+                            audioEncoding: 'MP3',
+                            speakingRate: 0.95
                         }
                     })
                 });
@@ -1200,7 +1210,7 @@
         /* --- [4번째 스피커: Microsoft Edge TTS (무료 및 SSML 지원) 엔진] --- */
         let currentEdgeAudio = null;
 
-        // 방언 발음 기호를 Microsoft Edge/Azure 표준 SSML로 변환하는 함수 (강세 음절 2단계 상향: +9st ~ +10st)
+        // 방언 발음 기호를 Microsoft Edge/Azure 표준 SSML로 변환하는 함수 (기본 피치 -3st, 강세 최강 +16st)
         function convertDialectToEdgeSSML(rawText, voice = "ko-KR-SunHiNeural") {
             if (!rawText) return "";
             let text = rawText.trim();
@@ -1229,7 +1239,7 @@
 
                 if (core.includes("'") || core.includes("′")) {
                     if (core === '그′런' || core === "그'런") {
-                        converted = '그<prosody pitch="+9st">런</prosody>';
+                        converted = '그<prosody pitch="+16st" volume="100%">런</prosody>';
                     } else {
                         const m = core.match(/^(.*?)(['′])(.*)$/);
                         if (m) {
@@ -1237,24 +1247,23 @@
                             const after = m[3];
 
                             if (after.length >= 2 && after.startsWith('까아')) {
-                                converted = `${before}<prosody pitch="+10st" rate="-15%">까아</prosody><prosody pitch="-3st">${after.slice(2)}</prosody>`;
+                                converted = `${before}<prosody pitch="+16st" rate="-15%" volume="100%">까아</prosody><prosody pitch="-4st">${after.slice(2)}</prosody>`;
                             } else if (after.length >= 2) {
                                 const highChar = after[0];
                                 const lowPart = after.slice(1);
                                 const rateAttr = (highChar === '찌' || highChar === '날') ? ' rate="-10%"' : '';
-                                converted = `${before}<prosody pitch="+10st"${rateAttr}>${highChar}</prosody><prosody pitch="-2st">${lowPart}</prosody>`;
+                                converted = `${before}<prosody pitch="+16st" volume="100%"${rateAttr}>${highChar}</prosody><prosody pitch="-4st">${lowPart}</prosody>`;
                             } else if (before.length === 1 && after.length >= 1) {
-                                const pitchVal = (before === '가') ? '+9st' : '+10st';
-                                converted = `<prosody pitch="${pitchVal}">${before}</prosody><prosody pitch="-2st">${after}</prosody>`;
+                                converted = `<prosody pitch="+16st" volume="100%">${before}</prosody><prosody pitch="-4st">${after}</prosody>`;
                             } else if (before.length >= 2 && after.length === 1) {
                                 const prePlain = before.slice(0, -1);
                                 const highChar = before.slice(-1);
-                                converted = `${prePlain}<prosody pitch="+10st">${highChar}</prosody><prosody pitch="-5st">${after}</prosody>`;
+                                converted = `${prePlain}<prosody pitch="+16st" volume="100%">${highChar}</prosody><prosody pitch="-6st">${after}</prosody>`;
                             } else {
                                 if (before.length > 0) {
-                                    converted = `<prosody pitch="+10st">${before}</prosody>${after ? `<prosody pitch="-2st">${after}</prosody>` : ''}`;
+                                    converted = `<prosody pitch="+16st" volume="100%">${before}</prosody>${after ? `<prosody pitch="-4st">${after}</prosody>` : ''}`;
                                 } else {
-                                    converted = `<prosody pitch="+10st">${after}</prosody>`;
+                                    converted = `<prosody pitch="+16st" volume="100%">${after}</prosody>`;
                                 }
                             }
                         } else {
@@ -1280,14 +1289,17 @@
                 ssmlParts.push(converted);
             }
 
+            // 기본 피치를 -3st로 낮추고, 강세 음절만 +16st(최강)로 극적인 대비 형성
             return `<speak version="1.0" xmlns="http://www.w3.org/2001/10/synthesis" xmlns:mstts="https://www.w3.org/2001/mstts" xml:lang="ko-KR">
   <voice name="${voice}">
-    ${ssmlParts.join('\n    ')}
+    <prosody pitch="-3st">
+      ${ssmlParts.join('\n      ')}
+    </prosody>
   </voice>
 </speak>`;
         }
 
-        // Microsoft Edge 무료 TTS WebSocket 호출 및 재생 함수
+        // Microsoft Edge 무료 TTS WebSocket 호출 및 재생 함수 (기본 -3, 강세 최강)
         async function speakEdgeTTS(rawText) {
             if (!rawText) return;
 
@@ -1305,7 +1317,7 @@
             }
 
             const ssml = convertDialectToEdgeSSML(rawText, "ko-KR-SunHiNeural");
-            console.log("Edge TTS SSML:\n", ssml);
+            console.log("Edge TTS SSML (기본 -3st, 강세 최강 +16st):\n", ssml);
 
             // Edge Read Aloud WebSocket 연결 시도
             function makeUuid() {
@@ -1319,7 +1331,6 @@
             const wsUrl = `wss://speech.platform.bing.com/consumer/speech/synthesize/readaloud/edge/v1?TrustedClientToken=6A5AA1D4EA654941A6D36E6EAD0414CF&ConnectionId=${connId}`;
 
             let audioChunks = [];
-            let wsSuccess = false;
 
             try {
                 const ws = new WebSocket(wsUrl);
@@ -1328,15 +1339,13 @@
                 const playPromise = new Promise((resolve, reject) => {
                     const timeout = setTimeout(() => {
                         ws.close();
-                        reject(new Error("Edge TTS 응답 시간 초과 (브라우저 내장 음성으로 대체)"));
-                    }, 4500);
+                        reject(new Error("Edge WebSocket 응답 시간 초과 -> 고대비 음절 제어 엔진으로 재생"));
+                    }, 3500);
 
                     ws.onopen = () => {
-                        // 1) Config 메시지 전송
                         const configMsg = `Content-Type:application/json; charset=utf-8\r\nPath:speech.config\r\n\r\n{"context":{"synthesis":{"audio":{"metadataoptions":{"sentenceBoundaryEnabled":"false","wordBoundaryEnabled":"false"},"outputFormat":"audio-24khz-48kbitrate-mono-mp3"}}}}`;
                         ws.send(configMsg);
 
-                        // 2) SSML 메시지 전송
                         const ssmlMsg = `X-RequestId:${makeUuid()}\r\nContent-Type:application/ssml+xml\r\nPath:ssml\r\n\r\n${ssml}`;
                         ws.send(ssmlMsg);
                     };
@@ -1345,18 +1354,15 @@
                         if (typeof event.data === 'string') {
                             if (event.data.includes("Path:turn.end")) {
                                 clearTimeout(timeout);
-                                wsSuccess = true;
                                 ws.close();
                                 resolve();
                             }
                         } else if (event.data instanceof ArrayBuffer) {
-                            // 바이너리 오디오 수신: 첫 2바이트는 헤더 길이(Big Endian)
                             const view = new DataView(event.data);
                             if (view.byteLength >= 2) {
                                 const headerLen = view.getUint16(0);
                                 if (view.byteLength > headerLen + 2) {
-                                    const audioData = event.data.slice(headerLen + 2);
-                                    audioChunks.push(audioData);
+                                    audioChunks.push(event.data.slice(headerLen + 2));
                                 }
                             }
                         }
@@ -1364,7 +1370,7 @@
 
                     ws.onerror = (e) => {
                         clearTimeout(timeout);
-                        reject(new Error("Edge TTS WebSocket 연결 오류"));
+                        reject(new Error("Edge TTS WebSocket 연결 차단/오류"));
                     };
                 });
 
@@ -1378,21 +1384,63 @@
                     return;
                 }
             } catch (wsErr) {
-                console.warn("Edge WebSocket TTS 미지원/오류 -> Web Speech Natural Voice Fallback 시도:", wsErr);
+                console.warn(wsErr.message);
             }
 
-            // Fallback: 브라우저 내장 SpeechSynthesis에서 Microsoft Natural 음성 찾아 발화
+            // [Fallback]: WebSocket이 불가한 환경에서도 "기본 피치 -3단계(저음 0.65), 강세 최강(고음 1.85)"으로 극명하게 대비하여 발화
             if (window.speechSynthesis) {
-                const clean = rawText.replace(/['′ː[\]]/g, '').trim();
-                const u = new SpeechSynthesisUtterance(clean);
-                u.lang = 'ko-KR';
-                u.rate = 0.85;
+                let clean = rawText.trim();
+                if (clean.startsWith('[') && clean.endsWith(']')) clean = clean.slice(1, -1).trim();
+                while (/\[[^\]]*\]/.test(clean)) clean = clean.replace(/\[[^\]]*\]/g, '');
+                clean = clean.replace(/\{([^/>-]+)[/>-][^}]+\}/g, '$1').replace(/\//g, ', ');
+
+                // 음절 및 강세 분석
+                const parts = [];
+                const words = clean.split(/\s+/);
+
+                for (let w of words) {
+                    if (!w) continue;
+                    const syllableRegex = /([가-힣])(['′]?)/g;
+                    let m;
+                    while ((m = syllableRegex.exec(w)) !== null) {
+                        const char = m[1];
+                        const isAccented = (m[2] === "'" || m[2] === "′");
+                        parts.push({
+                            text: char,
+                            // 기본 피치는 -3단계로 낮추고(0.65), 강세는 최강(1.85)
+                            pitch: isAccented ? 1.85 : 0.65,
+                            rate: isAccented ? 0.85 : 0.95
+                        });
+                    }
+                    if (parts.length > 0) {
+                        parts[parts.length - 1].text += " ";
+                    }
+                }
+
+                if (parts.length === 0) {
+                    const u = new SpeechSynthesisUtterance(clean.replace(/['′]/g, ''));
+                    u.lang = 'ko-KR';
+                    u.pitch = 0.65;
+                    window.speechSynthesis.speak(u);
+                    return;
+                }
 
                 const voices = window.speechSynthesis.getVoices();
-                const msVoice = voices.find(v => v.lang.startsWith('ko') && (v.name.includes('Natural') || v.name.includes('SunHi') || v.name.includes('Microsoft')));
-                if (msVoice) u.voice = msVoice;
+                const preferredVoice = voices.find(v => v.lang.startsWith('ko') && (v.name.includes('Natural') || v.name.includes('SunHi') || v.name.includes('Microsoft') || v.name.includes('Google')));
 
-                window.speechSynthesis.speak(u);
+                let idx = 0;
+                function speakNext() {
+                    if (idx >= parts.length) return;
+                    const p = parts[idx++];
+                    const u = new SpeechSynthesisUtterance(p.text);
+                    u.lang = 'ko-KR';
+                    u.pitch = p.pitch;
+                    u.rate = p.rate;
+                    if (preferredVoice) u.voice = preferredVoice;
+                    u.onend = speakNext;
+                    window.speechSynthesis.speak(u);
+                }
+                speakNext();
             }
         }
 
