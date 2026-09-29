@@ -489,7 +489,8 @@
                         </svg>
                     </div>
                     <div class="speaker-btn speaker-btn-cloud" onclick="speakPronunciationCloud()"
-                        title="3. Google Cloud TTS (SSML 신경망)">
+                        oncontextmenu="event.preventDefault(); event.stopPropagation(); resetCloudApiKey();"
+                        title="3. Google Cloud TTS (SSML 신경망 / 우클릭: API키 변경)">
                         <svg viewBox="0 0 24 24">
                             <path
                                 d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" />
@@ -954,7 +955,7 @@
             return text.replace(/\[(.*?)\]/g, (match, p1) => {
                 const cleanText = p1.replace(/['′]/g, "").trim().replace(/'/g, "\\'");
                 const rawPron = p1.trim().replace(/'/g, "\\'");
-                return `<b style="color:var(--point)">${p1}</b><span class="speaker-btn" title="1. 기존 TTS (강세제거)" onclick="event.stopPropagation(); speakText('${cleanText}')"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg></span><span class="speaker-btn speaker-btn-new" title="2. 강세 2개짜리(″) 치환 TTS" onclick="event.stopPropagation(); speakTextDoubleAccent('${rawPron}')"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span><span class="speaker-btn speaker-btn-cloud" title="3. Google Cloud TTS (SSML 신경망)" onclick="event.stopPropagation(); speakCloudTTS('${rawPron}')"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span><span class="speaker-btn speaker-btn-edge" title="4. Microsoft Edge TTS (무료 / SSML)" onclick="event.stopPropagation(); speakEdgeTTS('${rawPron}')"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span>`;
+                return `<b style="color:var(--point)">${p1}</b><span class="speaker-btn" title="1. 기존 TTS (강세제거)" onclick="event.stopPropagation(); speakText('${cleanText}')"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg></span><span class="speaker-btn speaker-btn-new" title="2. 강세 2개짜리(″) 치환 TTS" onclick="event.stopPropagation(); speakTextDoubleAccent('${rawPron}')"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span><span class="speaker-btn speaker-btn-cloud" title="3. Google Cloud TTS (SSML 신경망 / 우클릭: API키 변경)" onclick="event.stopPropagation(); speakCloudTTS('${rawPron}')" oncontextmenu="event.preventDefault(); event.stopPropagation(); resetCloudApiKey();"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span><span class="speaker-btn speaker-btn-edge" title="4. Microsoft Edge TTS (무료 / SSML)" onclick="event.stopPropagation(); speakEdgeTTS('${rawPron}')"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span>`;
             });
         }
 
@@ -965,7 +966,7 @@
             return safeText.replace(/\[(.*?)\]/g, (match, p1) => {
                 const cleanText = p1.replace(/['′]/g, "").trim().replace(/'/g, "\\'");
                 const rawPron = p1.trim().replace(/'/g, "\\'");
-                return `<b style="color:var(--point)">[${p1}]</b><span class="speaker-btn" title="1. 기존 TTS (강세제거)" onclick="event.stopPropagation(); speakText('${cleanText}')"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg></span><span class="speaker-btn speaker-btn-new" title="2. 강세 2개짜리(″) 치환 TTS" onclick="event.stopPropagation(); speakTextDoubleAccent('${rawPron}')"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span><span class="speaker-btn speaker-btn-cloud" title="3. Google Cloud TTS (SSML 신경망)" onclick="event.stopPropagation(); speakCloudTTS('${rawPron}')"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span><span class="speaker-btn speaker-btn-edge" title="4. Microsoft Edge TTS (무료 / SSML)" onclick="event.stopPropagation(); speakEdgeTTS('${rawPron}')"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span>`;
+                return `<b style="color:var(--point)">[${p1}]</b><span class="speaker-btn" title="1. 기존 TTS (강세제거)" onclick="event.stopPropagation(); speakText('${cleanText}')"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg></span><span class="speaker-btn speaker-btn-new" title="2. 강세 2개짜리(″) 치환 TTS" onclick="event.stopPropagation(); speakTextDoubleAccent('${rawPron}')"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span><span class="speaker-btn speaker-btn-cloud" title="3. Google Cloud TTS (SSML 신경망 / 우클릭: API키 변경)" onclick="event.stopPropagation(); speakCloudTTS('${rawPron}')" oncontextmenu="event.preventDefault(); event.stopPropagation(); resetCloudApiKey();"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span><span class="speaker-btn speaker-btn-edge" title="4. Microsoft Edge TTS (무료 / SSML)" onclick="event.stopPropagation(); speakEdgeTTS('${rawPron}')"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span>`;
             });
         }
         /* --- [5. TTS 음성 재생 기능] --- */
@@ -1087,13 +1088,29 @@
             return `<speak>\n  ${ssmlParts.join('\n  ')}\n</speak>`;
         }
 
+        // Google Cloud TTS API 키 수동 변경/재설정 함수 (우클릭 또는 직접 호출)
+        function resetCloudApiKey() {
+            const oldKey = localStorage.getItem('gcloud_tts_api_key') || "";
+            const newKey = prompt("Google Cloud TTS API Key를 입력해주세요:\n(현재 키를 변경하거나 다시 입력할 수 있습니다. 비워두고 확인을 누르면 삭제됩니다)", oldKey);
+            if (newKey === null) return null; // 사용자가 취소함
+            if (newKey.trim() === "") {
+                localStorage.removeItem('gcloud_tts_api_key');
+                alert("Google Cloud API 키가 삭제되었습니다.\n다음에 3번 스피커를 누르면 새로 입력창이 뜹니다.");
+                return "";
+            } else {
+                localStorage.setItem('gcloud_tts_api_key', newKey.trim());
+                alert("새로운 Google Cloud API 키가 저장되었습니다.");
+                return newKey.trim();
+            }
+        }
+
         // Google Cloud TTS REST API 호출 및 재생 함수
         async function speakCloudTTS(rawText) {
             if (!rawText) return;
 
             // 1. API 키 확인 (localStorage에 저장 또는 prompt 입력)
             let apiKey = localStorage.getItem('gcloud_tts_api_key');
-            if (!apiKey) {
+            if (!apiKey || !apiKey.trim()) {
                 apiKey = prompt("Google Cloud TTS API Key를 입력해주세요:\n(입력하신 키는 브라우저 localStorage에 안전하게 보관됩니다)");
                 if (!apiKey || !apiKey.trim()) {
                     alert("Google Cloud API Key가 필요합니다.");
@@ -1111,6 +1128,10 @@
             if (currentCloudAudio) {
                 currentCloudAudio.pause();
                 currentCloudAudio = null;
+            }
+            if (currentEdgeAudio) {
+                currentEdgeAudio.pause();
+                currentEdgeAudio = null;
             }
             if (window.speechSynthesis) {
                 window.speechSynthesis.cancel();
@@ -1138,11 +1159,20 @@
 
                 if (!response.ok) {
                     const errData = await response.json().catch(() => ({}));
-                    if (response.status === 400 || response.status === 403) {
-                        localStorage.removeItem('gcloud_tts_api_key');
-                        throw new Error(`API 오류 (${response.status}): ${errData.error ? errData.error.message : 'API 키 권한 또는 설정을 확인해주세요.'}`);
+                    const errorDetails = errData.error ? errData.error.message : response.statusText;
+                    
+                    // 잘못된 키는 즉시 로컬 스토리지에서 삭제하여 다음 클릭 시 다시 묻도록 함
+                    localStorage.removeItem('gcloud_tts_api_key');
+
+                    const retryWithNew = confirm(`Google Cloud TTS API 오류 (${response.status}):\n${errorDetails}\n\n※ 잘못되거나 만료된 API 키를 삭제했습니다.\n새로운 API 키를 지금 바로 입력하시겠습니까?`);
+                    if (retryWithNew) {
+                        const freshKey = prompt("새로운 Google Cloud TTS API Key를 입력해주세요:");
+                        if (freshKey && freshKey.trim()) {
+                            localStorage.setItem('gcloud_tts_api_key', freshKey.trim());
+                            speakCloudTTS(rawText); // 새로운 키로 즉시 재시도
+                        }
                     }
-                    throw new Error(`Cloud TTS 요청 실패: ${response.statusText}`);
+                    return;
                 }
 
                 const data = await response.json();
@@ -1154,7 +1184,16 @@
                 }
             } catch (err) {
                 console.error("Cloud TTS Error:", err);
-                alert(`Google Cloud TTS 재생 실패:\n${err.message}`);
+                // 네트워크 에러 또는 기타 실패 시에도 키 교체 기회 제공
+                const changeKey = confirm(`Google Cloud TTS 요청 중 오류가 발생했습니다:\n${err.message}\n\n저장된 API 키를 삭제하고 새로 입력하시겠습니까?`);
+                if (changeKey) {
+                    localStorage.removeItem('gcloud_tts_api_key');
+                    const freshKey = prompt("새로운 Google Cloud TTS API Key를 입력해주세요:");
+                    if (freshKey && freshKey.trim()) {
+                        localStorage.setItem('gcloud_tts_api_key', freshKey.trim());
+                        speakCloudTTS(rawText);
+                    }
+                }
             }
         }
 
