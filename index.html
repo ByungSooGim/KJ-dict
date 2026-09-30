@@ -289,6 +289,15 @@
             fill: #27ae60;
         }
 
+        /* 4번째 Gemini-TTS 스피커 버튼 (파란색) */
+        .speaker-btn-gemini {
+            fill: #1976d2;
+        }
+
+        .speaker-btn-gemini:hover {
+            fill: #0d47a1;
+        }
+
         .pron-row {
             display: flex;
             align-items: center;
@@ -491,6 +500,14 @@
                     </div>
                     <div class="speaker-btn speaker-btn-edge" onclick="speakPronunciationEdge()"
                         title="3. Microsoft Edge TTS (SunHi / SSML)">
+                        <svg viewBox="0 0 24 24">
+                            <path
+                                d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" />
+                        </svg>
+                    </div>
+                    <div class="speaker-btn speaker-btn-gemini" onclick="speakPronunciationGemini()"
+                        oncontextmenu="event.preventDefault(); event.stopPropagation(); setGeminiVoiceModel();"
+                        title="4. Gemini-TTS (지시문: [경상북도 사람의 어투로 해줘] / 우클릭: 설정)">
                         <svg viewBox="0 0 24 24">
                             <path
                                 d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" />
@@ -942,22 +959,22 @@
             return word ? word.replace(/(\d+)/g, '<sup>$1</sup>') : "";
         }
 
-        // 예문 내 [ ] 텍스트 추출 및 스피커 버튼 삽입 함수 (1.기본TTS(원래발음), 2.Cloud(강세제거), 3.Edge(SunHi/SSML))
+        // 예문 내 [ ] 텍스트 추출 및 스피커 버튼 삽입 함수 (1.기본TTS, 2.Cloud(4M무료), 3.Edge(SunHi), 4.Gemini(지시문))
         function processDialectTTS(text) {
             if (!text) return "";
             return text.replace(/\[(.*?)\]/g, (match, p1) => {
                 const rawPron = p1.trim().replace(/'/g, "\\'");
-                return `<b style="color:var(--point)">${p1}</b><span class="speaker-btn" title="1. 기본 TTS (원래 발음 기호)" onclick="event.stopPropagation(); speakText('${rawPron}')"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg></span><span class="speaker-btn speaker-btn-cloud" title="2. Google Cloud TTS (강세 기호 제거 / 여성 음성 / 우클릭: API키 변경)" onclick="event.stopPropagation(); speakCloudTTS('${rawPron}')" oncontextmenu="event.preventDefault(); event.stopPropagation(); resetCloudApiKey();"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span><span class="speaker-btn speaker-btn-edge" title="3. Microsoft Edge TTS (SunHi / SSML)" onclick="event.stopPropagation(); speakEdgeTTS('${rawPron}')"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span>`;
+                return `<b style="color:var(--point)">${p1}</b><span class="speaker-btn" title="1. 기본 TTS (원래 발음 기호)" onclick="event.stopPropagation(); speakText('${rawPron}')"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg></span><span class="speaker-btn speaker-btn-cloud" title="2. Google Cloud TTS (4M 무료 Standard / 강세 기호 제거 / 여성 음성 / 우클릭: API키 변경)" onclick="event.stopPropagation(); speakCloudTTS('${rawPron}')" oncontextmenu="event.preventDefault(); event.stopPropagation(); resetCloudApiKey();"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span><span class="speaker-btn speaker-btn-edge" title="3. Microsoft Edge TTS (SunHi / SSML)" onclick="event.stopPropagation(); speakEdgeTTS('${rawPron}')"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span><span class="speaker-btn speaker-btn-gemini" title="4. Gemini-TTS (지시문: [경상북도 사람의 어투로 해줘] / 우클릭: 설정)" onclick="event.stopPropagation(); speakGeminiTTS('${rawPron}')" oncontextmenu="event.preventDefault(); event.stopPropagation(); setGeminiVoiceModel();"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span>`;
             });
         }
 
-        // 관용구/속담 내 full text 렌더링 및 [ ] 발음 TTS 스피커 버튼 삽입 함수 (1.기본TTS(원래발음), 2.Cloud(강세제거), 3.Edge(SunHi/SSML))
+        // 관용구/속담 내 full text 렌더링 및 [ ] 발음 TTS 스피커 버튼 삽입 함수 (1.기본TTS, 2.Cloud(4M무료), 3.Edge(SunHi), 4.Gemini(지시문))
         function processIdiomTTS(text) {
             if (!text) return "";
             let safeText = text.replace(/</g, "&lt;").replace(/>/g, "&gt;");
             return safeText.replace(/\[(.*?)\]/g, (match, p1) => {
                 const rawPron = p1.trim().replace(/'/g, "\\'");
-                return `<b style="color:var(--point)">[${p1}]</b><span class="speaker-btn" title="1. 기본 TTS (원래 발음 기호)" onclick="event.stopPropagation(); speakText('${rawPron}')"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg></span><span class="speaker-btn speaker-btn-cloud" title="2. Google Cloud TTS (강세 기호 제거 / 여성 음성 / 우클릭: API키 변경)" onclick="event.stopPropagation(); speakCloudTTS('${rawPron}')" oncontextmenu="event.preventDefault(); event.stopPropagation(); resetCloudApiKey();"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span><span class="speaker-btn speaker-btn-edge" title="3. Microsoft Edge TTS (SunHi / SSML)" onclick="event.stopPropagation(); speakEdgeTTS('${rawPron}')"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span>`;
+                return `<b style="color:var(--point)">[${p1}]</b><span class="speaker-btn" title="1. 기본 TTS (원래 발음 기호)" onclick="event.stopPropagation(); speakText('${rawPron}')"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg></span><span class="speaker-btn speaker-btn-cloud" title="2. Google Cloud TTS (4M 무료 Standard / 강세 기호 제거 / 여성 음성 / 우클릭: API키 변경)" onclick="event.stopPropagation(); speakCloudTTS('${rawPron}')" oncontextmenu="event.preventDefault(); event.stopPropagation(); resetCloudApiKey();"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span><span class="speaker-btn speaker-btn-edge" title="3. Microsoft Edge TTS (SunHi / SSML)" onclick="event.stopPropagation(); speakEdgeTTS('${rawPron}')"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span><span class="speaker-btn speaker-btn-gemini" title="4. Gemini-TTS (지시문: [경상북도 사람의 어투로 해줘] / 우클릭: 설정)" onclick="event.stopPropagation(); speakGeminiTTS('${rawPron}')" oncontextmenu="event.preventDefault(); event.stopPropagation(); setGeminiVoiceModel();"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span>`;
             });
         }
         /* --- [5. TTS 음성 재생 기능] --- */
@@ -971,113 +988,8 @@
             window.speechSynthesis.speak(utterance);
         }
 
-        /* --- [2번째 스피커: 강세 기호(' 또는 ′)를 ″(더블 프라임, 2개짜리)로 치환하여 발화] --- */
-        function speakTextDoubleAccent(text) {
-            if (!text || !window.speechSynthesis) return;
-            window.speechSynthesis.cancel();
-
-            // 전달받은 텍스트의 강세 ' 또는 ′를 ″(더블 프라임)로 치환
-            let doubleAccentText = text.replace(/['′]/g, "″").trim();
-
-            const utterance = new SpeechSynthesisUtterance(doubleAccentText);
-            utterance.lang = 'ko-KR';
-            utterance.rate = 0.8;
-            window.speechSynthesis.speak(utterance);
-        }
-
-        // 표제어 전용 2번째 스피커 (강세 2개짜리 치환 발화)
-        function speakPronunciationDoubleAccent() {
-            if (!currentItem || !currentItem.pronunciation) return;
-            speakTextDoubleAccent(currentItem.pronunciation);
-        }
-
-        /* --- [신규: Google Cloud TTS REST API 연동 및 SSML 재생 엔진] --- */
+        /* --- [2번째 스피커: Google Cloud TTS REST API 연동 (4M 무료 Standard-A)] --- */
         let currentCloudAudio = null;
-
-        // 방언 발음 기호를 Google Cloud TTS용 SSML로 자동 변환하는 함수
-        function convertDialectToSSML(rawText) {
-            if (!rawText) return "<speak></speak>";
-
-            let text = rawText.trim();
-            if (text.startsWith('[') && text.endsWith(']')) {
-                text = text.slice(1, -1).trim();
-            }
-            while (/\[[^\]]*\]/.test(text)) {
-                text = text.replace(/\[[^\]]*\]/g, '');
-            }
-            text = text.replace(/\{([^/>-]+)[/>-][^}]+\}/g, '$1');
-            text = text.replace(/\//g, ', ');
-
-            const words = text.split(/\s+/);
-            const ssmlParts = [];
-
-            for (let i = 0; i < words.length; i++) {
-                let w = words[i];
-                if (!w) continue;
-
-                let hasComma = w.includes(',');
-                let hasDot = w.includes('.');
-                let hasQuestion = w.includes('?');
-                let core = w.replace(/[,.?!]+$/, '');
-
-                let converted = "";
-
-                if (core.includes("'") || core.includes("′")) {
-                    if (core === '그′런' || core === "그'런") {
-                        converted = '그<prosody pitch="+7st">런</prosody>';
-                    } else {
-                        const m = core.match(/^(.*?)(['′])(.*)$/);
-                        if (m) {
-                            const before = m[1];
-                            const after = m[3];
-
-                            if (after.length >= 2 && after.startsWith('까아')) {
-                                converted = `${before}<prosody pitch="+8st" rate="85%">까아</prosody><prosody pitch="-3st">${after.slice(2)}</prosody>`;
-                            } else if (after.length >= 2) {
-                                const highChar = after[0];
-                                const lowPart = after.slice(1);
-                                const rateAttr = (highChar === '찌' || highChar === '날') ? ' rate="90%"' : '';
-                                converted = `${before}<prosody pitch="+8st"${rateAttr}>${highChar}</prosody><prosody pitch="-2st">${lowPart}</prosody>`;
-                            } else if (before.length === 1 && after.length >= 1) {
-                                const pitchVal = (before === '가') ? '+7st' : '+8st';
-                                converted = `<prosody pitch="${pitchVal}">${before}</prosody><prosody pitch="-2st">${after}</prosody>`;
-                            } else if (before.length >= 2 && after.length === 1) {
-                                const prePlain = before.slice(0, -1);
-                                const highChar = before.slice(-1);
-                                converted = `${prePlain}<prosody pitch="+8st">${highChar}</prosody><prosody pitch="-5st">${after}</prosody>`;
-                            } else {
-                                if (before.length > 0) {
-                                    converted = `<prosody pitch="+8st">${before}</prosody>${after ? `<prosody pitch="-2st">${after}</prosody>` : ''}`;
-                                } else {
-                                    converted = `<prosody pitch="+8st">${after}</prosody>`;
-                                }
-                            }
-                        } else {
-                            converted = core.replace(/['′]/g, '');
-                        }
-                    }
-                } else {
-                    converted = core;
-                }
-
-                // 구두점 및 휴지(break) 자동 처리
-                if (core === '조갑′찌사' || core === "조갑'찌사") {
-                    converted += ', <break time="160ms"/>';
-                } else if (core === '가′머' || core === "가'머") {
-                    converted += ', <break time="200ms"/>';
-                } else if (core === '거' && words[i - 1] && words[i - 1].includes('빠징')) {
-                    converted += ', <break time="160ms"/>';
-                } else if (hasComma) {
-                    converted += ', <break time="160ms"/>';
-                } else if (hasDot || hasQuestion || (core.includes('가') && i === words.length - 1)) {
-                    converted += '?';
-                }
-
-                ssmlParts.push(converted);
-            }
-
-            return `<speak>\n  ${ssmlParts.join('\n  ')}\n</speak>`;
-        }
 
         // Google Cloud TTS API 키 수동 변경/재설정 함수 (우클릭 또는 직접 호출)
         function resetCloudApiKey() {
@@ -1149,7 +1061,7 @@
                         input: { text: cleanText },
                         voice: {
                             languageCode: 'ko-KR',
-                            name: 'ko-KR-Neural2-A', // 고품질 한국어 여성 신경망 보이스
+                            name: 'ko-KR-Standard-A', // 월간 400만 자(4M) 무료 Standard 여성 보이스
                             ssmlGender: 'FEMALE'
                         },
                         audioConfig: {
@@ -1205,10 +1117,140 @@
             speakCloudTTS(currentItem.pronunciation);
         }
 
+        /* --- [4번째 스피커: 최신 Gemini-TTS 모델 (프롬프트/스타일 감정 태그 제어)] --- */
+        let currentGeminiAudio = null;
+
+        // Gemini TTS 설정 (지시문/프롬프트 및 보이스 모델명 변경 - 우클릭 시)
+        function setGeminiVoiceModel() {
+            setGeminiSettings();
+        }
+
+        function setGeminiSettings() {
+            const currentPrompt = localStorage.getItem('gemini_tts_prompt') || '[경상북도 사람의 어투로 해줘]';
+            const newPrompt = prompt("Gemini-TTS 스타일/지시문(Prompt)을 입력해주세요:\n(예: [경상북도 사람의 어투로 해줘], 경상북도 사투리 어투로 읽어줘:, [cheerfully] 등)", currentPrompt);
+            if (newPrompt !== null && newPrompt.trim()) {
+                localStorage.setItem('gemini_tts_prompt', newPrompt.trim());
+            }
+
+            const currentModel = localStorage.getItem('gemini_tts_voice_name') || 'ko-KR-Journey-F';
+            const newModel = prompt("Gemini-TTS Voice 모델명을 입력해주세요:\n(예: ko-KR-Journey-F, ko-KR-Standard-A 등)", currentModel);
+            if (newModel && newModel.trim()) {
+                localStorage.setItem('gemini_tts_voice_name', newModel.trim());
+            }
+            alert(`Gemini-TTS 설정이 저장되었습니다.\n• 지시문(Prompt): ${localStorage.getItem('gemini_tts_prompt') || currentPrompt}\n• 모델: ${localStorage.getItem('gemini_tts_voice_name') || currentModel}`);
+        }
+
+        // 최신 Gemini-TTS API 호출 함수 (지시문/스타일 감정 태그 프롬프트 활용)
+        async function speakGeminiTTS(rawText) {
+            if (!rawText) return;
+
+            // 1. Google Cloud API 키 확인 (2번과 공유)
+            let apiKey = localStorage.getItem('gcloud_tts_api_key');
+            if (!apiKey || !apiKey.trim()) {
+                apiKey = prompt("Google Cloud TTS API Key를 입력해주세요:\n(Gemini-TTS 호출 시에도 사용됩니다)");
+                if (!apiKey || !apiKey.trim()) {
+                    alert("API Key가 필요합니다.");
+                    return;
+                }
+                apiKey = apiKey.trim();
+                localStorage.setItem('gcloud_tts_api_key', apiKey);
+            }
+
+            // 2. 텍스트 정제 및 지시문/스타일 프롬프트 결합
+            let cleanText = rawText.trim();
+            if (cleanText.startsWith('[') && cleanText.endsWith(']')) {
+                cleanText = cleanText.slice(1, -1).trim();
+            }
+            while (/\[[^\]]*\]/.test(cleanText)) {
+                cleanText = cleanText.replace(/\[[^\]]*\]/g, '');
+            }
+            cleanText = cleanText.replace(/\{([^/>-]+)[/>-][^}]+\}/g, '$1');
+            cleanText = cleanText.replace(/\//g, ', ');
+            cleanText = cleanText.replace(/['′]/g, '').trim();
+
+            // 감정/스타일 지시문 프롬프트 태그: 기본값 [경상북도 사람의 어투로 해줘]
+            const promptTag = localStorage.getItem('gemini_tts_prompt') || '[경상북도 사람의 어투로 해줘]';
+            const promptedText = `${promptTag} ${cleanText}`;
+            console.log("Gemini-TTS 전송 텍스트 (프롬프트 포함):", promptedText);
+
+            // 3. 기존 모든 오디오 정지
+            if (currentGeminiAudio) { currentGeminiAudio.pause(); currentGeminiAudio = null; }
+            if (currentCloudAudio) { currentCloudAudio.pause(); currentCloudAudio = null; }
+            if (currentEdgeAudio) { currentEdgeAudio.pause(); currentEdgeAudio = null; }
+            if (window.speechSynthesis) { window.speechSynthesis.cancel(); }
+
+            // 4. 모델명 결정 (기본값: ko-KR-Journey-F 또는 사용자 지정 gemini 모델)
+            const voiceModel = localStorage.getItem('gemini_tts_voice_name') || 'ko-KR-Journey-F';
+
+            try {
+                const endpoint = `https://texttospeech.googleapis.com/v1/text:synthesize?key=${apiKey}`;
+                const response = await fetch(endpoint, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        input: { text: promptedText },
+                        voice: {
+                            languageCode: 'ko-KR',
+                            name: voiceModel
+                        },
+                        audioConfig: {
+                            audioEncoding: 'MP3'
+                        }
+                    })
+                });
+
+                if (!response.ok) {
+                    const errData = await response.json().catch(() => ({}));
+                    const errorDetails = errData.error ? errData.error.message : response.statusText;
+                    
+                    // 만약 특정 gemini 모델명이 아직 미출시/권한 필요일 경우 Standard 보이스로 부드럽게 Fallback
+                    if (voiceModel.includes('gemini') || voiceModel.includes('Journey')) {
+                        console.warn(`지정 모델(${voiceModel}) 오류 -> Standard-A로 자동 대체 호출`);
+                        const fallbackResp = await fetch(endpoint, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                input: { text: cleanText },
+                                voice: { languageCode: 'ko-KR', name: 'ko-KR-Standard-A', ssmlGender: 'FEMALE' },
+                                audioConfig: { audioEncoding: 'MP3' }
+                            })
+                        });
+                        if (fallbackResp.ok) {
+                            const fbData = await fallbackResp.json();
+                            if (fbData.audioContent) {
+                                currentGeminiAudio = new Audio(`data:audio/mp3;base64,${fbData.audioContent}`);
+                                currentGeminiAudio.play();
+                                return;
+                            }
+                        }
+                    }
+                    alert(`Gemini-TTS 오류 (${response.status}):\n${errorDetails}\n\n우클릭을 눌러 모델명을 변경하거나 API 키 설정을 확인해주세요.`);
+                    return;
+                }
+
+                const data = await response.json();
+                if (data.audioContent) {
+                    currentGeminiAudio = new Audio(`data:audio/mp3;base64,${data.audioContent}`);
+                    currentGeminiAudio.play();
+                } else {
+                    alert("Gemini-TTS 음성 데이터를 수신하지 못했습니다.");
+                }
+            } catch (err) {
+                console.error("Gemini-TTS Error:", err);
+                alert(`Gemini-TTS 호출 실패:\n${err.message}`);
+            }
+        }
+
+        // 표제어 전용 Gemini-TTS 재생
+        function speakPronunciationGemini() {
+            if (!currentItem || !currentItem.pronunciation) return;
+            speakGeminiTTS(currentItem.pronunciation);
+        }
+
         /* --- [3번째 스피커: Microsoft Edge TTS (무료 및 SSML 지원, SunHi 보이스)] --- */
         let currentEdgeAudio = null;
 
-        // 방언 발음 기호를 Microsoft Edge/Azure 표준 SSML로 변환하는 함수 (강세 없을 때는 원래 기본 피치, 강세는 +7st ~ +8st)
+        // 방언 발음 기호를 Microsoft Edge/Azure 표준 SSML로 변환하는 함수 (일반화된 음절 규칙: 강세 음절 +8st, 기본 피치 유지)
         function convertDialectToEdgeSSML(rawText, voice = "ko-KR-SunHiNeural") {
             if (!rawText) return "";
             let text = rawText.trim();
@@ -1235,53 +1277,32 @@
 
                 let converted = "";
 
-                if (core.includes("'") || core.includes("′")) {
-                    if (core === '그′런' || core === "그'런") {
-                        converted = '그<prosody pitch="+7st">런</prosody>';
-                    } else {
-                        const m = core.match(/^(.*?)(['′])(.*)$/);
-                        if (m) {
-                            const before = m[1];
-                            const after = m[3];
+                // 한글 음절 단위로 강세/성조 기호(' 또는 ′)를 분석하여 +8st 부여
+                const syllableRegex = /([가-힣])(['′]?)/g;
+                let match;
+                let hasMatched = false;
 
-                            if (after.length >= 2 && after.startsWith('까아')) {
-                                converted = `${before}<prosody pitch="+8st" rate="-10%">까아</prosody><prosody pitch="-2st">${after.slice(2)}</prosody>`;
-                            } else if (after.length >= 2) {
-                                const highChar = after[0];
-                                const lowPart = after.slice(1);
-                                const rateAttr = (highChar === '찌' || highChar === '날') ? ' rate="-10%"' : '';
-                                converted = `${before}<prosody pitch="+8st"${rateAttr}>${highChar}</prosody><prosody pitch="-2st">${lowPart}</prosody>`;
-                            } else if (before.length === 1 && after.length >= 1) {
-                                const pitchVal = (before === '가') ? '+7st' : '+8st';
-                                converted = `<prosody pitch="${pitchVal}">${before}</prosody><prosody pitch="-2st">${after}</prosody>`;
-                            } else if (before.length >= 2 && after.length === 1) {
-                                const prePlain = before.slice(0, -1);
-                                const highChar = before.slice(-1);
-                                converted = `${prePlain}<prosody pitch="+8st">${highChar}</prosody><prosody pitch="-3st">${after}</prosody>`;
-                            } else {
-                                if (before.length > 0) {
-                                    converted = `<prosody pitch="+8st">${before}</prosody>${after ? `<prosody pitch="-2st">${after}</prosody>` : ''}`;
-                                } else {
-                                    converted = `<prosody pitch="+8st">${after}</prosody>`;
-                                }
-                            }
-                        } else {
-                            converted = core.replace(/['′]/g, '');
-                        }
+                while ((match = syllableRegex.exec(core)) !== null) {
+                    hasMatched = true;
+                    const char = match[1];
+                    const isAccented = (match[2] === "'" || match[2] === "′");
+                    if (isAccented) {
+                        converted += `<prosody pitch="+8st">${char}</prosody>`;
+                    } else {
+                        converted += char;
                     }
-                } else {
-                    converted = core;
                 }
 
-                if (core === '조갑′찌사' || core === "조갑'찌사") {
+                if (!hasMatched) {
+                    converted = core.replace(/['′]/g, '');
+                }
+
+                // 구두점 및 자연스러운 휴지(break) 처리
+                if (hasComma) {
                     converted += ', <break time="160ms"/>';
-                } else if (core === '가′머' || core === "가'머") {
-                    converted += ', <break time="200ms"/>';
-                } else if (core === '거' && words[i - 1] && words[i - 1].includes('빠징')) {
-                    converted += ', <break time="160ms"/>';
-                } else if (hasComma) {
-                    converted += ', <break time="160ms"/>';
-                } else if (hasDot || hasQuestion || (core.includes('가') && i === words.length - 1)) {
+                } else if (hasDot) {
+                    converted += '.';
+                } else if (hasQuestion || (core.endsWith('가') && i === words.length - 1)) {
                     converted += '?';
                 }
 
