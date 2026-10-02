@@ -492,7 +492,7 @@
                     </div>
                     <div class="speaker-btn speaker-btn-cloud" onclick="speakPronunciationCloud()"
                         oncontextmenu="event.preventDefault(); event.stopPropagation(); resetCloudApiKey();"
-                        title="2. Google AI Studio (경주 할머니 찰진 성조 & 강세 엔진 / 우클릭: API키 설정)">
+                        title="2. Google AI Studio Gemini 3.8 Flash (경주 할머니 찰진 성조 & 강세 엔진 / 우클릭: 설정)">
                         <svg viewBox="0 0 24 24">
                             <path
                                 d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" />
@@ -959,22 +959,22 @@
             return word ? word.replace(/(\d+)/g, '<sup>$1</sup>') : "";
         }
 
-        // 예문 내 [ ] 텍스트 추출 및 스피커 버튼 삽입 함수 (1.기본TTS, 2.AI Studio(할머니성조), 3.Edge(InJoon), 4.Google SSML(성조))
+        // 예문 내 [ ] 텍스트 추출 및 스피커 버튼 삽입 함수 (1.기본TTS, 2.AI Studio(3.8 Flash), 3.Edge(InJoon), 4.Google SSML(성조))
         function processDialectTTS(text) {
             if (!text) return "";
             return text.replace(/\[(.*?)\]/g, (match, p1) => {
                 const rawPron = p1.trim().replace(/'/g, "\\'");
-                return `<b style="color:var(--point)">${p1}</b><span class="speaker-btn" title="1. 기본 TTS (원래 발음 기호)" onclick="event.stopPropagation(); speakText('${rawPron}')"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg></span><span class="speaker-btn speaker-btn-cloud" title="2. Google AI Studio (경주 할머니 찰진 성조 & 강세 엔진 / 우클릭: API키 설정)" onclick="event.stopPropagation(); speakCloudTTS('${rawPron}')" oncontextmenu="event.preventDefault(); event.stopPropagation(); resetCloudApiKey();"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span><span class="speaker-btn speaker-btn-edge" title="3. Microsoft Edge TTS (InJoon 남성 음성 / SSML)" onclick="event.stopPropagation(); speakEdgeTTS('${rawPron}')"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span><span class="speaker-btn speaker-btn-gemini" title="4. Google Cloud SSML 사투리 TTS (성조 prosody pitch 제어 / 우클릭: 설정)" onclick="event.stopPropagation(); speakGeminiTTS('${rawPron}')" oncontextmenu="event.preventDefault(); event.stopPropagation(); setGeminiVoiceModel();"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span>`;
+                return `<b style="color:var(--point)">${p1}</b><span class="speaker-btn" title="1. 기본 TTS (원래 발음 기호)" onclick="event.stopPropagation(); speakText('${rawPron}')"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg></span><span class="speaker-btn speaker-btn-cloud" title="2. Google AI Studio Gemini 3.8 Flash (경주 할머니 찰진 성조 & 강세 엔진 / 우클릭: 설정)" onclick="event.stopPropagation(); speakCloudTTS('${rawPron}')" oncontextmenu="event.preventDefault(); event.stopPropagation(); resetCloudApiKey();"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span><span class="speaker-btn speaker-btn-edge" title="3. Microsoft Edge TTS (InJoon 남성 음성 / SSML)" onclick="event.stopPropagation(); speakEdgeTTS('${rawPron}')"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span><span class="speaker-btn speaker-btn-gemini" title="4. Google Cloud SSML 사투리 TTS (성조 prosody pitch 제어 / 우클릭: 설정)" onclick="event.stopPropagation(); speakGeminiTTS('${rawPron}')" oncontextmenu="event.preventDefault(); event.stopPropagation(); setGeminiVoiceModel();"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span>`;
             });
         }
 
-        // 관용구/속담 내 full text 렌더링 및 [ ] 발음 TTS 스피커 버튼 삽입 함수 (1.기본TTS, 2.AI Studio(할머니성조), 3.Edge(InJoon), 4.Google SSML(성조))
+        // 관용구/속담 내 full text 렌더링 및 [ ] 발음 TTS 스피커 버튼 삽입 함수 (1.기본TTS, 2.AI Studio(3.8 Flash), 3.Edge(InJoon), 4.Google SSML(성조))
         function processIdiomTTS(text) {
             if (!text) return "";
             let safeText = text.replace(/</g, "&lt;").replace(/>/g, "&gt;");
             return safeText.replace(/\[(.*?)\]/g, (match, p1) => {
                 const rawPron = p1.trim().replace(/'/g, "\\'");
-                return `<b style="color:var(--point)">[${p1}]</b><span class="speaker-btn" title="1. 기본 TTS (원래 발음 기호)" onclick="event.stopPropagation(); speakText('${rawPron}')"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg></span><span class="speaker-btn speaker-btn-cloud" title="2. Google AI Studio (경주 할머니 찰진 성조 & 강세 엔진 / 우클릭: API키 변경)" onclick="event.stopPropagation(); speakCloudTTS('${rawPron}')" oncontextmenu="event.preventDefault(); event.stopPropagation(); resetCloudApiKey();"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span><span class="speaker-btn speaker-btn-edge" title="3. Microsoft Edge TTS (InJoon 남성 음성 / SSML)" onclick="event.stopPropagation(); speakEdgeTTS('${rawPron}')"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span><span class="speaker-btn speaker-btn-gemini" title="4. Google Cloud SSML 사투리 TTS (성조 prosody pitch 제어 / 우클릭: 설정)" onclick="event.stopPropagation(); speakGeminiTTS('${rawPron}')" oncontextmenu="event.preventDefault(); event.stopPropagation(); setGeminiVoiceModel();"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span>`;
+                return `<b style="color:var(--point)">[${p1}]</b><span class="speaker-btn" title="1. 기본 TTS (원래 발음 기호)" onclick="event.stopPropagation(); speakText('${rawPron}')"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg></span><span class="speaker-btn speaker-btn-cloud" title="2. Google AI Studio Gemini 3.8 Flash (경주 할머니 찰진 성조 & 강세 엔진 / 우클릭: 설정)" onclick="event.stopPropagation(); speakCloudTTS('${rawPron}')" oncontextmenu="event.preventDefault(); event.stopPropagation(); resetCloudApiKey();"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span><span class="speaker-btn speaker-btn-edge" title="3. Microsoft Edge TTS (InJoon 남성 음성 / SSML)" onclick="event.stopPropagation(); speakEdgeTTS('${rawPron}')"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span><span class="speaker-btn speaker-btn-gemini" title="4. Google Cloud SSML 사투리 TTS (성조 prosody pitch 제어 / 우클릭: 설정)" onclick="event.stopPropagation(); speakGeminiTTS('${rawPron}')" oncontextmenu="event.preventDefault(); event.stopPropagation(); setGeminiVoiceModel();"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span>`;
             });
         }
         /* --- [5. TTS 음성 재생 기능] --- */
@@ -1026,20 +1026,25 @@
             return new Blob([wavBuffer], { type: 'audio/wav' });
         }
 
-        // Google AI Studio API 키 수동 변경/재설정 함수 (2번 버튼 우클릭 시)
+        // Google AI Studio API 키 및 모델 설정 함수 (2번 버튼 우클릭 시)
         function resetCloudApiKey() {
             const oldKey = localStorage.getItem('gemini_ai_studio_key') || localStorage.getItem('gcloud_tts_api_key') || "";
             const newKey = prompt("Google AI Studio (Gemini) API Key를 입력해주세요:\n(현재 키를 변경하거나 다시 입력할 수 있습니다. 비워두고 확인을 누르면 삭제됩니다)", oldKey);
-            if (newKey === null) return null;
-            if (newKey.trim() === "") {
-                localStorage.removeItem('gemini_ai_studio_key');
-                alert("Google AI Studio API 키가 삭제되었습니다.\n다음에 2번 스피커를 누르면 새로 입력창이 뜹니다.");
-                return "";
-            } else {
-                localStorage.setItem('gemini_ai_studio_key', newKey.trim());
-                alert("새로운 Google AI Studio API 키가 저장되었습니다.");
-                return newKey.trim();
+            if (newKey !== null) {
+                if (newKey.trim() === "") {
+                    localStorage.removeItem('gemini_ai_studio_key');
+                    alert("Google AI Studio API 키가 삭제되었습니다.\n다음에 2번 스피커를 누르면 새로 입력창이 뜹니다.");
+                } else {
+                    localStorage.setItem('gemini_ai_studio_key', newKey.trim());
+                }
             }
+
+            const currentModel = localStorage.getItem('gemini_ai_model') || 'gemini-3.8-flash';
+            const newModel = prompt("Google AI Studio 모델명을 입력해주세요:\n(예: gemini-3.8-flash, gemini-3.8-flash-tts 등)", currentModel);
+            if (newModel && newModel.trim()) {
+                localStorage.setItem('gemini_ai_model', newModel.trim());
+            }
+            alert(`Google AI Studio 설정이 저장되었습니다.\n• 모델: ${localStorage.getItem('gemini_ai_model') || currentModel}`);
         }
 
         // 2번: Google AI Studio 기반 경상도 사투리 찰진 강세 & 성조 엔진 (경주 할머니 음성)
@@ -1087,43 +1092,62 @@
                 window.speechSynthesis.cancel();
             }
 
-            // 4. Google AI Studio Gemini 2.0 Flash Audio 생성 호출
+            // 4. Google AI Studio Gemini 3.8 Flash Audio 생성 호출
+            const modelName = localStorage.getItem('gemini_ai_model') || 'gemini-3.8-flash';
+
             try {
-                const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+                const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`;
                 const systemPrompt = `너는 경상북도 경주 토박이 70대 할머니야. '경상도 사투리 찰진 강세 & 성조 엔진'으로서 억세고 구수한 경주 특유의 억양과 성조를 그대로 살려 말해야 해.
 [발음 및 강세 규칙]:
 1. 입력된 텍스트에 작은따옴표(')나 프라임(′)이 붙은 음절은 경주 방언 특유의 높은 성조(고음)와 강세를 강하고 찰지게 발음해라.
 2. 강세 기호가 없는 음절은 평조(기본음) 또는 낮게 발음해라. 같은 경상도라도 앞뒤 강세 위치가 다르면 의미와 지역색이 완전히 달라지므로 기호가 붙은 음절 위치를 정확하게 살려라.
 3. 다른 어떤 설명이나 인사말 등 일체의 사족 없이 오직 주어진 단어의 찰진 사투리 발음 음성만을 단 한 번 출력해라.`;
 
-                const response = await fetch(endpoint, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        systemInstruction: {
-                            parts: [{ text: systemPrompt }]
-                        },
-                        contents: [{
-                            parts: [{ text: `다음 단어의 경주 사투리 발음만 말해줘: ${dialectText}` }]
-                        }],
-                        generationConfig: {
-                            responseModalities: ["AUDIO"],
-                            speechConfig: {
-                                voiceConfig: {
-                                    prebuiltVoiceConfig: {
-                                        voiceName: "Aoede" // 자연스러운 한국어 여성 보이스
-                                    }
+                const requestBody = {
+                    systemInstruction: {
+                        parts: [{ text: systemPrompt }]
+                    },
+                    contents: [{
+                        parts: [{ text: `다음 단어의 경주 사투리 발음만 말해줘: ${dialectText}` }]
+                    }],
+                    generationConfig: {
+                        responseModalities: ["AUDIO"],
+                        speechConfig: {
+                            voiceConfig: {
+                                prebuiltVoiceConfig: {
+                                    voiceName: "Aoede" // 자연스러운 한국어 여성 보이스
                                 }
                             }
                         }
-                    })
+                    }
+                };
+
+                let response = await fetch(endpoint, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(requestBody)
                 });
+
+                // 만약 지정 모델명에 404가 발생하면 gemini-3.8-flash-tts 또는 gemini-2.0-flash 로 대체 시도
+                if (!response.ok && response.status === 404 && modelName === 'gemini-3.8-flash') {
+                    console.warn("gemini-3.8-flash 404 -> gemini-3.8-flash-tts 로 재시도");
+                    const altEndpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash-tts:generateContent?key=${apiKey}`;
+                    const altResp = await fetch(altEndpoint, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(requestBody)
+                    });
+                    if (altResp.ok) {
+                        response = altResp;
+                        localStorage.setItem('gemini_ai_model', 'gemini-3.8-flash-tts');
+                    }
+                }
 
                 if (!response.ok) {
                     const errData = await response.json().catch(() => ({}));
                     const errorDetails = errData.error ? errData.error.message : response.statusText;
                     
-                    const changeKey = confirm(`Google AI Studio 호출 오류 (${response.status}):\n${errorDetails}\n\nAPI 키를 변경하거나 다시 입력하시겠습니까?`);
+                    const changeKey = confirm(`Google AI Studio (${modelName}) 호출 오류 (${response.status}):\n${errorDetails}\n\nAPI 키를 변경하거나 다시 입력하시겠습니까? (우클릭을 누르면 모델명도 변경 가능합니다)`);
                     if (changeKey) {
                         localStorage.removeItem('gemini_ai_studio_key');
                         const freshKey = prompt("새로운 Google AI Studio API Key를 입력해주세요:");
