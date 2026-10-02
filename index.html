@@ -1092,79 +1092,80 @@
                 window.speechSynthesis.cancel();
             }
 
-            // 4. Google AI Studio Gemini 3.8 Flash Audio 생성 호출
-            const modelName = localStorage.getItem('gemini_ai_model') || 'gemini-3.8-flash';
+            // 4. Google AI Studio Gemini Audio 생성 호출 (지정 모델 및 자동 2.0 fallback 지원)
+            let modelName = localStorage.getItem('gemini_ai_model') || 'gemini-3.8-flash';
 
-            try {
-                const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`;
-                const systemPrompt = `너는 경상북도 경주 토박이 70대 할머니야. '경상도 사투리 찰진 강세 & 성조 엔진'으로서 억세고 구수한 경주 특유의 억양과 성조를 그대로 살려 말해야 해.
+            const systemInstructionText = `너는 경상북도 경주 토박이 70대 할머니야. '경상도 사투리 찰진 강세 & 성조 엔진'으로서 억세고 구수한 경주 특유의 억양과 성조를 그대로 살려 말해야 해.
 [발음 및 강세 규칙]:
 1. 입력된 텍스트에 작은따옴표(')나 프라임(′)이 붙은 음절은 경주 방언 특유의 높은 성조(고음)와 강세를 강하고 찰지게 발음해라.
 2. 강세 기호가 없는 음절은 평조(기본음) 또는 낮게 발음해라. 같은 경상도라도 앞뒤 강세 위치가 다르면 의미와 지역색이 완전히 달라지므로 기호가 붙은 음절 위치를 정확하게 살려라.
-3. 다른 어떤 설명이나 인사말 등 일체의 사족 없이 오직 주어진 단어의 찰진 사투리 발음 음성만을 단 한 번 출력해라.`;
+3. 다른 설명, 인사말, 해설 등 일체의 사족 없이 오직 주어진 단어의 찰진 사투리 발음 음성만을 단 한 번 소리내어 말해라.`;
 
-                const requestBody = {
-                    systemInstruction: {
-                        parts: [{ text: systemPrompt }]
-                    },
-                    contents: [{
-                        parts: [{ text: `다음 단어의 경주 사투리 발음만 말해줘: ${dialectText}` }]
-                    }],
-                    generationConfig: {
-                        responseModalities: ["AUDIO"],
-                        speechConfig: {
-                            voiceConfig: {
-                                prebuiltVoiceConfig: {
-                                    voiceName: "Aoede" // 자연스러운 한국어 여성 보이스
-                                }
+            const requestBody = {
+                systemInstruction: {
+                    parts: [{ text: systemInstructionText }]
+                },
+                contents: [{
+                    parts: [{ text: `다음 단어의 경주 사투리 발음만 소리내어 말해줘: ${dialectText}` }]
+                }],
+                generationConfig: {
+                    responseModalities: ["AUDIO"],
+                    speechConfig: {
+                        voiceConfig: {
+                            prebuiltVoiceConfig: {
+                                voiceName: "Aoede" // 구수하고 자연스러운 여성 보이스
                             }
                         }
                     }
-                };
+                }
+            };
 
+            try {
+                let endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`;
                 let response = await fetch(endpoint, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(requestBody)
                 });
 
-                // 만약 지정 모델명에 404가 발생하면 gemini-3.8-flash-tts 또는 gemini-2.0-flash 로 대체 시도
-                if (!response.ok && response.status === 404 && modelName === 'gemini-3.8-flash') {
-                    console.warn("gemini-3.8-flash 404 -> gemini-3.8-flash-tts 로 재시도");
-                    const altEndpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash-tts:generateContent?key=${apiKey}`;
-                    const altResp = await fetch(altEndpoint, {
+                // 만약 지정 모델명(3.8-flash)이 없거나 404면, 현재 공식 오디오 모델인 gemini-2.0-flash 로 자동 전환
+                if (!response.ok && (response.status === 404 || response.status === 400)) {
+                    console.warn(`모델(${modelName}) 실패 (${response.status}) -> gemini-2.0-flash 로 자동 전환 재시도`);
+                    endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+                    response = await fetch(endpoint, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(requestBody)
                     });
-                    if (altResp.ok) {
-                        response = altResp;
-                        localStorage.setItem('gemini_ai_model', 'gemini-3.8-flash-tts');
-                    }
                 }
 
                 if (!response.ok) {
                     const errData = await response.json().catch(() => ({}));
                     const errorDetails = errData.error ? errData.error.message : response.statusText;
                     
-                    const changeKey = confirm(`Google AI Studio (${modelName}) 호출 오류 (${response.status}):\n${errorDetails}\n\nAPI 키를 변경하거나 다시 입력하시겠습니까? (우클릭을 누르면 모델명도 변경 가능합니다)`);
+                    const changeKey = confirm(`Google AI Studio 호출 오류 (${response.status}):\n${errorDetails}\n\nAPI 키를 변경하거나 다시 입력하시겠습니까? (우클릭을 누르면 설정 변경 가능)`);
                     if (changeKey) {
                         localStorage.removeItem('gemini_ai_studio_key');
                         const freshKey = prompt("새로운 Google AI Studio API Key를 입력해주세요:");
                         if (freshKey && freshKey.trim()) {
                             localStorage.setItem('gemini_ai_studio_key', freshKey.trim());
-                            speakCloudTTS(rawText); // 새로운 키로 즉시 재시도
+                            speakCloudTTS(rawText);
                         }
                     }
                     return;
                 }
 
                 const data = await response.json();
-                const part = data.candidates?.[0]?.content?.parts?.[0];
+                console.log("Google AI Studio Response Data:", data);
+
+                const candidate = data.candidates?.[0];
+                const parts = candidate?.content?.parts || [];
+                // parts 중에서 inlineData를 가진 오디오 파트 탐색
+                const audioPart = parts.find(p => p.inlineData && p.inlineData.data);
                 
-                if (part && part.inlineData) {
-                    const mimeType = part.inlineData.mimeType || 'audio/wav';
-                    const base64Audio = part.inlineData.data;
+                if (audioPart) {
+                    const mimeType = audioPart.inlineData.mimeType || 'audio/wav';
+                    const base64Audio = audioPart.inlineData.data;
 
                     if (mimeType.includes('pcm')) {
                         // Raw PCM 24kHz -> 표준 WAV Blob 변환 후 재생
@@ -1176,7 +1177,22 @@
                     }
                     currentCloudAudio.play();
                 } else {
-                    alert("Google AI Studio에서 오디오 데이터를 수신하지 못했습니다.");
+                    const textPart = parts.find(p => p.text);
+                    if (textPart && textPart.text) {
+                        console.log("모델이 경상도 발음 텍스트로 응답:", textPart.text);
+                        // 모델이 변환한 사투리 텍스트를 고음질 발화로 즉시 재생
+                        if (window.speechSynthesis) {
+                            const u = new SpeechSynthesisUtterance(textPart.text);
+                            u.lang = 'ko-KR';
+                            u.rate = 0.88;
+                            const voices = window.speechSynthesis.getVoices();
+                            const femaleVoice = voices.find(v => v.lang.startsWith('ko') && (v.name.includes('SunHi') || v.name.includes('Female') || v.name.includes('여성') || v.name.includes('SoonBok')));
+                            if (femaleVoice) u.voice = femaleVoice;
+                            window.speechSynthesis.speak(u);
+                        }
+                    } else {
+                        alert("Google AI Studio에서 음성 데이터를 수신하지 못했습니다.\n콘솔 로그를 확인해주세요.");
+                    }
                 }
             } catch (err) {
                 console.error("AI Studio Error:", err);
@@ -1193,10 +1209,11 @@
         /* --- [4번째 스피커: Google Cloud SSML 기반 경상도 사투리 성조/고저 악센트 제어 TTS] --- */
         let currentGeminiAudio = null;
 
-        // 경상도 방언 성조(고저 악센트) 및 억양을 Google Cloud 표준 SSML로 변환하는 함수
+        // 경상도 방언 성조(고저 악센트) 및 억양을 Google Cloud 표준 SSML로 변환하는 함수 (자연스럽게 이어지도록 +4st 스무딩 적용)
         function convertDialectToGoogleSSML(rawText, highPitch = null) {
             if (!rawText) return "";
-            const pitchVal = highPitch || localStorage.getItem('google_ssml_pitch') || '+8st';
+            // 음 갈라짐 방지를 위해 자연스러운 경상도 성조 피치 기본값: +4st (사용자 조절 가능)
+            const pitchVal = highPitch || localStorage.getItem('google_ssml_pitch') || '+4st';
             
             let text = rawText.trim();
             if (text.startsWith('[') && text.endsWith(']')) {
@@ -1225,7 +1242,7 @@
                 core = core.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
                 let converted = "";
-                // 한글 1음절 단위로 강세/성조 기호(' 또는 ′)를 분석하여 해당 음절만 pitch 속성 부여
+                // 한글 1음절 단위로 강세/성조 기호(' 또는 ′)를 분석하여 해당 음절만 부드러운 pitch 부여
                 const syllableRegex = /([가-힣])(['′]?)|([^가-힣'′]+)/g;
                 let match;
                 let hasMatched = false;
@@ -1236,14 +1253,12 @@
                         const char = match[1];
                         const isAccented = (match[2] === "'" || match[2] === "′");
                         if (isAccented) {
-                            // 경상도 고저 악센트: 성조/강세 기호가 붙은 음절만 고음(+8st) 태그 부여
+                            // 부드럽고 매끄러운 성조 고음(+4st) 적용하여 음 갈라짐(Voice crack) 방지
                             converted += `<prosody pitch="${pitchVal}">${char}</prosody>`;
                         } else {
-                            // 평조(일반 음절)는 기본 피치 유지
                             converted += char;
                         }
                     } else if (match[3]) {
-                        // 한글 이외의 문자(알파벳, 기호 등)는 그대로 유지
                         converted += match[3];
                     }
                 }
@@ -1266,8 +1281,8 @@
                 ssmlParts.push(converted);
             }
 
-            // Google Cloud TTS 표준 SSML 구조 (<voice> 태그 없이 <speak> 루트)
-            return `<speak><prosody rate="96%">${ssmlParts.join(' ')}</prosody></speak>`;
+            // Google Cloud TTS 표준 SSML 구조 (자연스러운 발화 속도 98%)
+            return `<speak><prosody rate="98%">${ssmlParts.join(' ')}</prosody></speak>`;
         }
 
         // Google Cloud SSML TTS 설정 (성조 피치 및 보이스 모델명 변경 - 우클릭 시)
@@ -1276,8 +1291,8 @@
         }
 
         function setGeminiSettings() {
-            const currentPitch = localStorage.getItem('google_ssml_pitch') || '+8st';
-            const newPitch = prompt("경상도 성조 강세 음높이(pitch)를 입력해주세요:\n(예: +8st, +6st, +7st, +9st, +10st 등)", currentPitch);
+            const currentPitch = localStorage.getItem('google_ssml_pitch') || '+4st';
+            const newPitch = prompt("경상도 성조 강세 음높이(pitch)를 입력해주세요:\n(자연스러운 추천: +3.5st, +4st, +5st / 너무 높으면 음이 갈라질 수 있습니다)", currentPitch);
             if (newPitch !== null && newPitch.trim()) {
                 localStorage.setItem('google_ssml_pitch', newPitch.trim());
             }
@@ -1424,7 +1439,7 @@
                     const char = match[1];
                     const isAccented = (match[2] === "'" || match[2] === "′");
                     if (isAccented) {
-                        converted += `<prosody pitch="+8st">${char}</prosody>`;
+                        converted += `<prosody pitch="+10st">${char}</prosody>`;
                     } else {
                         converted += char;
                     }
@@ -1471,7 +1486,28 @@
             }
 
             const ssml = convertDialectToEdgeSSML(rawText, "ko-KR-InJoonNeural");
-            console.log("Edge TTS SSML (InJoon 남성 음성 / +8st 강세):\n", ssml);
+            console.log("Edge TTS SSML (InJoon 남성 음성 / +10st 강세):\n", ssml);
+
+            // 0. 로컬 우회 프록시 서버(edge_server.py, 포트 5050) 우선 시도
+            try {
+                const proxyResp = await fetch('http://127.0.0.1:5050/tts', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ ssml: ssml, voice: 'ko-KR-InJoonNeural' })
+                });
+                if (proxyResp.ok) {
+                    const audioBlob = await proxyResp.blob();
+                    if (audioBlob.size > 0) {
+                        const audioUrl = URL.createObjectURL(audioBlob);
+                        currentEdgeAudio = new Audio(audioUrl);
+                        currentEdgeAudio.play();
+                        console.log("로컬 Edge TTS 프록시로 재생 성공!");
+                        return;
+                    }
+                }
+            } catch (proxyErr) {
+                console.log("로컬 Edge TTS 프록시 미연결 -> 직접 연결 또는 대체 음성 시도:", proxyErr.message);
+            }
 
             // Edge Read Aloud WebSocket 연결 시도
             function makeUuid() {
