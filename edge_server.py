@@ -1,10 +1,11 @@
 import asyncio
 from http.server import HTTPServer, BaseHTTPRequestHandler
 import json
+import os
 import edge_tts
 import io
 
-PORT = 5050
+PORT = int(os.environ.get('PORT', 5050))
 
 class EdgeTTSHandler(BaseHTTPRequestHandler):
     def do_OPTIONS(self):
@@ -14,6 +15,14 @@ class EdgeTTSHandler(BaseHTTPRequestHandler):
         self.send_header('Access-Control-Allow-Methods', 'POST, GET, OPTIONS')
         self.send_header('Access-Control-Allow-Headers', 'Content-Type')
         self.end_headers()
+
+    def do_GET(self):
+        # 헬스 체크 및 서버 상태 확인용
+        self.send_response(200)
+        self.send_header('Content-Type', 'text/plain; charset=utf-8')
+        self.send_header('Access-Control-Allow-Origin', '*')
+        self.end_headers()
+        self.wfile.write("Gyeongju Dialect Edge TTS Proxy Server is Running!".encode('utf-8'))
 
     def do_POST(self):
         content_length = int(self.headers.get('Content-Length', 0))
@@ -63,6 +72,6 @@ class EdgeTTSHandler(BaseHTTPRequestHandler):
         pass
 
 if __name__ == '__main__':
-    server = HTTPServer(('127.0.0.1', PORT), EdgeTTSHandler)
-    print(f"Edge TTS Proxy Server running on http://127.0.0.1:{PORT}")
+    server = HTTPServer(('0.0.0.0', PORT), EdgeTTSHandler)
+    print(f"Edge TTS Proxy Server running on port {PORT}")
     server.serve_forever()

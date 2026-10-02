@@ -499,7 +499,8 @@
                         </svg>
                     </div>
                     <div class="speaker-btn speaker-btn-edge" onclick="speakPronunciationEdge()"
-                        title="3. Microsoft Edge TTS (InJoon 남성 음성 / SSML)">
+                        oncontextmenu="event.preventDefault(); event.stopPropagation(); setEdgeProxyUrl();"
+                        title="3. Microsoft Edge TTS (InJoon 남성 음성 / SSML / 우클릭: 프록시 서버 설정)">
                         <svg viewBox="0 0 24 24">
                             <path
                                 d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" />
@@ -964,7 +965,7 @@
             if (!text) return "";
             return text.replace(/\[(.*?)\]/g, (match, p1) => {
                 const rawPron = p1.trim().replace(/'/g, "\\'");
-                return `<b style="color:var(--point)">${p1}</b><span class="speaker-btn" title="1. 기본 TTS (원래 발음 기호)" onclick="event.stopPropagation(); speakText('${rawPron}')"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg></span><span class="speaker-btn speaker-btn-cloud" title="2. Google AI Studio Gemini 3.8 Flash (경주 할머니 찰진 성조 & 강세 엔진 / 우클릭: 설정)" onclick="event.stopPropagation(); speakCloudTTS('${rawPron}')" oncontextmenu="event.preventDefault(); event.stopPropagation(); resetCloudApiKey();"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span><span class="speaker-btn speaker-btn-edge" title="3. Microsoft Edge TTS (InJoon 남성 음성 / SSML)" onclick="event.stopPropagation(); speakEdgeTTS('${rawPron}')"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span><span class="speaker-btn speaker-btn-gemini" title="4. Google Cloud SSML 사투리 TTS (성조 prosody pitch 제어 / 우클릭: 설정)" onclick="event.stopPropagation(); speakGeminiTTS('${rawPron}')" oncontextmenu="event.preventDefault(); event.stopPropagation(); setGeminiVoiceModel();"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span>`;
+                return `<b style="color:var(--point)">${p1}</b><span class="speaker-btn" title="1. 기본 TTS (원래 발음 기호)" onclick="event.stopPropagation(); speakText('${rawPron}')"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg></span><span class="speaker-btn speaker-btn-cloud" title="2. Google AI Studio Gemini 3.8 Flash (경주 할머니 찰진 성조 & 강세 엔진 / 우클릭: 설정)" onclick="event.stopPropagation(); speakCloudTTS('${rawPron}')" oncontextmenu="event.preventDefault(); event.stopPropagation(); resetCloudApiKey();"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span><span class="speaker-btn speaker-btn-edge" title="3. Microsoft Edge TTS (InJoon 남성 음성 / SSML / 우클릭: 프록시 설정)" onclick="event.stopPropagation(); speakEdgeTTS('${rawPron}')" oncontextmenu="event.preventDefault(); event.stopPropagation(); setEdgeProxyUrl();"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span><span class="speaker-btn speaker-btn-gemini" title="4. Google Cloud SSML 사투리 TTS (성조 prosody pitch 제어 / 우클릭: 설정)" onclick="event.stopPropagation(); speakGeminiTTS('${rawPron}')" oncontextmenu="event.preventDefault(); event.stopPropagation(); setGeminiVoiceModel();"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span>`;
             });
         }
 
@@ -974,7 +975,7 @@
             let safeText = text.replace(/</g, "&lt;").replace(/>/g, "&gt;");
             return safeText.replace(/\[(.*?)\]/g, (match, p1) => {
                 const rawPron = p1.trim().replace(/'/g, "\\'");
-                return `<b style="color:var(--point)">[${p1}]</b><span class="speaker-btn" title="1. 기본 TTS (원래 발음 기호)" onclick="event.stopPropagation(); speakText('${rawPron}')"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg></span><span class="speaker-btn speaker-btn-cloud" title="2. Google AI Studio Gemini 3.8 Flash (경주 할머니 찰진 성조 & 강세 엔진 / 우클릭: 설정)" onclick="event.stopPropagation(); speakCloudTTS('${rawPron}')" oncontextmenu="event.preventDefault(); event.stopPropagation(); resetCloudApiKey();"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span><span class="speaker-btn speaker-btn-edge" title="3. Microsoft Edge TTS (InJoon 남성 음성 / SSML)" onclick="event.stopPropagation(); speakEdgeTTS('${rawPron}')"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span><span class="speaker-btn speaker-btn-gemini" title="4. Google Cloud SSML 사투리 TTS (성조 prosody pitch 제어 / 우클릭: 설정)" onclick="event.stopPropagation(); speakGeminiTTS('${rawPron}')" oncontextmenu="event.preventDefault(); event.stopPropagation(); setGeminiVoiceModel();"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span>`;
+                return `<b style="color:var(--point)">[${p1}]</b><span class="speaker-btn" title="1. 기본 TTS (원래 발음 기호)" onclick="event.stopPropagation(); speakText('${rawPron}')"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg></span><span class="speaker-btn speaker-btn-cloud" title="2. Google AI Studio Gemini 3.8 Flash (경주 할머니 찰진 성조 & 강세 엔진 / 우클릭: 설정)" onclick="event.stopPropagation(); speakCloudTTS('${rawPron}')" oncontextmenu="event.preventDefault(); event.stopPropagation(); resetCloudApiKey();"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span><span class="speaker-btn speaker-btn-edge" title="3. Microsoft Edge TTS (InJoon 남성 음성 / SSML / 우클릭: 프록시 설정)" onclick="event.stopPropagation(); speakEdgeTTS('${rawPron}')" oncontextmenu="event.preventDefault(); event.stopPropagation(); setEdgeProxyUrl();"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span><span class="speaker-btn speaker-btn-gemini" title="4. Google Cloud SSML 사투리 TTS (성조 prosody pitch 제어 / 우클릭: 설정)" onclick="event.stopPropagation(); speakGeminiTTS('${rawPron}')" oncontextmenu="event.preventDefault(); event.stopPropagation(); setGeminiVoiceModel();"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span>`;
             });
         }
         /* --- [5. TTS 음성 재생 기능] --- */
@@ -1468,7 +1469,34 @@
 </speak>`;
         }
 
-        // Microsoft Edge 무료 TTS WebSocket 호출 및 재생 함수 (InJoon 남성 음성, 부드러운 연결 재생)
+        // Edge TTS 프록시 서버 URL 설정 (3번 버튼 우클릭 시)
+        function setEdgeProxyUrl() {
+            const currentUrl = localStorage.getItem('edge_proxy_url') || "";
+            const isLocal = window.location.hostname === 'localhost' || 
+                            window.location.hostname === '127.0.0.1' || 
+                            window.location.protocol === 'file:';
+            const defaultPrompt = currentUrl || (isLocal ? 'http://127.0.0.1:5050/tts' : 'https://your-service.onrender.com/tts');
+            
+            const newUrl = prompt(
+                "3번 Microsoft Edge TTS 프록시 서버 주소를 입력해주세요:\n\n" +
+                "• 로컬 실행 시 기본값: http://127.0.0.1:5050/tts\n" +
+                "• GitHub Pages 등 웹 배포 시: Render 무료 배포 주소 (예: https://xxx.onrender.com/tts)\n" +
+                "(비워두고 확인을 누르면 기본 설정으로 초기화됩니다)",
+                defaultPrompt
+            );
+
+            if (newUrl !== null) {
+                if (newUrl.trim() === "") {
+                    localStorage.removeItem('edge_proxy_url');
+                    alert("Edge 프록시 URL이 기본값으로 초기화되었습니다.");
+                } else {
+                    localStorage.setItem('edge_proxy_url', newUrl.trim());
+                    alert(`Edge 프록시 URL이 설정되었습니다:\n${newUrl.trim()}`);
+                }
+            }
+        }
+
+        // Microsoft Edge 무료 TTS 호출 및 재생 함수 (InJoon 남성 음성, 로컬 및 클라우드 프록시 자동 지원)
         async function speakEdgeTTS(rawText) {
             if (!rawText) return;
 
@@ -1488,25 +1516,42 @@
             const ssml = convertDialectToEdgeSSML(rawText, "ko-KR-InJoonNeural");
             console.log("Edge TTS SSML (InJoon 남성 음성 / +10st 강세):\n", ssml);
 
-            // 0. 로컬 우회 프록시 서버(edge_server.py, 포트 5050) 우선 시도
-            try {
-                const proxyResp = await fetch('http://127.0.0.1:5050/tts', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ ssml: ssml, voice: 'ko-KR-InJoonNeural' })
-                });
-                if (proxyResp.ok) {
-                    const audioBlob = await proxyResp.blob();
-                    if (audioBlob.size > 0) {
-                        const audioUrl = URL.createObjectURL(audioBlob);
-                        currentEdgeAudio = new Audio(audioUrl);
-                        currentEdgeAudio.play();
-                        console.log("로컬 Edge TTS 프록시로 재생 성공!");
-                        return;
+            let proxyErrorMsg = null;
+
+            // 0. 프록시 서버 URL 결정 (로컬이면 127.0.0.1:5050 우선, 배포 환경이면 localStorage 또는 Render URL)
+            let proxyUrl = localStorage.getItem('edge_proxy_url');
+            if (!proxyUrl || !proxyUrl.trim()) {
+                const isLocal = window.location.hostname === 'localhost' || 
+                                window.location.hostname === '127.0.0.1' || 
+                                window.location.protocol === 'file:';
+                proxyUrl = isLocal ? 'http://127.0.0.1:5050/tts' : '';
+            }
+
+            if (proxyUrl) {
+                try {
+                    const proxyResp = await fetch(proxyUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ ssml: ssml, voice: 'ko-KR-InJoonNeural' })
+                    });
+                    if (proxyResp.ok) {
+                        const audioBlob = await proxyResp.blob();
+                        if (audioBlob.size > 0) {
+                            const audioUrl = URL.createObjectURL(audioBlob);
+                            currentEdgeAudio = new Audio(audioUrl);
+                            currentEdgeAudio.play();
+                            console.log("Edge TTS 프록시로 재생 성공!");
+                            return;
+                        }
+                    } else {
+                        proxyErrorMsg = `프록시 서버 응답 오류 (HTTP ${proxyResp.status})`;
                     }
+                } catch (proxyErr) {
+                    proxyErrorMsg = `프록시 서버 연결 실패 (${proxyErr.message})`;
+                    console.log("Edge TTS 프록시 미연결 -> 직접 WebSocket 시도:", proxyErr.message);
                 }
-            } catch (proxyErr) {
-                console.log("로컬 Edge TTS 프록시 미연결 -> 직접 연결 또는 대체 음성 시도:", proxyErr.message);
+            } else {
+                proxyErrorMsg = "웹 배포 환경 프록시 주소 미등록 (우클릭하여 Render 주소 등록 가능)";
             }
 
             // Edge Read Aloud WebSocket 연결 시도
@@ -1560,7 +1605,7 @@
 
                     ws.onerror = (e) => {
                         clearTimeout(timeout);
-                        reject(new Error("Edge TTS WebSocket 연결 차단/오류"));
+                        reject(new Error("Edge TTS WebSocket 직접 연결 차단 (CORS)"));
                     };
                 });
 
@@ -1574,25 +1619,8 @@
                     return;
                 }
             } catch (wsErr) {
-                console.warn("Edge WebSocket 오류 -> 브라우저 음성으로 부드럽게 대체:", wsErr.message);
-            }
-
-            // [Fallback]: 끊김 없이 한 호흡으로 자연스럽게 부드럽게 발화
-            if (window.speechSynthesis) {
-                let clean = rawText.trim();
-                if (clean.startsWith('[') && clean.endsWith(']')) clean = clean.slice(1, -1).trim();
-                while (/\[[^\]]*\]/.test(clean)) clean = clean.replace(/\[[^\]]*\]/g, '');
-                clean = clean.replace(/\{([^/>-]+)[/>-][^}]+\}/g, '$1').replace(/\//g, ', ');
-
-                const u = new SpeechSynthesisUtterance(clean);
-                u.lang = 'ko-KR';
-                u.rate = 0.85;
-
-                const voices = window.speechSynthesis.getVoices();
-                const maleVoice = voices.find(v => v.lang.startsWith('ko') && (v.name.includes('InJoon') || v.name.includes('Male') || v.name.includes('남성') || v.name.includes('Hyunsu')));
-                if (maleVoice) u.voice = maleVoice;
-
-                window.speechSynthesis.speak(u);
+                console.error("Edge TTS 실패:", wsErr.message);
+                alert(`[3번 Edge TTS 오류]\nMicrosoft Edge 음성을 생성하지 못했습니다.\n\n• 원인: ${wsErr.message}\n• 로컬 프록시 상태: ${proxyErrorMsg || '확인 필요'}\n\n※ 로컬 우회 서버(edge_server.py)가 5050 포트에서 실행 중인지 확인해주세요.`);
             }
         }
 
