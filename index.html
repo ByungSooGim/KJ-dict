@@ -1029,22 +1029,21 @@
 
         // Hugging Face Spaces 주소 및 모델 설정 함수 (2번 버튼 우클릭 시)
         function setHFSpaceUrl() {
-            const currentUrl = localStorage.getItem('hf_spaces_endpoint') || "";
-            const defaultPrompt = currentUrl || "username/gyeongsang-tts";
+            const currentUrl = localStorage.getItem('hf_spaces_endpoint') || "bsgim5/gyeongsang-dialect-tts";
+            const defaultPrompt = currentUrl;
             
             const newUrl = prompt(
                 "2번 경상도 AI 음성 복제 TTS (Hugging Face Spaces) 주소를 입력해주세요:\n\n" +
-                "• Space ID 예시: username/gyeongsang-tts\n" +
-                "• 직접 URL 예시: https://username-gyeongsang-tts.hf.space\n\n" +
-                "※ Colab에서 GPT-SoVITS / XTTS-v2 학습 후 배포한 Hugging Face Space를 무료로 연동합니다.\n" +
-                "(비워두고 확인을 누르면 설정이 초기화됩니다)",
+                "• 기본 Space ID: bsgim5/gyeongsang-dialect-tts\n" +
+                "• 직접 URL: https://bsgim5-gyeongsang-dialect-tts.hf.space\n\n" +
+                "(비워두고 확인을 누르면 기본값으로 초기화됩니다)",
                 defaultPrompt
             );
 
             if (newUrl !== null) {
                 if (newUrl.trim() === "") {
-                    localStorage.removeItem('hf_spaces_endpoint');
-                    alert("Hugging Face Spaces 주소가 초기화되었습니다.\n다음에 2번 스피커를 누르면 새로 입력창이 뜹니다.");
+                    localStorage.setItem('hf_spaces_endpoint', "bsgim5/gyeongsang-dialect-tts");
+                    alert("Hugging Face Spaces 주소가 기본값('bsgim5/gyeongsang-dialect-tts')으로 재설정되었습니다.");
                 } else {
                     localStorage.setItem('hf_spaces_endpoint', newUrl.trim());
                     alert(`Hugging Face Spaces 주소가 저장되었습니다:\n${newUrl.trim()}`);
@@ -1061,24 +1060,36 @@
         async function speakCloudTTS(rawText) {
             if (!rawText) return;
 
-            // 1. Hugging Face Spaces 주소 확인 (localStorage에 저장 또는 prompt 입력)
+            // 1. Hugging Face Spaces 주소 확인 (기본값: bsgim5/gyeongsang-dialect-tts)
             let spaceEndpoint = localStorage.getItem('hf_spaces_endpoint');
-            if (!spaceEndpoint || !spaceEndpoint.trim()) {
-                spaceEndpoint = prompt(
-                    "[2번: 경상도 AI 음성 복제 TTS (Hugging Face Spaces 연동)]\n\n" +
-                    "Hugging Face Spaces 주소(또는 Gradio URL)를 입력해주세요:\n" +
-                    "(예: your-username/gyeongsang-tts 또는 https://username-gyeongsang-tts.hf.space)\n\n" +
-                    "※ 아직 배포하지 않으셨다면 취소를 누르고, 프로젝트 폴더의 preprocess_dialect.py로 데이터셋을 추출해 Colab에서 학습을 진행하세요.",
-                    "username/gyeongsang-tts"
-                );
-                if (!spaceEndpoint || !spaceEndpoint.trim()) {
-                    return;
-                }
-                spaceEndpoint = spaceEndpoint.trim();
+            if (!spaceEndpoint || !spaceEndpoint.trim() || spaceEndpoint.includes('username/')) {
+                spaceEndpoint = "bsgim5/gyeongsang-dialect-tts";
                 localStorage.setItem('hf_spaces_endpoint', spaceEndpoint);
             }
 
-            // 2. 텍스트 정제하되, 원본 강세/성조 기호(' 또는 ′)는 100% 보존
+            // 2. 주소 정규화 (다양한 입력 형태 자동 지원)
+            let cleanEndpoint = spaceEndpoint.trim().replace(/\/+$/, '');
+            const hfSpaceMatch = cleanEndpoint.match(/huggingface\.co\/spaces\/([^/]+)\/([^/?#]+)/);
+            if (hfSpaceMatch) {
+                cleanEndpoint = `${hfSpaceMatch[1]}/${hfSpaceMatch[2]}`;
+            }
+
+            let baseHost = cleanEndpoint;
+            if (!baseHost.startsWith('http://') && !baseHost.startsWith('https://')) {
+                // username/space-name 형태인 경우 서브도메인 생성 (소문자 및 특수문자 정규화)
+                const parts = cleanEndpoint.split('/');
+                if (parts.length === 2) {
+                    const user = parts[0].toLowerCase().replace(/[^a-z0-9]/g, '');
+                    const space = parts[1].toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-');
+                    baseHost = `https://${user}-${space}.hf.space`;
+                } else {
+                    const cleanId = cleanEndpoint.replace(/[^a-zA-Z0-9]/g, '-').toLowerCase();
+                    baseHost = `https://${cleanId}.hf.space`;
+                }
+            }
+            baseHost = baseHost.replace(/\/+$/, '');
+
+            // 3. 텍스트 정제 (성조 및 억양 기호는 보존)
             let dialectText = rawText.trim();
             if (dialectText.startsWith('[') && dialectText.endsWith(']')) {
                 dialectText = dialectText.slice(1, -1).trim();
@@ -1088,50 +1099,60 @@
             }
             dialectText = dialectText.replace(/\{([^/>-]+)[/>-][^}]+\}/g, '$1');
             dialectText = dialectText.replace(/\//g, ', ').trim();
-            console.log("Hugging Face Spaces 전송 방언 텍스트:", dialectText);
+            console.log(`[HF Spaces TTS] 전송 텍스트: "${dialectText}", 주소: ${cleanEndpoint} (호스트: ${baseHost})`);
 
-            // 3. 기존 오디오 및 브라우저 발화 정지
+            // 4. 기존 오디오 정지
             if (currentHFAudio) { currentHFAudio.pause(); currentHFAudio = null; }
             if (currentCloudAudio) { currentCloudAudio.pause(); currentCloudAudio = null; }
             if (currentGeminiAudio) { currentGeminiAudio.pause(); currentGeminiAudio = null; }
             if (currentEdgeAudio) { currentEdgeAudio.pause(); currentEdgeAudio = null; }
             if (window.speechSynthesis) { window.speechSynthesis.cancel(); }
 
-            console.log(`Hugging Face Space (${spaceEndpoint})에 경상도 방언 합성 요청 중...`);
-
             try {
                 let audioUrl = null;
 
-                // 방법 1: @gradio/client 라이브러리 동적 로드 (Gradio Spaces 표준 연결)
+                // 방법 1: @gradio/client 연결 (Gradio 5 지원)
                 try {
                     const { Client } = await import("https://cdn.jsdelivr.net/npm/@gradio/client/dist/index.min.js");
-                    const app = await Client.connect(spaceEndpoint);
-                    const result = await app.predict("/predict", [ dialectText ]);
-                    if (result && result.data && result.data.length > 0) {
-                        const item = result.data[0];
-                        audioUrl = (typeof item === 'object' && item.url) ? item.url : (typeof item === 'string' ? item : null);
+                    console.log("[HF Spaces TTS] Client.connect 시도:", cleanEndpoint);
+                    const app = await Client.connect(cleanEndpoint);
+                    
+                    // Gradio 5/4의 엔드포인트 후보들 순차 시도 (/clone_dialect, /predict, fn_index 0)
+                    const endpoints = ["/clone_dialect", "/predict", 0];
+                    for (const ep of endpoints) {
+                        try {
+                            console.log(`[HF Spaces TTS] 엔드포인트(${ep}) 호출 중...`);
+                            const result = await app.predict(ep, [ dialectText ]);
+                            if (result && result.data && result.data.length > 0) {
+                                const item = result.data[0];
+                                let raw = (typeof item === 'object' && item !== null) ? (item.url || item.path) : (typeof item === 'string' ? item : null);
+                                if (raw) {
+                                    audioUrl = raw;
+                                    console.log(`[HF Spaces TTS] 엔드포인트(${ep}) 성공! 수신 URL:`, audioUrl);
+                                    break;
+                                }
+                            }
+                        } catch (epErr) {
+                            console.warn(`[HF Spaces TTS] 엔드포인트(${ep}) 실패:`, epErr.message);
+                        }
                     }
                 } catch (gradioErr) {
-                    console.warn("@gradio/client 모듈 연결 실패 또는 미지원, REST API fallback 시도:", gradioErr.message);
+                    console.warn("[HF Spaces TTS] @gradio/client 연결 실패 -> REST 직접 호출로 전환:", gradioErr.message);
                 }
 
-                // 방법 2: REST API 엔드포인트 직접 호출 Fallback
+                // 방법 2: REST API 직접 호출 (Gradio 5 SSE 및 기존 API 호환)
                 if (!audioUrl) {
-                    let baseHost = spaceEndpoint;
-                    if (!baseHost.startsWith('http://') && !baseHost.startsWith('https://')) {
-                        const cleanId = spaceEndpoint.replace(/^\/+|\/+$/g, '').replace('/', '-');
-                        baseHost = `https://${cleanId}.hf.space`;
-                    }
-                    baseHost = baseHost.replace(/\/+$/, '');
-
-                    const apiEndpoints = [
-                        `${baseHost}/api/predict`,
+                    const restEndpoints = [
+                        `${baseHost}/gradio_api/call/clone_dialect`,
                         `${baseHost}/gradio_api/call/predict`,
+                        `${baseHost}/api/clone_dialect`,
+                        `${baseHost}/api/predict`,
                         `${baseHost}/predict`
                     ];
 
-                    for (const ep of apiEndpoints) {
+                    for (const ep of restEndpoints) {
                         try {
+                            console.log("[HF Spaces TTS] REST 호출 시도:", ep);
                             const res = await fetch(ep, {
                                 method: 'POST',
                                 headers: { 'Content-Type': 'application/json' },
@@ -1139,29 +1160,53 @@
                             });
                             if (res.ok) {
                                 const respData = await res.json();
-                                if (respData.data && respData.data[0]) {
-                                    const item = respData.data[0];
-                                    audioUrl = (typeof item === 'object' && item.url) ? item.url : (typeof item === 'string' ? item : null);
-                                    if (audioUrl) break;
+                                // Gradio 5 SSE event_id 처리
+                                if (respData.event_id) {
+                                    const eventRes = await fetch(`${ep}/${respData.event_id}`);
+                                    const eventText = await eventRes.text();
+                                    const lines = eventText.split('\n');
+                                    for (const l of lines) {
+                                        if (l.startsWith('data:')) {
+                                            try {
+                                                const d = JSON.parse(l.slice(5).trim());
+                                                if (Array.isArray(d) && d[0]) {
+                                                    const it = d[0];
+                                                    audioUrl = (typeof it === 'object' && it !== null) ? (it.url || it.path) : it;
+                                                    if (audioUrl) break;
+                                                }
+                                            } catch (je) {}
+                                        }
+                                    }
+                                } else if (respData.data && respData.data[0]) {
+                                    const it = respData.data[0];
+                                    audioUrl = (typeof it === 'object' && it !== null) ? (it.url || it.path) : it;
                                 }
+                                if (audioUrl) break;
                             }
-                        } catch (e) {
-                            // 다음 엔드포인트 시도
+                        } catch (restErr) {
+                            // 다음 엔드포인트 계속
                         }
                     }
                 }
 
+                // 상대 경로인 경우 baseHost 붙여 절대 URL로 완성
+                if (audioUrl && typeof audioUrl === 'string') {
+                    if (!audioUrl.startsWith('http://') && !audioUrl.startsWith('https://') && !audioUrl.startsWith('blob:')) {
+                        audioUrl = baseHost + (audioUrl.startsWith('/') ? '' : '/') + audioUrl;
+                    }
+                }
+
                 if (audioUrl) {
+                    console.log("[HF Spaces TTS] 최종 오디오 재생 URL:", audioUrl);
                     currentHFAudio = new Audio(audioUrl);
                     currentCloudAudio = currentHFAudio;
                     await currentHFAudio.play();
-                    console.log("Hugging Face AI 음성 재생 성공:", audioUrl);
                 } else {
-                    throw new Error("오디오 스트림을 수신하지 못했습니다. Space 주소 및 API 엔드포인트(/predict)가 올바르게 작동하는지 확인해주세요.");
+                    throw new Error("오디오 스트림을 수신하지 못했습니다. Space 주소 및 공개 설정(Public)을 확인해주세요.");
                 }
             } catch (err) {
-                console.error("HF Spaces TTS Error:", err);
-                alert(`[2번 경상도 AI 음성 복제 TTS 오류]\n${err.message}\n\n• 등록된 Space: ${spaceEndpoint}\n• 2번 스피커를 우클릭하여 주소를 다시 설정할 수 있습니다.`);
+                console.error("[HF Spaces TTS Error]:", err);
+                alert(`[2번 경상도 AI 음성 복제 TTS 오류]\n${err.message}\n\n• 등록된 Space 주소: ${spaceEndpoint}\n• 2번 스피커를 우클릭하여 주소를 다시 설정할 수 있습니다.\n• Space가 'Public(공개)'으로 설정되어 있는지 확인해주세요.`);
             }
         }
 
