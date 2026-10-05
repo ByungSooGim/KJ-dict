@@ -1412,28 +1412,50 @@
         /* --- [3번째 스피커: Microsoft Edge TTS (Hugging Face Spaces 클라우드 연동, InJoon 남성 음성)] --- */
         let currentEdgeAudio = null;
 
-        // 3번 Edge TTS Hugging Face Spaces 주소 및 음성 설정 (3번 버튼 우클릭 시)
+        // 3번 Edge TTS Hugging Face Spaces 주소 및 강세 억양/피치 설정 (3번 버튼 우클릭 시)
         function setEdgeHFSpaceUrl() {
-            const currentUrl = localStorage.getItem('hf_edge_tts_endpoint') || "";
-            const defaultPrompt = currentUrl || "bsgim5/edge-tts";
-            
+            const currentUrl = localStorage.getItem('hf_edge_tts_endpoint') || "bsgim5/edge-tts";
             const newUrl = prompt(
                 "3번 Microsoft Edge TTS (Hugging Face Spaces) 주소를 입력해주세요:\n\n" +
                 "• Space ID 형식 예시: 사용자ID/스페이스이름 (예: bsgim5/edge-tts)\n" +
                 "• 직접 URL 형식 예시: https://bsgim5-edge-tts.hf.space\n\n" +
-                "(비워두고 확인을 누르면 설정이 초기화됩니다)",
-                defaultPrompt
+                "(비워두고 확인을 누르면 기본 설정으로 유지됩니다)",
+                currentUrl
             );
 
-            if (newUrl !== null) {
-                if (newUrl.trim() === "") {
-                    localStorage.removeItem('hf_edge_tts_endpoint');
-                    alert("Edge TTS Hugging Face Spaces 주소 설정이 해제되었습니다.");
-                } else {
-                    localStorage.setItem('hf_edge_tts_endpoint', newUrl.trim());
-                    alert(`Edge TTS Hugging Face Spaces 주소가 저장되었습니다:\n${newUrl.trim()}`);
-                }
+            if (newUrl !== null && newUrl.trim() !== "") {
+                localStorage.setItem('hf_edge_tts_endpoint', newUrl.trim());
             }
+
+            // 강세 억양 피치(Pitch) 설정
+            const currentPitch = localStorage.getItem('edge_tts_pitch') || "15";
+            const newPitch = prompt(
+                "3번 Edge TTS의 [강세 억양 높이(Pitch)]를 설정해주세요 (단위: Hz):\n\n" +
+                "• 추천: +15 (기본 또렷함), +20 (시원한 강세), +25 (높은 경상도 성조)\n" +
+                "• 너무 높으면 기계음처럼 들릴 수 있으니 +15 ~ +25 사이를 권장합니다.",
+                currentPitch
+            );
+            if (newPitch !== null && newPitch.trim() !== "") {
+                localStorage.setItem('edge_tts_pitch', newPitch.trim().replace('+', '').replace('Hz', ''));
+            }
+
+            // 발화 속도(Rate) 설정
+            const currentRate = localStorage.getItem('edge_tts_rate') || "0";
+            const newRate = prompt(
+                "3번 Edge TTS의 [발화 속도(Rate)]를 설정해주세요 (단위: %):\n\n" +
+                "• 추천: 0 (보통 속도), +5 (약간 빠른 대화체), -5 (차분한 발음)",
+                currentRate
+            );
+            if (newRate !== null && newRate.trim() !== "") {
+                localStorage.setItem('edge_tts_rate', newRate.trim().replace('+', '').replace('%', ''));
+            }
+
+            alert(
+                "3번 Edge TTS 설정이 저장되었습니다!\n\n" +
+                `• Space 주소: ${localStorage.getItem('hf_edge_tts_endpoint') || '기본값'}\n` +
+                `• 강세 피치(높이): +${localStorage.getItem('edge_tts_pitch') || '15'}Hz\n` +
+                `• 발화 속도: ${localStorage.getItem('edge_tts_rate') || '0'}%`
+            );
         }
 
         // 이전 코드 호환용 alias
@@ -1468,6 +1490,7 @@
             }
 
             // 2. 텍스트 정제 (사투리 발음 기호 정제)
+            const hasAccent = rawText.includes("'") || rawText.includes("′");
             let edgeText = rawText.trim();
             if (edgeText.startsWith('[') && edgeText.endsWith(']')) {
                 edgeText = edgeText.slice(1, -1).trim();
@@ -1484,19 +1507,8 @@
             // 3. Hugging Face Spaces 주소 확인
             let spaceEndpoint = localStorage.getItem('hf_edge_tts_endpoint');
             if (!spaceEndpoint || !spaceEndpoint.trim()) {
-                const inputUrl = prompt(
-                    "3번 Microsoft Edge TTS용 Hugging Face Space 주소가 아직 설정되지 않았습니다.\n\n" +
-                    "배포하신 Hugging Face Space ID나 URL을 입력해주세요:\n" +
-                    "(예: 사용자명/스페이스이름 또는 https://xxx.hf.space)",
-                    "bsgim5/edge-tts"
-                );
-                if (inputUrl && inputUrl.trim()) {
-                    spaceEndpoint = inputUrl.trim();
-                    localStorage.setItem('hf_edge_tts_endpoint', spaceEndpoint);
-                } else {
-                    alert("Hugging Face Space 주소를 입력하셔야 3번 Edge TTS를 재생할 수 있습니다.\n(3번 스피커를 우클릭하여 언제든 설정 가능합니다)");
-                    return;
-                }
+                spaceEndpoint = "bsgim5/edge-tts";
+                localStorage.setItem('hf_edge_tts_endpoint', spaceEndpoint);
             }
 
             // 4. 주소 정규화 (Space ID -> Direct URL 변환)
@@ -1521,7 +1533,11 @@
             baseHost = baseHost.replace(/\/+$/, '');
 
             const voiceChoice = localStorage.getItem('edge_voice_choice') || "남성 (InJoon)";
-            console.log(`[Edge HF TTS] 텍스트: "${edgeText}", 보이스: ${voiceChoice}, 주소: ${cleanEndpoint} (호스트: ${baseHost})`);
+            const basePitch = parseInt(localStorage.getItem('edge_tts_pitch') || "15"); // 기본 피치 +15Hz로 상향
+            const finalPitch = hasAccent ? basePitch + 5 : basePitch; // 강세 기호가 있으면 +5Hz 추가 강화!
+            const rateVal = parseInt(localStorage.getItem('edge_tts_rate') || "0");
+
+            console.log(`[Edge HF TTS] 텍스트: "${edgeText}", 보이스: ${voiceChoice}, 피치: +${finalPitch}Hz, 속도: ${rateVal}%, 주소: ${cleanEndpoint}`);
 
             try {
                 let audioUrl = null;
@@ -1536,7 +1552,7 @@
                     for (const ep of endpoints) {
                         try {
                             console.log(`[Edge HF TTS] 엔드포인트(${ep}) 호출 중...`);
-                            const result = await app.predict(ep, [ edgeText, voiceChoice, 0, 0 ]);
+                            const result = await app.predict(ep, [ edgeText, voiceChoice, rateVal, finalPitch ]);
                             if (result && result.data && result.data.length > 0) {
                                 const item = result.data[0];
                                 let raw = (typeof item === 'object' && item !== null) ? (item.url || item.path) : (typeof item === 'string' ? item : null);
@@ -1570,7 +1586,7 @@
                             const res = await fetch(ep, {
                                 method: 'POST',
                                 headers: { 'Content-Type': 'application/json' },
-                                body: JSON.stringify({ data: [ edgeText, voiceChoice, 0, 0 ] })
+                                body: JSON.stringify({ data: [ edgeText, voiceChoice, rateVal, finalPitch ] })
                             });
                             if (res.ok) {
                                 const respData = await res.json();
