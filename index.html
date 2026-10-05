@@ -499,8 +499,8 @@
                         </svg>
                     </div>
                     <div class="speaker-btn speaker-btn-edge" onclick="speakPronunciationEdge()"
-                        oncontextmenu="event.preventDefault(); event.stopPropagation(); setEdgeProxyUrl();"
-                        title="3. Microsoft Edge TTS (InJoon 남성 음성 / SSML / 우클릭: 프록시 서버 설정)">
+                        oncontextmenu="event.preventDefault(); event.stopPropagation(); setEdgeHFSpaceUrl();"
+                        title="3. Microsoft Edge TTS (Hugging Face Spaces 연동 / InJoon 남성 음성 / 우클릭: Space 설정)">
                         <svg viewBox="0 0 24 24">
                             <path
                                 d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" />
@@ -965,7 +965,7 @@
             if (!text) return "";
             return text.replace(/\[(.*?)\]/g, (match, p1) => {
                 const rawPron = p1.trim().replace(/'/g, "\\'");
-                return `<b style="color:var(--point)">${p1}</b><span class="speaker-btn" title="1. 기본 TTS (원래 발음 기호)" onclick="event.stopPropagation(); speakText('${rawPron}')"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg></span><span class="speaker-btn speaker-btn-cloud" title="2. 경상도 AI 음성 복제 TTS (GPT-SoVITS / Hugging Face Spaces 연동 / 우클릭: 설정)" onclick="event.stopPropagation(); speakCloudTTS('${rawPron}')" oncontextmenu="event.preventDefault(); event.stopPropagation(); resetCloudApiKey();"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span><span class="speaker-btn speaker-btn-edge" title="3. Microsoft Edge TTS (InJoon 남성 음성 / SSML / 우클릭: 프록시 설정)" onclick="event.stopPropagation(); speakEdgeTTS('${rawPron}')" oncontextmenu="event.preventDefault(); event.stopPropagation(); setEdgeProxyUrl();"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span><span class="speaker-btn speaker-btn-gemini" title="4. Google Cloud SSML 사투리 TTS (성조 prosody pitch 제어 / 우클릭: 설정)" onclick="event.stopPropagation(); speakGeminiTTS('${rawPron}')" oncontextmenu="event.preventDefault(); event.stopPropagation(); setGeminiVoiceModel();"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span>`;
+                return `<b style="color:var(--point)">${p1}</b><span class="speaker-btn" title="1. 기본 TTS (원래 발음 기호)" onclick="event.stopPropagation(); speakText('${rawPron}')"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg></span><span class="speaker-btn speaker-btn-cloud" title="2. 경상도 AI 음성 복제 TTS (GPT-SoVITS / Hugging Face Spaces 연동 / 우클릭: 설정)" onclick="event.stopPropagation(); speakCloudTTS('${rawPron}')" oncontextmenu="event.preventDefault(); event.stopPropagation(); resetCloudApiKey();"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span><span class="speaker-btn speaker-btn-edge" title="3. Microsoft Edge TTS (Hugging Face Spaces 연동 / 우클릭: Space 설정)" onclick="event.stopPropagation(); speakEdgeTTS('${rawPron}')" oncontextmenu="event.preventDefault(); event.stopPropagation(); setEdgeHFSpaceUrl();"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span><span class="speaker-btn speaker-btn-gemini" title="4. Google Cloud SSML 사투리 TTS (성조 prosody pitch 제어 / 우클릭: 설정)" onclick="event.stopPropagation(); speakGeminiTTS('${rawPron}')" oncontextmenu="event.preventDefault(); event.stopPropagation(); setGeminiVoiceModel();"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span>`;
             });
         }
 
@@ -975,7 +975,7 @@
             let safeText = text.replace(/</g, "&lt;").replace(/>/g, "&gt;");
             return safeText.replace(/\[(.*?)\]/g, (match, p1) => {
                 const rawPron = p1.trim().replace(/'/g, "\\'");
-                return `<b style="color:var(--point)">[${p1}]</b><span class="speaker-btn" title="1. 기본 TTS (원래 발음 기호)" onclick="event.stopPropagation(); speakText('${rawPron}')"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg></span><span class="speaker-btn speaker-btn-cloud" title="2. 경상도 AI 음성 복제 TTS (GPT-SoVITS / Hugging Face Spaces 연동 / 우클릭: 설정)" onclick="event.stopPropagation(); speakCloudTTS('${rawPron}')" oncontextmenu="event.preventDefault(); event.stopPropagation(); resetCloudApiKey();"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span><span class="speaker-btn speaker-btn-edge" title="3. Microsoft Edge TTS (InJoon 남성 음성 / SSML / 우클릭: 프록시 설정)" onclick="event.stopPropagation(); speakEdgeTTS('${rawPron}')" oncontextmenu="event.preventDefault(); event.stopPropagation(); setEdgeProxyUrl();"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span><span class="speaker-btn speaker-btn-gemini" title="4. Google Cloud SSML 사투리 TTS (성조 prosody pitch 제어 / 우클릭: 설정)" onclick="event.stopPropagation(); speakGeminiTTS('${rawPron}')" oncontextmenu="event.preventDefault(); event.stopPropagation(); setGeminiVoiceModel();"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span>`;
+                return `<b style="color:var(--point)">[${p1}]</b><span class="speaker-btn" title="1. 기본 TTS (원래 발음 기호)" onclick="event.stopPropagation(); speakText('${rawPron}')"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg></span><span class="speaker-btn speaker-btn-cloud" title="2. 경상도 AI 음성 복제 TTS (GPT-SoVITS / Hugging Face Spaces 연동 / 우클릭: 설정)" onclick="event.stopPropagation(); speakCloudTTS('${rawPron}')" oncontextmenu="event.preventDefault(); event.stopPropagation(); resetCloudApiKey();"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span><span class="speaker-btn speaker-btn-edge" title="3. Microsoft Edge TTS (Hugging Face Spaces 연동 / 우클릭: Space 설정)" onclick="event.stopPropagation(); speakEdgeTTS('${rawPron}')" oncontextmenu="event.preventDefault(); event.stopPropagation(); setEdgeHFSpaceUrl();"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span><span class="speaker-btn speaker-btn-gemini" title="4. Google Cloud SSML 사투리 TTS (성조 prosody pitch 제어 / 우클릭: 설정)" onclick="event.stopPropagation(); speakGeminiTTS('${rawPron}')" oncontextmenu="event.preventDefault(); event.stopPropagation(); setGeminiVoiceModel();"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span>`;
             });
         }
 
@@ -1409,242 +1409,236 @@
             speakGeminiTTS(currentItem.pronunciation);
         }
 
-        /* --- [3번째 스피커: Microsoft Edge TTS (무료 및 SSML 지원, SunHi 보이스)] --- */
+        /* --- [3번째 스피커: Microsoft Edge TTS (Hugging Face Spaces 클라우드 연동, InJoon 남성 음성)] --- */
         let currentEdgeAudio = null;
 
-        // 방언 발음 기호를 Microsoft Edge/Azure 표준 SSML로 변환하는 함수 (일반화된 음절 규칙: 강세 음절 +8st, InJoon 남성 음성)
-        function convertDialectToEdgeSSML(rawText, voice = "ko-KR-InJoonNeural") {
-            if (!rawText) return "";
-            let text = rawText.trim();
-            if (text.startsWith('[') && text.endsWith(']')) {
-                text = text.slice(1, -1).trim();
-            }
-            while (/\[[^\]]*\]/.test(text)) {
-                text = text.replace(/\[[^\]]*\]/g, '');
-            }
-            text = text.replace(/\{([^/>-]+)[/>-][^}]+\}/g, '$1');
-            text = text.replace(/\//g, ', ');
-
-            const words = text.split(/\s+/);
-            const ssmlParts = [];
-
-            for (let i = 0; i < words.length; i++) {
-                let w = words[i];
-                if (!w) continue;
-
-                let hasComma = w.includes(',');
-                let hasDot = w.includes('.');
-                let hasQuestion = w.includes('?');
-                let core = w.replace(/[,.?!]+$/, '');
-
-                let converted = "";
-
-                // 한글 음절 단위로 강세/성조 기호(' 또는 ′)를 분석하여 +8st 부여
-                const syllableRegex = /([가-힣])(['′]?)/g;
-                let match;
-                let hasMatched = false;
-
-                while ((match = syllableRegex.exec(core)) !== null) {
-                    hasMatched = true;
-                    const char = match[1];
-                    const isAccented = (match[2] === "'" || match[2] === "′");
-                    if (isAccented) {
-                        converted += `<prosody pitch="+10st">${char}</prosody>`;
-                    } else {
-                        converted += char;
-                    }
-                }
-
-                if (!hasMatched) {
-                    converted = core.replace(/['′]/g, '');
-                }
-
-                // 구두점 및 자연스러운 휴지 처리 (Edge TTS는 break 태그 대신 쉼표 사용)
-                if (hasComma) {
-                    converted += ', ';
-                } else if (hasDot) {
-                    converted += '.';
-                } else if (hasQuestion || (core.endsWith('가') && i === words.length - 1)) {
-                    converted += '?';
-                }
-
-                ssmlParts.push(converted);
-            }
-
-            return `<speak version="1.0" xmlns="http://www.w3.org/2001/10/synthesis" xmlns:mstts="http://www.w3.org/2001/mstts" xml:lang="ko-KR">
-  <voice name="${voice}">
-    ${ssmlParts.join('\n    ')}
-  </voice>
-</speak>`;
-        }
-
-        // Edge TTS 프록시 서버 URL 설정 (3번 버튼 우클릭 시)
-        function setEdgeProxyUrl() {
-            const currentUrl = localStorage.getItem('edge_proxy_url') || "";
-            const isLocal = window.location.hostname === 'localhost' || 
-                            window.location.hostname === '127.0.0.1' || 
-                            window.location.protocol === 'file:';
-            const defaultPrompt = currentUrl || (isLocal ? 'http://127.0.0.1:5050/tts' : 'https://your-service.onrender.com/tts');
+        // 3번 Edge TTS Hugging Face Spaces 주소 및 음성 설정 (3번 버튼 우클릭 시)
+        function setEdgeHFSpaceUrl() {
+            const currentUrl = localStorage.getItem('hf_edge_tts_endpoint') || "";
+            const defaultPrompt = currentUrl || "bsgim5/edge-tts";
             
             const newUrl = prompt(
-                "3번 Microsoft Edge TTS 프록시 서버 주소를 입력해주세요:\n\n" +
-                "• 로컬 실행 시 기본값: http://127.0.0.1:5050/tts\n" +
-                "• GitHub Pages 등 웹 배포 시: Render 무료 배포 주소 (예: https://xxx.onrender.com/tts)\n" +
-                "(비워두고 확인을 누르면 기본 설정으로 초기화됩니다)",
+                "3번 Microsoft Edge TTS (Hugging Face Spaces) 주소를 입력해주세요:\n\n" +
+                "• Space ID 형식 예시: 사용자ID/스페이스이름 (예: bsgim5/edge-tts)\n" +
+                "• 직접 URL 형식 예시: https://bsgim5-edge-tts.hf.space\n\n" +
+                "(비워두고 확인을 누르면 설정이 초기화됩니다)",
                 defaultPrompt
             );
 
             if (newUrl !== null) {
                 if (newUrl.trim() === "") {
-                    localStorage.removeItem('edge_proxy_url');
-                    alert("Edge 프록시 URL이 기본값으로 초기화되었습니다.");
+                    localStorage.removeItem('hf_edge_tts_endpoint');
+                    alert("Edge TTS Hugging Face Spaces 주소 설정이 해제되었습니다.");
                 } else {
-                    localStorage.setItem('edge_proxy_url', newUrl.trim());
-                    alert(`Edge 프록시 URL이 설정되었습니다:\n${newUrl.trim()}`);
+                    localStorage.setItem('hf_edge_tts_endpoint', newUrl.trim());
+                    alert(`Edge TTS Hugging Face Spaces 주소가 저장되었습니다:\n${newUrl.trim()}`);
                 }
             }
         }
 
-        // Microsoft Edge 무료 TTS 호출 및 재생 함수 (InJoon 남성 음성, 로컬 및 클라우드 프록시 자동 지원)
+        // 이전 코드 호환용 alias
+        function setEdgeProxyUrl() {
+            setEdgeHFSpaceUrl();
+        }
+
+        // Microsoft Edge TTS (Hugging Face Spaces 연동) 호출 및 재생 함수
         async function speakEdgeTTS(rawText) {
             if (!rawText) return;
 
-            // 1. 기존 오디오 및 발화 정지
-            if (currentEdgeAudio) {
-                currentEdgeAudio.pause();
-                currentEdgeAudio = null;
-            }
-            if (currentCloudAudio) {
-                currentCloudAudio.pause();
-                currentCloudAudio = null;
-            }
-            if (window.speechSynthesis) {
-                window.speechSynthesis.cancel();
-            }
+            // 1. 기존 오디오 및 발화 모두 정지
+            if (currentEdgeAudio) { currentEdgeAudio.pause(); currentEdgeAudio = null; }
+            if (currentHFAudio) { currentHFAudio.pause(); currentHFAudio = null; }
+            if (currentCloudAudio) { currentCloudAudio.pause(); currentCloudAudio = null; }
+            if (currentGeminiAudio) { currentGeminiAudio.pause(); currentGeminiAudio = null; }
+            if (window.speechSynthesis) { window.speechSynthesis.cancel(); }
 
-            // 0. 사전 생성된 고음질 Edge TTS MP3 파일(Pre-generated) 우선 확인 및 재생
+            // 0. 사전 생성된 고음질 MP3 파일이 있으면 즉시 재생
             try {
                 const map = await loadAudioMap();
                 const key = rawText.trim();
                 const mappedPath = map[key] || map[key.replace(/'/g, "\\'")] || map[`[${key}]`];
                 if (mappedPath) {
-                    console.log("사전 생성된 Edge TTS MP3 파일 즉시 재생:", mappedPath);
+                    console.log("[Edge TTS] 사전 생성된 MP3 파일 즉시 재생:", mappedPath);
                     currentEdgeAudio = new Audio(mappedPath);
                     await currentEdgeAudio.play();
                     return;
                 }
             } catch (preErr) {
-                console.warn("사전 생성 오디오 재생 실패 -> 프록시 시도로 이동:", preErr);
+                console.warn("[Edge TTS] 사전 생성 오디오 확인 중 예외:", preErr);
             }
 
-            const ssml = convertDialectToEdgeSSML(rawText, "ko-KR-InJoonNeural");
-            console.log("Edge TTS SSML (InJoon 남성 음성 / +10st 강세):\n", ssml);
-
-            let proxyErrorMsg = null;
-
-            // 0. 프록시 서버 URL 결정 (로컬이면 127.0.0.1:5050 우선, 배포 환경이면 localStorage 또는 Render URL)
-            let proxyUrl = localStorage.getItem('edge_proxy_url');
-            if (!proxyUrl || !proxyUrl.trim()) {
-                const isLocal = window.location.hostname === 'localhost' || 
-                                window.location.hostname === '127.0.0.1' || 
-                                window.location.protocol === 'file:';
-                proxyUrl = isLocal ? 'http://127.0.0.1:5050/tts' : '';
+            // 2. 텍스트 정제 (사투리 발음 기호 정제)
+            let edgeText = rawText.trim();
+            if (edgeText.startsWith('[') && edgeText.endsWith(']')) {
+                edgeText = edgeText.slice(1, -1).trim();
             }
-
-            if (proxyUrl) {
-                try {
-                    const proxyResp = await fetch(proxyUrl, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ ssml: ssml, voice: 'ko-KR-InJoonNeural' })
-                    });
-                    if (proxyResp.ok) {
-                        const audioBlob = await proxyResp.blob();
-                        if (audioBlob.size > 0) {
-                            const audioUrl = URL.createObjectURL(audioBlob);
-                            currentEdgeAudio = new Audio(audioUrl);
-                            currentEdgeAudio.play();
-                            console.log("Edge TTS 프록시로 재생 성공!");
-                            return;
-                        }
-                    } else {
-                        proxyErrorMsg = `프록시 서버 응답 오류 (HTTP ${proxyResp.status})`;
-                    }
-                } catch (proxyErr) {
-                    proxyErrorMsg = `프록시 서버 연결 실패 (${proxyErr.message})`;
-                    console.log("Edge TTS 프록시 미연결 -> 직접 WebSocket 시도:", proxyErr.message);
-                }
-            } else {
-                proxyErrorMsg = "웹 배포 환경 프록시 주소 미등록 (우클릭하여 Render 주소 등록 가능)";
+            while (/\[[^\]]*\]/.test(edgeText)) {
+                edgeText = edgeText.replace(/\[[^\]]*\]/g, '');
             }
+            edgeText = edgeText.replace(/\{([^/>-]+)[/>-][^}]+\}/g, '$1');
+            edgeText = edgeText.replace(/['′]/g, ''); // 표준 Edge TTS 발화를 위해 강세 기호 제거
+            edgeText = edgeText.replace(/\//g, ', ').trim();
 
-            // Edge Read Aloud WebSocket 연결 시도
-            function makeUuid() {
-                return 'xxxxxxxxxxxx4xxxyxxxxxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-                    const r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
-                    return v.toString(16);
-                });
-            }
+            if (!edgeText) return;
 
-            const connId = makeUuid();
-            const wsUrl = `wss://speech.platform.bing.com/consumer/speech/synthesize/readaloud/edge/v1?TrustedClientToken=6A5AA1D4EA654941A6D36E6EAD0414CF&ConnectionId=${connId}`;
-
-            let audioChunks = [];
-
-            try {
-                const ws = new WebSocket(wsUrl);
-                ws.binaryType = 'arraybuffer';
-
-                const playPromise = new Promise((resolve, reject) => {
-                    const timeout = setTimeout(() => {
-                        ws.close();
-                        reject(new Error("Edge WebSocket 응답 시간 초과"));
-                    }, 3500);
-
-                    ws.onopen = () => {
-                        const configMsg = `Content-Type:application/json; charset=utf-8\r\nPath:speech.config\r\n\r\n{"context":{"synthesis":{"audio":{"metadataoptions":{"sentenceBoundaryEnabled":"false","wordBoundaryEnabled":"false"},"outputFormat":"audio-24khz-48kbitrate-mono-mp3"}}}}`;
-                        ws.send(configMsg);
-
-                        const ssmlMsg = `X-RequestId:${makeUuid()}\r\nContent-Type:application/ssml+xml\r\nPath:ssml\r\n\r\n${ssml}`;
-                        ws.send(ssmlMsg);
-                    };
-
-                    ws.onmessage = (event) => {
-                        if (typeof event.data === 'string') {
-                            if (event.data.includes("Path:turn.end")) {
-                                clearTimeout(timeout);
-                                ws.close();
-                                resolve();
-                            }
-                        } else if (event.data instanceof ArrayBuffer) {
-                            const view = new DataView(event.data);
-                            if (view.byteLength >= 2) {
-                                const headerLen = view.getUint16(0);
-                                if (view.byteLength > headerLen + 2) {
-                                    audioChunks.push(event.data.slice(headerLen + 2));
-                                }
-                            }
-                        }
-                    };
-
-                    ws.onerror = (e) => {
-                        clearTimeout(timeout);
-                        reject(new Error("Edge TTS WebSocket 직접 연결 차단 (CORS)"));
-                    };
-                });
-
-                await playPromise;
-
-                if (audioChunks.length > 0) {
-                    const audioBlob = new Blob(audioChunks, { type: 'audio/mp3' });
-                    const audioUrl = URL.createObjectURL(audioBlob);
-                    currentEdgeAudio = new Audio(audioUrl);
-                    currentEdgeAudio.play();
+            // 3. Hugging Face Spaces 주소 확인
+            let spaceEndpoint = localStorage.getItem('hf_edge_tts_endpoint');
+            if (!spaceEndpoint || !spaceEndpoint.trim()) {
+                const inputUrl = prompt(
+                    "3번 Microsoft Edge TTS용 Hugging Face Space 주소가 아직 설정되지 않았습니다.\n\n" +
+                    "배포하신 Hugging Face Space ID나 URL을 입력해주세요:\n" +
+                    "(예: 사용자명/스페이스이름 또는 https://xxx.hf.space)",
+                    "bsgim5/edge-tts"
+                );
+                if (inputUrl && inputUrl.trim()) {
+                    spaceEndpoint = inputUrl.trim();
+                    localStorage.setItem('hf_edge_tts_endpoint', spaceEndpoint);
+                } else {
+                    alert("Hugging Face Space 주소를 입력하셔야 3번 Edge TTS를 재생할 수 있습니다.\n(3번 스피커를 우클릭하여 언제든 설정 가능합니다)");
                     return;
                 }
-            } catch (wsErr) {
-                console.error("Edge TTS 실패:", wsErr.message);
-                alert(`[3번 Edge TTS 오류]\nMicrosoft Edge 음성을 생성하지 못했습니다.\n\n• 원인: ${wsErr.message}\n• 로컬 프록시 상태: ${proxyErrorMsg || '확인 필요'}\n\n※ 로컬 우회 서버(edge_server.py)가 5050 포트에서 실행 중인지 확인해주세요.`);
+            }
+
+            // 4. 주소 정규화 (Space ID -> Direct URL 변환)
+            let cleanEndpoint = spaceEndpoint.trim().replace(/\/+$/, '');
+            const hfSpaceMatch = cleanEndpoint.match(/huggingface\.co\/spaces\/([^/]+)\/([^/?#]+)/);
+            if (hfSpaceMatch) {
+                cleanEndpoint = `${hfSpaceMatch[1]}/${hfSpaceMatch[2]}`;
+            }
+
+            let baseHost = cleanEndpoint;
+            if (!baseHost.startsWith('http://') && !baseHost.startsWith('https://')) {
+                const parts = cleanEndpoint.split('/');
+                if (parts.length === 2) {
+                    const user = parts[0].toLowerCase().replace(/[^a-z0-9]/g, '');
+                    const space = parts[1].toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-');
+                    baseHost = `https://${user}-${space}.hf.space`;
+                } else {
+                    const cleanId = cleanEndpoint.replace(/[^a-zA-Z0-9]/g, '-').toLowerCase();
+                    baseHost = `https://${cleanId}.hf.space`;
+                }
+            }
+            baseHost = baseHost.replace(/\/+$/, '');
+
+            const voiceChoice = localStorage.getItem('edge_voice_choice') || "남성 (InJoon)";
+            console.log(`[Edge HF TTS] 텍스트: "${edgeText}", 보이스: ${voiceChoice}, 주소: ${cleanEndpoint} (호스트: ${baseHost})`);
+
+            try {
+                let audioUrl = null;
+
+                // 방법 1: @gradio/client 연결 (Gradio 5/4 클라이언트)
+                try {
+                    const { Client } = await import("https://cdn.jsdelivr.net/npm/@gradio/client/dist/index.min.js");
+                    console.log("[Edge HF TTS] Client.connect 시도:", cleanEndpoint);
+                    const app = await Client.connect(cleanEndpoint);
+
+                    const endpoints = ["/generate_speech", "/predict", 0];
+                    for (const ep of endpoints) {
+                        try {
+                            console.log(`[Edge HF TTS] 엔드포인트(${ep}) 호출 중...`);
+                            const result = await app.predict(ep, [ edgeText, voiceChoice, 0, 0 ]);
+                            if (result && result.data && result.data.length > 0) {
+                                const item = result.data[0];
+                                let raw = (typeof item === 'object' && item !== null) ? (item.url || item.path) : (typeof item === 'string' ? item : null);
+                                if (raw) {
+                                    audioUrl = raw;
+                                    console.log(`[Edge HF TTS] 엔드포인트(${ep}) 성공! 수신 URL:`, audioUrl);
+                                    break;
+                                }
+                            }
+                        } catch (epErr) {
+                            console.warn(`[Edge HF TTS] 엔드포인트(${ep}) 실패:`, epErr.message);
+                        }
+                    }
+                } catch (gradioErr) {
+                    console.warn("[Edge HF TTS] @gradio/client 연결 실패 -> REST 직접 호출로 전환:", gradioErr.message);
+                }
+
+                // 방법 2: REST API 직접 호출 (Gradio 5 SSE 및 REST 호환)
+                if (!audioUrl) {
+                    const restEndpoints = [
+                        `${baseHost}/gradio_api/call/generate_speech`,
+                        `${baseHost}/gradio_api/call/predict`,
+                        `${baseHost}/api/generate_speech`,
+                        `${baseHost}/api/predict`,
+                        `${baseHost}/predict`
+                    ];
+
+                    for (const ep of restEndpoints) {
+                        try {
+                            console.log("[Edge HF TTS] REST 호출 시도:", ep);
+                            const res = await fetch(ep, {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ data: [ edgeText, voiceChoice, 0, 0 ] })
+                            });
+                            if (res.ok) {
+                                const respData = await res.json();
+                                if (respData.event_id) {
+                                    const eventRes = await fetch(`${ep}/${respData.event_id}`);
+                                    const eventText = await eventRes.text();
+                                    const lines = eventText.split('\n');
+                                    for (const l of lines) {
+                                        if (l.startsWith('data:')) {
+                                            try {
+                                                const d = JSON.parse(l.slice(5).trim());
+                                                if (Array.isArray(d) && d[0]) {
+                                                    const it = d[0];
+                                                    audioUrl = (typeof it === 'object' && it !== null) ? (it.url || it.path) : it;
+                                                    if (audioUrl) break;
+                                                }
+                                            } catch (je) {}
+                                        }
+                                    }
+                                } else if (respData.data && respData.data[0]) {
+                                    const it = respData.data[0];
+                                    audioUrl = (typeof it === 'object' && it !== null) ? (it.url || it.path) : it;
+                                }
+                                if (audioUrl) break;
+                            }
+                        } catch (restErr) {
+                            // 다음 엔드포인트 계속
+                        }
+                    }
+                }
+
+                // 상대 경로인 경우 baseHost 붙여 절대 URL 완성
+                if (audioUrl && typeof audioUrl === 'string') {
+                    if (!audioUrl.startsWith('http://') && !audioUrl.startsWith('https://') && !audioUrl.startsWith('blob:')) {
+                        audioUrl = baseHost + (audioUrl.startsWith('/') ? '' : '/') + audioUrl;
+                    }
+                }
+
+                if (audioUrl) {
+                    console.log("[Edge HF TTS] 최종 오디오 재생 URL:", audioUrl);
+                    currentEdgeAudio = new Audio(audioUrl);
+                    await currentEdgeAudio.play();
+                    return;
+                } else {
+                    throw new Error("Hugging Face Space에서 오디오를 수신하지 못했습니다.");
+                }
+            } catch (err) {
+                console.warn("[Edge HF TTS Error]:", err.message);
+
+                // 방법 3: 로컬 프록시(127.0.0.1:5050) Fallback 시도
+                try {
+                    const localResp = await fetch('http://127.0.0.1:5050/tts', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ text: edgeText, voice: 'ko-KR-InJoonNeural' })
+                    });
+                    if (localResp.ok) {
+                        const blob = await localResp.blob();
+                        if (blob.size > 0) {
+                            currentEdgeAudio = new Audio(URL.createObjectURL(blob));
+                            await currentEdgeAudio.play();
+                            console.log("[Edge TTS] 로컬 프록시로 대체 재생 성공!");
+                            return;
+                        }
+                    }
+                } catch (localErr) {}
+
+                alert(`[3번 Microsoft Edge TTS 오류]\n${err.message}\n\n• 등록된 Space 주소: ${spaceEndpoint}\n• 3번 스피커를 우클릭하여 Hugging Face Space 주소를 다시 설정할 수 있습니다.\n• Space가 'Public(공개)' 상태이고 'Running' 중인지 확인해주세요.`);
             }
         }
 
