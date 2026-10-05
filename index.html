@@ -1099,6 +1099,11 @@
             }
             dialectText = dialectText.replace(/\{([^/>-]+)[/>-][^}]+\}/g, '$1');
             dialectText = dialectText.replace(/\//g, ', ').trim();
+            // 경상도 사투리 특성: 의문문이어도 끝소리를 올리지 않으므로 '?'를 '.'으로 치환
+            dialectText = dialectText.replace(/\?+/g, '.').replace(/[!]+/g, '.').replace(/\.+/g, '.').trim();
+            if (dialectText && !/[.,]$/.test(dialectText)) {
+                dialectText += '.';
+            }
             console.log(`[HF Spaces TTS] 전송 텍스트: "${dialectText}", 주소: ${cleanEndpoint} (호스트: ${baseHost})`);
 
             // 4. 기존 오디오 정지
@@ -1501,6 +1506,12 @@
             edgeText = edgeText.replace(/\{([^/>-]+)[/>-][^}]+\}/g, '$1');
             edgeText = edgeText.replace(/['′]/g, ''); // 표준 Edge TTS 발화를 위해 강세 기호 제거
             edgeText = edgeText.replace(/\//g, ', ').trim();
+
+            // 경상도 사투리 특성 반영: 의문문이어도 끝소리를 올리지 않으므로 '?'를 '.'으로 치환
+            edgeText = edgeText.replace(/\?+/g, '.').replace(/[!]+/g, '.').replace(/\.+/g, '.').trim();
+            if (edgeText && !/[.,]$/.test(edgeText)) {
+                edgeText += '.';
+            }
 
             if (!edgeText) return;
 
