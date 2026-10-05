@@ -254,8 +254,10 @@
             transition: fill 0.2s;
             display: inline-flex;
             align-items: center;
+            justify-content: center;
             vertical-align: middle;
             margin-left: 5px;
+            position: relative;
         }
 
         .speaker-btn:hover {
@@ -297,6 +299,185 @@
         .speaker-btn-gemini:hover {
             fill: #0d47a1;
         }
+
+        /* --- 스피커 버튼 로딩 회전 링 & 재생 음파 애니메이션 --- */
+        @keyframes ttsSpinRing {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes ttsPulseIcon {
+            0% {
+                transform: scale(0.85);
+                opacity: 0.45;
+            }
+            100% {
+                transform: scale(1.15);
+                opacity: 1;
+            }
+        }
+
+        @keyframes ttsSoundWaveEdge {
+            0% {
+                transform: scale(1);
+                filter: drop-shadow(0 0 2px rgba(46, 204, 113, 0.7));
+            }
+            100% {
+                transform: scale(1.3);
+                filter: drop-shadow(0 0 8px rgba(46, 204, 113, 1));
+            }
+        }
+
+        @keyframes ttsSoundWaveCloud {
+            0% {
+                transform: scale(1);
+                filter: drop-shadow(0 0 2px rgba(255, 138, 0, 0.7));
+            }
+            100% {
+                transform: scale(1.3);
+                filter: drop-shadow(0 0 8px rgba(255, 138, 0, 1));
+            }
+        }
+
+        /* 로딩 중 (음성 생성 대기 중) - 버튼 주변 회전 스피너 링 */
+        .speaker-btn.tts-loading {
+            cursor: wait !important;
+            pointer-events: none;
+        }
+
+        .speaker-btn.tts-loading::after {
+            content: '';
+            position: absolute;
+            top: -4px;
+            left: -4px;
+            width: 28px;
+            height: 28px;
+            border: 2.5px solid rgba(46, 204, 113, 0.25);
+            border-top-color: #2ecc71;
+            border-radius: 50%;
+            animation: ttsSpinRing 0.75s linear infinite;
+            box-sizing: border-box;
+            z-index: 5;
+            pointer-events: none;
+        }
+
+        .speaker-btn-cloud.tts-loading::after {
+            border: 2.5px solid rgba(255, 138, 0, 0.25);
+            border-top-color: #ff8a00;
+        }
+
+        .speaker-btn.tts-loading svg {
+            animation: ttsPulseIcon 0.7s ease-in-out infinite alternate !important;
+        }
+
+        .speaker-btn-edge.tts-loading {
+            fill: #2ecc71 !important;
+        }
+
+        .speaker-btn-cloud.tts-loading {
+            fill: #ff8a00 !important;
+        }
+
+        /* 재생 중 (오디오 재생 중) - 생생한 음파 발광 효과 */
+        .speaker-btn-edge.tts-playing svg {
+            animation: ttsSoundWaveEdge 0.5s ease-in-out infinite alternate !important;
+        }
+
+        .speaker-btn-cloud.tts-playing svg {
+            animation: ttsSoundWaveCloud 0.5s ease-in-out infinite alternate !important;
+        }
+
+        .speaker-btn-edge.tts-playing {
+            fill: #27ae60 !important;
+        }
+
+        .speaker-btn-cloud.tts-playing {
+            fill: #e67700 !important;
+        }
+
+        /* 상세 화면 상태 텍스트 뱃지 */
+        .tts-status-badge {
+            font-size: 11px;
+            color: #27ae60;
+            background: #eafaf1;
+            padding: 3px 8px;
+            border-radius: 12px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-weight: bold;
+            vertical-align: middle;
+            margin-left: 6px;
+            border: 1px solid rgba(46, 204, 113, 0.3);
+            animation: ttsPulseIcon 1s ease-in-out infinite alternate;
+        }
+
+        /* --- 화면 상단 플로팅 토스트 안내 알림바 (대기 중 에러 오해 방지용) --- */
+        .tts-toast {
+            position: fixed;
+            top: 18px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-40px);
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            border: 1.5px solid #2ecc71;
+            box-shadow: 0 6px 22px rgba(46, 204, 113, 0.28);
+            padding: 9px 18px;
+            border-radius: 30px;
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            z-index: 10000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s ease, transform 0.25s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+            font-size: 13px;
+            font-weight: bold;
+            color: #1b5e20;
+        }
+
+        .tts-toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .tts-toast.cloud {
+            border-color: #ff8a00;
+            box-shadow: 0 6px 22px rgba(255, 138, 0, 0.28);
+            color: #b75500;
+        }
+
+        .tts-toast.playing {
+            background: #eafaf1;
+            border-color: #27ae60;
+            color: #155724;
+        }
+
+        .tts-toast.cloud.playing {
+            background: #fff4e6;
+            border-color: #ff8a00;
+            color: #873600;
+        }
+
+        .tts-toast-spinner {
+            width: 14px;
+            height: 14px;
+            border: 2.2px solid rgba(46, 204, 113, 0.25);
+            border-top: 2.2px solid #2ecc71;
+            border-radius: 50%;
+            animation: ttsSpinRing 0.75s linear infinite;
+            flex-shrink: 0;
+        }
+
+        .tts-toast.cloud .tts-toast-spinner {
+            border: 2.2px solid rgba(255, 138, 0, 0.25);
+            border-top: 2.2px solid #ff8a00;
+        }
+
 
         .pron-row {
             display: flex;
@@ -451,6 +632,12 @@
         <div class="spinner"></div>
         <p style="margin-top:10px; font-size:14px; color:var(--point); font-weight:bold;">데이터를 불러오는 중...</p>
     </div>
+
+    <!-- TTS 음성 생성 대기 중 및 재생 안내 플로팅 토스트 -->
+    <div id="tts-toast" class="tts-toast">
+        <div class="tts-toast-spinner" id="tts-toast-spinner"></div>
+        <span id="tts-toast-text">🎙️ Edge TTS 음성 생성 중... (약 2~4초 소요)</span>
+    </div>
     <div class="container">
         <div class="header">
             <svg class="logo-svg" viewBox="0 0 100 100">
@@ -484,36 +671,21 @@
                     style="display:none; font-size:13px; color:var(--point); margin-top:2px; font-weight:bold;"></div>
                 <div id="v-pron-row" class="pron-row" style="display:none;">
                     <div id="v-pron" class="pron-area"></div>
-                    <div class="speaker-btn" onclick="speakPronunciation()" title="1. 기본 TTS (원래 발음 기호)">
+                    <div class="speaker-btn" onclick="speakPronunciation()" title="기본 TTS (원래 발음 기호)">
                         <svg viewBox="0 0 24 24">
                             <path
                                 d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" />
                         </svg>
                     </div>
-                    <div class="speaker-btn speaker-btn-cloud" onclick="speakPronunciationCloud()"
-                        oncontextmenu="event.preventDefault(); event.stopPropagation(); resetCloudApiKey();"
-                        title="2. 경상도 AI 음성 복제 TTS (GPT-SoVITS / Hugging Face Spaces 연동 / 우클릭: Space 설정)">
-                        <svg viewBox="0 0 24 24">
-                            <path
-                                d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" />
-                        </svg>
-                    </div>
-                    <div class="speaker-btn speaker-btn-edge" onclick="speakPronunciationEdge()"
+                    <div class="speaker-btn speaker-btn-edge" onclick="speakPronunciationEdge(event)"
                         oncontextmenu="event.preventDefault(); event.stopPropagation(); setEdgeHFSpaceUrl();"
-                        title="3. Microsoft Edge TTS (Hugging Face Spaces 연동 / InJoon 남성 음성 / 우클릭: Space 설정)">
+                        title="Microsoft Edge TTS (클라우드 연동 / InJoon 남성 음성 / 우클릭: 설정)">
                         <svg viewBox="0 0 24 24">
                             <path
                                 d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" />
                         </svg>
                     </div>
-                    <div class="speaker-btn speaker-btn-gemini" onclick="speakPronunciationGemini()"
-                        oncontextmenu="event.preventDefault(); event.stopPropagation(); setGeminiVoiceModel();"
-                        title="4. Google Cloud SSML 사투리 TTS (성조 prosody pitch 제어 / 우클릭: 설정)">
-                        <svg viewBox="0 0 24 24">
-                            <path
-                                d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" />
-                        </svg>
-                    </div>
+                    <span id="tts-status" class="tts-status-badge" style="display:none;"></span>
                 </div>
                 <div id="v-def" class="def-area"></div>
                 <div id="v-combined-box" class="ex-container" style="display:none;">
@@ -960,22 +1132,22 @@
             return word ? word.replace(/(\d+)/g, '<sup>$1</sup>') : "";
         }
 
-        // 예문 내 [ ] 텍스트 추출 및 스피커 버튼 삽입 함수 (1.기본TTS, 2.AI 복제(GPT-SoVITS/HF), 3.Edge(InJoon), 4.Google SSML(성조))
+        // 예문 내 [ ] 텍스트 추출 및 스피커 버튼 삽입 함수 (1.기본TTS, 2.Edge TTS(초록색))
         function processDialectTTS(text) {
             if (!text) return "";
             return text.replace(/\[(.*?)\]/g, (match, p1) => {
                 const rawPron = p1.trim().replace(/'/g, "\\'");
-                return `<b style="color:var(--point)">${p1}</b><span class="speaker-btn" title="1. 기본 TTS (원래 발음 기호)" onclick="event.stopPropagation(); speakText('${rawPron}')"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg></span><span class="speaker-btn speaker-btn-cloud" title="2. 경상도 AI 음성 복제 TTS (GPT-SoVITS / Hugging Face Spaces 연동 / 우클릭: 설정)" onclick="event.stopPropagation(); speakCloudTTS('${rawPron}')" oncontextmenu="event.preventDefault(); event.stopPropagation(); resetCloudApiKey();"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span><span class="speaker-btn speaker-btn-edge" title="3. Microsoft Edge TTS (Hugging Face Spaces 연동 / 우클릭: Space 설정)" onclick="event.stopPropagation(); speakEdgeTTS('${rawPron}')" oncontextmenu="event.preventDefault(); event.stopPropagation(); setEdgeHFSpaceUrl();"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span><span class="speaker-btn speaker-btn-gemini" title="4. Google Cloud SSML 사투리 TTS (성조 prosody pitch 제어 / 우클릭: 설정)" onclick="event.stopPropagation(); speakGeminiTTS('${rawPron}')" oncontextmenu="event.preventDefault(); event.stopPropagation(); setGeminiVoiceModel();"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span>`;
+                return `<b style="color:var(--point)">${p1}</b><span class="speaker-btn" title="기본 TTS (원래 발음 기호)" onclick="event.stopPropagation(); speakText('${rawPron}', event)"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg></span><span class="speaker-btn speaker-btn-edge" title="Edge TTS (클라우드 연동 / 우클릭: 설정)" onclick="event.stopPropagation(); speakEdgeTTS('${rawPron}', event)" oncontextmenu="event.preventDefault(); event.stopPropagation(); setEdgeHFSpaceUrl();"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span>`;
             });
         }
 
-        // 관용구/속담 내 full text 렌더링 및 [ ] 발음 TTS 스피커 버튼 삽입 함수 (1.기본TTS, 2.AI 복제(GPT-SoVITS/HF), 3.Edge(InJoon), 4.Google SSML(성조))
+        // 관용구/속담 내 full text 렌더링 및 [ ] 발음 TTS 스피커 버튼 삽입 함수 (1.기본TTS, 2.Edge TTS(초록색))
         function processIdiomTTS(text) {
             if (!text) return "";
             let safeText = text.replace(/</g, "&lt;").replace(/>/g, "&gt;");
             return safeText.replace(/\[(.*?)\]/g, (match, p1) => {
                 const rawPron = p1.trim().replace(/'/g, "\\'");
-                return `<b style="color:var(--point)">[${p1}]</b><span class="speaker-btn" title="1. 기본 TTS (원래 발음 기호)" onclick="event.stopPropagation(); speakText('${rawPron}')"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg></span><span class="speaker-btn speaker-btn-cloud" title="2. 경상도 AI 음성 복제 TTS (GPT-SoVITS / Hugging Face Spaces 연동 / 우클릭: 설정)" onclick="event.stopPropagation(); speakCloudTTS('${rawPron}')" oncontextmenu="event.preventDefault(); event.stopPropagation(); resetCloudApiKey();"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span><span class="speaker-btn speaker-btn-edge" title="3. Microsoft Edge TTS (Hugging Face Spaces 연동 / 우클릭: Space 설정)" onclick="event.stopPropagation(); speakEdgeTTS('${rawPron}')" oncontextmenu="event.preventDefault(); event.stopPropagation(); setEdgeHFSpaceUrl();"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span><span class="speaker-btn speaker-btn-gemini" title="4. Google Cloud SSML 사투리 TTS (성조 prosody pitch 제어 / 우클릭: 설정)" onclick="event.stopPropagation(); speakGeminiTTS('${rawPron}')" oncontextmenu="event.preventDefault(); event.stopPropagation(); setGeminiVoiceModel();"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span>`;
+                return `<b style="color:var(--point)">[${p1}]</b><span class="speaker-btn" title="기본 TTS (원래 발음 기호)" onclick="event.stopPropagation(); speakText('${rawPron}', event)"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg></span><span class="speaker-btn speaker-btn-edge" title="Edge TTS (클라우드 연동 / 우클릭: 설정)" onclick="event.stopPropagation(); speakEdgeTTS('${rawPron}', event)" oncontextmenu="event.preventDefault(); event.stopPropagation(); setEdgeHFSpaceUrl();"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span>`;
             });
         }
 
@@ -1468,9 +1640,73 @@
             setEdgeHFSpaceUrl();
         }
 
+        // TTS 버튼 로딩 및 재생 상태 UI 헬퍼 (버튼 회전 링 + 상단 플로팅 토스트 + 상세 뱃지 동시 제어)
+        let ttsToastTimer = null;
+        function setTTSLoadingState(targetBtn, isLoading, isPlaying = false) {
+            const statusBadge = document.getElementById('tts-status');
+            const toast = document.getElementById('tts-toast');
+            const toastText = document.getElementById('tts-toast-text');
+            const toastSpinner = document.getElementById('tts-toast-spinner');
+
+            if (isLoading) {
+                if (targetBtn) {
+                    targetBtn.classList.add('tts-loading');
+                    targetBtn.classList.remove('tts-playing');
+                }
+                if (statusBadge) {
+                    statusBadge.innerText = '🎙️ 음성 생성 중...';
+                    statusBadge.style.display = 'inline-flex';
+                }
+                if (toast && toastText) {
+                    clearTimeout(ttsToastTimer);
+                    toast.className = 'tts-toast show';
+                    if (toastSpinner) toastSpinner.style.display = 'block';
+                    toastText.innerText = '🎙️ Edge TTS 음성 생성 중... (약 2~4초 소요)';
+                }
+            } else if (isPlaying) {
+                if (targetBtn) {
+                    targetBtn.classList.remove('tts-loading');
+                    targetBtn.classList.add('tts-playing');
+                }
+                if (statusBadge) {
+                    statusBadge.innerText = '🔊 재생 중...';
+                    statusBadge.style.display = 'inline-flex';
+                }
+                if (toast && toastText) {
+                    clearTimeout(ttsToastTimer);
+                    toast.className = 'tts-toast show playing';
+                    if (toastSpinner) toastSpinner.style.display = 'none';
+                    toastText.innerText = '🔊 경주 방언 음성 재생 중 🎵';
+                }
+            } else {
+                if (targetBtn) {
+                    targetBtn.classList.remove('tts-loading');
+                    targetBtn.classList.remove('tts-playing');
+                }
+                if (statusBadge) {
+                    statusBadge.style.display = 'none';
+                }
+                if (toast) {
+                    clearTimeout(ttsToastTimer);
+                    ttsToastTimer = setTimeout(() => {
+                        toast.classList.remove('show');
+                    }, 400);
+                }
+            }
+        }
+
         // Microsoft Edge TTS (Hugging Face Spaces 연동) 호출 및 재생 함수
-        async function speakEdgeTTS(rawText) {
+        async function speakEdgeTTS(rawText, ev = null) {
             if (!rawText) return;
+
+            // 클릭된 스피커 버튼 요소 식별
+            let targetBtn = null;
+            if (ev) {
+                targetBtn = ev.currentTarget || (ev.target ? ev.target.closest('.speaker-btn') : null);
+            }
+            if (!targetBtn) {
+                targetBtn = document.querySelector('.speaker-btn-edge');
+            }
 
             // 1. 기존 오디오 및 발화 모두 정지
             if (currentEdgeAudio) { currentEdgeAudio.pause(); currentEdgeAudio = null; }
@@ -1487,6 +1723,9 @@
                 if (mappedPath) {
                     console.log("[Edge TTS] 사전 생성된 MP3 파일 즉시 재생:", mappedPath);
                     currentEdgeAudio = new Audio(mappedPath);
+                    setTTSLoadingState(targetBtn, false, true);
+                    currentEdgeAudio.onended = () => setTTSLoadingState(targetBtn, false, false);
+                    currentEdgeAudio.onerror = () => setTTSLoadingState(targetBtn, false, false);
                     await currentEdgeAudio.play();
                     return;
                 }
@@ -1549,6 +1788,9 @@
             const rateVal = parseInt(localStorage.getItem('edge_tts_rate') || "0");
 
             console.log(`[Edge HF TTS] 텍스트: "${edgeText}", 보이스: ${voiceChoice}, 피치: +${finalPitch}Hz, 속도: ${rateVal}%, 주소: ${cleanEndpoint}`);
+
+            // 로딩 애니메이션 가동! (펄스 맥박 + "🎙️ 음성 생성 중...")
+            setTTSLoadingState(targetBtn, true, false);
 
             try {
                 let audioUrl = null;
@@ -1639,6 +1881,9 @@
                 if (audioUrl) {
                     console.log("[Edge HF TTS] 최종 오디오 재생 URL:", audioUrl);
                     currentEdgeAudio = new Audio(audioUrl);
+                    setTTSLoadingState(targetBtn, false, true); // 재생 중 발광 애니메이션으로 전환!
+                    currentEdgeAudio.onended = () => setTTSLoadingState(targetBtn, false, false);
+                    currentEdgeAudio.onerror = () => setTTSLoadingState(targetBtn, false, false);
                     await currentEdgeAudio.play();
                     return;
                 } else {
@@ -1658,6 +1903,9 @@
                         const blob = await localResp.blob();
                         if (blob.size > 0) {
                             currentEdgeAudio = new Audio(URL.createObjectURL(blob));
+                            setTTSLoadingState(targetBtn, false, true);
+                            currentEdgeAudio.onended = () => setTTSLoadingState(targetBtn, false, false);
+                            currentEdgeAudio.onerror = () => setTTSLoadingState(targetBtn, false, false);
                             await currentEdgeAudio.play();
                             console.log("[Edge TTS] 로컬 프록시로 대체 재생 성공!");
                             return;
@@ -1665,14 +1913,15 @@
                     }
                 } catch (localErr) {}
 
+                setTTSLoadingState(targetBtn, false, false);
                 alert(`[3번 Microsoft Edge TTS 오류]\n${err.message}\n\n• 등록된 Space 주소: ${spaceEndpoint}\n• 3번 스피커를 우클릭하여 Hugging Face Space 주소를 다시 설정할 수 있습니다.\n• Space가 'Public(공개)' 상태이고 'Running' 중인지 확인해주세요.`);
             }
         }
 
         // 표제어 전용 Microsoft Edge TTS 재생
-        function speakPronunciationEdge() {
+        function speakPronunciationEdge(ev = null) {
             if (!currentItem || !currentItem.pronunciation) return;
-            speakEdgeTTS(currentItem.pronunciation);
+            speakEdgeTTS(currentItem.pronunciation, ev);
         }
 
         // 1번 회색 스피커: 기본 TTS를 사용하고 강세/성조 기호(', ′)가 있는 원래 발음 text를 넣어 부드럽게 발화
