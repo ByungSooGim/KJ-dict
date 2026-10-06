@@ -1225,6 +1225,42 @@
         // 백그라운드에서 인덱스 맵 사전 로드
         loadAudioMap();
 
+        // 경상도 방언 발음 텍스트 정제 헬퍼:
+        // 마지막 음절에 강세(' 또는 ′)가 있을 때, 쉼표처럼 뚝 끊어지지 않고
+        // 경상도 방언 발음 텍스트 정제 헬퍼:
+        // 마지막 음절에 강세(' 또는 ′)가 있을 때, 공백(' ')처럼 중간에 뚝 끊기지 않고
+        // 한 호흡으로 매끄럽게 이어지도록 하이픈('-')으로 연결하여 말꼬리 하강 방지 및 성조 강세 유지
+        function prepareDialectSpeechText(rawText) {
+            if (!rawText) return "";
+            let text = rawText.trim();
+            if (text.startsWith('[') && text.endsWith(']')) {
+                text = text.slice(1, -1).trim();
+            }
+            while (/\[[^\]]*\]/.test(text)) {
+                text = text.replace(/\[[^\]]*\]/g, '');
+            }
+            text = text.replace(/\{([^/>-]+)[/>-][^}]+\}/g, '$1');
+            text = text.replace(/<[^>]+>/g, '');
+
+            // 슬래시(/) 복수 발음 처리
+            const parts = text.split('/');
+            const processed = parts.map(part => {
+                let p = part.trim();
+                // 어절 끝의 한글 음절에 강세(' 또는 ′)가 있는 경우:
+                // 공백(' ') 대신 하이픈('-')으로 연결하여 중간에 숨 쉬듯 뚝 끊어지지 않고
+                // 하나의 연속된 소리로 부드럽게 이어지면서도 마지막 음절에 독립 성조 강세 부여
+                p = p.replace(/([가-힣'′]{1,})([가-힣])['′](?=[,\s]|$)/g, (m, prefix, last) => {
+                    const cleanPrefix = prefix.replace(/['′]/g, '');
+                    return `${cleanPrefix}-${last}`;
+                });
+                // 남은 강세 기호 제거
+                p = p.replace(/['′]/g, '').trim();
+                return p;
+            });
+
+            return processed.join(', ').replace(/\s+/g, ' ').trim();
+        }
+
         // 일반 텍스트 읽기 함수 (예문 전용 - 사전 생성 오디오 우선)
         async function speakText(text) {
             if (!text) return;
@@ -1244,9 +1280,10 @@
 
             if (!window.speechSynthesis) return;
             window.speechSynthesis.cancel();
-            const utterance = new SpeechSynthesisUtterance(text);
+            const speechText = prepareDialectSpeechText(text);
+            const utterance = new SpeechSynthesisUtterance(speechText);
             utterance.lang = 'ko-KR';
-            utterance.rate = 0.8;
+            utterance.rate = 0.92;
             window.speechSynthesis.speak(utterance);
         }
 
@@ -1781,27 +1818,10 @@
                 console.warn("[Edge TTS] 사전 생성 오디오 확인 중 예외:", preErr);
             }
 
-            // 2. 텍스트 정제 (prosody 등 모든 SSML/HTML 태그 및 특수문자 완벽 제거)
-            let edgeText = rawText.trim();
-            // 모든 HTML/XML/SSML 태그(<prosody>, <speak> 등)를 철저히 제거하여 글자로 읽히지 않도록 차단
-            edgeText = edgeText.replace(/<[^>]+>/g, '').trim();
-
-            if (edgeText.startsWith('[') && edgeText.endsWith(']')) {
-                edgeText = edgeText.slice(1, -1).trim();
-            }
-            while (/\[[^\]]*\]/.test(edgeText)) {
-                edgeText = edgeText.replace(/\[[^\]]*\]/g, '');
-            }
-            edgeText = edgeText.replace(/\{([^/>-]+)[/>-][^}]+\}/g, '$1');
-            // 강세/성조 기호(' 및 ′)를 제거하여 Edge TTS가 특수문자를 읽지 않도록 함
-            edgeText = edgeText.replace(/['′]/g, '').trim();
-            edgeText = edgeText.replace(/\//g, ', ').trim();
-
-            // 경상도 사투리 특성 반영: 의문문이어도 끝소리를 올리지 않으므로 '?'를 '.'으로 치환
-            edgeText = edgeText.replace(/\?+/g, '.').replace(/[!]+/g, '.').replace(/\.+/g, '.').trim();
-            if (edgeText && !/[.,]$/.test(edgeText)) {
-                edgeText += '.';
-            }
+            // 2. 텍스트 정제 (마지막 음절 강세 분리 및 모든 SSML 태그 제거)
+            let edgeText = prepareDialectSpeechText(rawText);
+            // 의문/감탄 기호 정리하되, 말꼬리가 아래로 뚝 떨어지게 만드는 마침표(.)는 강제로 붙이지 않음
+            edgeText = edgeText.replace(/\?+/g, '').replace(/[!]+/g, '').replace(/\.+/g, '').trim();
 
             if (!edgeText) return;
 
@@ -1998,31 +2018,17 @@
             speakEdgeTTS(currentItem.pronunciation, ev);
         }
 
-        // 1번 회색 스피커: 기본 TTS를 사용하고 강세/성조 기호(', ′)가 있는 원래 발음 text를 넣어 부드럽게 발화
+        // 1번 회색 스피커: 기본 TTS를 사용하고 마지막 음절 강세가 분리된 정제 텍스트로 자연스럽게 발화
         function speakPronunciation() {
             if (!currentItem || !currentItem.pronunciation || !window.speechSynthesis) return;
             window.speechSynthesis.cancel();
 
-            let raw = currentItem.pronunciation.trim();
+            const text = prepareDialectSpeechText(currentItem.pronunciation);
+            if (!text) return;
 
-            // 1. 전체를 둘러싼 가장 바깥쪽 대괄호 [ ... ] 제거
-            if (raw.startsWith('[') && raw.endsWith(']')) {
-                raw = raw.slice(1, -1).trim();
-            }
-
-            // 2. 발음 기호 내부에 중첩된 대괄호 [...] 및 그 안의 내용(IPA, 로마자 등) 덜어내기
-            while (/\[[^\]]*\]/.test(raw)) {
-                raw = raw.replace(/\[[^\]]*\]/g, '');
-            }
-
-            // 3. {A/B} 또는 {A>B} 형태에서 대표형 A만 추출, 슬래시는 쉼표로 변환
-            let text = raw.replace(/\{([^/>-]+)[/>-][^}]+\}/g, '$1');
-            text = text.replace(/\//g, ', ');
-
-            // 강세/성조 기호(', ′)가 포함된 원래 발음 텍스트 그대로 기본 TTS로 부드럽게 한 번에 발화
             const u = new SpeechSynthesisUtterance(text);
             u.lang = 'ko-KR';
-            u.rate = 0.8;
+            u.rate = 0.92;
             window.speechSynthesis.speak(u);
         }
 
