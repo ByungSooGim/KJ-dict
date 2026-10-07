@@ -2187,23 +2187,12 @@
 
             // 2. 예문(Examples) 추가
             if (item.examples && item.examples.length > 0) {
-                htmlContent += item.examples.map(ex => {
-                    const fullDialect = ex.dialect || "";
-                    const encFullDialect = encodeURIComponent(fullDialect);
-                    const processedDialect = processDialectTTS(fullDialect);
-                    return `
+                htmlContent += item.examples.map(ex => `
                     <div class="ex-item">
-                        <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:8px;">
-                            <div style="flex:1; line-height:1.7;">${processedDialect}</div>
-                            <div style="display:inline-flex; align-items:center; gap:4px; flex-shrink:0; margin-top:2px;">
-                                <span class="speaker-btn" title="예문 기본 TTS" data-pron="${encFullDialect}" onclick="event.stopPropagation(); speakText(decodeURIComponent(this.dataset.pron), event)"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg></span>
-                                <span class="speaker-btn speaker-btn-edge" title="예문 Edge TTS (클라우드 연동 / 우클릭: 설정)" data-pron="${encFullDialect}" onclick="event.stopPropagation(); speakEdgeTTS(decodeURIComponent(this.dataset.pron), event)" oncontextmenu="event.preventDefault(); event.stopPropagation(); setEdgeHFSpaceUrl();"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span>
-                            </div>
-                        </div>
+                         ${processDialectTTS(ex.dialect)}
                         <span class="ex-std">표준어: ${ex.standard}</span>
                     </div>
-                `;
-                }).join('');
+                `).join('');
             }
             // 1. 구절(Idioms) 추가
             if (item.idioms && item.idioms.length > 0) {
@@ -2220,16 +2209,9 @@
                     } else {
                         text = idm.meaning || "";
                     }
-                    const encText = encodeURIComponent(text);
                     return `
                     <div class="ex-item" style="border-left: 3px solid #7ea1c4; background: #f4f7fa; line-height: 1.6;">
-                        <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:8px;">
-                            <div style="font-size:15px; color:#333; flex:1;">${processIdiomTTS(text)}</div>
-                            <div style="display:inline-flex; align-items:center; gap:4px; flex-shrink:0; margin-top:2px;">
-                                <span class="speaker-btn" title="구절 기본 TTS" data-pron="${encText}" onclick="event.stopPropagation(); speakText(decodeURIComponent(this.dataset.pron), event)"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg></span>
-                                <span class="speaker-btn speaker-btn-edge" title="구절 Edge TTS (클라우드 연동 / 우클릭: 설정)" data-pron="${encText}" onclick="event.stopPropagation(); speakEdgeTTS(decodeURIComponent(this.dataset.pron), event)" oncontextmenu="event.preventDefault(); event.stopPropagation(); setEdgeHFSpaceUrl();"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span>
-                            </div>
-                        </div>
+                        <div style="font-size:15px; color:#333;">${processIdiomTTS(text)}</div>
                     </div>
                 `;
                 }).join('');
