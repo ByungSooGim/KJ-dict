@@ -1911,32 +1911,60 @@
             try {
                 let audioUrl = null;
 
-                // 방법 1: @gradio/client 연결 (Gradio 5/4 클라이언트)
+                // [방법 0: 초고속 직통 REST API 호출 (/tts 및 /api/tts)]
+                // Gradio 큐나 복잡한 SSE 파싱 없이 0.1초 만에 MP3 Blob을 다이렉트로 수신!
                 try {
-                    const { Client } = await import("https://cdn.jsdelivr.net/npm/@gradio/client/dist/index.min.js");
-                    console.log("[Edge HF TTS] Client.connect 시도:", cleanEndpoint);
-                    const app = await Client.connect(cleanEndpoint);
-
-                    const endpoints = ["/generate_speech", "/predict", 0];
-                    for (const ep of endpoints) {
+                    const directEndpoints = [`${baseHost}/tts`, `${baseHost}/api/tts`];
+                    for (const ep of directEndpoints) {
                         try {
-                            console.log(`[Edge HF TTS] 엔드포인트(${ep}) 호출 중...`);
-                            const result = await app.predict(ep, [ edgeText, voiceChoice, rateVal, finalPitch ]);
-                            if (result && result.data && result.data.length > 0) {
-                                const item = result.data[0];
-                                let raw = (typeof item === 'object' && item !== null) ? (item.url || item.path) : (typeof item === 'string' ? item : null);
-                                if (raw) {
-                                    audioUrl = raw;
-                                    console.log(`[Edge HF TTS] 엔드포인트(${ep}) 성공! 수신 URL:`, audioUrl);
+                            console.log("[Edge HF TTS] 직통 REST 호출 시도:", ep);
+                            const directResp = await fetch(ep, {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ text: edgeText, voice: voiceChoice, rate: rateVal, pitch: finalPitch })
+                            });
+                            if (directResp.ok) {
+                                const blob = await directResp.blob();
+                                if (blob && blob.size > 0) {
+                                    audioUrl = URL.createObjectURL(blob);
+                                    console.log("[Edge HF TTS] 직통 REST 성공! Blob 크기:", blob.size);
                                     break;
                                 }
                             }
-                        } catch (epErr) {
-                            console.warn(`[Edge HF TTS] 엔드포인트(${ep}) 실패:`, epErr.message);
+                        } catch (deErr) {
+                            // 다음 엔드포인트 시도
                         }
                     }
-                } catch (gradioErr) {
-                    console.warn("[Edge HF TTS] @gradio/client 연결 실패 -> REST 직접 호출로 전환:", gradioErr.message);
+                } catch (dErr) {}
+
+                // 방법 1: @gradio/client 연결 (Gradio 5/4 클라이언트 Fallback)
+                if (!audioUrl) {
+                    try {
+                        const { Client } = await import("https://cdn.jsdelivr.net/npm/@gradio/client/dist/index.min.js");
+                        console.log("[Edge HF TTS] Client.connect 시도:", cleanEndpoint);
+                        const app = await Client.connect(cleanEndpoint);
+
+                        const endpoints = ["/generate_speech", "/predict", 0];
+                        for (const ep of endpoints) {
+                            try {
+                                console.log(`[Edge HF TTS] 엔드포인트(${ep}) 호출 중...`);
+                                const result = await app.predict(ep, [ edgeText, voiceChoice, rateVal, finalPitch ]);
+                                if (result && result.data && result.data.length > 0) {
+                                    const item = result.data[0];
+                                    let raw = (typeof item === 'object' && item !== null) ? (item.url || item.path) : (typeof item === 'string' ? item : null);
+                                    if (raw) {
+                                        audioUrl = raw;
+                                        console.log(`[Edge HF TTS] 엔드포인트(${ep}) 성공! 수신 URL:`, audioUrl);
+                                        break;
+                                    }
+                                }
+                            } catch (epErr) {
+                                console.warn(`[Edge HF TTS] 엔드포인트(${ep}) 실패:`, epErr.message);
+                            }
+                        }
+                    } catch (gradioErr) {
+                        console.warn("[Edge HF TTS] @gradio/client 연결 실패 -> REST 직접 호출로 전환:", gradioErr.message);
+                    }
                 }
 
                 // 방법 2: REST API 직접 호출 (Gradio 5 SSE 및 REST 호환)
