@@ -1191,8 +1191,8 @@
         function processDialectTTS(text) {
             if (!text) return "";
             return text.replace(/\[(.*?)\]/g, (match, p1) => {
-                const rawPron = p1.trim().replace(/'/g, "\\'");
-                return `<b style="color:var(--point)">${p1}</b><span class="speaker-btn" title="기본 TTS (원래 발음 기호)" onclick="event.stopPropagation(); speakText('${rawPron}', event)"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg></span><span class="speaker-btn speaker-btn-edge" title="Edge TTS (클라우드 연동 / 우클릭: 설정)" onclick="event.stopPropagation(); speakEdgeTTS('${rawPron}', event)" oncontextmenu="event.preventDefault(); event.stopPropagation(); setEdgeHFSpaceUrl();"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span>`;
+                const encPron = encodeURIComponent(p1.trim());
+                return `<b style="color:var(--point)">${p1}</b><span class="speaker-btn" title="기본 TTS (원래 발음 기호)" data-pron="${encPron}" onclick="event.stopPropagation(); speakText(decodeURIComponent(this.dataset.pron), event)"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg></span><span class="speaker-btn speaker-btn-edge" title="Edge TTS (클라우드 연동 / 우클릭: 설정)" data-pron="${encPron}" onclick="event.stopPropagation(); speakEdgeTTS(decodeURIComponent(this.dataset.pron), event)" oncontextmenu="event.preventDefault(); event.stopPropagation(); setEdgeHFSpaceUrl();"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span>`;
             });
         }
 
@@ -1201,11 +1201,12 @@
             if (!text) return "";
             let safeText = text.replace(/</g, "&lt;").replace(/>/g, "&gt;");
             return safeText.replace(/\[(.*?)\]/g, (match, p1) => {
-                const rawPron = p1.trim().replace(/'/g, "\\'");
-                return `<b style="color:var(--point)">[${p1}]</b><span class="speaker-btn" title="기본 TTS (원래 발음 기호)" onclick="event.stopPropagation(); speakText('${rawPron}', event)"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg></span><span class="speaker-btn speaker-btn-edge" title="Edge TTS (클라우드 연동 / 우클릭: 설정)" onclick="event.stopPropagation(); speakEdgeTTS('${rawPron}', event)" oncontextmenu="event.preventDefault(); event.stopPropagation(); setEdgeHFSpaceUrl();"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span>`;
+                const encPron = encodeURIComponent(p1.trim());
+                return `<b style="color:var(--point)">[${p1}]</b><span class="speaker-btn" title="기본 TTS (원래 발음 기호)" data-pron="${encPron}" onclick="event.stopPropagation(); speakText(decodeURIComponent(this.dataset.pron), event)"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg></span><span class="speaker-btn speaker-btn-edge" title="Edge TTS (클라우드 연동 / 우클릭: 설정)" data-pron="${encPron}" onclick="event.stopPropagation(); speakEdgeTTS(decodeURIComponent(this.dataset.pron), event)" oncontextmenu="event.preventDefault(); event.stopPropagation(); setEdgeHFSpaceUrl();"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span>`;
             });
         }
 
+        // 사전 생성된 오디오 인덱스 맵 (audio/audio_map.json)
         // 사전 생성된 오디오 인덱스 맵 (audio/audio_map.json)
         let preGeneratedAudioMap = null;
         async function loadAudioMap() {
@@ -1225,9 +1226,25 @@
         // 백그라운드에서 인덱스 맵 사전 로드
         loadAudioMap();
 
-        // 경상도 방언 발음 텍스트 정제 헬퍼:
-        // 마지막 음절에 강세(' 또는 ′)가 있을 때, 쉼표처럼 뚝 끊어지지 않고
-        // 경상도 방언 발음 텍스트 정제 헬퍼:
+        // 오디오 맵 다각도 퍼지 검색 헬퍼
+        function lookupAudioMap(rawText, map) {
+            if (!rawText || !map) return null;
+            const t = rawText.trim();
+            if (map[t]) return map[t];
+            if (map[`[${t}]`]) return map[`[${t}]`];
+            const unbracket = (t.startsWith('[') && t.endsWith(']')) ? t.slice(1, -1).trim() : t;
+            if (map[unbracket]) return map[unbracket];
+            const cleanT = t.replace(/[\[\]'′°]/g, '').trim();
+            if (map[cleanT]) return map[cleanT];
+            // {선택1/선택2} 앞 표기 채택 형태
+            const opt1 = t.replace(/\{([^/>-]+)[/>-][^}]+\}/g, '$1').trim();
+            if (map[opt1]) return map[opt1];
+            const cleanOpt1 = opt1.replace(/[\[\]'′°]/g, '').trim();
+            if (map[cleanOpt1]) return map[cleanOpt1];
+            return null;
+        }
+
+        // 경상도 방언 발음 텍스트 정제 헬퍼 (기본 브라우저 TTS용):
         // 마지막 음절에 강세(' 또는 ′)가 있을 때, 공백(' ')처럼 중간에 뚝 끊기지 않고
         // 한 호흡으로 매끄럽게 이어지도록 하이픈('-')으로 연결하여 말꼬리 하강 방지 및 성조 강세 유지
         function prepareDialectSpeechText(rawText) {
@@ -1236,11 +1253,11 @@
             if (text.startsWith('[') && text.endsWith(']')) {
                 text = text.slice(1, -1).trim();
             }
-            while (/\[[^\]]*\]/.test(text)) {
-                text = text.replace(/\[[^\]]*\]/g, '');
-            }
+            // 문장 내 [발음]은 발음 내용을 채택 (앞뒤 공백 유지)
+            text = text.replace(/\[(.*?)\]/g, ' $1 ');
             text = text.replace(/\{([^/>-]+)[/>-][^}]+\}/g, '$1');
             text = text.replace(/<[^>]+>/g, '');
+            text = text.replace(/°/g, '');
 
             // 슬래시(/) 복수 발음 처리
             const parts = text.split('/');
@@ -1261,15 +1278,14 @@
             return processed.join(', ').replace(/\s+/g, ' ').trim();
         }
 
-        // 일반 텍스트 읽기 함수 (예문 전용 - 사전 생성 오디오 우선)
+        // 일반 텍스트 읽기 함수 (예문/단어 공용 - 사전 생성 오디오 우선)
         async function speakText(text) {
             if (!text) return;
 
             // 사전 생성된 고음질 MP3가 존재하면 우선 재생
             try {
                 const map = await loadAudioMap();
-                const key = text.trim();
-                const mappedPath = map[key] || map[key.replace(/'/g, "\\'")] || map[`[${key}]`];
+                const mappedPath = lookupAudioMap(text, map);
                 if (mappedPath) {
                     if (currentEdgeAudio) { currentEdgeAudio.pause(); currentEdgeAudio = null; }
                     currentEdgeAudio = new Audio(mappedPath);
@@ -1781,18 +1797,19 @@
         }
 
         // 경상도 방언 발음 텍스트를 Edge TTS 전용 SSML prosody 태그로 변환하는 함수
-        // (강세 음절에 <prosody pitch="+XXHz">를 적용하여 억양을 매우 강하고 뚜렷하게 발음)
+        // (강세 2개 이하는 음절별 pitch, 3개 이상은 Azure Edge TTS의 3개 태그 한도 초과 오류 방지를 위해 문장 전체 단일 prosody 적용)
         function convertDialectToEdgeSSML(rawText, pitchHz = 35) {
             if (!rawText) return "";
             let text = rawText.trim();
             if (text.startsWith('[') && text.endsWith(']')) {
                 text = text.slice(1, -1).trim();
             }
-            while (/\[[^\]]*\]/.test(text)) {
-                text = text.replace(/\[[^\]]*\]/g, '');
-            }
+            // {선택1/선택2} 형태는 앞쪽 표기 채택
             text = text.replace(/\{([^/>-]+)[/>-][^}]+\}/g, '$1');
+            // 문장 내 [발음]은 발음 내용을 채택 (앞뒤 공백 유지)
+            text = text.replace(/\[(.*?)\]/g, ' $1 ');
             text = text.replace(/<[^>]+>/g, '');
+            text = text.replace(/°/g, '');
 
             const pVal = Math.abs(parseInt(pitchHz) || 35);
             const pStr = `+${pVal}Hz`;
@@ -1801,15 +1818,95 @@
             const parts = text.split('/');
             const processed = parts.map(part => {
                 let p = part.trim();
-                // 한글 음절에 강세(' 또는 ′)가 있는 경우: prosody pitch 태그 부여
-                p = p.replace(/([가-힣])['′]/g, (m, char) => {
-                    return `<prosody pitch="${pStr}">${char}</prosody>`;
-                });
-                p = p.replace(/['′]/g, '').trim();
+                // 강세 기호(' 또는 ′) 개수 계산
+                const accentMatches = p.match(/([가-힣])['′]/g);
+                const accentCount = accentMatches ? accentMatches.length : 0;
+
+                if (accentCount > 0 && accentCount <= 2) {
+                    // 강세가 1~2개(표제어, 짧은 단어 등): 음절별 prosody pitch 태그 부여
+                    p = p.replace(/([가-힣])['′]/g, (m, char) => {
+                        return `<prosody pitch="${pStr}">${char}</prosody>`;
+                    });
+                    p = p.replace(/['′]/g, '').trim();
+                } else if (accentCount > 2) {
+                    // 강세가 3개 이상(긴 예문 문장 등):
+                    // Azure Edge TTS는 prosody 태그가 3개 이상이면 "No audio was received"로 거부하므로
+                    // 문장 전체를 단일 prosody pitch 태그로 감싸서 거부 없이 강한 경상도 억양 합성
+                    const cleanP = p.replace(/['′]/g, '').replace(/\s+/g, ' ').trim();
+                    p = `<prosody pitch="${pStr}">${cleanP}</prosody>`;
+                } else {
+                    // 강세 기호가 없는 일반 예문 문장: 자연스러운 텍스트 유지
+                    p = p.replace(/['′]/g, '').trim();
+                }
                 return p;
             });
 
-            return processed.join(', ').replace(/\?+/g, '').replace(/[!]+/g, '').replace(/\.+/g, '').trim();
+            let result = processed.join(', ').replace(/\s+/g, ' ').trim();
+            // 말꼬리 하강을 유발하는 의문부호(?)나 느낌표(!)를 마침표(.)로 치환
+            result = result.replace(/[\?!]+/g, '.').replace(/\.+/g, '.').trim();
+            return result;
+        }
+
+        // Gradio 4 Queue를 브라우저 순수 fetch와 SSE 스트림으로 직접 호출하는 초경량 헬퍼
+        async function requestGradio4Queue(baseHost, text, voice, rate, pitch) {
+            const session_hash = Math.random().toString(36).substring(2, 12);
+            const joinUrl = `${baseHost}/queue/join`;
+            const dataUrl = `${baseHost}/queue/data?session_hash=${session_hash}`;
+
+            const joinResp = await fetch(joinUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    data: [text, voice, rate, pitch],
+                    event_data: null,
+                    fn_index: 0,
+                    session_hash: session_hash,
+                    trigger_id: 11
+                })
+            });
+
+            if (!joinResp.ok) {
+                throw new Error(`Queue join failed: ${joinResp.status}`);
+            }
+
+            const dataResp = await fetch(dataUrl);
+            if (!dataResp.ok) {
+                throw new Error(`Queue data stream failed: ${dataResp.status}`);
+            }
+
+            const reader = dataResp.body.getReader();
+            const decoder = new TextDecoder();
+            let buffer = '';
+
+            while (true) {
+                const { value, done } = await reader.read();
+                if (done) break;
+                buffer += decoder.decode(value, { stream: true });
+                const lines = buffer.split('\n');
+                buffer = lines.pop(); // 미완성 줄 보존
+
+                for (const line of lines) {
+                    if (line.startsWith('data:')) {
+                        try {
+                            const evt = JSON.parse(line.slice(5).trim());
+                            if (evt.msg === 'process_completed') {
+                                if (evt.success && evt.output && evt.output.data && evt.output.data[0]) {
+                                    const fileObj = evt.output.data[0];
+                                    let raw = (typeof fileObj === 'object' && fileObj !== null) ? (fileObj.url || fileObj.path) : fileObj;
+                                    if (raw) return raw;
+                                } else {
+                                    throw new Error(evt.output?.error || "Gradio processing failed");
+                                }
+                            }
+                        } catch (pe) {
+                            if (pe.message && !pe.message.includes('JSON')) {
+                                throw pe;
+                            }
+                        }
+                    }
+                }
+            }
+            throw new Error("Stream closed without audio result");
         }
 
         // Microsoft Edge TTS (Hugging Face Spaces 연동) 호출 및 재생 함수
@@ -1835,8 +1932,7 @@
             // 0. 사전 생성된 고음질 MP3 파일이 있으면 즉시 재생
             try {
                 const map = await loadAudioMap();
-                const key = rawText.trim();
-                const mappedPath = map[key] || map[key.replace(/'/g, "\\'")] || map[`[${key}]`];
+                const mappedPath = lookupAudioMap(rawText, map);
                 if (mappedPath) {
                     console.log("[Edge TTS] 사전 생성된 MP3 파일 즉시 재생:", mappedPath);
                     currentEdgeAudio = new Audio(mappedPath);
@@ -1854,7 +1950,7 @@
             const finalPitch = parseInt(localStorage.getItem('edge_tts_pitch') || "35"); // 강세와 일반 음의 피치 차이(Hz)
             const rateVal = parseInt(localStorage.getItem('edge_tts_rate') || "0");
 
-            // 2. 텍스트 정제 및 SSML prosody 태그 변환 (음절 단위 강력한 억양 적용)
+            // 2. 텍스트 정제 및 SSML prosody 태그 변환 (태그 2개 이하 유지로 Azure 거부 방지)
             let edgeText = convertDialectToEdgeSSML(rawText, finalPitch);
             if (!edgeText) return;
 
@@ -1912,12 +2008,10 @@
                 let audioUrl = null;
 
                 // [방법 0: 초고속 직통 REST API 호출 (/tts 및 /api/tts)]
-                // Gradio 큐나 복잡한 SSE 파싱 없이 0.1초 만에 MP3 Blob을 다이렉트로 수신!
                 try {
                     const directEndpoints = [`${baseHost}/tts`, `${baseHost}/api/tts`];
                     for (const ep of directEndpoints) {
                         try {
-                            console.log("[Edge HF TTS] 직통 REST 호출 시도:", ep);
                             const directResp = await fetch(ep, {
                                 method: 'POST',
                                 headers: { 'Content-Type': 'application/json' },
@@ -1931,88 +2025,43 @@
                                     break;
                                 }
                             }
-                        } catch (deErr) {
-                            // 다음 엔드포인트 시도
-                        }
+                        } catch (deErr) {}
                     }
                 } catch (dErr) {}
 
-                // 방법 1: @gradio/client 연결 (Gradio 5/4 클라이언트 Fallback)
+                // [방법 1: 순수 JS Gradio 4 Queue 호출]
+                if (!audioUrl) {
+                    try {
+                        console.log("[Edge HF TTS] Gradio 4 Queue 직접 호출 시도:", baseHost);
+                        audioUrl = await requestGradio4Queue(baseHost, edgeText, voiceChoice, rateVal, finalPitch);
+                        console.log("[Edge HF TTS] Gradio 4 Queue 성공! 오디오 URL:", audioUrl);
+                    } catch (queueErr) {
+                        console.warn("[Edge HF TTS] Gradio 4 Queue 오류 -> @gradio/client/REST로 Fallback:", queueErr.message);
+                    }
+                }
+
+                // [방법 2: @gradio/client 라이브러리 Fallback]
                 if (!audioUrl) {
                     try {
                         const { Client } = await import("https://cdn.jsdelivr.net/npm/@gradio/client/dist/index.min.js");
                         console.log("[Edge HF TTS] Client.connect 시도:", cleanEndpoint);
                         const app = await Client.connect(cleanEndpoint);
 
-                        const endpoints = ["/generate_speech", "/predict", 0];
+                        const endpoints = ["/predict", "/generate_speech", 0];
                         for (const ep of endpoints) {
                             try {
-                                console.log(`[Edge HF TTS] 엔드포인트(${ep}) 호출 중...`);
                                 const result = await app.predict(ep, [ edgeText, voiceChoice, rateVal, finalPitch ]);
                                 if (result && result.data && result.data.length > 0) {
                                     const item = result.data[0];
                                     let raw = (typeof item === 'object' && item !== null) ? (item.url || item.path) : (typeof item === 'string' ? item : null);
                                     if (raw) {
                                         audioUrl = raw;
-                                        console.log(`[Edge HF TTS] 엔드포인트(${ep}) 성공! 수신 URL:`, audioUrl);
                                         break;
                                     }
                                 }
-                            } catch (epErr) {
-                                console.warn(`[Edge HF TTS] 엔드포인트(${ep}) 실패:`, epErr.message);
-                            }
+                            } catch (epErr) {}
                         }
-                    } catch (gradioErr) {
-                        console.warn("[Edge HF TTS] @gradio/client 연결 실패 -> REST 직접 호출로 전환:", gradioErr.message);
-                    }
-                }
-
-                // 방법 2: REST API 직접 호출 (Gradio 5 SSE 및 REST 호환)
-                if (!audioUrl) {
-                    const restEndpoints = [
-                        `${baseHost}/gradio_api/call/generate_speech`,
-                        `${baseHost}/gradio_api/call/predict`,
-                        `${baseHost}/api/generate_speech`,
-                        `${baseHost}/api/predict`,
-                        `${baseHost}/predict`
-                    ];
-
-                    for (const ep of restEndpoints) {
-                        try {
-                            console.log("[Edge HF TTS] REST 호출 시도:", ep);
-                            const res = await fetch(ep, {
-                                method: 'POST',
-                                headers: { 'Content-Type': 'application/json' },
-                                body: JSON.stringify({ data: [ edgeText, voiceChoice, rateVal, finalPitch ] })
-                            });
-                            if (res.ok) {
-                                const respData = await res.json();
-                                if (respData.event_id) {
-                                    const eventRes = await fetch(`${ep}/${respData.event_id}`);
-                                    const eventText = await eventRes.text();
-                                    const lines = eventText.split('\n');
-                                    for (const l of lines) {
-                                        if (l.startsWith('data:')) {
-                                            try {
-                                                const d = JSON.parse(l.slice(5).trim());
-                                                if (Array.isArray(d) && d[0]) {
-                                                    const it = d[0];
-                                                    audioUrl = (typeof it === 'object' && it !== null) ? (it.url || it.path) : it;
-                                                    if (audioUrl) break;
-                                                }
-                                            } catch (je) {}
-                                        }
-                                    }
-                                } else if (respData.data && respData.data[0]) {
-                                    const it = respData.data[0];
-                                    audioUrl = (typeof it === 'object' && it !== null) ? (it.url || it.path) : it;
-                                }
-                                if (audioUrl) break;
-                            }
-                        } catch (restErr) {
-                            // 다음 엔드포인트 계속
-                        }
-                    }
+                    } catch (gradioErr) {}
                 }
 
                 // 상대 경로인 경우 baseHost 붙여 절대 URL 완성
@@ -2050,7 +2099,6 @@
                         const blob = await localResp.blob();
                         if (blob.size > 0) {
                             const blobUrl = URL.createObjectURL(blob);
-                            // [핵심 기능 1] 로컬 생성 오디오도 캐시에 저장
                             edgeAudioCache.set(cacheKey, blobUrl);
 
                             currentEdgeAudio = new Audio(blobUrl);
@@ -2139,12 +2187,23 @@
 
             // 2. 예문(Examples) 추가
             if (item.examples && item.examples.length > 0) {
-                htmlContent += item.examples.map(ex => `
+                htmlContent += item.examples.map(ex => {
+                    const fullDialect = ex.dialect || "";
+                    const encFullDialect = encodeURIComponent(fullDialect);
+                    const processedDialect = processDialectTTS(fullDialect);
+                    return `
                     <div class="ex-item">
-                         ${processDialectTTS(ex.dialect)}
+                        <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:8px;">
+                            <div style="flex:1; line-height:1.7;">${processedDialect}</div>
+                            <div style="display:inline-flex; align-items:center; gap:4px; flex-shrink:0; margin-top:2px;">
+                                <span class="speaker-btn" title="예문 기본 TTS" data-pron="${encFullDialect}" onclick="event.stopPropagation(); speakText(decodeURIComponent(this.dataset.pron), event)"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg></span>
+                                <span class="speaker-btn speaker-btn-edge" title="예문 Edge TTS (클라우드 연동 / 우클릭: 설정)" data-pron="${encFullDialect}" onclick="event.stopPropagation(); speakEdgeTTS(decodeURIComponent(this.dataset.pron), event)" oncontextmenu="event.preventDefault(); event.stopPropagation(); setEdgeHFSpaceUrl();"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span>
+                            </div>
+                        </div>
                         <span class="ex-std">표준어: ${ex.standard}</span>
                     </div>
-                `).join('');
+                `;
+                }).join('');
             }
             // 1. 구절(Idioms) 추가
             if (item.idioms && item.idioms.length > 0) {
@@ -2161,9 +2220,16 @@
                     } else {
                         text = idm.meaning || "";
                     }
+                    const encText = encodeURIComponent(text);
                     return `
                     <div class="ex-item" style="border-left: 3px solid #7ea1c4; background: #f4f7fa; line-height: 1.6;">
-                        <div style="font-size:15px; color:#333;">${processIdiomTTS(text)}</div>
+                        <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:8px;">
+                            <div style="font-size:15px; color:#333; flex:1;">${processIdiomTTS(text)}</div>
+                            <div style="display:inline-flex; align-items:center; gap:4px; flex-shrink:0; margin-top:2px;">
+                                <span class="speaker-btn" title="구절 기본 TTS" data-pron="${encText}" onclick="event.stopPropagation(); speakText(decodeURIComponent(this.dataset.pron), event)"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg></span>
+                                <span class="speaker-btn speaker-btn-edge" title="구절 Edge TTS (클라우드 연동 / 우클릭: 설정)" data-pron="${encText}" onclick="event.stopPropagation(); speakEdgeTTS(decodeURIComponent(this.dataset.pron), event)" oncontextmenu="event.preventDefault(); event.stopPropagation(); setEdgeHFSpaceUrl();"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span>
+                            </div>
+                        </div>
                     </div>
                 `;
                 }).join('');
