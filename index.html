@@ -1698,12 +1698,12 @@
                 localStorage.setItem('hf_edge_tts_endpoint', newUrl.trim());
             }
 
-            // 강세와 일반 음의 피치 차이 설정
-            const currentPitch = localStorage.getItem('edge_tts_pitch') || "15";
+            // 강세와 일반 음의 피치 차이 설정 (SSML prosody pitch 제어)
+            const currentPitch = localStorage.getItem('edge_tts_pitch') || "35";
             const newPitch = prompt(
                 "3번 Edge TTS의 [강세와 일반 음의 피치 차이(Pitch)]를 설정해주세요 (단위: Hz):\n\n" +
-                "• 추천: +15 (기본 또렷함), +20 (시원한 성조 차이), +25 (높은 경상도 성조)\n" +
-                "• 일반 음은 기본 높이로 유지되고, 강세 음절만 설정한 피치만큼 올라가 사투리 성조가 표현됩니다.",
+                "• 추천: +25 (부드러운 성조), +35 (시원하고 또렷한 경상도 억양), +50 (매우 강한 억양)\n" +
+                "• 일반 음은 기본 높이로 유지되고, 강세 음절만 SSML prosody 태그로 설정한 피치만큼 올라가 사투리 성조가 강하게 표현됩니다.",
                 currentPitch
             );
             if (newPitch !== null && newPitch.trim() !== "") {
@@ -1724,7 +1724,7 @@
             alert(
                 "3번 Edge TTS 설정이 저장되었습니다!\n\n" +
                 `• Space 주소: ${localStorage.getItem('hf_edge_tts_endpoint') || '기본값'}\n` +
-                `• 강세-일반 피치 차이: +${localStorage.getItem('edge_tts_pitch') || '15'}Hz\n` +
+                `• 강세-일반 피치 차이: +${localStorage.getItem('edge_tts_pitch') || '35'}Hz\n` +
                 `• 발화 속도: ${localStorage.getItem('edge_tts_rate') || '0'}%`
             );
         }
@@ -1780,6 +1780,38 @@
             }
         }
 
+        // 경상도 방언 발음 텍스트를 Edge TTS 전용 SSML prosody 태그로 변환하는 함수
+        // (강세 음절에 <prosody pitch="+XXHz">를 적용하여 억양을 매우 강하고 뚜렷하게 발음)
+        function convertDialectToEdgeSSML(rawText, pitchHz = 35) {
+            if (!rawText) return "";
+            let text = rawText.trim();
+            if (text.startsWith('[') && text.endsWith(']')) {
+                text = text.slice(1, -1).trim();
+            }
+            while (/\[[^\]]*\]/.test(text)) {
+                text = text.replace(/\[[^\]]*\]/g, '');
+            }
+            text = text.replace(/\{([^/>-]+)[/>-][^}]+\}/g, '$1');
+            text = text.replace(/<[^>]+>/g, '');
+
+            const pVal = Math.abs(parseInt(pitchHz) || 35);
+            const pStr = `+${pVal}Hz`;
+
+            // 복수 발음(/) 분리 처리
+            const parts = text.split('/');
+            const processed = parts.map(part => {
+                let p = part.trim();
+                // 한글 음절에 강세(' 또는 ′)가 있는 경우: prosody pitch 태그 부여
+                p = p.replace(/([가-힣])['′]/g, (m, char) => {
+                    return `<prosody pitch="${pStr}">${char}</prosody>`;
+                });
+                p = p.replace(/['′]/g, '').trim();
+                return p;
+            });
+
+            return processed.join(', ').replace(/\?+/g, '').replace(/[!]+/g, '').replace(/\.+/g, '').trim();
+        }
+
         // Microsoft Edge TTS (Hugging Face Spaces 연동) 호출 및 재생 함수
         async function speakEdgeTTS(rawText, ev = null) {
             if (!rawText) return;
@@ -1818,16 +1850,13 @@
                 console.warn("[Edge TTS] 사전 생성 오디오 확인 중 예외:", preErr);
             }
 
-            // 2. 텍스트 정제 (마지막 음절 강세 분리 및 모든 SSML 태그 제거)
-            let edgeText = prepareDialectSpeechText(rawText);
-            // 의문/감탄 기호 정리하되, 말꼬리가 아래로 뚝 떨어지게 만드는 마침표(.)는 강제로 붙이지 않음
-            edgeText = edgeText.replace(/\?+/g, '').replace(/[!]+/g, '').replace(/\.+/g, '').trim();
-
-            if (!edgeText) return;
-
             const voiceChoice = localStorage.getItem('edge_voice_choice') || "남성 (InJoon)";
-            const finalPitch = parseInt(localStorage.getItem('edge_tts_pitch') || "15"); // 강세와 일반 음의 피치 차이(Hz)
+            const finalPitch = parseInt(localStorage.getItem('edge_tts_pitch') || "35"); // 강세와 일반 음의 피치 차이(Hz)
             const rateVal = parseInt(localStorage.getItem('edge_tts_rate') || "0");
+
+            // 2. 텍스트 정제 및 SSML prosody 태그 변환 (음절 단위 강력한 억양 적용)
+            let edgeText = convertDialectToEdgeSSML(rawText, finalPitch);
+            if (!edgeText) return;
 
             // [핵심 기능 1] 방금 생성한 음성 임시 저장(캐시) 확인 -> 웹 요청 없이 즉시 재생!
             const cacheKey = `${edgeText}_${voiceChoice}_${finalPitch}_${rateVal}`;
