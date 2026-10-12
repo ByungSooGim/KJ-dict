@@ -716,7 +716,9 @@
                     style="display:none; font-size:13px; color:var(--point); margin-top:2px; font-weight:bold;"></div>
                 <div id="v-pron-row" class="pron-row" style="display:none;">
                     <div id="v-pron" class="pron-area"></div>
-                    <div class="speaker-btn" onclick="speakPronunciation()" title="기본 TTS (원래 발음 기호)">
+                    <div class="speaker-btn" onclick="speakPronunciation()"
+                        oncontextmenu="event.preventDefault(); event.stopPropagation(); setWebTTSPitch();"
+                        title="기본 TTS (원래 발음 기호 / 우클릭: 마지막 음절 강조 피치 조절)">
                         <svg viewBox="0 0 24 24">
                             <path
                                 d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" />
@@ -1244,38 +1246,134 @@
             return null;
         }
 
-        // 경상도 방언 발음 텍스트 정제 헬퍼 (기본 브라우저 TTS용):
-        // 마지막 음절에 강세(' 또는 ′)가 있을 때, 공백(' ')처럼 중간에 뚝 끊기지 않고
-        // 한 호흡으로 매끄럽게 이어지도록 하이픈('-')으로 연결하여 말꼬리 하강 방지 및 성조 강세 유지
+        // 1번 기본 브라우저 TTS 강조 피치 설정 (스피커 우클릭)
+        function setWebTTSPitch() {
+            const currentPitch = localStorage.getItem('web_tts_stress_pitch') || "1.4";
+            const newPitch = prompt(
+                "1번 기본 브라우저 TTS [마지막 음절 강조 피치]를 설정하세요 (권장: 1.3 ~ 1.5):\n\n" +
+                "• 기본값: 1.4 (앞부분 1.0f 대비 40% 고음 발화)\n" +
+                "• 자연스러운 청취감에 따라 1.3 ~ 1.5 사이로 조절해보세요.\n\n" +
+                "(비워두고 확인을 누르면 기본값 1.4로 초기화됩니다)",
+                currentPitch
+            );
+            if (newPitch !== null) {
+                if (newPitch.trim() === "") {
+                    localStorage.setItem('web_tts_stress_pitch', "1.4");
+                    alert("강조 피치가 기본값(1.4)으로 재설정되었습니다.");
+                } else {
+                    const p = parseFloat(newPitch.trim());
+                    if (!isNaN(p) && p > 0) {
+                        localStorage.setItem('web_tts_stress_pitch', String(p));
+                        alert(`마지막 음절 강조 피치가 ${p}로 저장되었습니다.`);
+                    }
+                }
+            }
+        }
+
+        // 경상도 방언 발음 텍스트 정제 헬퍼 (평문 추출용)
         function prepareDialectSpeechText(rawText) {
             if (!rawText) return "";
             let text = rawText.trim();
             if (text.startsWith('[') && text.endsWith(']')) {
                 text = text.slice(1, -1).trim();
             }
-            // 문장 내 [발음]은 발음 내용을 채택 (앞뒤 공백 유지)
+            text = text.replace(/\[(.*?)\]/g, ' $1 ');
+            text = text.replace(/\{([^/>-]+)[/>-][^}]+\}/g, '$1');
+            text = text.replace(/<[^>]+>/g, '');
+            text = text.replace(/°/g, '');
+            const parts = text.split('/');
+            const processed = parts.map(part => part.trim().replace(/['′]/g, '').trim());
+            return processed.join(', ').replace(/\s+/g, ' ').trim();
+        }
+
+        // [1번 TTS 핵심] 문장 분할 및 동적 피치 조절 (Web Speech API Utterance Queue):
+        // 마지막 음절에 강세(' 또는 ′)가 있는 표제어/어절의 경우:
+        // 앞부분(prefix)은 기본 피치(1.0f)로, 마지막 강조 음절은 상향 피치(1.3f~1.5f, 기본 1.4f)로 분할 큐잉하여
+        // 브라우저 TTS의 자연스러운 말꼬리 하강(종결 억양)을 억제하고 경상도 고조 성조를 실현
+        function speakDialectWebSpeech(rawText) {
+            if (!rawText || !window.speechSynthesis) return;
+            window.speechSynthesis.cancel(); // 이전 재생 취소 (QUEUE_FLUSH)
+
+            let text = rawText.trim();
+            if (text.startsWith('[') && text.endsWith(']')) {
+                text = text.slice(1, -1).trim();
+            }
             text = text.replace(/\[(.*?)\]/g, ' $1 ');
             text = text.replace(/\{([^/>-]+)[/>-][^}]+\}/g, '$1');
             text = text.replace(/<[^>]+>/g, '');
             text = text.replace(/°/g, '');
 
-            // 슬래시(/) 복수 발음 처리
             const parts = text.split('/');
-            const processed = parts.map(part => {
-                let p = part.trim();
-                // 어절 끝의 한글 음절에 강세(' 또는 ′)가 있는 경우:
-                // 공백(' ') 대신 하이픈('-')으로 연결하여 중간에 숨 쉬듯 뚝 끊어지지 않고
-                // 하나의 연속된 소리로 부드럽게 이어지면서도 마지막 음절에 독립 성조 강세 부여
-                p = p.replace(/([가-힣'′]{1,})([가-힣])['′](?=[,\s]|$)/g, (m, prefix, last) => {
-                    const cleanPrefix = prefix.replace(/['′]/g, '');
-                    return `${cleanPrefix}-${last}`;
-                });
-                // 남은 강세 기호 제거
-                p = p.replace(/['′]/g, '').trim();
-                return p;
-            });
+            const BASE_PITCH = 1.0;
+            const stressVal = parseFloat(localStorage.getItem('web_tts_stress_pitch') || "1.4");
+            const STRESS_PITCH = (isNaN(stressVal) || stressVal <= 0) ? 1.4 : stressVal;
+            const BASE_RATE = 0.92;
 
-            return processed.join(', ').replace(/\s+/g, ' ').trim();
+            let koVoice = null;
+            try {
+                const voices = window.speechSynthesis.getVoices();
+                if (voices && voices.length > 0) {
+                    koVoice = voices.find(v => v.lang && (v.lang.startsWith('ko') || v.lang === 'ko-KR')) || null;
+                }
+            } catch (ve) {}
+
+            parts.forEach((part, idx) => {
+                let p = part.trim();
+                if (!p) return;
+
+                const prefixPause = (idx > 0) ? ", " : "";
+
+                // 표제어/어절의 마지막 음절에 강세(' 또는 ′)가 있는 경우 검출
+                // 예: "가새'", "갈꾸리'", "꼬실라′", "바래이'" 등
+                if (/[가-힣]['′][\s\.\,\?]*$/.test(p)) {
+                    const m = p.match(/^([\s\S]*?)([가-힣])['′]([\s\.\,\?]*)$/);
+                    if (m) {
+                        const cleanPrefix = (prefixPause + m[1]).replace(/['′]/g, '').trim();
+                        const stressedSyl = m[2];
+                        const cleanPostfix = m[3] ? m[3].replace(/['′]/g, '').trim() : "";
+
+                        // 1. 앞부분 문장/어절 (기본 피치 1.0f)
+                        if (cleanPrefix) {
+                            const uPrefix = new SpeechSynthesisUtterance(cleanPrefix);
+                            uPrefix.lang = 'ko-KR';
+                            uPrefix.pitch = BASE_PITCH;
+                            uPrefix.rate = 0.95;
+                            if (koVoice) uPrefix.voice = koVoice;
+                            window.speechSynthesis.speak(uPrefix);
+                        }
+
+                        // 2. 강조할 마지막 음절 (톤을 1.4f로 일시적 상향)
+                        const uStress = new SpeechSynthesisUtterance(stressedSyl);
+                        uStress.lang = 'ko-KR';
+                        uStress.pitch = STRESS_PITCH;
+                        uStress.rate = BASE_RATE;
+                        if (koVoice) uStress.voice = koVoice;
+                        window.speechSynthesis.speak(uStress);
+
+                        // 3. 뒷부분 문장 (원복 피치 1.0f)
+                        if (cleanPostfix) {
+                            const uPostfix = new SpeechSynthesisUtterance(cleanPostfix);
+                            uPostfix.lang = 'ko-KR';
+                            uPostfix.pitch = BASE_PITCH;
+                            uPostfix.rate = BASE_RATE;
+                            if (koVoice) uPostfix.voice = koVoice;
+                            window.speechSynthesis.speak(uPostfix);
+                        }
+                        return;
+                    }
+                }
+
+                // 마지막 음절 강세가 없는 일반 단어/문장
+                const cleanText = (prefixPause + p).replace(/['′]/g, '').replace(/\s+/g, ' ').trim();
+                if (cleanText) {
+                    const u = new SpeechSynthesisUtterance(cleanText);
+                    u.lang = 'ko-KR';
+                    u.pitch = BASE_PITCH;
+                    u.rate = BASE_RATE;
+                    if (koVoice) u.voice = koVoice;
+                    window.speechSynthesis.speak(u);
+                }
+            });
         }
 
         // 일반 텍스트 읽기 함수 (예문/단어 공용 - 사전 생성 오디오 우선)
@@ -1294,13 +1392,8 @@
                 }
             } catch (e) {}
 
-            if (!window.speechSynthesis) return;
-            window.speechSynthesis.cancel();
-            const speechText = prepareDialectSpeechText(text);
-            const utterance = new SpeechSynthesisUtterance(speechText);
-            utterance.lang = 'ko-KR';
-            utterance.rate = 0.92;
-            window.speechSynthesis.speak(utterance);
+            // 기본 1번 TTS: 동적 피치 조절 큐로 재생
+            speakDialectWebSpeech(text);
         }
 
         /* --- [2번째 스피커: Hugging Face Spaces 경상도 방언 AI 복제 TTS (GPT-SoVITS / XTTS-v2)] --- */
@@ -2123,18 +2216,10 @@
             speakEdgeTTS(currentItem.pronunciation, ev);
         }
 
-        // 1번 회색 스피커: 기본 TTS를 사용하고 마지막 음절 강세가 분리된 정제 텍스트로 자연스럽게 발화
+        // 1번 회색 스피커: 표제어 기본 TTS (문장 분할 및 동적 피치 조절로 마지막 음절 고조 성조 구현)
         function speakPronunciation() {
-            if (!currentItem || !currentItem.pronunciation || !window.speechSynthesis) return;
-            window.speechSynthesis.cancel();
-
-            const text = prepareDialectSpeechText(currentItem.pronunciation);
-            if (!text) return;
-
-            const u = new SpeechSynthesisUtterance(text);
-            u.lang = 'ko-KR';
-            u.rate = 0.92;
-            window.speechSynthesis.speak(u);
+            if (!currentItem || !currentItem.pronunciation) return;
+            speakDialectWebSpeech(currentItem.pronunciation);
         }
 
 
