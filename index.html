@@ -1376,7 +1376,7 @@
             });
         }
 
-        // 일반 텍스트 읽기 함수 (예문/단어 공용 - 사전 생성 오디오 우선)
+        // 일반 텍스트 읽기 함수 (예문/관용구 공용 - 사전 생성 오디오 우선, 예문은 음절 분할 없이 단일 문장으로 자연스럽게 발화)
         async function speakText(text) {
             if (!text) return;
 
@@ -1392,8 +1392,26 @@
                 }
             } catch (e) {}
 
-            // 기본 1번 TTS: 동적 피치 조절 큐로 재생
-            speakDialectWebSpeech(text);
+            // 기본 1번 TTS: 예문은 마지막 글자 분리 없이 한 번에 자연스럽게 발화
+            if (!window.speechSynthesis) return;
+            window.speechSynthesis.cancel();
+            const speechText = prepareDialectSpeechText(text);
+            if (!speechText) return;
+
+            const utterance = new SpeechSynthesisUtterance(speechText);
+            utterance.lang = 'ko-KR';
+            utterance.rate = 0.92;
+            utterance.pitch = 1.0;
+
+            try {
+                const voices = window.speechSynthesis.getVoices();
+                if (voices && voices.length > 0) {
+                    const koVoice = voices.find(v => v.lang && (v.lang.startsWith('ko') || v.lang === 'ko-KR'));
+                    if (koVoice) utterance.voice = koVoice;
+                }
+            } catch (ve) {}
+
+            window.speechSynthesis.speak(utterance);
         }
 
         /* --- [2번째 스피커: Hugging Face Spaces 경상도 방언 AI 복제 TTS (GPT-SoVITS / XTTS-v2)] --- */
