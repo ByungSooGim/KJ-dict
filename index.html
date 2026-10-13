@@ -245,13 +245,13 @@
             margin-left: 6px;
         }
 
-        /* --- 스피커 버튼 공통 --- */
+        /* --- 스피커 버튼 공통 (1번: 파란색) --- */
         .speaker-btn {
             width: 22px;
             height: 22px;
             cursor: pointer;
-            fill: #999;
-            transition: fill 0.2s;
+            fill: #1976d2; /* 1번 스피커: 파란색 */
+            transition: fill 0.2s, transform 0.15s;
             display: inline-flex;
             align-items: center;
             justify-content: center;
@@ -261,221 +261,18 @@
         }
 
         .speaker-btn:hover {
-            fill: var(--point);
-        }
-
-        /* 신규 비교 테스트용 스피커 버튼 (파란색) */
-        .speaker-btn-new {
-            fill: #2b6cb0;
-        }
-
-        .speaker-btn-new:hover {
-            fill: #1a4971;
-        }
-
-        /* 2번째 Hugging Face Spaces AI 음성 복제 TTS (오렌지색) */
-        .speaker-btn-cloud {
-            fill: #ff8a00;
-        }
-
-        .speaker-btn-cloud:hover {
-            fill: #e67700;
-        }
-
-        /* 4번째 Microsoft Edge TTS 스피커 버튼 (초록색) */
-        .speaker-btn-edge {
-            fill: #2ecc71;
-        }
-
-        .speaker-btn-edge:hover {
-            fill: #27ae60;
-        }
-
-        /* 4번째 Gemini-TTS 스피커 버튼 (파란색) */
-        .speaker-btn-gemini {
-            fill: #1976d2;
-        }
-
-        .speaker-btn-gemini:hover {
             fill: #0d47a1;
+            transform: scale(1.12);
         }
 
-        /* --- 스피커 버튼 로딩 회전 링 & 재생 음파 애니메이션 --- */
-        @keyframes ttsSpinRing {
-            0% {
-                transform: rotate(0deg);
-            }
-            100% {
-                transform: rotate(360deg);
-            }
+        /* 2번째 스피커 버튼: 하늘색 (마지막 강세 -> '?' 치환 및 남성 음성 시험용) */
+        .speaker-btn-sky {
+            fill: #00bcd4; /* 선명한 하늘색 */
         }
 
-        @keyframes ttsPulseIcon {
-            0% {
-                transform: scale(0.85);
-                opacity: 0.45;
-            }
-            100% {
-                transform: scale(1.15);
-                opacity: 1;
-            }
-        }
-
-        @keyframes ttsSoundWaveEdge {
-            0% {
-                transform: scale(1);
-                filter: drop-shadow(0 0 2px rgba(46, 204, 113, 0.7));
-            }
-            100% {
-                transform: scale(1.3);
-                filter: drop-shadow(0 0 8px rgba(46, 204, 113, 1));
-            }
-        }
-
-        @keyframes ttsSoundWaveCloud {
-            0% {
-                transform: scale(1);
-                filter: drop-shadow(0 0 2px rgba(255, 138, 0, 0.7));
-            }
-            100% {
-                transform: scale(1.3);
-                filter: drop-shadow(0 0 8px rgba(255, 138, 0, 1));
-            }
-        }
-
-        /* 로딩 중 (음성 생성 대기 중) - 버튼 주변 회전 스피너 링 */
-        .speaker-btn.tts-loading {
-            cursor: wait !important;
-            pointer-events: none;
-        }
-
-        .speaker-btn.tts-loading::after {
-            content: '';
-            position: absolute;
-            top: -4px;
-            left: -4px;
-            width: 28px;
-            height: 28px;
-            border: 2.5px solid rgba(46, 204, 113, 0.25);
-            border-top-color: #2ecc71;
-            border-radius: 50%;
-            animation: ttsSpinRing 0.75s linear infinite;
-            box-sizing: border-box;
-            z-index: 5;
-            pointer-events: none;
-        }
-
-        .speaker-btn-cloud.tts-loading::after {
-            border: 2.5px solid rgba(255, 138, 0, 0.25);
-            border-top-color: #ff8a00;
-        }
-
-        .speaker-btn.tts-loading svg {
-            animation: ttsPulseIcon 0.7s ease-in-out infinite alternate !important;
-        }
-
-        .speaker-btn-edge.tts-loading {
-            fill: #2ecc71 !important;
-        }
-
-        .speaker-btn-cloud.tts-loading {
-            fill: #ff8a00 !important;
-        }
-
-        /* 재생 중 (오디오 재생 중) - 생생한 음파 발광 효과 */
-        .speaker-btn-edge.tts-playing svg {
-            animation: ttsSoundWaveEdge 0.5s ease-in-out infinite alternate !important;
-        }
-
-        .speaker-btn-cloud.tts-playing svg {
-            animation: ttsSoundWaveCloud 0.5s ease-in-out infinite alternate !important;
-        }
-
-        .speaker-btn-edge.tts-playing {
-            fill: #27ae60 !important;
-        }
-
-        .speaker-btn-cloud.tts-playing {
-            fill: #e67700 !important;
-        }
-
-        /* 상세 화면 상태 텍스트 뱃지 */
-        .tts-status-badge {
-            font-size: 11px;
-            color: #27ae60;
-            background: #eafaf1;
-            padding: 3px 8px;
-            border-radius: 12px;
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            font-weight: bold;
-            vertical-align: middle;
-            margin-left: 6px;
-            border: 1px solid rgba(46, 204, 113, 0.3);
-            animation: ttsPulseIcon 1s ease-in-out infinite alternate;
-        }
-
-        /* --- 화면 상단 플로팅 토스트 안내 알림바 (대기 중 에러 오해 방지용) --- */
-        .tts-toast {
-            position: fixed;
-            top: 18px;
-            left: 50%;
-            transform: translateX(-50%) translateY(-40px);
-            background: rgba(255, 255, 255, 0.98);
-            backdrop-filter: blur(10px);
-            border: 1.5px solid #2ecc71;
-            box-shadow: 0 6px 22px rgba(46, 204, 113, 0.28);
-            padding: 9px 18px;
-            border-radius: 30px;
-            display: inline-flex;
-            align-items: center;
-            gap: 9px;
-            z-index: 10000;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.25s ease, transform 0.25s cubic-bezier(0.18, 0.89, 0.32, 1.28);
-            font-size: 13px;
-            font-weight: bold;
-            color: #1b5e20;
-        }
-
-        .tts-toast.show {
-            opacity: 1;
-            transform: translateX(-50%) translateY(0);
-        }
-
-        .tts-toast.cloud {
-            border-color: #ff8a00;
-            box-shadow: 0 6px 22px rgba(255, 138, 0, 0.28);
-            color: #b75500;
-        }
-
-        .tts-toast.playing {
-            background: #eafaf1;
-            border-color: #27ae60;
-            color: #155724;
-        }
-
-        .tts-toast.cloud.playing {
-            background: #fff4e6;
-            border-color: #ff8a00;
-            color: #873600;
-        }
-
-        .tts-toast-spinner {
-            width: 14px;
-            height: 14px;
-            border: 2.2px solid rgba(46, 204, 113, 0.25);
-            border-top: 2.2px solid #2ecc71;
-            border-radius: 50%;
-            animation: ttsSpinRing 0.75s linear infinite;
-            flex-shrink: 0;
-        }
-
-        .tts-toast.cloud .tts-toast-spinner {
-            border: 2.2px solid rgba(255, 138, 0, 0.25);
-            border-top: 2.2px solid #ff8a00;
+        .speaker-btn-sky:hover {
+            fill: #0097a7;
+            transform: scale(1.12);
         }
 
 
@@ -678,11 +475,6 @@
         <p style="margin-top:10px; font-size:14px; color:var(--point); font-weight:bold;">데이터를 불러오는 중...</p>
     </div>
 
-    <!-- TTS 음성 생성 및 재생 안내 플로팅 토스트 (간소화) -->
-    <div id="tts-toast" class="tts-toast">
-        <div class="tts-toast-spinner" id="tts-toast-spinner"></div>
-        <span id="tts-toast-text">🎙️ 음성 생성중</span>
-    </div>
     <div class="container">
         <div class="header">
             <svg class="logo-svg" viewBox="0 0 100 100">
@@ -718,21 +510,20 @@
                     <div id="v-pron" class="pron-area"></div>
                     <div class="speaker-btn" onclick="speakPronunciation()"
                         oncontextmenu="event.preventDefault(); event.stopPropagation(); setWebTTSPitch();"
-                        title="기본 TTS (원래 발음 기호 / 우클릭: 마지막 음절 강조 피치 조절)">
+                        title="1번 TTS (파란색: 원래 발음, 마지막 음절 분할 피치 상향 / 우클릭: 피치 조절)">
                         <svg viewBox="0 0 24 24">
                             <path
                                 d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" />
                         </svg>
                     </div>
-                    <div class="speaker-btn speaker-btn-edge" onclick="speakPronunciationEdge(event)"
-                        oncontextmenu="event.preventDefault(); event.stopPropagation(); setEdgeHFSpaceUrl();"
-                        title="Microsoft Edge TTS (클라우드 연동 / InJoon 남성 음성 / 우클릭: 설정)">
+                    <div class="speaker-btn speaker-btn-sky" onclick="speakPronunciationQuestion(event)"
+                        oncontextmenu="event.preventDefault(); event.stopPropagation(); setMaleVoiceChoice();"
+                        title="2번 TTS (하늘색: 마지막 강세 '?' 치환 + 남성 음성 시험 / 우클릭: 음성 선택)">
                         <svg viewBox="0 0 24 24">
                             <path
                                 d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" />
                         </svg>
                     </div>
-                    <span id="tts-status" class="tts-status-badge" style="display:none;"></span>
                 </div>
                 <div id="v-def" class="def-area"></div>
                 <div id="v-combined-box" class="ex-container" style="display:none;">
@@ -1189,22 +980,22 @@
             return word ? word.replace(/(\d+)/g, '<sup>$1</sup>') : "";
         }
 
-        // 예문 내 [ ] 텍스트 추출 및 스피커 버튼 삽입 함수 (1.기본TTS, 2.Edge TTS(초록색))
+        // 예문 내 [ ] 텍스트 추출 및 스피커 버튼 삽입 함수 (1.기본TTS(파란색), 2.물음표치환+남성TTS(하늘색))
         function processDialectTTS(text) {
             if (!text) return "";
             return text.replace(/\[(.*?)\]/g, (match, p1) => {
                 const encPron = encodeURIComponent(p1.trim());
-                return `<b style="color:var(--point)">${p1}</b><span class="speaker-btn" title="기본 TTS (원래 발음 기호)" data-pron="${encPron}" onclick="event.stopPropagation(); speakText(decodeURIComponent(this.dataset.pron), event)"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg></span><span class="speaker-btn speaker-btn-edge" title="Edge TTS (클라우드 연동 / 우클릭: 설정)" data-pron="${encPron}" onclick="event.stopPropagation(); speakEdgeTTS(decodeURIComponent(this.dataset.pron), event)" oncontextmenu="event.preventDefault(); event.stopPropagation(); setEdgeHFSpaceUrl();"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span>`;
+                return `<b style="color:var(--point)">${p1}</b><span class="speaker-btn" title="1번 TTS (원래 발음 기호)" data-pron="${encPron}" onclick="event.stopPropagation(); speakText(decodeURIComponent(this.dataset.pron), event)"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg></span><span class="speaker-btn speaker-btn-sky" title="2번 TTS ('?' 치환 시험 + 남성 음성)" data-pron="${encPron}" onclick="event.stopPropagation(); speakTextQuestion(decodeURIComponent(this.dataset.pron), event)"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span>`;
             });
         }
 
-        // 관용구/속담 내 full text 렌더링 및 [ ] 발음 TTS 스피커 버튼 삽입 함수 (1.기본TTS, 2.Edge TTS(초록색))
+        // 관용구/속담 내 full text 렌더링 및 [ ] 발음 TTS 스피커 버튼 삽입 함수 (1.기본TTS(파란색), 2.물음표치환+남성TTS(하늘색))
         function processIdiomTTS(text) {
             if (!text) return "";
             let safeText = text.replace(/</g, "&lt;").replace(/>/g, "&gt;");
             return safeText.replace(/\[(.*?)\]/g, (match, p1) => {
                 const encPron = encodeURIComponent(p1.trim());
-                return `<b style="color:var(--point)">[${p1}]</b><span class="speaker-btn" title="기본 TTS (원래 발음 기호)" data-pron="${encPron}" onclick="event.stopPropagation(); speakText(decodeURIComponent(this.dataset.pron), event)"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg></span><span class="speaker-btn speaker-btn-edge" title="Edge TTS (클라우드 연동 / 우클릭: 설정)" data-pron="${encPron}" onclick="event.stopPropagation(); speakEdgeTTS(decodeURIComponent(this.dataset.pron), event)" oncontextmenu="event.preventDefault(); event.stopPropagation(); setEdgeHFSpaceUrl();"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span>`;
+                return `<b style="color:var(--point)">[${p1}]</b><span class="speaker-btn" title="1번 TTS (원래 발음 기호)" data-pron="${encPron}" onclick="event.stopPropagation(); speakText(decodeURIComponent(this.dataset.pron), event)"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg></span><span class="speaker-btn speaker-btn-sky" title="2번 TTS ('?' 치환 시험 + 남성 음성)" data-pron="${encPron}" onclick="event.stopPropagation(); speakTextQuestion(decodeURIComponent(this.dataset.pron), event)"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span>`;
             });
         }
 
@@ -1385,9 +1176,9 @@
                 const map = await loadAudioMap();
                 const mappedPath = lookupAudioMap(text, map);
                 if (mappedPath) {
-                    if (currentEdgeAudio) { currentEdgeAudio.pause(); currentEdgeAudio = null; }
-                    currentEdgeAudio = new Audio(mappedPath);
-                    await currentEdgeAudio.play();
+                    if (window.currentAudio) { window.currentAudio.pause(); window.currentAudio = null; }
+                    window.currentAudio = new Audio(mappedPath);
+                    await window.currentAudio.play();
                     return;
                 }
             } catch (e) {}
@@ -1414,827 +1205,146 @@
             window.speechSynthesis.speak(utterance);
         }
 
-        /* --- [2번째 스피커: Hugging Face Spaces 경상도 방언 AI 복제 TTS (GPT-SoVITS / XTTS-v2)] --- */
-        let currentCloudAudio = null;
-        let currentHFAudio = null;
+        // ========================================================
+        // [2번 TTS 시험용]: 마지막 음절 강세(' 또는 ′)를 '?'로 치환 + 남성 음성 발화
+        // ========================================================
 
-        // Hugging Face Spaces 주소 및 모델 설정 함수 (2번 버튼 우클릭 시)
-        function setHFSpaceUrl() {
-            const currentUrl = localStorage.getItem('hf_spaces_endpoint') || "bsgim5/gyeongsang-dialect-tts";
-            const defaultPrompt = currentUrl;
-            
-            const newUrl = prompt(
-                "2번 경상도 AI 음성 복제 TTS (Hugging Face Spaces) 주소를 입력해주세요:\n\n" +
-                "• 기본 Space ID: bsgim5/gyeongsang-dialect-tts\n" +
-                "• 직접 URL: https://bsgim5-gyeongsang-dialect-tts.hf.space\n\n" +
-                "(비워두고 확인을 누르면 기본값으로 초기화됩니다)",
-                defaultPrompt
-            );
+        // 1. 한국어 남성 음성 탐색 헬퍼 (Edge InJoon, Android Google 한국어 남성 등)
+        function getKoreanMaleVoice() {
+            if (!window.speechSynthesis) return null;
+            const voices = window.speechSynthesis.getVoices();
+            if (!voices || voices.length === 0) return null;
 
-            if (newUrl !== null) {
-                if (newUrl.trim() === "") {
-                    localStorage.setItem('hf_spaces_endpoint', "bsgim5/gyeongsang-dialect-tts");
-                    alert("Hugging Face Spaces 주소가 기본값('bsgim5/gyeongsang-dialect-tts')으로 재설정되었습니다.");
-                } else {
-                    localStorage.setItem('hf_spaces_endpoint', newUrl.trim());
-                    alert(`Hugging Face Spaces 주소가 저장되었습니다:\n${newUrl.trim()}`);
-                }
-            }
-        }
+            const koVoices = voices.filter(v => v.lang && (v.lang.startsWith('ko') || v.lang === 'ko-KR'));
+            if (koVoices.length === 0) return null;
 
-        // 기존 우클릭 이벤트와의 완벽한 호환을 위한 alias
-        function resetCloudApiKey() {
-            setHFSpaceUrl();
-        }
-
-        // 2번: Hugging Face Spaces 기반 경상도 사투리 AI 복제 TTS 호출 함수
-        async function speakCloudTTS(rawText) {
-            if (!rawText) return;
-
-            // 1. Hugging Face Spaces 주소 확인 (기본값: bsgim5/gyeongsang-dialect-tts)
-            let spaceEndpoint = localStorage.getItem('hf_spaces_endpoint');
-            if (!spaceEndpoint || !spaceEndpoint.trim() || spaceEndpoint.includes('username/')) {
-                spaceEndpoint = "bsgim5/gyeongsang-dialect-tts";
-                localStorage.setItem('hf_spaces_endpoint', spaceEndpoint);
+            // 0. 사용자가 수동 선택해둔 보이스 URI가 있으면 우선 적용
+            const savedUri = localStorage.getItem('web_tts_male_voice_uri');
+            if (savedUri) {
+                const found = koVoices.find(v => (v.voiceURI === savedUri || v.name === savedUri));
+                if (found) return found;
             }
 
-            // 2. 주소 정규화 (다양한 입력 형태 자동 지원)
-            let cleanEndpoint = spaceEndpoint.trim().replace(/\/+$/, '');
-            const hfSpaceMatch = cleanEndpoint.match(/huggingface\.co\/spaces\/([^/]+)\/([^/?#]+)/);
-            if (hfSpaceMatch) {
-                cleanEndpoint = `${hfSpaceMatch[1]}/${hfSpaceMatch[2]}`;
-            }
+            // 1. 이름이나 URI에 남성 식별자(InJoon, 인준, Male, 남성, Android ism/kob)가 있는 음성 우선 탐색
+            const explicitMale = koVoices.find(v => {
+                const str = ((v.name || "") + " " + (v.voiceURI || "")).toLowerCase();
+                return str.includes('injoon') ||
+                       str.includes('인준') ||
+                       str.includes('male') ||
+                       str.includes('남성') ||
+                       str.includes('ism') ||
+                       str.includes('kob');
+            });
+            if (explicitMale) return explicitMale;
 
-            let baseHost = cleanEndpoint;
-            if (!baseHost.startsWith('http://') && !baseHost.startsWith('https://')) {
-                // username/space-name 형태인 경우 서브도메인 생성 (소문자 및 특수문자 정규화)
-                const parts = cleanEndpoint.split('/');
-                if (parts.length === 2) {
-                    const user = parts[0].toLowerCase().replace(/[^a-z0-9]/g, '');
-                    const space = parts[1].toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-');
-                    baseHost = `https://${user}-${space}.hf.space`;
-                } else {
-                    const cleanId = cleanEndpoint.replace(/[^a-zA-Z0-9]/g, '-').toLowerCase();
-                    baseHost = `https://${cleanId}.hf.space`;
-                }
-            }
-            baseHost = baseHost.replace(/\/+$/, '');
-
-            // 3. 텍스트 정제 (성조 및 억양 기호는 보존)
-            let dialectText = rawText.trim();
-            if (dialectText.startsWith('[') && dialectText.endsWith(']')) {
-                dialectText = dialectText.slice(1, -1).trim();
-            }
-            while (/\[[^\]]*\]/.test(dialectText)) {
-                dialectText = dialectText.replace(/\[[^\]]*\]/g, '');
-            }
-            dialectText = dialectText.replace(/\{([^/>-]+)[/>-][^}]+\}/g, '$1');
-            dialectText = dialectText.replace(/\//g, ', ').trim();
-            // 경상도 사투리 특성: 의문문이어도 끝소리를 올리지 않으므로 '?'를 '.'으로 치환
-            dialectText = dialectText.replace(/\?+/g, '.').replace(/[!]+/g, '.').replace(/\.+/g, '.').trim();
-            if (dialectText && !/[.,]$/.test(dialectText)) {
-                dialectText += '.';
-            }
-            console.log(`[HF Spaces TTS] 전송 텍스트: "${dialectText}", 주소: ${cleanEndpoint} (호스트: ${baseHost})`);
-
-            // 4. 기존 오디오 정지
-            if (currentHFAudio) { currentHFAudio.pause(); currentHFAudio = null; }
-            if (currentCloudAudio) { currentCloudAudio.pause(); currentCloudAudio = null; }
-            if (currentGeminiAudio) { currentGeminiAudio.pause(); currentGeminiAudio = null; }
-            if (currentEdgeAudio) { currentEdgeAudio.pause(); currentEdgeAudio = null; }
-            if (window.speechSynthesis) { window.speechSynthesis.cancel(); }
-
-            try {
-                let audioUrl = null;
-
-                // 방법 1: @gradio/client 연결 (Gradio 5 지원)
-                try {
-                    const { Client } = await import("https://cdn.jsdelivr.net/npm/@gradio/client/dist/index.min.js");
-                    console.log("[HF Spaces TTS] Client.connect 시도:", cleanEndpoint);
-                    const app = await Client.connect(cleanEndpoint);
-                    
-                    // Gradio 5/4의 엔드포인트 후보들 순차 시도 (/clone_dialect, /predict, fn_index 0)
-                    const endpoints = ["/clone_dialect", "/predict", 0];
-                    for (const ep of endpoints) {
-                        try {
-                            console.log(`[HF Spaces TTS] 엔드포인트(${ep}) 호출 중...`);
-                            const result = await app.predict(ep, [ dialectText ]);
-                            if (result && result.data && result.data.length > 0) {
-                                const item = result.data[0];
-                                let raw = (typeof item === 'object' && item !== null) ? (item.url || item.path) : (typeof item === 'string' ? item : null);
-                                if (raw) {
-                                    audioUrl = raw;
-                                    console.log(`[HF Spaces TTS] 엔드포인트(${ep}) 성공! 수신 URL:`, audioUrl);
-                                    break;
-                                }
-                            }
-                        } catch (epErr) {
-                            console.warn(`[HF Spaces TTS] 엔드포인트(${ep}) 실패:`, epErr.message);
-                        }
-                    }
-                } catch (gradioErr) {
-                    console.warn("[HF Spaces TTS] @gradio/client 연결 실패 -> REST 직접 호출로 전환:", gradioErr.message);
-                }
-
-                // 방법 2: REST API 직접 호출 (Gradio 5 SSE 및 기존 API 호환)
-                if (!audioUrl) {
-                    const restEndpoints = [
-                        `${baseHost}/gradio_api/call/clone_dialect`,
-                        `${baseHost}/gradio_api/call/predict`,
-                        `${baseHost}/api/clone_dialect`,
-                        `${baseHost}/api/predict`,
-                        `${baseHost}/predict`
-                    ];
-
-                    for (const ep of restEndpoints) {
-                        try {
-                            console.log("[HF Spaces TTS] REST 호출 시도:", ep);
-                            const res = await fetch(ep, {
-                                method: 'POST',
-                                headers: { 'Content-Type': 'application/json' },
-                                body: JSON.stringify({ data: [ dialectText ] })
-                            });
-                            if (res.ok) {
-                                const respData = await res.json();
-                                // Gradio 5 SSE event_id 처리
-                                if (respData.event_id) {
-                                    const eventRes = await fetch(`${ep}/${respData.event_id}`);
-                                    const eventText = await eventRes.text();
-                                    const lines = eventText.split('\n');
-                                    for (const l of lines) {
-                                        if (l.startsWith('data:')) {
-                                            try {
-                                                const d = JSON.parse(l.slice(5).trim());
-                                                if (Array.isArray(d) && d[0]) {
-                                                    const it = d[0];
-                                                    audioUrl = (typeof it === 'object' && it !== null) ? (it.url || it.path) : it;
-                                                    if (audioUrl) break;
-                                                }
-                                            } catch (je) {}
-                                        }
-                                    }
-                                } else if (respData.data && respData.data[0]) {
-                                    const it = respData.data[0];
-                                    audioUrl = (typeof it === 'object' && it !== null) ? (it.url || it.path) : it;
-                                }
-                                if (audioUrl) break;
-                            }
-                        } catch (restErr) {
-                            // 다음 엔드포인트 계속
-                        }
-                    }
-                }
-
-                // 상대 경로인 경우 baseHost 붙여 절대 URL로 완성
-                if (audioUrl && typeof audioUrl === 'string') {
-                    if (!audioUrl.startsWith('http://') && !audioUrl.startsWith('https://') && !audioUrl.startsWith('blob:')) {
-                        audioUrl = baseHost + (audioUrl.startsWith('/') ? '' : '/') + audioUrl;
-                    }
-                }
-
-                if (audioUrl) {
-                    console.log("[HF Spaces TTS] 최종 오디오 재생 URL:", audioUrl);
-                    currentHFAudio = new Audio(audioUrl);
-                    currentCloudAudio = currentHFAudio;
-                    await currentHFAudio.play();
-                } else {
-                    throw new Error("오디오 스트림을 수신하지 못했습니다. Space 주소 및 공개 설정(Public)을 확인해주세요.");
-                }
-            } catch (err) {
-                console.error("[HF Spaces TTS Error]:", err);
-                alert(`[2번 경상도 AI 음성 복제 TTS 오류]\n${err.message}\n\n• 등록된 Space 주소: ${spaceEndpoint}\n• 2번 스피커를 우클릭하여 주소를 다시 설정할 수 있습니다.\n• Space가 'Public(공개)'으로 설정되어 있는지 확인해주세요.`);
-            }
-        }
-
-        // 표제어 전용 Cloud TTS 재생
-        function speakPronunciationCloud() {
-            if (!currentItem || !currentItem.pronunciation) return;
-            speakCloudTTS(currentItem.pronunciation);
-        }
-
-        /* --- [4번째 스피커: Google Cloud SSML 기반 경상도 사투리 성조/고저 악센트 제어 TTS] --- */
-        let currentGeminiAudio = null;
-
-        // 경상도 방언 성조(고저 악센트) 및 억양을 Google Cloud 표준 SSML로 변환하는 함수 (자연스럽게 이어지도록 +4st 스무딩 적용)
-        function convertDialectToGoogleSSML(rawText, highPitch = null) {
-            if (!rawText) return "";
-            // 음 갈라짐 방지를 위해 자연스러운 경상도 성조 피치 기본값: +4st (사용자 조절 가능)
-            const pitchVal = highPitch || localStorage.getItem('google_ssml_pitch') || '+4st';
-            
-            let text = rawText.trim();
-            if (text.startsWith('[') && text.endsWith(']')) {
-                text = text.slice(1, -1).trim();
-            }
-            while (/\[[^\]]*\]/.test(text)) {
-                text = text.replace(/\[[^\]]*\]/g, '');
-            }
-            text = text.replace(/\{([^/>-]+)[/>-][^}]+\}/g, '$1');
-            text = text.replace(/\//g, ', ');
-
-            const words = text.split(/\s+/);
-            const ssmlParts = [];
-
-            for (let i = 0; i < words.length; i++) {
-                let w = words[i];
-                if (!w) continue;
-
-                let hasComma = w.includes(',');
-                let hasDot = w.includes('.');
-                let hasQuestion = w.includes('?');
-                let hasExclamation = w.includes('!');
-                let core = w.replace(/[,.?!]+$/, '');
-
-                // XML 특수문자 이스케이프
-                core = core.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-
-                let converted = "";
-                // 한글 1음절 단위로 강세/성조 기호(' 또는 ′)를 분석하여 해당 음절만 부드러운 pitch 부여
-                const syllableRegex = /([가-힣])(['′]?)|([^가-힣'′]+)/g;
-                let match;
-                let hasMatched = false;
-
-                while ((match = syllableRegex.exec(core)) !== null) {
-                    hasMatched = true;
-                    if (match[1]) {
-                        const char = match[1];
-                        const isAccented = (match[2] === "'" || match[2] === "′");
-                        if (isAccented) {
-                            // 부드럽고 매끄러운 성조 고음(+4st) 적용하여 음 갈라짐(Voice crack) 방지
-                            converted += `<prosody pitch="${pitchVal}">${char}</prosody>`;
-                        } else {
-                            converted += char;
-                        }
-                    } else if (match[3]) {
-                        converted += match[3];
-                    }
-                }
-
-                if (!hasMatched) {
-                    converted = core.replace(/['′]/g, '');
-                }
-
-                // 구두점 및 자연스러운 휴지(break) 처리
-                if (hasComma) {
-                    converted += ', <break time="150ms"/>';
-                } else if (hasQuestion) {
-                    converted += '? <break time="200ms"/>';
-                } else if (hasExclamation) {
-                    converted += '! <break time="200ms"/>';
-                } else if (hasDot) {
-                    converted += '. <break time="200ms"/>';
-                }
-
-                ssmlParts.push(converted);
-            }
-
-            // Google Cloud TTS 표준 SSML 구조 (자연스러운 발화 속도 98%)
-            return `<speak><prosody rate="98%">${ssmlParts.join(' ')}</prosody></speak>`;
-        }
-
-        // Google Cloud SSML TTS 설정 (성조 피치 및 보이스 모델명 변경 - 우클릭 시)
-        function setGeminiVoiceModel() {
-            setGeminiSettings();
-        }
-
-        function setGeminiSettings() {
-            const currentPitch = localStorage.getItem('google_ssml_pitch') || '+4st';
-            const newPitch = prompt("경상도 성조 강세 음높이(pitch)를 입력해주세요:\n(자연스러운 추천: +3.5st, +4st, +5st / 너무 높으면 음이 갈라질 수 있습니다)", currentPitch);
-            if (newPitch !== null && newPitch.trim()) {
-                localStorage.setItem('google_ssml_pitch', newPitch.trim());
-            }
-
-            const currentModel = localStorage.getItem('gemini_tts_voice_name') || 'ko-KR-Neural2-A';
-            const newModel = prompt("Google Cloud TTS Voice 모델명을 입력해주세요:\n(추천: ko-KR-Neural2-A, ko-KR-Neural2-B, ko-KR-Standard-A, ko-KR-Wavenet-A)", currentModel);
-            if (newModel && newModel.trim()) {
-                localStorage.setItem('gemini_tts_voice_name', newModel.trim());
-            }
-            alert(`Google SSML 사투리 TTS 설정이 저장되었습니다.\n• 성조 강세 Pitch: ${localStorage.getItem('google_ssml_pitch') || currentPitch}\n• 모델명: ${localStorage.getItem('gemini_tts_voice_name') || currentModel}`);
-        }
-
-        // 4번: Google Cloud SSML 기반 경상도 사투리 TTS 호출 함수
-        async function speakGeminiTTS(rawText) {
-            if (!rawText) return;
-
-            // 1. Google Cloud API 키 확인 (2번과 공유)
-            let apiKey = localStorage.getItem('gcloud_tts_api_key');
-            if (!apiKey || !apiKey.trim()) {
-                apiKey = prompt("Google Cloud TTS API Key를 입력해주세요:\n(SSML 사투리 음성 재생 시에도 사용됩니다)");
-                if (!apiKey || !apiKey.trim()) {
-                    alert("API Key가 필요합니다.");
-                    return;
-                }
-                apiKey = apiKey.trim();
-                localStorage.setItem('gcloud_tts_api_key', apiKey);
-            }
-
-            // 2. SSML(Speech Synthesis Markup Language) 생성: 텍스트 방언 표기화 + 성조/억양 prosody pitch 적용
-            const googleSSML = convertDialectToGoogleSSML(rawText);
-            console.log("Google Cloud TTS SSML 전송:", googleSSML);
-
-            // 3. 기존 모든 오디오 정지
-            if (currentGeminiAudio) { currentGeminiAudio.pause(); currentGeminiAudio = null; }
-            if (currentCloudAudio) { currentCloudAudio.pause(); currentCloudAudio = null; }
-            if (currentEdgeAudio) { currentEdgeAudio.pause(); currentEdgeAudio = null; }
-            if (window.speechSynthesis) { window.speechSynthesis.cancel(); }
-
-            // 4. 모델명 결정 (기본값: ko-KR-Neural2-A - 고품질 신경망 보이스로 SSML prosody pitch를 완벽 지원)
-            const voiceModel = localStorage.getItem('gemini_tts_voice_name') || 'ko-KR-Neural2-A';
-
-            try {
-                const endpoint = `https://texttospeech.googleapis.com/v1/text:synthesize?key=${apiKey}`;
-                const response = await fetch(endpoint, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        input: { ssml: googleSSML },
-                        voice: {
-                            languageCode: 'ko-KR',
-                            name: voiceModel
-                        },
-                        audioConfig: {
-                            audioEncoding: 'MP3'
-                        }
-                    })
+            // 2. 여성 전용 키워드가 아닌 두 번째 보이스 탐색
+            if (koVoices.length > 1) {
+                const nonFemale = koVoices.find(v => {
+                    const str = ((v.name || "") + " " + (v.voiceURI || "")).toLowerCase();
+                    return !str.includes('sunhi') &&
+                           !str.includes('선희') &&
+                           !str.includes('heami') &&
+                           !str.includes('혜미') &&
+                           !str.includes('female') &&
+                           !str.includes('여성');
                 });
+                if (nonFemale) return nonFemale;
+                return koVoices[1];
+            }
 
-                if (!response.ok) {
-                    const errData = await response.json().catch(() => ({}));
-                    const errorDetails = errData.error ? errData.error.message : response.statusText;
-                    
-                    // 지정 모델에서 SSML 오류 발생 시, 가장 대중적인 ko-KR-Neural2-A 또는 ko-KR-Standard-A로 자동 대체 호출
-                    if (voiceModel !== 'ko-KR-Neural2-A' && voiceModel !== 'ko-KR-Standard-A') {
-                        console.warn(`지정 모델(${voiceModel}) 오류 -> ko-KR-Neural2-A로 자동 대체 호출`);
-                        const fallbackResp = await fetch(endpoint, {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({
-                                input: { ssml: googleSSML },
-                                voice: { languageCode: 'ko-KR', name: 'ko-KR-Neural2-A' },
-                                audioConfig: { audioEncoding: 'MP3' }
-                            })
-                        });
-                        if (fallbackResp.ok) {
-                            const fbData = await fallbackResp.json();
-                            if (fbData.audioContent) {
-                                currentGeminiAudio = new Audio(`data:audio/mp3;base64,${fbData.audioContent}`);
-                                currentGeminiAudio.play();
-                                return;
-                            }
-                        }
-                    }
-                    alert(`Google SSML TTS 오류 (${response.status}):\n${errorDetails}\n\n우클릭을 눌러 모델명이나 API 키 설정을 확인해주세요.`);
-                    return;
-                }
+            return koVoices[0];
+        }
 
-                const data = await response.json();
-                if (data.audioContent) {
-                    currentGeminiAudio = new Audio(`data:audio/mp3;base64,${data.audioContent}`);
-                    currentGeminiAudio.play();
+        // 2번 남성 음성 수동 선택 (2번 스피커 우클릭 시)
+        function setMaleVoiceChoice() {
+            if (!window.speechSynthesis) return;
+            const voices = window.speechSynthesis.getVoices().filter(v => v.lang && (v.lang.startsWith('ko') || v.lang === 'ko-KR'));
+            if (voices.length === 0) {
+                alert("브라우저에서 사용 가능한 한국어 음성을 찾을 수 없습니다.");
+                return;
+            }
+            const voiceListStr = voices.map((v, i) => `${i + 1}. ${v.name} (${v.lang})`).join('\n');
+            const choice = prompt(`2번 TTS에서 사용할 남성 음성 번호를 선택하세요:\n\n${voiceListStr}\n\n(비워두면 자동 남성 음성 탐색)`);
+            if (choice !== null) {
+                if (choice.trim() === "") {
+                    localStorage.removeItem('web_tts_male_voice_uri');
+                    alert("기본 자동 남성 음성 탐색으로 재설정되었습니다.");
                 } else {
-                    alert("Google SSML TTS 음성 데이터를 수신하지 못했습니다.");
-                }
-            } catch (err) {
-                console.error("Google SSML TTS Error:", err);
-                alert(`Google SSML TTS 호출 실패:\n${err.message}`);
-            }
-        }
-
-        // 표제어 전용 Gemini-TTS 재생
-        function speakPronunciationGemini() {
-            if (!currentItem || !currentItem.pronunciation) return;
-            speakGeminiTTS(currentItem.pronunciation);
-        }
-
-        /* --- [3번째 스피커: Microsoft Edge TTS (Hugging Face Spaces 클라우드 연동, InJoon 남성 음성)] --- */
-        let currentEdgeAudio = null;
-        // 방금 생성한 음성 임시 저장 (현재 표제어 및 세션 내 즉시 재생 캐시)
-        const edgeAudioCache = new Map();
-
-        // 3번 Edge TTS Hugging Face Spaces 주소 및 강세 억양/피치 설정 (3번 버튼 우클릭 시)
-        function setEdgeHFSpaceUrl() {
-            const currentUrl = localStorage.getItem('hf_edge_tts_endpoint') || "bsgim5/edge-tts";
-            const newUrl = prompt(
-                "3번 Microsoft Edge TTS (Hugging Face Spaces) 주소를 입력해주세요:\n\n" +
-                "• Space ID 형식 예시: 사용자ID/스페이스이름 (예: bsgim5/edge-tts)\n" +
-                "• 직접 URL 형식 예시: https://bsgim5-edge-tts.hf.space\n\n" +
-                "(비워두고 확인을 누르면 기본 설정으로 유지됩니다)",
-                currentUrl
-            );
-
-            if (newUrl !== null && newUrl.trim() !== "") {
-                localStorage.setItem('hf_edge_tts_endpoint', newUrl.trim());
-            }
-
-            // 강세와 일반 음의 피치 차이 설정 (SSML prosody pitch 제어)
-            const currentPitch = localStorage.getItem('edge_tts_pitch') || "35";
-            const newPitch = prompt(
-                "3번 Edge TTS의 [강세와 일반 음의 피치 차이(Pitch)]를 설정해주세요 (단위: Hz):\n\n" +
-                "• 추천: +25 (부드러운 성조), +35 (시원하고 또렷한 경상도 억양), +50 (매우 강한 억양)\n" +
-                "• 일반 음은 기본 높이로 유지되고, 강세 음절만 SSML prosody 태그로 설정한 피치만큼 올라가 사투리 성조가 강하게 표현됩니다.",
-                currentPitch
-            );
-            if (newPitch !== null && newPitch.trim() !== "") {
-                localStorage.setItem('edge_tts_pitch', newPitch.trim().replace('+', '').replace('Hz', ''));
-            }
-
-            // 발화 속도(Rate) 설정
-            const currentRate = localStorage.getItem('edge_tts_rate') || "0";
-            const newRate = prompt(
-                "3번 Edge TTS의 [발화 속도(Rate)]를 설정해주세요 (단위: %):\n\n" +
-                "• 추천: 0 (보통 속도), +5 (약간 빠른 대화체), -5 (차분한 발음)",
-                currentRate
-            );
-            if (newRate !== null && newRate.trim() !== "") {
-                localStorage.setItem('edge_tts_rate', newRate.trim().replace('+', '').replace('%', ''));
-            }
-
-            alert(
-                "3번 Edge TTS 설정이 저장되었습니다!\n\n" +
-                `• Space 주소: ${localStorage.getItem('hf_edge_tts_endpoint') || '기본값'}\n` +
-                `• 강세-일반 피치 차이: +${localStorage.getItem('edge_tts_pitch') || '35'}Hz\n` +
-                `• 발화 속도: ${localStorage.getItem('edge_tts_rate') || '0'}%`
-            );
-        }
-
-        // 이전 코드 호환용 alias
-        function setEdgeProxyUrl() {
-            setEdgeHFSpaceUrl();
-        }
-
-        // TTS 버튼 로딩 및 재생 상태 UI 헬퍼 (상단 간결 토스트: "음성 생성중" / "음성 재생중")
-        let ttsToastTimer = null;
-        function setTTSLoadingState(targetBtn, isLoading, isPlaying = false) {
-            const statusBadge = document.getElementById('tts-status');
-            const toast = document.getElementById('tts-toast');
-            const toastText = document.getElementById('tts-toast-text');
-            const toastSpinner = document.getElementById('tts-toast-spinner');
-
-            if (statusBadge) statusBadge.style.display = 'none';
-
-            if (isLoading) {
-                if (targetBtn) {
-                    targetBtn.classList.add('tts-loading');
-                    targetBtn.classList.remove('tts-playing');
-                }
-                if (toast && toastText) {
-                    clearTimeout(ttsToastTimer);
-                    toast.className = 'tts-toast show';
-                    if (toastSpinner) toastSpinner.style.display = 'block';
-                    toastText.innerText = '🎙️ 음성 생성중';
-                }
-            } else if (isPlaying) {
-                if (targetBtn) {
-                    targetBtn.classList.remove('tts-loading');
-                    targetBtn.classList.add('tts-playing');
-                }
-                if (toast && toastText) {
-                    clearTimeout(ttsToastTimer);
-                    toast.className = 'tts-toast show playing';
-                    if (toastSpinner) toastSpinner.style.display = 'none';
-                    toastText.innerText = '🔊 음성 재생중';
-                }
-            } else {
-                if (targetBtn) {
-                    targetBtn.classList.remove('tts-loading');
-                    targetBtn.classList.remove('tts-playing');
-                }
-                if (toast) {
-                    clearTimeout(ttsToastTimer);
-                    ttsToastTimer = setTimeout(() => {
-                        toast.classList.remove('show');
-                    }, 400);
+                    const idx = parseInt(choice.trim()) - 1;
+                    if (!isNaN(idx) && voices[idx]) {
+                        localStorage.setItem('web_tts_male_voice_uri', voices[idx].voiceURI || voices[idx].name);
+                        alert(`선택된 음성: ${voices[idx].name}`);
+                    }
                 }
             }
         }
 
-        // 경상도 방언 발음 텍스트를 Edge TTS 전용 SSML prosody 태그로 변환하는 함수
-        // (강세 2개 이하는 음절별 pitch, 3개 이상은 Azure Edge TTS의 3개 태그 한도 초과 오류 방지를 위해 문장 전체 단일 prosody 적용)
-        function convertDialectToEdgeSSML(rawText, pitchHz = 35) {
+        // 2. 강세 기호를 '?'로 치환하는 헬퍼
+        function convertEndingStressToQuestion(rawText) {
             if (!rawText) return "";
             let text = rawText.trim();
             if (text.startsWith('[') && text.endsWith(']')) {
                 text = text.slice(1, -1).trim();
             }
-            // {선택1/선택2} 형태는 앞쪽 표기 채택
-            text = text.replace(/\{([^/>-]+)[/>-][^}]+\}/g, '$1');
-            // 문장 내 [발음]은 발음 내용을 채택 (앞뒤 공백 유지)
             text = text.replace(/\[(.*?)\]/g, ' $1 ');
+            text = text.replace(/\{([^/>-]+)[/>-][^}]+\}/g, '$1');
             text = text.replace(/<[^>]+>/g, '');
             text = text.replace(/°/g, '');
 
-            const pVal = Math.abs(parseInt(pitchHz) || 35);
-            const pStr = `+${pVal}Hz`;
-
-            // 복수 발음(/) 분리 처리
+            // '/'로 구분된 복수 발음 분리 처리
             const parts = text.split('/');
-            const processed = parts.map(part => {
+            const processedParts = parts.map(part => {
                 let p = part.trim();
-                // 강세 기호(' 또는 ′) 개수 계산
-                const accentMatches = p.match(/([가-힣])['′]/g);
-                const accentCount = accentMatches ? accentMatches.length : 0;
-
-                if (accentCount > 0 && accentCount <= 2) {
-                    // 강세가 1~2개(표제어, 짧은 단어 등): 음절별 prosody pitch 태그 부여
-                    p = p.replace(/([가-힣])['′]/g, (m, char) => {
-                        return `<prosody pitch="${pStr}">${char}</prosody>`;
-                    });
-                    p = p.replace(/['′]/g, '').trim();
-                } else if (accentCount > 2) {
-                    // 강세가 3개 이상(긴 예문 문장 등):
-                    // Azure Edge TTS는 prosody 태그가 3개 이상이면 "No audio was received"로 거부하므로
-                    // 문장 전체를 단일 prosody pitch 태그로 감싸서 거부 없이 강한 경상도 억양 합성
-                    const cleanP = p.replace(/['′]/g, '').replace(/\s+/g, ' ').trim();
-                    p = `<prosody pitch="${pStr}">${cleanP}</prosody>`;
-                } else {
-                    // 강세 기호가 없는 일반 예문 문장: 자연스러운 텍스트 유지
-                    p = p.replace(/['′]/g, '').trim();
-                }
+                if (!p) return "";
+                // 어절/표제어 끝 음절에 강세(' 또는 ′)가 있는 경우 이를 '?'로 치환하여 의문 억양(상승조) 유도
+                p = p.replace(/([가-힣])['′]+([\s\.\,\!\?]|$)/g, '$1?$2');
+                // 남은 강세 기호 제거 및 구두점 정리
+                p = p.replace(/['′]/g, '').replace(/\?[\.\,]/g, '?').trim();
                 return p;
             });
 
-            let result = processed.join(', ').replace(/\s+/g, ' ').trim();
-            // 말꼬리 하강을 유발하는 의문부호(?)나 느낌표(!)를 마침표(.)로 치환
-            result = result.replace(/[\?!]+/g, '.').replace(/\.+/g, '.').trim();
-            return result;
+            return processedParts.filter(Boolean).join(', ').replace(/\s+/g, ' ').trim();
         }
 
-        // Gradio 4 Queue를 브라우저 순수 fetch와 SSE 스트림으로 직접 호출하는 초경량 헬퍼
-        async function requestGradio4Queue(baseHost, text, voice, rate, pitch) {
-            const session_hash = Math.random().toString(36).substring(2, 12);
-            const joinUrl = `${baseHost}/queue/join`;
-            const dataUrl = `${baseHost}/queue/data?session_hash=${session_hash}`;
+        // 3. 2번 TTS 발화 함수 (물음표 종결 억양 상승 시험 + 남성 음성)
+        function speakDialectWebSpeechQuestion(rawText) {
+            if (!rawText || !window.speechSynthesis) return;
+            window.speechSynthesis.cancel();
 
-            const joinResp = await fetch(joinUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    data: [text, voice, rate, pitch],
-                    event_data: null,
-                    fn_index: 0,
-                    session_hash: session_hash,
-                    trigger_id: 11
-                })
-            });
+            const speechText = convertEndingStressToQuestion(rawText);
+            if (!speechText) return;
 
-            if (!joinResp.ok) {
-                throw new Error(`Queue join failed: ${joinResp.status}`);
+            const utterance = new SpeechSynthesisUtterance(speechText);
+            utterance.lang = 'ko-KR';
+            utterance.rate = 0.92;
+
+            const maleVoice = getKoreanMaleVoice();
+            if (maleVoice) {
+                utterance.voice = maleVoice;
+                const isExplicitMale = /injoon|인준|male|남성|ism|kob/i.test((maleVoice.name || "") + " " + (maleVoice.voiceURI || ""));
+                utterance.pitch = isExplicitMale ? 1.0 : 0.85; // 명시적 남성 보이스가 아니면 pitch를 낮춰 남성톤 구현
+            } else {
+                utterance.pitch = 0.85;
             }
 
-            const dataResp = await fetch(dataUrl);
-            if (!dataResp.ok) {
-                throw new Error(`Queue data stream failed: ${dataResp.status}`);
-            }
-
-            const reader = dataResp.body.getReader();
-            const decoder = new TextDecoder();
-            let buffer = '';
-
-            while (true) {
-                const { value, done } = await reader.read();
-                if (done) break;
-                buffer += decoder.decode(value, { stream: true });
-                const lines = buffer.split('\n');
-                buffer = lines.pop(); // 미완성 줄 보존
-
-                for (const line of lines) {
-                    if (line.startsWith('data:')) {
-                        try {
-                            const evt = JSON.parse(line.slice(5).trim());
-                            if (evt.msg === 'process_completed') {
-                                if (evt.success && evt.output && evt.output.data && evt.output.data[0]) {
-                                    const fileObj = evt.output.data[0];
-                                    let raw = (typeof fileObj === 'object' && fileObj !== null) ? (fileObj.url || fileObj.path) : fileObj;
-                                    if (raw) return raw;
-                                } else {
-                                    throw new Error(evt.output?.error || "Gradio processing failed");
-                                }
-                            }
-                        } catch (pe) {
-                            if (pe.message && !pe.message.includes('JSON')) {
-                                throw pe;
-                            }
-                        }
-                    }
-                }
-            }
-            throw new Error("Stream closed without audio result");
+            window.speechSynthesis.speak(utterance);
         }
 
-        // Microsoft Edge TTS (Hugging Face Spaces 연동) 호출 및 재생 함수
-        async function speakEdgeTTS(rawText, ev = null) {
-            if (!rawText) return;
-
-            // 클릭된 스피커 버튼 요소 식별
-            let targetBtn = null;
-            if (ev) {
-                targetBtn = ev.currentTarget || (ev.target ? ev.target.closest('.speaker-btn') : null);
-            }
-            if (!targetBtn) {
-                targetBtn = document.querySelector('.speaker-btn-edge');
-            }
-
-            // 1. 기존 오디오 및 발화 모두 정지
-            if (currentEdgeAudio) { currentEdgeAudio.pause(); currentEdgeAudio = null; }
-            if (currentHFAudio) { currentHFAudio.pause(); currentHFAudio = null; }
-            if (currentCloudAudio) { currentCloudAudio.pause(); currentCloudAudio = null; }
-            if (currentGeminiAudio) { currentGeminiAudio.pause(); currentGeminiAudio = null; }
-            if (window.speechSynthesis) { window.speechSynthesis.cancel(); }
-
-            // 0. 사전 생성된 고음질 MP3 파일이 있으면 즉시 재생
-            try {
-                const map = await loadAudioMap();
-                const mappedPath = lookupAudioMap(rawText, map);
-                if (mappedPath) {
-                    console.log("[Edge TTS] 사전 생성된 MP3 파일 즉시 재생:", mappedPath);
-                    currentEdgeAudio = new Audio(mappedPath);
-                    setTTSLoadingState(targetBtn, false, true);
-                    currentEdgeAudio.onended = () => setTTSLoadingState(targetBtn, false, false);
-                    currentEdgeAudio.onerror = () => setTTSLoadingState(targetBtn, false, false);
-                    await currentEdgeAudio.play();
-                    return;
-                }
-            } catch (preErr) {
-                console.warn("[Edge TTS] 사전 생성 오디오 확인 중 예외:", preErr);
-            }
-
-            const voiceChoice = localStorage.getItem('edge_voice_choice') || "남성 (InJoon)";
-            const finalPitch = parseInt(localStorage.getItem('edge_tts_pitch') || "35"); // 강세와 일반 음의 피치 차이(Hz)
-            const rateVal = parseInt(localStorage.getItem('edge_tts_rate') || "0");
-
-            // 2. 텍스트 정제 및 SSML prosody 태그 변환 (태그 2개 이하 유지로 Azure 거부 방지)
-            let edgeText = convertDialectToEdgeSSML(rawText, finalPitch);
-            if (!edgeText) return;
-
-            // [핵심 기능 1] 방금 생성한 음성 임시 저장(캐시) 확인 -> 웹 요청 없이 즉시 재생!
-            const cacheKey = `${edgeText}_${voiceChoice}_${finalPitch}_${rateVal}`;
-            if (edgeAudioCache.has(cacheKey)) {
-                console.log("[Edge TTS Cache] 임시 저장된 오디오 즉시 재생:", cacheKey);
-                const cachedUrl = edgeAudioCache.get(cacheKey);
-                currentEdgeAudio = new Audio(cachedUrl);
-                setTTSLoadingState(targetBtn, false, true); // "🔊 음성 재생중"
-                currentEdgeAudio.onended = () => setTTSLoadingState(targetBtn, false, false);
-                currentEdgeAudio.onerror = () => setTTSLoadingState(targetBtn, false, false);
-                try {
-                    await currentEdgeAudio.play();
-                    return;
-                } catch (playErr) {
-                    console.warn("[Edge TTS Cache] 재생 실패로 새 생성 시도:", playErr);
-                }
-            }
-
-            // 3. Hugging Face Spaces 주소 확인
-            let spaceEndpoint = localStorage.getItem('hf_edge_tts_endpoint');
-            if (!spaceEndpoint || !spaceEndpoint.trim()) {
-                spaceEndpoint = "bsgim5/edge-tts";
-                localStorage.setItem('hf_edge_tts_endpoint', spaceEndpoint);
-            }
-
-            // 4. 주소 정규화 (Space ID -> Direct URL 변환)
-            let cleanEndpoint = spaceEndpoint.trim().replace(/\/+$/, '');
-            const hfSpaceMatch = cleanEndpoint.match(/huggingface\.co\/spaces\/([^/]+)\/([^/?#]+)/);
-            if (hfSpaceMatch) {
-                cleanEndpoint = `${hfSpaceMatch[1]}/${hfSpaceMatch[2]}`;
-            }
-
-            let baseHost = cleanEndpoint;
-            if (!baseHost.startsWith('http://') && !baseHost.startsWith('https://')) {
-                const parts = cleanEndpoint.split('/');
-                if (parts.length === 2) {
-                    const user = parts[0].toLowerCase().replace(/[^a-z0-9]/g, '');
-                    const space = parts[1].toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-');
-                    baseHost = `https://${user}-${space}.hf.space`;
-                } else {
-                    const cleanId = cleanEndpoint.replace(/[^a-zA-Z0-9]/g, '-').toLowerCase();
-                    baseHost = `https://${cleanId}.hf.space`;
-                }
-            }
-            baseHost = baseHost.replace(/\/+$/, '');
-
-            console.log(`[Edge HF TTS] 텍스트: "${edgeText}", 보이스: ${voiceChoice}, 강세 피치차: +${finalPitch}Hz, 속도: ${rateVal}%, 주소: ${cleanEndpoint}`);
-
-            // 로딩 안내 가동 ("🎙️ 음성 생성중")
-            setTTSLoadingState(targetBtn, true, false);
-
-            try {
-                let audioUrl = null;
-
-                // [방법 0: 초고속 직통 REST API 호출 (/tts 및 /api/tts)]
-                try {
-                    const directEndpoints = [`${baseHost}/tts`, `${baseHost}/api/tts`];
-                    for (const ep of directEndpoints) {
-                        try {
-                            const directResp = await fetch(ep, {
-                                method: 'POST',
-                                headers: { 'Content-Type': 'application/json' },
-                                body: JSON.stringify({ text: edgeText, voice: voiceChoice, rate: rateVal, pitch: finalPitch })
-                            });
-                            if (directResp.ok) {
-                                const blob = await directResp.blob();
-                                if (blob && blob.size > 0) {
-                                    audioUrl = URL.createObjectURL(blob);
-                                    console.log("[Edge HF TTS] 직통 REST 성공! Blob 크기:", blob.size);
-                                    break;
-                                }
-                            }
-                        } catch (deErr) {}
-                    }
-                } catch (dErr) {}
-
-                // [방법 1: 순수 JS Gradio 4 Queue 호출]
-                if (!audioUrl) {
-                    try {
-                        console.log("[Edge HF TTS] Gradio 4 Queue 직접 호출 시도:", baseHost);
-                        audioUrl = await requestGradio4Queue(baseHost, edgeText, voiceChoice, rateVal, finalPitch);
-                        console.log("[Edge HF TTS] Gradio 4 Queue 성공! 오디오 URL:", audioUrl);
-                    } catch (queueErr) {
-                        console.warn("[Edge HF TTS] Gradio 4 Queue 오류 -> @gradio/client/REST로 Fallback:", queueErr.message);
-                    }
-                }
-
-                // [방법 2: @gradio/client 라이브러리 Fallback]
-                if (!audioUrl) {
-                    try {
-                        const { Client } = await import("https://cdn.jsdelivr.net/npm/@gradio/client/dist/index.min.js");
-                        console.log("[Edge HF TTS] Client.connect 시도:", cleanEndpoint);
-                        const app = await Client.connect(cleanEndpoint);
-
-                        const endpoints = ["/predict", "/generate_speech", 0];
-                        for (const ep of endpoints) {
-                            try {
-                                const result = await app.predict(ep, [ edgeText, voiceChoice, rateVal, finalPitch ]);
-                                if (result && result.data && result.data.length > 0) {
-                                    const item = result.data[0];
-                                    let raw = (typeof item === 'object' && item !== null) ? (item.url || item.path) : (typeof item === 'string' ? item : null);
-                                    if (raw) {
-                                        audioUrl = raw;
-                                        break;
-                                    }
-                                }
-                            } catch (epErr) {}
-                        }
-                    } catch (gradioErr) {}
-                }
-
-                // 상대 경로인 경우 baseHost 붙여 절대 URL 완성
-                if (audioUrl && typeof audioUrl === 'string') {
-                    if (!audioUrl.startsWith('http://') && !audioUrl.startsWith('https://') && !audioUrl.startsWith('blob:')) {
-                        audioUrl = baseHost + (audioUrl.startsWith('/') ? '' : '/') + audioUrl;
-                    }
-                }
-
-                if (audioUrl) {
-                    console.log("[Edge HF TTS] 최종 오디오 재생 URL:", audioUrl);
-                    // [핵심 기능 1] 방금 생성된 오디오를 임시 캐시에 저장
-                    edgeAudioCache.set(cacheKey, audioUrl);
-
-                    currentEdgeAudio = new Audio(audioUrl);
-                    setTTSLoadingState(targetBtn, false, true); // "🔊 음성 재생중"
-                    currentEdgeAudio.onended = () => setTTSLoadingState(targetBtn, false, false);
-                    currentEdgeAudio.onerror = () => setTTSLoadingState(targetBtn, false, false);
-                    await currentEdgeAudio.play();
-                    return;
-                } else {
-                    throw new Error("Hugging Face Space에서 오디오를 수신하지 못했습니다.");
-                }
-            } catch (err) {
-                console.warn("[Edge HF TTS Error]:", err.message);
-
-                // 방법 3: 로컬 프록시(127.0.0.1:5050) Fallback 시도
-                try {
-                    const localResp = await fetch('http://127.0.0.1:5050/tts', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ text: edgeText, voice: 'ko-KR-InJoonNeural', pitch: finalPitch, rate: rateVal })
-                    });
-                    if (localResp.ok) {
-                        const blob = await localResp.blob();
-                        if (blob.size > 0) {
-                            const blobUrl = URL.createObjectURL(blob);
-                            edgeAudioCache.set(cacheKey, blobUrl);
-
-                            currentEdgeAudio = new Audio(blobUrl);
-                            setTTSLoadingState(targetBtn, false, true); // "🔊 음성 재생중"
-                            currentEdgeAudio.onended = () => setTTSLoadingState(targetBtn, false, false);
-                            currentEdgeAudio.onerror = () => setTTSLoadingState(targetBtn, false, false);
-                            await currentEdgeAudio.play();
-                            console.log("[Edge TTS] 로컬 프록시로 대체 재생 성공!");
-                            return;
-                        }
-                    }
-                } catch (localErr) {}
-
-                setTTSLoadingState(targetBtn, false, false);
-                alert(`[3번 Microsoft Edge TTS 오류]\n${err.message}\n\n• 등록된 Space 주소: ${spaceEndpoint}\n• 3번 스피커를 우클릭하여 Hugging Face Space 주소를 다시 설정할 수 있습니다.\n• Space가 'Public(공개)' 상태이고 'Running' 중인지 확인해주세요.`);
-            }
-        }
-
-        // 표제어 전용 Microsoft Edge TTS 재생
-        function speakPronunciationEdge(ev = null) {
+        // 표제어 전용 2번 발화
+        function speakPronunciationQuestion(ev = null) {
+            if (ev) ev.stopPropagation();
             if (!currentItem || !currentItem.pronunciation) return;
-            speakEdgeTTS(currentItem.pronunciation, ev);
+            speakDialectWebSpeechQuestion(currentItem.pronunciation);
         }
 
-        // 1번 회색 스피커: 표제어 기본 TTS (문장 분할 및 동적 피치 조절로 마지막 음절 고조 성조 구현)
+        // 예문/구절 전용 2번 발화
+        function speakTextQuestion(text, ev = null) {
+            if (ev) ev.stopPropagation();
+            if (!text) return;
+            speakDialectWebSpeechQuestion(text);
+        }
+
+        // 1번 파란색 스피커: 표제어 기본 TTS (문장 분할 및 동적 피치 조절로 마지막 음절 고조 성조 구현)
         function speakPronunciation() {
             if (!currentItem || !currentItem.pronunciation) return;
             speakDialectWebSpeech(currentItem.pronunciation);
