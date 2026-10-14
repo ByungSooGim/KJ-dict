@@ -26,7 +26,7 @@
 
         .container {
             width: 100%;
-            max-width: 400px;
+            max-width: 440px;
             position: relative;
         }
 
@@ -74,21 +74,21 @@
         }
 
         .logo-svg {
-            width: 24px;
-            height: 24px;
+            width: 26px;
+            height: 26px;
             fill: var(--point);
         }
 
         .logo-text {
-            font-size: 18px;
+            font-size: 20px;
             font-weight: bold;
             color: var(--point);
         }
 
-        /* 1. 검색창 글씨 크기 20px */
+        /* 1. 검색창 글씨 크기 30px (사전 본문 표제어 크기와 동일) */
         .search-row {
             display: flex;
-            gap: 4px;
+            gap: 6px;
             margin-bottom: 8px;
             width: 100%;
         }
@@ -96,12 +96,20 @@
         .search-row input {
             flex: 1;
             width: 50%;
-            padding: 10px 8px;
+            padding: 8px 10px;
             border: 1.5px solid #ddd;
             border-radius: 8px;
-            font-size: 20px;
+            font-size: 30px;
+            font-weight: bold;
             box-sizing: border-box;
             background: #fff;
+            min-width: 0;
+        }
+
+        .search-row input::placeholder {
+            font-size: 16px;
+            font-weight: normal;
+            color: #aaa;
         }
 
         /* 2. 자음 버튼 한 줄에 14개 */
@@ -124,13 +132,13 @@
             background: #fdfdfd;
             border: 1px solid #eee;
             border-radius: 4px;
-            font-size: 14px;
+            font-size: 15px;
             font-weight: bold;
             cursor: pointer;
             color: #444;
         }
 
-        /* 3. 품사 버튼 높이 줄임 */
+        /* 3. 품사 버튼 */
         .pos-row {
             display: flex;
             gap: 4px;
@@ -146,17 +154,17 @@
             border-radius: 6px;
             cursor: pointer;
             text-align: center;
-            font-size: 14px;
+            font-size: 15px;
             font-weight: bold;
             color: #555;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            height: 35px;
+            height: 38px;
         }
 
         .pos-btn span {
-            font-size: 8px;
+            font-size: 10px;
             font-weight: normal;
             color: #999;
             margin-top: 1px;
@@ -164,9 +172,9 @@
 
         /* --- 4. 검색 결과 리스트 아이템 --- */
         .list-item {
-            padding: 12px 15px;
+            padding: 13px 15px;
             border-bottom: 1px solid #eee;
-            font-size: 17px;
+            font-size: 19px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -178,7 +186,7 @@
         }
 
         .list-item span.brief-text {
-            font-size: 13px;
+            font-size: 15px;
             color: #999;
             font-weight: normal;
             margin-left: 8px;
@@ -194,12 +202,12 @@
         }
 
         .page-btn {
-            padding: 5px 10px;
+            padding: 6px 12px;
             border: 1px solid #ddd;
             border-radius: 4px;
             background: #fff;
             cursor: pointer;
-            font-size: 13px;
+            font-size: 15px;
         }
 
         .page-btn.active {
@@ -237,18 +245,21 @@
 
         /* --- 품사, 발음 --- */
         .pos-badge {
-            font-size: 13px;
+            font-size: 15px;
             background: #eee;
-            padding: 2px 6px;
+            padding: 3px 8px;
             border-radius: 4px;
             color: #666;
-            margin-left: 6px;
+            margin-left: 8px;
         }
 
-        /* --- 스피커 버튼 공통 (1번: 파란색) --- */
+        /* --- 스피커 버튼 공통 (발음 폰트 20px와 동일 크기 고정, 내용이 길어져도 축소 방지) --- */
         .speaker-btn {
-            width: 22px;
-            height: 22px;
+            width: 20px;
+            height: 20px;
+            min-width: 20px;
+            min-height: 20px;
+            flex-shrink: 0;
             cursor: pointer;
             fill: #1976d2; /* 1번 스피커: 파란색 */
             transition: fill 0.2s, transform 0.15s;
@@ -256,13 +267,19 @@
             align-items: center;
             justify-content: center;
             vertical-align: middle;
-            margin-left: 5px;
+            margin-left: 6px;
             position: relative;
+        }
+
+        .speaker-btn svg {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
         }
 
         .speaker-btn:hover {
             fill: #0d47a1;
-            transform: scale(1.12);
+            transform: scale(1.15);
         }
 
         /* 2번째 스피커 버튼: 하늘색 (마지막 강세 -> '?' 치환 및 남성 음성 시험용) */
@@ -272,23 +289,23 @@
 
         .speaker-btn-sky:hover {
             fill: #0097a7;
-            transform: scale(1.12);
+            transform: scale(1.15);
         }
-
 
         .pron-row {
             display: flex;
             align-items: center;
-            gap: 8px;
-            margin-top: 4px;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 6px;
         }
 
         .pron-area {
-            font-size: 15px;
+            font-size: 20px; /* 사전 본문 뜻풀이 사이즈와 동일 */
             color: #777;
             font-style: italic;
+            word-break: break-word;
         }
-
 
         .def-area {
             font-size: 20px;
@@ -315,15 +332,15 @@
             display: inline-flex;
             align-items: center;
             color: #777;
-            font-size: 14px;
+            font-size: 16px;
             font-weight: bold;
             cursor: pointer;
-            padding: 5px 0;
+            padding: 6px 0;
         }
 
         .ex-toggle::after {
             content: ' ▼';
-            font-size: 10px;
+            font-size: 11px;
             margin-left: 4px;
         }
 
@@ -342,12 +359,12 @@
             border-radius: 8px;
             margin-bottom: 8px;
             border-left: 3px solid #ccc;
-            font-size: 16px;
+            font-size: 18px;
         }
 
         .ex-std {
             display: block;
-            font-size: 13px;
+            font-size: 15px;
             color: #888;
             margin-top: 5px;
             border-top: 1px dotted #eee;
@@ -364,7 +381,7 @@
         }
 
         .rec-title {
-            font-size: 14px;
+            font-size: 16px;
             font-weight: bold;
             color: #555;
             display: inline-flex;
@@ -376,8 +393,8 @@
             background: #f8fafc;
             border: 1px solid #cbd5e1;
             color: #334155;
-            padding: 5px 12px;
-            font-size: 12px;
+            padding: 6px 12px;
+            font-size: 13px;
             font-weight: 600;
             border-radius: 20px;
             cursor: pointer;
@@ -403,17 +420,17 @@
         .rec-container {
             display: flex;
             flex-direction: column;
-            gap: 5px;
+            gap: 6px;
             margin-bottom: 15px;
             width: 100%;
         }
 
         .rec-card {
             background: #fff;
-            padding: 10px 15px;
+            padding: 12px 16px;
             border-radius: 8px;
             border: 1px solid #eee;
-            font-size: 16px;
+            font-size: 20px; /* 사전 본문 뜻풀이 사이즈와 동일하게 확대 */
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -423,11 +440,11 @@
         .report-btn {
             margin-top: 10px;
             display: inline-block;
-            padding: 8px 12px;
-            font-size: 10px;
+            padding: 6px 10px;
+            font-size: 12px;
             color: #888;
             border: 1px solid #ddd;
-            border-radius: 3px;
+            border-radius: 4px;
             cursor: pointer;
             text-decoration: none;
             transition: 0.2s;
@@ -440,7 +457,7 @@
         }
 
         .footer-info {
-            font-size: 10px;
+            font-size: 12px;
             color: #ccc;
             text-align: center;
             padding: 10px;
@@ -491,7 +508,7 @@
         <div id="consonantNav" class="nav-grid"></div>
         <div id="searchList">
             <div id="resCount"
-                style="padding:6px; font-size:11px; color:#999; text-align:center; border-bottom:1px solid #f5f5f5;">
+                style="padding:6px; font-size:13px; color:#999; text-align:center; border-bottom:1px solid #f5f5f5;">
             </div>
             <div id="listItems"></div>
         </div>
@@ -505,7 +522,7 @@
                     <a id="reportMail" class="report-btn" style="margin-left: auto;">오류제보</a>
                 </div>
                 <div id="v-expands"
-                    style="display:none; font-size:13px; color:var(--point); margin-top:2px; font-weight:bold;"></div>
+                    style="display:none; font-size:15px; color:var(--point); margin-top:4px; font-weight:bold;"></div>
                 <div id="v-pron-row" class="pron-row" style="display:none;">
                     <div id="v-pron" class="pron-area"></div>
                     <div class="speaker-btn" onclick="speakPronunciation()"
@@ -533,7 +550,7 @@
 
             </div>
             <button onclick="goBackToList()"
-                style="margin-bottom:10px; padding:8px 12px; background:#eee; border:none; border-radius:6px; cursor:pointer; font-weight:bold; color:#555;">←
+                style="margin-bottom:10px; padding:10px 14px; background:#eee; border:none; border-radius:6px; cursor:pointer; font-weight:bold; color:#555; font-size:15px;">←
                 목록으로 돌아가기</button>
 
         </div>
@@ -985,7 +1002,7 @@
             if (!text) return "";
             return text.replace(/\[(.*?)\]/g, (match, p1) => {
                 const encPron = encodeURIComponent(p1.trim());
-                return `<b style="color:var(--point)">${p1}</b><span class="speaker-btn" title="1번 TTS (원래 발음 기호)" data-pron="${encPron}" onclick="event.stopPropagation(); speakText(decodeURIComponent(this.dataset.pron), event)"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg></span><span class="speaker-btn speaker-btn-sky" title="2번 TTS ('?' 치환 시험 + 남성 음성)" data-pron="${encPron}" onclick="event.stopPropagation(); speakTextQuestion(decodeURIComponent(this.dataset.pron), event)"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span>`;
+                return `<b style="color:var(--point)">${p1}</b><span class="speaker-btn" title="1번 TTS (원래 발음 기호)" data-pron="${encPron}" onclick="event.stopPropagation(); speakText(decodeURIComponent(this.dataset.pron), event)"><svg viewBox="0 0 24 24" style="width:20px; height:20px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg></span><span class="speaker-btn speaker-btn-sky" title="2번 TTS ('?' 치환 시험 + 남성 음성)" data-pron="${encPron}" onclick="event.stopPropagation(); speakTextQuestion(decodeURIComponent(this.dataset.pron), event)"><svg viewBox="0 0 24 24" style="width:20px; height:20px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span>`;
             });
         }
 
@@ -995,7 +1012,7 @@
             let safeText = text.replace(/</g, "&lt;").replace(/>/g, "&gt;");
             return safeText.replace(/\[(.*?)\]/g, (match, p1) => {
                 const encPron = encodeURIComponent(p1.trim());
-                return `<b style="color:var(--point)">[${p1}]</b><span class="speaker-btn" title="1번 TTS (원래 발음 기호)" data-pron="${encPron}" onclick="event.stopPropagation(); speakText(decodeURIComponent(this.dataset.pron), event)"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg></span><span class="speaker-btn speaker-btn-sky" title="2번 TTS ('?' 치환 시험 + 남성 음성)" data-pron="${encPron}" onclick="event.stopPropagation(); speakTextQuestion(decodeURIComponent(this.dataset.pron), event)"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span>`;
+                return `<b style="color:var(--point)">[${p1}]</b><span class="speaker-btn" title="1번 TTS (원래 발음 기호)" data-pron="${encPron}" onclick="event.stopPropagation(); speakText(decodeURIComponent(this.dataset.pron), event)"><svg viewBox="0 0 24 24" style="width:20px; height:20px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg></span><span class="speaker-btn speaker-btn-sky" title="2번 TTS ('?' 치환 시험 + 남성 음성)" data-pron="${encPron}" onclick="event.stopPropagation(); speakTextQuestion(decodeURIComponent(this.dataset.pron), event)"><svg viewBox="0 0 24 24" style="width:20px; height:20px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span>`;
             });
         }
 
@@ -1424,7 +1441,7 @@
                     }
                     return `
                     <div class="ex-item" style="border-left: 3px solid #7ea1c4; background: #f4f7fa; line-height: 1.6;">
-                        <div style="font-size:15px; color:#333;">${processIdiomTTS(text)}</div>
+                        <div style="font-size:17px; color:#333;">${processIdiomTTS(text)}</div>
                     </div>
                 `;
                 }).join('');
@@ -1451,7 +1468,7 @@
                 div.className = 'list-item';
                 let expandHint = '';
                 if (item.expanded_words && item.expanded_words.length > 0 && (item.word.includes('{') || (item.word_pure && item.word_pure.includes('{')))) {
-                    expandHint = `<span style="font-size:12px; color:var(--point); font-weight:normal; margin-left:6px;">(${item.expanded_words.join(', ')})</span>`;
+                    expandHint = `<span style="font-size:14px; color:var(--point); font-weight:normal; margin-left:6px;">(${item.expanded_words.join(', ')})</span>`;
                 }
                 div.innerHTML = `<b>${formatWordSuperscript(item.word)}</b>${expandHint}<span class="brief-text">${item.definition.replace(/<[^>]*>?/gm, '').substring(0, 20)}...</span>`;
                 div.onclick = () => displayDetail(item);
@@ -1507,7 +1524,7 @@
             randomList.forEach(item => {
                 const div = document.createElement('div');
                 div.className = 'rec-card';
-                div.innerHTML = `<b>${formatWordSuperscript(item.word)}</b> <span style="font-size:12px; color:#999;">${item.definition.substring(0, 15)}...</span>`;
+                div.innerHTML = `<b>${formatWordSuperscript(item.word)}</b> <span style="font-size:16px; color:#999; margin-left:8px;">${item.definition.substring(0, 15)}...</span>`;
                 div.onclick = () => displayDetail(item);
                 container.appendChild(div);
             });
