@@ -471,6 +471,121 @@
             display: block;
         }
 
+        /* 발음 듣기 기능 안내 버튼 및 팝업 스타일 */
+        .guide-btn-wrap {
+            display: flex;
+            justify-content: center;
+            margin: 10px 0 6px;
+        }
+
+        .guide-btn {
+            background: #fff;
+            border: 1.5px solid var(--point);
+            color: var(--point);
+            padding: 8px 16px;
+            font-size: 14px;
+            font-weight: bold;
+            border-radius: 20px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 2px 6px rgba(163, 59, 59, 0.15);
+            transition: all 0.2s ease;
+        }
+
+        .guide-btn:hover {
+            background: var(--point);
+            color: #fff;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 10px rgba(163, 59, 59, 0.25);
+        }
+
+        .guide-modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.55);
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            box-sizing: border-box;
+        }
+
+        .guide-modal-card {
+            background: #fff;
+            border-radius: 14px;
+            max-width: 380px;
+            width: 100%;
+            padding: 20px;
+            box-sizing: border-box;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+            border-top: 5px solid var(--point);
+            animation: modalPop 0.25s ease-out;
+        }
+
+        @keyframes modalPop {
+            from {
+                opacity: 0;
+                transform: scale(0.92) translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .guide-modal-title {
+            font-size: 17px;
+            font-weight: bold;
+            color: var(--point);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            border-bottom: 1px solid #f0f0f0;
+            padding-bottom: 8px;
+        }
+
+        .guide-modal-body {
+            font-size: 14px;
+            line-height: 1.7;
+            color: #333;
+            word-break: keep-all;
+        }
+
+        .guide-modal-list {
+            margin: 8px 0 10px 18px;
+            padding: 0;
+            color: #444;
+        }
+
+        .guide-modal-list li {
+            margin-bottom: 4px;
+        }
+
+        .guide-modal-close-btn {
+            width: 100%;
+            margin-top: 14px;
+            padding: 9px 0;
+            background: var(--point);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .guide-modal-close-btn:hover {
+            background: #872e2e;
+        }
+
         body {
             -webkit-user-select: none;
             -ms-user-select: none;
@@ -571,6 +686,44 @@
             </div>
             <div class="rec-container" id="recommendList"></div>
         </div>
+        <!-- 발음 듣기 기능 안내 버튼 및 팝업 (첫 페이지 하단) -->
+        <div id="guideSection" class="guide-btn-wrap">
+            <button type="button" class="guide-btn" onclick="togglePronGuideModal()">
+                <svg viewBox="0 0 24 24" style="width:16px; height:16px; fill:currentColor;">
+                    <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+                </svg>
+                발음 듣기 기능 안내
+            </button>
+        </div>
+
+        <!-- 발음 듣기 안내 모달 팝업 -->
+        <div id="guideModalOverlay" class="guide-modal-overlay" onclick="togglePronGuideModal(event)">
+            <div class="guide-modal-card" onclick="event.stopPropagation()">
+                <div class="guide-modal-title">
+                    <svg viewBox="0 0 24 24" style="width:20px; height:20px; fill:var(--point); flex-shrink:0;">
+                        <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+                    </svg>
+                    발음 듣기 기능 안내
+                </div>
+                <div class="guide-modal-body">
+                    <p style="margin: 0 0 10px 0;">
+                        스피커 모양 파란 아이콘을 누르시면 휴대폰에서 어떻게 소리 나는지 들을 수 있어요.
+                    </p>
+                    <p style="margin: 0 0 6px 0;">
+                        휴대폰 설정에서 돋보기 기능 즉 찾기 실행해서
+                    </p>
+                    <ul class="guide-modal-list">
+                        <li>"글자 읽어주기"를 찾아 들어가셔서</li>
+                        <li>"Google 음성 인식 및 합성"을 선택하시면</li>
+                    </ul>
+                    <p style="margin: 0;">
+                        좀더 부드러운 사투리를 들으실 수 있으세요.
+                    </p>
+                </div>
+                <button type="button" class="guide-modal-close-btn" onclick="togglePronGuideModal()">닫기</button>
+            </div>
+        </div>
+
         <div class="footer-info">데이터 저작권: 편저자 최명옥ㆍ김주석 | 소스코드: 비영리 공개 정책<span class="copyright-warning">※ 데이터 무단 크롤링 및 무단
                 복제를 엄격히 금지합니다.</span></div>
     </div>
@@ -595,7 +748,7 @@
         });
         /* --- [1. 변수 및 환경 설정] --- */
         let dictData = [], currentItem = null, searchTimer, currentPage = 1, filteredData = [];
-        const itemsPerPage = 50, DB_NAME = "GyeongjuDictDB", STORE_NAME = "dictionary", DATA_VERSION = "20261016_v6";
+        const itemsPerPage = 50, DB_NAME = "GyeongjuDictDB", STORE_NAME = "dictionary", DATA_VERSION = "20261012_v5";
         const posMap = { '󰃃': '명사', '󰂿': '동사', '󰃰': '형용사', '󰂽': '대명사', '󰃌': '부사', '󰃲': '활용어미', '󰃥': '접사', '󰃆': '어미', '󰂴': '관형사', '󰂳': '감탄사', '󰃓': '수사', '󰃫': '참고', '󰃩': '준말' };
         const consonants = ['ㄱ', 'ㄲ', 'ㄴ', 'ㄷ', 'ㄸ', 'ㄹ', 'ㅁ', 'ㅂ', 'ㅃ', 'ㅅ', 'ㅆ', 'ㅇ', 'ㅈ', 'ㅉ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ'];
         const CHOSUNG = ['ㄱ', 'ㄲ', 'ㄴ', 'ㄷ', 'ㄸ', 'ㄹ', 'ㅁ', 'ㅂ', 'ㅃ', 'ㅅ', 'ㅆ', 'ㅇ', 'ㅈ', 'ㅉ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ'];
@@ -1397,11 +1550,13 @@
                 }
             }
 
-            // 상세 보기 진입 시 추천 단어 목록 및 섹션 숨기기
+            // 상세 보기 진입 시 추천 단어 목록 숨기기
             const recSec = document.getElementById('recSection');
             if (recSec) recSec.style.display = 'none';
             const recList = document.getElementById('recommendList');
             if (recList) recList.style.display = 'none';
+            const guideModal = document.getElementById('guideModalOverlay');
+            if (guideModal) guideModal.style.display = 'none';
 
             // 1. item.pos_symbol이 있을 경우, 각 글자를 순회하며 한글 품사로 변환합니다.
             const posText = posMap[item.pos_symbol] || item.pos_symbol || "", pBadge = document.getElementById('v-pos'); pBadge.innerText = posText; pBadge.style.display = posText ? 'inline-block' : 'none';
@@ -1496,6 +1651,20 @@
             if (recSec) recSec.style.display = 'block';
             const recList = document.getElementById('recommendList');
             if (recList) recList.style.display = 'flex';
+            // 발음 듣기 기능 안내 버튼 다시 보이기
+            const guideSec = document.getElementById('guideSection');
+            if (guideSec) guideSec.style.display = 'flex';
+        }
+
+        /* --- 발음 듣기 기능 안내 모달 토글 함수 --- */
+        function togglePronGuideModal(ev) {
+            if (ev && ev.target && ev.target.id !== 'guideModalOverlay') {
+                return;
+            }
+            const modal = document.getElementById('guideModalOverlay');
+            if (!modal) return;
+            const isHidden = modal.style.display === 'none' || modal.style.display === '';
+            modal.style.display = isHidden ? 'flex' : 'none';
         }
 
 
