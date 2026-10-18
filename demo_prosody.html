@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>경상도(경주어) 성조 및 고저장단 후보정 (2번 방식) 시제품 청취실</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Malgun Gothic", sans-serif;
+            background: #f0f2f5;
+            margin: 0;
+            padding: 24px;
+            color: #333;
+        }
+        .container {
+            max-width: 860px;
+            margin: 0 auto;
+        }
+        .header {
+            background: linear-gradient(135deg, #1976d2, #0d47a1);
+            color: white;
+            padding: 24px;
+            border-radius: 16px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        .badge {
+            background: rgba(255,255,255,0.2);
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: normal;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1 style="margin:0 0 8px 0; font-size:24px;">경상도(경주어) 사투리 성조/장단 음향 후보정 시제품</h1>
+        <div style="font-size:14px; opacity:0.9; line-height:1.6;">
+            사전의 성조 부호(′) 및 모음 연타(장모음)를 Praat PSOLA 신호 처리로 자동 변환한 결과입니다.<br>
+            표준 TTS의 하강 억양과 사투리 후보정 음성을 직접 비교해서 들어보실 수 있습니다.
+        </div>
+    </div>
+    
+    
+        <div style="background:#fff; border:1px solid #ddd; border-radius:12px; padding:16px; margin-bottom:16px; box-shadow:0 2px 5px rgba(0,0,0,0.05);">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                <div>
+                    <span style="font-size:24px; font-weight:bold; color:#1a237e;">가새′</span>
+                    <span style="color:#666; font-size:14px; margin-left:10px;">가위 (말음절 고조 L-H)</span>
+                </div>
+                <div><span style='display:inline-block; padding:2px 8px; margin:2px; background:#757575; color:#fff; border-radius:12px; font-size:12px;'>가: L</span> <span style='display:inline-block; padding:2px 8px; margin:2px; background:#e53935; color:#fff; border-radius:12px; font-size:12px;'>새: H</span> </div>
+            </div>
+            
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:12px;">
+                <div style="background:#f5f5f5; border-radius:8px; padding:12px;">
+                    <div style="font-weight:bold; color:#555; margin-bottom:6px; font-size:13px;">1. 표준 Neural TTS (기본형)</div>
+                    <audio controls style="width:100%; height:36px;">
+                        <source src="audio/gasae_orig.mp3" type="audio/mpeg">
+                    </audio>
+                    <div style="font-size:11px; color:#888; margin-top:4px;">* 어미가 아래로 뚝 떨어지는 표준어 억양</div>
+                </div>
+                
+                <div style="background:#e8f4fd; border:1px solid #90caf9; border-radius:8px; padding:12px;">
+                    <div style="font-weight:bold; color:#1976d2; margin-bottom:6px; font-size:13px;">2. 2번 방식: 경상도 성조/장단 후보정 (시제품)</div>
+                    <audio controls style="width:100%; height:36px;">
+                        <source src="audio/gasae_prosody.mp3" type="audio/mpeg">
+                    </audio>
+                    <div style="font-size:11px; color:#1565c0; margin-top:4px;">* F0 곡선 상승 + 장모음 1.6배 연장 (자연스러운 경상도 억양)</div>
+                </div>
+            </div>
+        </div>
+        
+        <div style="background:#fff; border:1px solid #ddd; border-radius:12px; padding:16px; margin-bottom:16px; box-shadow:0 2px 5px rgba(0,0,0,0.05);">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                <div>
+                    <span style="font-size:24px; font-weight:bold; color:#1a237e;">가아′</span>
+                    <span style="color:#666; font-size:14px; margin-left:10px;">가다의 명령형 (장모음 연장 + 상승 고조 H)</span>
+                </div>
+                <div><span style='display:inline-block; padding:2px 8px; margin:2px; background:#e53935; color:#fff; border-radius:12px; font-size:12px;'>가아: H (장음)</span> </div>
+            </div>
+            
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:12px;">
+                <div style="background:#f5f5f5; border-radius:8px; padding:12px;">
+                    <div style="font-weight:bold; color:#555; margin-bottom:6px; font-size:13px;">1. 표준 Neural TTS (기본형)</div>
+                    <audio controls style="width:100%; height:36px;">
+                        <source src="audio/gaa_orig.mp3" type="audio/mpeg">
+                    </audio>
+                    <div style="font-size:11px; color:#888; margin-top:4px;">* 어미가 아래로 뚝 떨어지는 표준어 억양</div>
+                </div>
+                
+                <div style="background:#e8f4fd; border:1px solid #90caf9; border-radius:8px; padding:12px;">
+                    <div style="font-weight:bold; color:#1976d2; margin-bottom:6px; font-size:13px;">2. 2번 방식: 경상도 성조/장단 후보정 (시제품)</div>
+                    <audio controls style="width:100%; height:36px;">
+                        <source src="audio/gaa_prosody.mp3" type="audio/mpeg">
+                    </audio>
+                    <div style="font-size:11px; color:#1565c0; margin-top:4px;">* F0 곡선 상승 + 장모음 1.6배 연장 (자연스러운 경상도 억양)</div>
+                </div>
+            </div>
+        </div>
+        
+        <div style="background:#fff; border:1px solid #ddd; border-radius:12px; padding:16px; margin-bottom:16px; box-shadow:0 2px 5px rgba(0,0,0,0.05);">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                <div>
+                    <span style="font-size:24px; font-weight:bold; color:#1a237e;">갈꾸리′</span>
+                    <span style="color:#666; font-size:14px; margin-left:10px;">갈고리 (3음절 말음절 고조 L-L-H)</span>
+                </div>
+                <div><span style='display:inline-block; padding:2px 8px; margin:2px; background:#757575; color:#fff; border-radius:12px; font-size:12px;'>갈: L</span> <span style='display:inline-block; padding:2px 8px; margin:2px; background:#757575; color:#fff; border-radius:12px; font-size:12px;'>꾸: L</span> <span style='display:inline-block; padding:2px 8px; margin:2px; background:#e53935; color:#fff; border-radius:12px; font-size:12px;'>리: H</span> </div>
+            </div>
+            
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:12px;">
+                <div style="background:#f5f5f5; border-radius:8px; padding:12px;">
+                    <div style="font-weight:bold; color:#555; margin-bottom:6px; font-size:13px;">1. 표준 Neural TTS (기본형)</div>
+                    <audio controls style="width:100%; height:36px;">
+                        <source src="audio/galkkuri_orig.mp3" type="audio/mpeg">
+                    </audio>
+                    <div style="font-size:11px; color:#888; margin-top:4px;">* 어미가 아래로 뚝 떨어지는 표준어 억양</div>
+                </div>
+                
+                <div style="background:#e8f4fd; border:1px solid #90caf9; border-radius:8px; padding:12px;">
+                    <div style="font-weight:bold; color:#1976d2; margin-bottom:6px; font-size:13px;">2. 2번 방식: 경상도 성조/장단 후보정 (시제품)</div>
+                    <audio controls style="width:100%; height:36px;">
+                        <source src="audio/galkkuri_prosody.mp3" type="audio/mpeg">
+                    </audio>
+                    <div style="font-size:11px; color:#1565c0; margin-top:4px;">* F0 곡선 상승 + 장모음 1.6배 연장 (자연스러운 경상도 억양)</div>
+                </div>
+            </div>
+        </div>
+        
+        <div style="background:#fff; border:1px solid #ddd; border-radius:12px; padding:16px; margin-bottom:16px; box-shadow:0 2px 5px rgba(0,0,0,0.05);">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                <div>
+                    <span style="font-size:24px; font-weight:bold; color:#1a237e;">보′또랑′</span>
+                    <span style="color:#666; font-size:14px; margin-left:10px;">보의 도랑 (첫음절/끝음절 복합 고조 H-L-H)</span>
+                </div>
+                <div><span style='display:inline-block; padding:2px 8px; margin:2px; background:#e53935; color:#fff; border-radius:12px; font-size:12px;'>보: H</span> <span style='display:inline-block; padding:2px 8px; margin:2px; background:#757575; color:#fff; border-radius:12px; font-size:12px;'>또: L</span> <span style='display:inline-block; padding:2px 8px; margin:2px; background:#e53935; color:#fff; border-radius:12px; font-size:12px;'>랑: H</span> </div>
+            </div>
+            
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:12px;">
+                <div style="background:#f5f5f5; border-radius:8px; padding:12px;">
+                    <div style="font-weight:bold; color:#555; margin-bottom:6px; font-size:13px;">1. 표준 Neural TTS (기본형)</div>
+                    <audio controls style="width:100%; height:36px;">
+                        <source src="audio/bottorang_orig.mp3" type="audio/mpeg">
+                    </audio>
+                    <div style="font-size:11px; color:#888; margin-top:4px;">* 어미가 아래로 뚝 떨어지는 표준어 억양</div>
+                </div>
+                
+                <div style="background:#e8f4fd; border:1px solid #90caf9; border-radius:8px; padding:12px;">
+                    <div style="font-weight:bold; color:#1976d2; margin-bottom:6px; font-size:13px;">2. 2번 방식: 경상도 성조/장단 후보정 (시제품)</div>
+                    <audio controls style="width:100%; height:36px;">
+                        <source src="audio/bottorang_prosody.mp3" type="audio/mpeg">
+                    </audio>
+                    <div style="font-size:11px; color:#1565c0; margin-top:4px;">* F0 곡선 상승 + 장모음 1.6배 연장 (자연스러운 경상도 억양)</div>
+                </div>
+            </div>
+        </div>
+        
+        <div style="background:#fff; border:1px solid #ddd; border-radius:12px; padding:16px; margin-bottom:16px; box-shadow:0 2px 5px rgba(0,0,0,0.05);">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                <div>
+                    <span style="font-size:24px; font-weight:bold; color:#1a237e;">초온′넘</span>
+                    <span style="color:#666; font-size:14px; margin-left:10px;">촌놈 (첫음절 장모음 연장 + 고조 H-L)</span>
+                </div>
+                <div><span style='display:inline-block; padding:2px 8px; margin:2px; background:#e53935; color:#fff; border-radius:12px; font-size:12px;'>초온: H (장음)</span> <span style='display:inline-block; padding:2px 8px; margin:2px; background:#757575; color:#fff; border-radius:12px; font-size:12px;'>넘: L</span> </div>
+            </div>
+            
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:12px;">
+                <div style="background:#f5f5f5; border-radius:8px; padding:12px;">
+                    <div style="font-weight:bold; color:#555; margin-bottom:6px; font-size:13px;">1. 표준 Neural TTS (기본형)</div>
+                    <audio controls style="width:100%; height:36px;">
+                        <source src="audio/chonneom_orig.mp3" type="audio/mpeg">
+                    </audio>
+                    <div style="font-size:11px; color:#888; margin-top:4px;">* 어미가 아래로 뚝 떨어지는 표준어 억양</div>
+                </div>
+                
+                <div style="background:#e8f4fd; border:1px solid #90caf9; border-radius:8px; padding:12px;">
+                    <div style="font-weight:bold; color:#1976d2; margin-bottom:6px; font-size:13px;">2. 2번 방식: 경상도 성조/장단 후보정 (시제품)</div>
+                    <audio controls style="width:100%; height:36px;">
+                        <source src="audio/chonneom_prosody.mp3" type="audio/mpeg">
+                    </audio>
+                    <div style="font-size:11px; color:#1565c0; margin-top:4px;">* F0 곡선 상승 + 장모음 1.6배 연장 (자연스러운 경상도 억양)</div>
+                </div>
+            </div>
+        </div>
+        
+        <div style="background:#fff; border:1px solid #ddd; border-radius:12px; padding:16px; margin-bottom:16px; box-shadow:0 2px 5px rgba(0,0,0,0.05);">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                <div>
+                    <span style="font-size:24px; font-weight:bold; color:#1a237e;">모리′다′</span>
+                    <span style="color:#666; font-size:14px; margin-left:10px;">몰다 (연속 고조 L-H-H)</span>
+                </div>
+                <div><span style='display:inline-block; padding:2px 8px; margin:2px; background:#757575; color:#fff; border-radius:12px; font-size:12px;'>모: L</span> <span style='display:inline-block; padding:2px 8px; margin:2px; background:#e53935; color:#fff; border-radius:12px; font-size:12px;'>리: H</span> <span style='display:inline-block; padding:2px 8px; margin:2px; background:#e53935; color:#fff; border-radius:12px; font-size:12px;'>다: H</span> </div>
+            </div>
+            
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:12px;">
+                <div style="background:#f5f5f5; border-radius:8px; padding:12px;">
+                    <div style="font-weight:bold; color:#555; margin-bottom:6px; font-size:13px;">1. 표준 Neural TTS (기본형)</div>
+                    <audio controls style="width:100%; height:36px;">
+                        <source src="audio/morida_orig.mp3" type="audio/mpeg">
+                    </audio>
+                    <div style="font-size:11px; color:#888; margin-top:4px;">* 어미가 아래로 뚝 떨어지는 표준어 억양</div>
+                </div>
+                
+                <div style="background:#e8f4fd; border:1px solid #90caf9; border-radius:8px; padding:12px;">
+                    <div style="font-weight:bold; color:#1976d2; margin-bottom:6px; font-size:13px;">2. 2번 방식: 경상도 성조/장단 후보정 (시제품)</div>
+                    <audio controls style="width:100%; height:36px;">
+                        <source src="audio/morida_prosody.mp3" type="audio/mpeg">
+                    </audio>
+                    <div style="font-size:11px; color:#1565c0; margin-top:4px;">* F0 곡선 상승 + 장모음 1.6배 연장 (자연스러운 경상도 억양)</div>
+                </div>
+            </div>
+        </div>
+        
+        <div style="background:#fff; border:1px solid #ddd; border-radius:12px; padding:16px; margin-bottom:16px; box-shadow:0 2px 5px rgba(0,0,0,0.05);">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                <div>
+                    <span style="font-size:24px; font-weight:bold; color:#1a237e;">웅′티이</span>
+                    <span style="color:#666; font-size:14px; margin-left:10px;">웅덩이 (고조 + 말음절 장모음 H-L)</span>
+                </div>
+                <div><span style='display:inline-block; padding:2px 8px; margin:2px; background:#e53935; color:#fff; border-radius:12px; font-size:12px;'>웅: H</span> <span style='display:inline-block; padding:2px 8px; margin:2px; background:#757575; color:#fff; border-radius:12px; font-size:12px;'>티이: L (장음)</span> </div>
+            </div>
+            
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:12px;">
+                <div style="background:#f5f5f5; border-radius:8px; padding:12px;">
+                    <div style="font-weight:bold; color:#555; margin-bottom:6px; font-size:13px;">1. 표준 Neural TTS (기본형)</div>
+                    <audio controls style="width:100%; height:36px;">
+                        <source src="audio/ungtii_orig.mp3" type="audio/mpeg">
+                    </audio>
+                    <div style="font-size:11px; color:#888; margin-top:4px;">* 어미가 아래로 뚝 떨어지는 표준어 억양</div>
+                </div>
+                
+                <div style="background:#e8f4fd; border:1px solid #90caf9; border-radius:8px; padding:12px;">
+                    <div style="font-weight:bold; color:#1976d2; margin-bottom:6px; font-size:13px;">2. 2번 방식: 경상도 성조/장단 후보정 (시제품)</div>
+                    <audio controls style="width:100%; height:36px;">
+                        <source src="audio/ungtii_prosody.mp3" type="audio/mpeg">
+                    </audio>
+                    <div style="font-size:11px; color:#1565c0; margin-top:4px;">* F0 곡선 상승 + 장모음 1.6배 연장 (자연스러운 경상도 억양)</div>
+                </div>
+            </div>
+        </div>
+        
+    
+    <div style="text-align:center; margin-top:30px; color:#666; font-size:13px;">
+        경주어사전 웹사전 연동 완료 | 2번 방식: Edge-TTS InJoon + Praat F0/Duration Resynthesis
+    </div>
+</div>
+</body>
+</html>
