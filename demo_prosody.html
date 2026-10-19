@@ -3,21 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>경주어(경상도) 문장 성조·고저장단 실시간 합성 실험실 (2번 방식)</title>
+    <title>경주어(경상도) 연속 파형 합성 & 내 목소리 억양 학습 실험실</title>
     <style>
         :root {
             --primary: #1565c0;
             --primary-dark: #0d47a1;
-            --accent: #00acc1;
+            --accent: #00897b;
             --high-tone: #d32f2f;
             --long-vowel: #7b1fa2;
             --low-tone: #546e7a;
             --bg: #f0f3f8;
             --card-bg: #ffffff;
         }
-        * {
-            box-sizing: border-box;
-        }
+        * { box-sizing: border-box; }
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Malgun Gothic", "Apple SD Gothic Neo", sans-serif;
             background: var(--bg);
@@ -27,11 +25,11 @@
             line-height: 1.5;
         }
         .container {
-            max-width: 960px;
+            max-width: 980px;
             margin: 0 auto;
         }
         .header {
-            background: linear-gradient(135deg, #0d47a1 0%, #1976d2 60%, #00838f 100%);
+            background: linear-gradient(135deg, #0d47a1 0%, #1565c0 55%, #00695c 100%);
             color: #fff;
             padding: 22px 24px;
             border-radius: 16px;
@@ -53,7 +51,7 @@
         .header p {
             margin: 0;
             font-size: 13.5px;
-            opacity: 0.92;
+            opacity: 0.94;
         }
         .nav-link {
             display: inline-flex;
@@ -67,11 +65,8 @@
             font-size: 13px;
             font-weight: 600;
             border: 1px solid rgba(255,255,255,0.3);
-            transition: background 0.2s;
         }
-        .nav-link:hover {
-            background: rgba(255,255,255,0.3);
-        }
+        .nav-link:hover { background: rgba(255,255,255,0.3); }
         .status-bar {
             display: flex;
             flex-wrap: wrap;
@@ -83,9 +78,9 @@
             font-size: 12.5px;
         }
         .status-pill {
-            padding: 4px 11px;
+            padding: 4px 12px;
             border-radius: 14px;
-            background: rgba(0, 0, 0, 0.25);
+            background: rgba(0, 0, 0, 0.28);
             font-weight: 600;
             display: inline-flex;
             align-items: center;
@@ -95,8 +90,74 @@
             width: 8px;
             height: 8px;
             border-radius: 50%;
-            background: #4caf50;
+            background: #00e676;
             display: inline-block;
+        }
+
+        /* 내 목소리 학습 프로필 대시보드 */
+        .learned-panel {
+            background: linear-gradient(135deg, #fffde7 0%, #fff8e1 100%);
+            border: 2px solid #ffb300;
+            border-radius: 14px;
+            padding: 16px 20px;
+            margin-bottom: 18px;
+            box-shadow: 0 3px 10px rgba(255, 179, 0, 0.12);
+        }
+        .learned-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+        .learned-title {
+            font-size: 15.5px;
+            font-weight: 800;
+            color: #e65100;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(145px, 1fr));
+            gap: 10px;
+            margin-top: 8px;
+        }
+        .metric-card {
+            background: #fff;
+            border: 1px solid #ffe082;
+            border-radius: 10px;
+            padding: 8px 12px;
+            text-align: center;
+        }
+        .metric-label {
+            font-size: 11.5px;
+            color: #5d4037;
+            font-weight: 600;
+        }
+        .metric-val {
+            font-size: 16px;
+            font-weight: 800;
+            color: #d84315;
+            margin-top: 2px;
+        }
+        .metric-sub {
+            font-size: 11px;
+            color: #8d6e63;
+        }
+        .json-box {
+            margin-top: 10px;
+            background: #263238;
+            color: #80cbc4;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-family: Consolas, Monaco, monospace;
+            font-size: 12px;
+            overflow-x: auto;
+            display: none;
+            white-space: pre;
         }
 
         /* 컨트롤 패널 */
@@ -121,8 +182,8 @@
         }
         .sliders-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 14px;
+            grid-template-columns: repeat(auto-fit, minmax(185px, 1fr));
+            gap: 12px;
         }
         .slider-box {
             background: #f8fafd;
@@ -133,7 +194,7 @@
         .slider-label {
             display: flex;
             justify-content: space-between;
-            font-size: 12.5px;
+            font-size: 12px;
             font-weight: 600;
             color: #37474f;
             margin-bottom: 6px;
@@ -147,21 +208,15 @@
             accent-color: var(--primary);
             cursor: pointer;
         }
-        .voice-row {
+        .options-row {
             margin-top: 12px;
             display: flex;
             flex-wrap: wrap;
-            gap: 10px;
+            gap: 14px;
             align-items: center;
             font-size: 13px;
-        }
-        select {
-            padding: 6px 10px;
-            border-radius: 8px;
-            border: 1px solid #cfd8dc;
-            font-size: 13px;
-            background: #fff;
-            min-width: 240px;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
         }
 
         /* 실시간 직접 입력 테스트 박스 */
@@ -173,15 +228,8 @@
             margin-bottom: 22px;
             box-shadow: 0 4px 12px rgba(25, 118, 210, 0.08);
         }
-        .custom-input-row {
-            display: flex;
-            gap: 10px;
-            margin-top: 8px;
-            flex-wrap: wrap;
-        }
         .custom-textarea {
-            flex: 1;
-            min-width: 260px;
+            width: 100%;
             padding: 12px 14px;
             border: 1px solid #b0bec5;
             border-radius: 10px;
@@ -189,6 +237,7 @@
             font-family: inherit;
             resize: vertical;
             min-height: 54px;
+            margin-top: 6px;
         }
         .custom-textarea:focus {
             outline: none;
@@ -210,12 +259,9 @@
             border-color: #1976d2;
             box-shadow: 0 4px 16px rgba(25, 118, 210, 0.18);
         }
-        .sent-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            gap: 10px;
-            margin-bottom: 6px;
+        .sentence-card.recording {
+            border-color: #d32f2f;
+            box-shadow: 0 0 0 3px rgba(211, 47, 47, 0.22);
         }
         .sent-num {
             display: inline-block;
@@ -226,19 +272,17 @@
             padding: 3px 9px;
             border-radius: 12px;
             margin-right: 8px;
-            vertical-align: middle;
         }
         .sent-dialect {
             font-size: 19px;
             font-weight: 700;
             color: #1a237e;
-            letter-spacing: -0.2px;
             word-break: keep-all;
         }
         .sent-std {
             font-size: 13.5px;
             color: #546e7a;
-            margin: 4px 0 10px 0;
+            margin: 4px 0 8px 0;
         }
         .sent-note {
             display: inline-block;
@@ -256,7 +300,7 @@
             display: flex;
             flex-wrap: wrap;
             gap: 6px;
-            margin: 10px 0;
+            margin: 8px 0;
             padding: 10px;
             background: #f8fafd;
             border-radius: 10px;
@@ -290,39 +334,31 @@
             font-weight: 700;
             color: #fff;
         }
-        .syl-H {
-            background: var(--high-tone);
-        }
-        .syl-HL {
-            background: linear-gradient(135deg, #d32f2f, #7b1fa2);
-            padding: 2px 9px;
-        }
-        .syl-LL {
-            background: var(--long-vowel);
-            padding: 2px 9px;
-        }
-        .syl-L {
-            background: #78909c;
-        }
+        .syl-H { background: var(--high-tone); }
+        .syl-HL { background: linear-gradient(135deg, #d32f2f, #7b1fa2); padding: 2px 9px; }
+        .syl-LL { background: var(--long-vowel); padding: 2px 9px; }
+        .syl-L { background: #78909c; }
 
         /* F0 피치 곡선 캔버스 */
         .canvas-wrap {
             position: relative;
-            background: #101827;
+            background: #0f172a;
             border-radius: 10px;
             padding: 8px 10px 4px 10px;
-            margin: 10px 0 12px 0;
+            margin: 8px 0 10px 0;
         }
         .canvas-legend {
             display: flex;
             justify-content: space-between;
+            flex-wrap: wrap;
             font-size: 11px;
             color: #94a3b8;
             margin-bottom: 4px;
+            gap: 6px;
         }
         canvas.pitch-canvas {
             width: 100%;
-            height: 86px;
+            height: 96px;
             display: block;
         }
 
@@ -330,19 +366,19 @@
         .btn-row {
             display: flex;
             flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 10px;
+            gap: 8px;
+            margin-top: 8px;
         }
         .play-btn {
             flex: 1;
-            min-width: 210px;
+            min-width: 175px;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
-            padding: 11px 16px;
+            gap: 6px;
+            padding: 10px 13px;
             border-radius: 10px;
-            font-size: 14px;
+            font-size: 13.5px;
             font-weight: 700;
             cursor: pointer;
             border: none;
@@ -353,42 +389,52 @@
             color: #37474f;
             border: 1px solid #cfd8dc;
         }
-        .btn-orig:hover {
-            background: #dfe5e8;
-        }
+        .btn-orig:hover { background: #dfe5e8; }
         .btn-prosody {
-            background: linear-gradient(135deg, #1976d2, #0d47a1);
+            background: linear-gradient(135deg, #1565c0, #0d47a1);
             color: #fff;
-            box-shadow: 0 3px 10px rgba(25, 118, 210, 0.25);
+            box-shadow: 0 3px 10px rgba(21, 101, 192, 0.25);
         }
-        .btn-prosody:hover {
-            background: linear-gradient(135deg, #1565c0, #0a3880);
+        .btn-prosody:hover { background: linear-gradient(135deg, #0d47a1, #072f6b); }
+        .btn-rec {
+            background: #fff3e0;
+            color: #e65100;
+            border: 1px solid #ffb74d;
+        }
+        .btn-rec:hover { background: #ffe0b2; }
+        .btn-rec.recording-active {
+            background: #d32f2f;
+            color: #fff;
+            border-color: #b71c1c;
+            animation: pulseRec 1s infinite alternate;
+        }
+        .btn-myvoice {
+            background: #e8f5e9;
+            color: #2e7d32;
+            border: 1px solid #a5d6a7;
+            flex: 0 1 auto;
+            min-width: 130px;
         }
         .btn-stop {
             background: #ffebee;
             color: #c62828;
             border: 1px solid #ffcdd2;
             flex: 0 0 auto;
-            min-width: 80px;
+            min-width: 72px;
         }
-        .legend-bar {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            font-size: 12px;
-            color: #455a64;
+        .rec-status-msg {
+            font-size: 12.5px;
+            color: #2e7d32;
+            background: #f1f8e9;
+            border: 1px solid #c5e1a5;
+            border-radius: 8px;
+            padding: 7px 12px;
             margin-top: 8px;
+            display: none;
         }
-        .legend-item {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-        }
-        .legend-box {
-            width: 12px;
-            height: 12px;
-            border-radius: 3px;
-            display: inline-block;
+        @keyframes pulseRec {
+            from { opacity: 1; transform: scale(1); }
+            to { opacity: 0.82; transform: scale(0.99); }
         }
         @media (max-width: 640px) {
             body { padding: 10px; }
@@ -403,109 +449,173 @@
     <div class="header">
         <div class="header-top">
             <div>
-                <h1>경주어(경상도) 문장 성조·고저장단 실시간 합성 실험실 (2번 방식)</h1>
-                <p>MP3 파일을 미리 생성·저장하지 않고(0MB), 문장의 성조(′)와 모음 연타(장모음)를 분석하여 즉석에서 고저장단 억양을 합성합니다.</p>
+                <h1>🌊 경주어 무단절 연속 파형 합성 & 🎤 내 목소리 억양 학습 실험실</h1>
+                <p>1) 어절마다 끊어지지 않고 한 호흡의 연속 음성 파형(WSOLA) 위에서 고저(F0)와 장단(Duration)을 물 흐르듯 변조합니다.<br>
+                   2) 내가 직접 문장을 읽어주면 브라우저가 피치·길이·어미 상승률을 분석해 파라미터를 자동 보정하고 다른 문장도 내 억양대로 따라 읽습니다.</p>
             </div>
             <a href="index.html" class="nav-link">← 웹사전(index.html) 돌아가기</a>
         </div>
         <div class="status-bar">
-            <span class="status-pill"><span class="dot" id="engineDot"></span> <span id="engineStatusText">브라우저 실시간 성조·장단 시퀀서 활성 (GitHub Pages 서버리스 0MB)</span></span>
-            <span style="opacity:0.85;">• 어절 배지를 클릭하면 해당 어절만 따로 들어볼 수 있습니다.</span>
+            <span class="status-pill"><span class="dot" id="engineDot"></span> <span id="engineStatusText">연속 파형 WSOLA 변조 엔진 활성 (어절 끊김 없음 · 무파일 0MB)</span></span>
+            <span style="opacity:0.9;">• 어느 문장이든 <b>[🎤 내가 읽어 학습시키기]</b>를 눌러 읽으시면 내 사투리 고저장단 특징이 자동 추출됩니다.</span>
         </div>
+    </div>
+
+    <!-- 🧠 내 목소리에서 학습된 경주말 운율 프로필 대시보드 -->
+    <div class="learned-panel" id="learnedPanel">
+        <div class="learned-header">
+            <div class="learned-title">
+                <span>🧠 내 목소리에서 추출·보정된 경주말 고저장단 운율 DNA</span>
+                <span id="learnedBadge" style="font-size:12px; background:#ffe082; color:#bf360c; padding:2px 9px; border-radius:12px;">기본 프로필 (시범 녹음 대기 중)</span>
+            </div>
+            <div style="display:flex; gap:6px; flex-wrap:wrap;">
+                <button onclick="toggleLearnedJson()" style="padding:5px 10px; font-size:12px; border-radius:6px; border:1px solid #ffb300; background:#fff; cursor:pointer; font-weight:600; color:#e65100;">📋 추출된 파라미터 값(JSON) 보기/복사</button>
+                <button onclick="clearLearnedProfile()" style="padding:5px 10px; font-size:12px; border-radius:6px; border:1px solid #ccc; background:#fff; cursor:pointer; color:#555;">학습 초기화</button>
+            </div>
+        </div>
+        <div style="font-size:12.5px; color:#5d4037;">
+            아래 문장 중 아무 문장이나 <b>[🎤 내가 읽어 학습시키기]</b>를 눌러 강세(`′`)와 장모음(`가아·초온`)에 맞게 읽어주시면, 브라우저가 내 목소리의 <b>고음 상승폭·장모음 비율·상승 기울기·어미 억양·속도</b>를 측정하여 슬라이더와 합성 엔진을 자동 보정합니다. (여러 문장을 읽을수록 평균치가 정교해집니다.)
+        </div>
+        <div class="metrics-grid">
+            <div class="metric-card">
+                <div class="metric-label">내 평조(L) 기본 주파수</div>
+                <div class="metric-val" id="mBaseF0">122 Hz</div>
+                <div class="metric-sub" id="mPeakF0">고조(′) 평균: 168 Hz</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">고조(′) 피치 상승폭</div>
+                <div class="metric-val" id="mHighRatio">1.38x (+5.5st)</div>
+                <div class="metric-sub">평조 대비 고음 비율</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">장모음(모음2개) 연장율</div>
+                <div class="metric-val" id="mLongStretch">1.58배</div>
+                <div class="metric-sub">단모음 대비 지속시간</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">고음 상승 기울기(Glide)</div>
+                <div class="metric-val" id="mGlideSlope">0.68 (S-곡선)</div>
+                <div class="metric-sub">음절 내 부드러운 상승도</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">어절 끝 고조(′) 리프트</div>
+                <div class="metric-val" id="mEndingLift">+1.8 반음</div>
+                <div class="metric-sub">말꼬리 하강 역보상</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">내 사투리 발화 속도</div>
+                <div class="metric-val" id="mSpeakRate">0.95x</div>
+                <div class="metric-sub" id="mSampleCount">학습 문장: 0개</div>
+            </div>
+        </div>
+        <div id="learnedJsonBox" class="json-box"></div>
     </div>
 
     <!-- 실시간 억양 튜닝 컨트롤 패널 -->
     <div class="control-panel">
         <div class="panel-title">
-            <span>실시간 경상도 성조(F0) 및 장모음(Duration) 파라미터 조절</span>
-            <button onclick="resetSliders()" style="padding:4px 10px; font-size:12px; border-radius:6px; border:1px solid #ccc; background:#fff; cursor:pointer;">기본값 초기화</button>
+            <span>🎛️ 연속 파형 WSOLA 합성 파라미터 (내 목소리 녹음 시 자동 보정되며 수동 미세조절도 가능)</span>
+            <button onclick="resetSliders()" style="padding:4px 10px; font-size:12px; border-radius:6px; border:1px solid #ccc; background:#fff; cursor:pointer;">기본값 복원</button>
         </div>
         <div class="sliders-grid">
             <div class="slider-box">
                 <div class="slider-label">
-                    <span>고조(′) 피치 상승폭</span>
-                    <span class="slider-val" id="valHighPitch">1.42 (+5.5st)</span>
+                    <span>고조(′) 피치 배율 (H/L)</span>
+                    <span class="slider-val" id="valHighPitch">1.38x (+5.5st)</span>
                 </div>
-                <input type="range" id="slHighPitch" min="1.15" max="1.70" step="0.01" value="1.42" oninput="updateSliders()">
+                <input type="range" id="slHighPitch" min="1.12" max="1.68" step="0.01" value="1.38" oninput="updateSliders()">
             </div>
             <div class="slider-box">
                 <div class="slider-label">
-                    <span>평조(기본 저음) 베이스 피치</span>
-                    <span class="slider-val" id="valLowPitch">0.85 (중후한 톤)</span>
+                    <span>평조(L) 베이스 피치</span>
+                    <span class="slider-val" id="valLowPitch">0.94x</span>
                 </div>
-                <input type="range" id="slLowPitch" min="0.70" max="1.05" step="0.01" value="0.85" oninput="updateSliders()">
+                <input type="range" id="slLowPitch" min="0.76" max="1.08" step="0.01" value="0.94" oninput="updateSliders()">
             </div>
             <div class="slider-box">
                 <div class="slider-label">
-                    <span>장모음(가아·초온) 늘림 배율</span>
-                    <span class="slider-val" id="valLongStretch">1.55배 연장</span>
+                    <span>장모음(가아·초온) 늘림</span>
+                    <span class="slider-val" id="valLongStretch">1.58배 연장</span>
                 </div>
-                <input type="range" id="slLongStretch" min="1.15" max="2.00" step="0.05" value="1.55" oninput="updateSliders()">
+                <input type="range" id="slLongStretch" min="1.10" max="2.10" step="0.02" value="1.58" oninput="updateSliders()">
+            </div>
+            <div class="slider-box">
+                <div class="slider-label">
+                    <span>고음 S-Curve 상승 완만도</span>
+                    <span class="slider-val" id="valGlide">0.68 (부드러움)</span>
+                </div>
+                <input type="range" id="slGlide" min="0.20" max="1.00" step="0.02" value="0.68" oninput="updateSliders()">
+            </div>
+            <div class="slider-box">
+                <div class="slider-label">
+                    <span>어절 끝 고조(′) 추가 상승</span>
+                    <span class="slider-val" id="valEndBoost">+1.8 반음</span>
+                </div>
+                <input type="range" id="slEndBoost" min="0.0" max="4.0" step="0.1" value="1.8" oninput="updateSliders()">
             </div>
             <div class="slider-box">
                 <div class="slider-label">
                     <span>전체 발화 속도 (Rate)</span>
-                    <span class="slider-val" id="valBaseRate">0.94x</span>
+                    <span class="slider-val" id="valBaseRate">0.95x</span>
                 </div>
-                <input type="range" id="slBaseRate" min="0.75" max="1.15" step="0.01" value="0.94" oninput="updateSliders()">
+                <input type="range" id="slBaseRate" min="0.75" max="1.20" step="0.01" value="0.95" oninput="updateSliders()">
             </div>
         </div>
 
-        <div class="voice-row">
-            <label for="voiceSelect" style="font-weight:600; color:#37474f;">한국어 음성(남성 우선):</label>
-            <select id="voiceSelect" onchange="onVoiceSelectChange()"></select>
-            <label style="display:inline-flex; align-items:center; gap:5px; cursor:pointer; font-weight:600; color:#1565c0; margin-left:auto;">
-                <input type="checkbox" id="chkEndingLift" checked onchange="renderAllCanvases()">
-                어절 끝 고조(′) 억양 끌어올림 (표준어 어미 하강 억제)
+        <div class="options-row">
+            <label style="display:inline-flex; align-items:center; gap:6px; cursor:pointer; font-weight:700; color:#0d47a1;">
+                <input type="checkbox" id="chkCollapseLong" checked onchange="clearAudioCache(); renderAllCanvases();">
+                장모음(사아·가아·초온)을 두 글자로 끊지 않고 한 음절 장음(사ː·가ː·촌ː)으로 매끄럽게 이어 발음
             </label>
-        </div>
-
-        <div class="legend-bar">
-            <span class="legend-item"><span class="legend-box" style="background:#d32f2f;"></span> 고조(H, ′ 표기)</span>
-            <span class="legend-item"><span class="legend-box" style="background:linear-gradient(135deg,#d32f2f,#7b1fa2);"></span> 장모음+고조(Hː, 모음 2개 연타 + ′)</span>
-            <span class="legend-item"><span class="legend-box" style="background:#7b1fa2;"></span> 장모음+평조(Lː, 모음 2개 연타)</span>
-            <span class="legend-item"><span class="legend-box" style="background:#78909c;"></span> 평조/저조(L)</span>
+            <span style="margin-left:auto; font-size:12px; color:#546e7a;">
+                * 캔버스 범례: <b style="color:#38bdf8;">하늘색 실선</b>=연속 합성 F0 곡선 | <b style="color:#fbbf24;">노란색 실선</b>=내가 읽은 육성 F0 곡선
+            </span>
         </div>
     </div>
 
-    <!-- 사용자 임의 문장 즉시 합성 테스트 박스 -->
+    <!-- 사용자 임의 문장 즉시 합성 & 학습 테스트 박스 -->
     <div class="custom-box" id="card-custom">
         <div class="panel-title" style="margin-bottom:4px;">
-            <span>✨ 직접 문장 입력 / 즉석 생성 테스트 (사전 예문 아무거나 붙여넣어 바로 듣기)</span>
+            <span>✨ 새로운 문장 직접 입력 / 내 억양으로 따라 읽기 테스트</span>
         </div>
-        <div style="font-size:12.5px; color:#546e7a; margin-bottom:8px;">
-            강세 기호(<code>′</code> 또는 <code>'</code>)와 모음 2개 연달아 쓴 장모음(예: <code>가아′</code>, <code>사아′</code>, <code>해애′</code>, <code>초온′</code>)이 포함된 문장을 입력하면 실시간으로 억양 곡선을 설계하고 발화합니다.
+        <div style="font-size:12.5px; color:#546e7a; margin-bottom:6px;">
+            다른 문장을 아래에 입력하거나 붙여넣으시면, 위에서 학습·보정된 나의 경주말 고저장단 파라미터를 참고하여 물 흐르듯 연속된 음성으로 합성합니다.
         </div>
-        <div class="custom-input-row">
-            <textarea id="customInput" class="custom-textarea" oninput="updateCustomCard()">사아′라′미 가아′머′ 가아′, 부′머′ 부′로′ 붐미′이 해애′야′지요.</textarea>
-        </div>
+        <textarea id="customInput" class="custom-textarea" oninput="updateCustomCard()">사아′라′미 가아′머′ 가아′, 부′머′ 부′로′ 붐미′이 해애′야′지요.</textarea>
         <div id="customTokens" class="tokens-wrap"></div>
         <div class="canvas-wrap">
             <div class="canvas-legend">
-                <span>실시간 설계된 F0 피치 곡선 (S-Curve) 및 음길이 비율</span>
-                <span>점선: 표준어 평문 TTS / 실선(하늘색·붉은점): 경상도 성조 후보정</span>
+                <span>실시간 연속 F0 피치 곡선 (S-Curve) 및 음길이 비율</span>
+                <span id="status-custom">대기 중</span>
             </div>
-            <canvas id="canvas-custom" class="pitch-canvas" width="860" height="86"></canvas>
+            <canvas id="canvas-custom" class="pitch-canvas" width="880" height="96"></canvas>
         </div>
         <div class="btn-row">
-            <button class="play-btn btn-orig" onclick="playSentence('custom', 'orig')">
-                🔊 1. 표준 평문 TTS (하강 억양)
+            <button class="play-btn btn-orig" onclick="playContinuousSentence('custom', 'orig')">
+                🔊 1. 표준 평문 연속 듣기
             </button>
-            <button class="play-btn btn-prosody" onclick="playSentence('custom', 'prosody')">
-                🔥 2. 경상도 고저장단 실시간 합성 (2번 방식)
+            <button class="play-btn btn-prosody" onclick="playContinuousSentence('custom', 'prosody')">
+                🌊 2. 물 흐르듯 연속 사투리 합성 (무단절 WSOLA)
             </button>
-            <button class="play-btn btn-stop" onclick="stopAllSpeech()">⏹ 정지</button>
+            <button class="play-btn btn-rec" id="btnRec-custom" onclick="toggleRecordSentence('custom')">
+                🎤 내가 읽어 학습시키기
+            </button>
+            <button class="play-btn btn-myvoice" id="btnMy-custom" style="display:none;" onclick="playUserRecording('custom')">
+                🎧 내 녹음 듣기
+            </button>
+            <button class="play-btn btn-stop" onclick="stopAllAudio()">⏹ 정지</button>
         </div>
+        <div class="rec-status-msg" id="recMsg-custom"></div>
     </div>
 
     <!-- 사전 대표 예문 10선 리스트 -->
-    <h2 style="font-size:18px; color:#1a237e; margin: 24px 0 12px 4px;">📚 경주어사전 대표 문장 10선 실시간 비교 테스트</h2>
+    <h2 style="font-size:18px; color:#1a237e; margin: 24px 0 12px 4px;">📚 경주어사전 대표 문장 10선 (물 흐르듯 연속 합성 & 내 목소리 시범 녹음 학습)</h2>
     <div id="sentencesContainer"></div>
 </div>
 
 <script>
 // ============================================================================
-// 1. 경주어사전 실제 예문 10선 데이터 (고조 ′ 및 모음 2개 연타 장모음 포함)
+// 1. 경주어사전 대표 문장 10선
 // ============================================================================
 const TEST_SENTENCES = [
     {
@@ -571,7 +681,7 @@ const TEST_SENTENCES = [
 ];
 
 // ============================================================================
-// 2. 한글 자모 분해 및 경주어 성조(′)·장모음(모음 2개 연타) 파서
+// 2. 한글 자모 분해 및 장모음(모음 2개 연타)·성조(′) 파서
 // ============================================================================
 const TONE_CHARS = new Set(["'", "′", "″", "ː", "ˈ", "ˌ", "^"]);
 
@@ -590,26 +700,20 @@ function composeHangul(cho, jung, jong) {
 }
 
 /**
- * 모음 2개 연달아 쓴 장모음(예: 사아->사, 가아->가, 초온->촌, 서엉->성, 해애->해, 지일->질)을
- * TTS가 두 글자("사-아")로 끊어 읽지 않고 한 음절을 길게 늘여 읽도록 축약형 음절도 함께 생성
+ * 모음 2개 연달아 쓴 장모음(예: 사아->사, 가아->가, 초온->촌, 서엉->성, 해애->해, 지일->질, 조오->조)
+ * 앞 음절에 받침이 없고 뒷 음절 초성이 'ㅇ'(11)이며 모음이 동일할 때 한 음절로 축약하여
+ * TTS가 두 글자("사-아")로 끊어 읽지 않고 매끄러운 한 음절로 발음하게 한 뒤 WSOLA로 모음 길이를 1.6배 늘림!
  */
 function collapseLongVowelPair(ch1, ch2) {
     const d1 = decomposeHangul(ch1);
     const d2 = decomposeHangul(ch2);
     if (!d1 || !d2) return null;
-    // 앞 글자에 받침이 없고, 뒷 글자 초성이 'ㅇ'(11)이며 중성(모음)이 같은 계열인 경우
     if (d1.jong === 0 && d2.cho === 11 && d1.jung === d2.jung) {
-        // 뒷 글자의 받침(예: 초+온 -> 촌, 서+엉 -> 성, 지+일 -> 질)을 앞 글자에 결합!
-        const collapsed = composeHangul(d1.cho, d1.jung, d2.jong);
-        return collapsed;
+        return composeHangul(d1.cho, d1.jung, d2.jong);
     }
     return null;
 }
 
-/**
- * 어절 하나를 음절 리스트로 분석
- * 반환: [{ char: '사아', speakChar: '사', tone: 'H'|'L', isLong: true|false, punc: '' }]
- */
 function parseDialectWord(rawWord) {
     const chars = Array.from(rawWord.trim());
     const n = chars.length;
@@ -630,25 +734,17 @@ function parseDialectWord(rawWord) {
                 punc += chars[j];
                 j++;
             }
-            rawSyls.push({
-                char: ch,
-                tone: hasTone ? 'H' : 'L',
-                punc: punc
-            });
+            rawSyls.push({ char: ch, tone: hasTone ? 'H' : 'L', punc });
             i = j;
         } else {
             i++;
         }
     }
 
-    // 모음 2개 연타 장모음 병합 (예: 가+아, 사+아, 해+애, 초+온, 서+엉, 어+어, 이+이)
     const merged = [];
     let skip = false;
     for (let k = 0; k < rawSyls.length; k++) {
-        if (skip) {
-            skip = false;
-            continue;
-        }
+        if (skip) { skip = false; continue; }
         const cur = rawSyls[k];
         if (k + 1 < rawSyls.length && !cur.punc) {
             const nxt = rawSyls[k + 1];
@@ -657,7 +753,7 @@ function parseDialectWord(rawWord) {
                 const isH = (cur.tone === 'H' || nxt.tone === 'H');
                 merged.push({
                     char: cur.char + nxt.char,
-                    speakChar: collapsed, // 끊어 읽힘 방지를 위한 결합 음절 (또는 장음 처리)
+                    collapsedChar: collapsed,
                     rawPair: cur.char + nxt.char,
                     tone: isH ? 'H' : 'L',
                     isLong: true,
@@ -669,7 +765,7 @@ function parseDialectWord(rawWord) {
         }
         merged.push({
             char: cur.char,
-            speakChar: cur.char,
+            collapsedChar: cur.char,
             rawPair: cur.char,
             tone: cur.tone,
             isLong: false,
@@ -689,10 +785,1071 @@ function parseDialectSentence(sentence) {
     })).filter(w => w.syls.length > 0);
 }
 
+/**
+ * 연속 TTS 합성용 평문 생성:
+ * chkCollapseLong이 켜져 있으면 '사아′라′미 가아′머′ 가아′' -> '사라미 가머 가'로 변환하여
+ * 성문 파열음(끊어 읽힘)을 원천 제거하고, WSOLA 파형 후보정 단계에서 해당 음절('사', '가', '가')을 1.6배 늘려줌!
+ */
+function buildContinuousTtsText(words, collapseLong = true) {
+    return words.map(w => {
+        return w.syls.map(s => {
+            const c = (collapseLong && s.isLong) ? s.collapsedChar : s.rawPair;
+            return c + s.punc;
+        }).join('');
+    }).join(' ');
+}
+
 // ============================================================================
-// 3. F0 피치 곡선(S-Curve) 및 장단 시각화 (HTML5 Canvas)
+// 3. 연속 음향 신호 처리 엔진 (Web Audio API + Cross-Correlation WSOLA)
+//    - 어절 끊김 없이 문장 전체 단일 파형 위에서 피치 P(t)와 음길이 D(t)를 독립 변조
 // ============================================================================
-function drawPitchContour(canvasId, words, activeWordIdx = -1) {
+let audioCtx = null;
+let currentSourceNode = null;
+let animFrameId = null;
+const baseAudioCache = new Map();       // key: cleanText -> AudioBuffer
+const userRecordings = new Map();       // key: sentId -> { buffer: AudioBuffer, f0Track: [...], analysis: {...} }
+
+function getAudioContext() {
+    if (!audioCtx) {
+        const AC = window.AudioContext || window.webkitAudioContext;
+        audioCtx = new AC();
+    }
+    if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+    }
+    return audioCtx;
+}
+
+function clearAudioCache() {
+    baseAudioCache.clear();
+}
+
+/**
+ * 문장 전체를 한 호흡으로 읽은 베이스 AudioBuffer 가져오기 (캐시 지원)
+ * 1순위: 로컬 edge_server.py (실행 중일 때)
+ * 2순위: codetabs CORS 프록시를 통한 연속 Google 한국어 TTS 스트림 (ACAO: *)
+ * 3순위: allorigins base64 스트림 폴백
+ */
+async function fetchContinuousSentenceBuffer(cleanText, statusEl) {
+    if (baseAudioCache.has(cleanText)) {
+        return baseAudioCache.get(cleanText);
+    }
+    const ctx = getAudioContext();
+
+    if (statusEl) statusEl.innerText = "연속 베이스 음성 스트림 수신 중...";
+
+    // 1. 로컬 서버 확인 (실행 중이면 최우선)
+    try {
+        const ctrl = new AbortController();
+        const tid = setTimeout(() => ctrl.abort(), 300);
+        const res = await fetch("http://localhost:5050/prosody", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ text: cleanText, mode: "orig" }),
+            signal: ctrl.signal
+        });
+        clearTimeout(tid);
+        if (res.ok) {
+            const arr = await res.arrayBuffer();
+            const buf = await ctx.decodeAudioData(arr);
+            baseAudioCache.set(cleanText, buf);
+            return buf;
+        }
+    } catch (e) {}
+
+    const g1 = `https://translate.googleapis.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(cleanText)}&tl=ko&client=gtx`;
+    const g2 = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(cleanText)}&tl=ko&client=tw-ob`;
+
+    const fetchBinaryProxy = async (proxyUrl) => {
+        const ctrl = new AbortController();
+        const tid = setTimeout(() => ctrl.abort(), 4500);
+        try {
+            const res = await fetch(proxyUrl, { signal: ctrl.signal });
+            clearTimeout(tid);
+            if (!res.ok) throw new Error("HTTP " + res.status);
+            const arr = await res.arrayBuffer();
+            if (arr.byteLength < 400) throw new Error("Too short");
+            return await ctx.decodeAudioData(arr);
+        } catch (err) {
+            clearTimeout(tid);
+            throw err;
+        }
+    };
+
+    const fetchAllOriginsJson = async (targetUrl) => {
+        const ctrl = new AbortController();
+        const tid = setTimeout(() => ctrl.abort(), 4500);
+        try {
+            const res = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(targetUrl)}`, { signal: ctrl.signal });
+            clearTimeout(tid);
+            if (!res.ok) throw new Error("HTTP " + res.status);
+            const data = await res.json();
+            if (!data || !data.contents || !data.contents.includes('base64,')) throw new Error("Invalid base64");
+            const b64 = data.contents.split('base64,')[1];
+            const binStr = atob(b64);
+            const bytes = new Uint8Array(binStr.length);
+            for (let i = 0; i < binStr.length; i++) bytes[i] = binStr.charCodeAt(i);
+            return await ctx.decodeAudioData(bytes.buffer);
+        } catch (err) {
+            clearTimeout(tid);
+            throw err;
+        }
+    };
+
+    // 병렬 레이스(Promise.any)로 가장 먼저 응답하는 스트림 즉시 채택
+    const buf = await Promise.any([
+        fetchBinaryProxy(`https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(g1)}`),
+        fetchBinaryProxy(`https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(g2)}`),
+        fetchAllOriginsJson(g1),
+        fetchAllOriginsJson(g2)
+    ]);
+
+    baseAudioCache.set(cleanText, buf);
+    return buf;
+}
+
+/**
+ * 오디오 버퍼에서 앞뒤 무음 구간을 찾고 실제 발화 시작/끝 시간(초)과 에너지 포락선 반환
+ */
+function analyzeSpeechEnvelope(samples, sr) {
+    const hop = Math.floor(sr * 0.01); // 10ms
+    const win = Math.floor(sr * 0.025); // 25ms
+    const numFrames = Math.max(1, Math.floor((samples.length - win) / hop));
+    const rms = new Float32Array(numFrames);
+    let maxRms = 1e-6;
+
+    for (let f = 0; f < numFrames; f++) {
+        const start = f * hop;
+        let sum = 0;
+        for (let i = 0; i < win; i++) {
+            const v = samples[start + i] || 0;
+            sum += v * v;
+        }
+        rms[f] = Math.sqrt(sum / win);
+        if (rms[f] > maxRms) maxRms = rms[f];
+    }
+
+    const thresh = maxRms * 0.06;
+    let firstFrame = 0;
+    let lastFrame = numFrames - 1;
+    while (firstFrame < numFrames && rms[firstFrame] < thresh) firstFrame++;
+    while (lastFrame > firstFrame && rms[lastFrame] < thresh) lastFrame--;
+
+    const startSec = Math.max(0.01, (firstFrame * hop) / sr - 0.02);
+    const endSec = Math.min(samples.length / sr - 0.01, (lastFrame * hop) / sr + 0.03);
+    return { startSec, endSec, rms, maxRms, hopSec: 0.01 };
+}
+
+/**
+ * 문장의 음절 구조(words)와 파라미터를 바탕으로
+ * 원본 오디오의 각 시점 t (10ms 단위)에서의:
+ *  - 목표 피치 배율 P(t)
+ *  - 목표 시간 연장 배율 D(t)
+ *  - 해당 시점의 어절 인덱스 wordIdx(t)
+ * 를 코사인 S-Curve로 매끄럽게 생성!
+ */
+function buildContinuousProsodyCurves(words, startSec, endSec, totalDurSec, params, rms, maxRms) {
+    const dt = 0.01;
+    const numSteps = Math.ceil(totalDurSec / dt) + 2;
+    const pitchCurve = new Float32Array(numSteps).fill(1.0);
+    const durCurve = new Float32Array(numSteps).fill(1.0 / params.baseRate);
+    const wordIdxCurve = new Int16Array(numSteps).fill(-1);
+
+    const speechSpan = Math.max(0.15, endSec - startSec);
+
+    // 원본 TTS 오디오에서 각 음절이 차지하는 예상 시간 비중
+    // (chkCollapseLong이 켜져 있으면 원본 TTS에서는 장모음도 1글자로 발화되었으므로 원본 비중은 약 1.15,
+    //  켜져 있지 않으면 2글자로 발화되었으므로 원본 비중은 1.65)
+    const collapseLong = document.getElementById('chkCollapseLong').checked;
+    const items = [];
+    words.forEach((w, wIdx) => {
+        w.syls.forEach((s, sIdx) => {
+            const isWordEnd = (sIdx === w.syls.length - 1);
+            const hasComma = /[,\.!\?]/.test(s.punc || "");
+            const origWeight = s.isLong ? (collapseLong ? 1.12 : 1.75) : 1.0;
+            items.push({
+                syl: s,
+                wordIdx: wIdx,
+                isWordEnd,
+                origWeight
+            });
+            if (hasComma) {
+                items.push({ isPause: true, origWeight: 0.55, wordIdx: wIdx });
+            }
+        });
+        items.push({ isPause: true, origWeight: 0.22, wordIdx: wIdx });
+    });
+
+    const totalOrigW = items.reduce((a, b) => a + b.origWeight, 0) || 1.0;
+    let curT = startSec;
+    const sylSpans = [];
+
+    items.forEach(it => {
+        const spanDur = (it.origWeight / totalOrigW) * speechSpan;
+        const t0 = curT;
+        const t1 = curT + spanDur;
+        curT = t1;
+        if (!it.isPause) {
+            sylSpans.push({
+                t0,
+                t1,
+                tMid: 0.5 * (t0 + t1),
+                syl: it.syl,
+                wordIdx: it.wordIdx,
+                isWordEnd: it.isWordEnd
+            });
+        }
+    });
+
+    // 문장 후반부로 갈수록 기본 TTS 자체의 피치가 자연 하강(Declination)하므로 이를 완만히 역보상(1.0 -> 1.08)
+    const getDeclinationComp = (t) => {
+        const prog = Math.max(0, Math.min(1, (t - startSec) / speechSpan));
+        return 1.0 + prog * 0.08;
+    };
+
+    // 키포인트 생성 (매끄러운 코사인 S-Curve 보간용)
+    const keyPoints = [];
+    const pLow = params.lowPitch;
+    const pHigh = params.lowPitch * params.highPitch;
+    const endBoostRatio = Math.pow(2, params.endBoostSemitones / 12.0);
+
+    if (sylSpans.length > 0) {
+        keyPoints.push({ t: 0, p: pLow });
+        keyPoints.push({ t: startSec, p: sylSpans[0].syl.tone === 'H' ? pLow + (pHigh - pLow) * 0.35 : pLow });
+
+        sylSpans.forEach((sp, idx) => {
+            const s = sp.syl;
+            const dur = sp.t1 - sp.t0;
+            const comp = getDeclinationComp(sp.tMid);
+            const targetH = pHigh * comp;
+            const targetL = pLow * comp;
+
+            // 어절 인덱스 및 장모음 시간 연장 배율 D(t) 기록
+            const i0 = Math.max(0, Math.floor(sp.t0 / dt));
+            const i1 = Math.min(numSteps - 1, Math.ceil(sp.t1 / dt));
+            for (let k = i0; k <= i1; k++) {
+                wordIdxCurve[k] = sp.wordIdx;
+                if (s.isLong) {
+                    // 모음 중심부(중간 75%)를 부드러운 종 모양(Hanning bell)으로 늘려 자음 파열음 왜곡 방지
+                    const localPos = (k * dt - sp.t0) / Math.max(0.01, dur);
+                    const bell = Math.sin(Math.PI * Math.max(0, Math.min(1, localPos)));
+                    const effectiveStretch = collapseLong ? params.longStretch : (1.0 + (params.longStretch - 1.0) * 0.55);
+                    const stretchHere = 1.0 + (effectiveStretch - 1.0) * Math.pow(bell, 0.75);
+                    durCurve[k] = stretchHere / params.baseRate;
+                } else if (s.tone === 'H') {
+                    // 고조 음절은 살짝 여유 있게 발음 (1.08배)
+                    durCurve[k] = 1.08 / params.baseRate;
+                } else {
+                    durCurve[k] = 0.96 / params.baseRate;
+                }
+            }
+
+            // 피치 궤적 포인트 설계
+            if (sp.isWordEnd && s.tone === 'H') {
+                // 어절 끝 고조: 표준어 TTS가 어미에서 뚝 떨어지는 것을 막고 끝까지 치고 올라가게 함
+                const startGlide = pLow * comp + (targetH - pLow * comp) * (1.0 - params.glide * 0.65);
+                keyPoints.push({ t: sp.t0 + dur * 0.20, p: startGlide });
+                keyPoints.push({ t: sp.t0 + dur * 0.85, p: targetH * endBoostRatio });
+                keyPoints.push({ t: sp.t1, p: targetH * endBoostRatio });
+            } else if (s.isLong && s.tone === 'H') {
+                // 장모음 + 고조 (예: 사아′, 가아′, 초온′, 해애′): 낮게 시작해 코사인 곡선으로 부드럽게 상승!
+                const entryP = targetL + (targetH - targetL) * (1.0 - params.glide * 0.75);
+                keyPoints.push({ t: sp.t0 + dur * 0.18, p: entryP });
+                keyPoints.push({ t: sp.t0 + dur * 0.82, p: targetH });
+            } else if (s.tone === 'H') {
+                const entryP = targetL + (targetH - targetL) * (1.0 - params.glide * 0.5);
+                keyPoints.push({ t: sp.t0 + dur * 0.22, p: entryP });
+                keyPoints.push({ t: sp.t0 + dur * 0.75, p: targetH });
+            } else {
+                // 평조(L) 음절
+                keyPoints.push({ t: sp.tMid, p: targetL });
+            }
+        });
+
+        keyPoints.push({ t: totalDurSec, p: keyPoints[keyPoints.length - 1].p });
+    }
+
+    // 시간 순 정렬 후 코사인 S-Curve 보간으로 10ms 간격 pitchCurve 채우기
+    keyPoints.sort((a, b) => a.t - b.t);
+    for (let k = 0; k < keyPoints.length - 1; k++) {
+        const pt1 = keyPoints[k];
+        const pt2 = keyPoints[k + 1];
+        if (pt2.t <= pt1.t) continue;
+        const iStart = Math.max(0, Math.floor(pt1.t / dt));
+        const iEnd = Math.min(numSteps - 1, Math.ceil(pt2.t / dt));
+        for (let idx = iStart; idx <= iEnd; idx++) {
+            const t = idx * dt;
+            const frac = Math.max(0, Math.min(1, (t - pt1.t) / (pt2.t - pt1.t)));
+            const smooth = 0.5 * (1.0 - Math.cos(Math.PI * frac));
+            pitchCurve[idx] = pt1.p + (pt2.p - pt1.p) * smooth;
+        }
+    }
+
+    // 무음/자음 구간에서는 과도한 시간 늘림을 억제하여 자음 선명도 유지
+    if (rms && maxRms > 0) {
+        for (let idx = 0; idx < numSteps; idx++) {
+            const rVal = idx < rms.length ? rms[idx] : 0;
+            if (rVal < maxRms * 0.12) {
+                durCurve[idx] = 1.0 / params.baseRate;
+            }
+        }
+    }
+
+    return { pitchCurve, durCurve, wordIdxCurve, dt, sylSpans };
+}
+
+/**
+ * [핵심 DSP] Cross-Correlation Phase-Locked Resampling WSOLA
+ * ---------------------------------------------------------
+ * 어절을 잘라 붙이지 않고, 문장 전체 단일 연속 파형(inSamples)을
+ * 위상 동기화 오버랩-애드(WSOLA)로 재합성하여:
+ *  - 시간별 피치 곡선 pitchCurve(t)
+ *  - 시간별 음길이 곡선 durCurve(t)
+ * 를 끊김이나 기계음 없이 물 흐르듯 동시에 적용!
+ */
+function synthesizeContinuousWSOLA(inBuffer, pitchCurve, durCurve, wordIdxCurve, dt) {
+    const sr = inBuffer.sampleRate;
+    const inSamples = inBuffer.getChannelData(0);
+    const inLen = inSamples.length;
+
+    // 32ms Hann 윈도우, 16ms 합성 홉 (50% 오버랩: Hann 합 = 1.0)
+    const winSize = Math.floor(sr * 0.032) & ~1;
+    const hopSyn = winSize >> 1;
+    const searchRange = Math.floor(sr * 0.007); // ±7ms 피치 주기 위상 탐색 범위
+
+    const hann = new Float32Array(winSize);
+    for (let i = 0; i < winSize; i++) {
+        hann[i] = 0.5 * (1.0 - Math.cos((2.0 * Math.PI * i) / winSize));
+    }
+
+    // 예상 출력 길이 계산 (여유 버퍼 포함)
+    let estOutSamples = 0;
+    for (let i = 0; i < durCurve.length; i++) {
+        estOutSamples += Math.ceil(dt * sr * durCurve[i]);
+    }
+    const maxOutLen = estOutSamples + winSize * 4;
+    const outSamples = new Float32Array(maxOutLen);
+    const outWordTimeline = []; // [{ outSec, wordIdx }]
+
+    let inPos = 0.0;
+    let outPos = 0;
+
+    // 3차 에르미트(Cubic Hermite) 보간으로 리샘플링 시 고주파 음질 손실 방지
+    const sampleCubic = (pos) => {
+        const idx = Math.floor(pos);
+        if (idx < 1 || idx >= inLen - 2) {
+            return (idx >= 0 && idx < inLen) ? inSamples[idx] : 0.0;
+        }
+        const frac = pos - idx;
+        const y0 = inSamples[idx - 1];
+        const y1 = inSamples[idx];
+        const y2 = inSamples[idx + 1];
+        const y3 = inSamples[idx + 2];
+        const c0 = y1;
+        const c1 = 0.5 * (y2 - y0);
+        const c2 = y0 - 2.5 * y1 + 2.0 * y2 - 0.5 * y3;
+        const c3 = 0.5 * (y3 - y0) + 1.5 * (y1 - y2);
+        return ((c3 * frac + c2) * frac + c1) * frac + c0;
+    };
+
+    while (inPos < inLen - winSize * 2 && outPos + winSize < maxOutLen) {
+        const curSec = inPos / sr;
+        const curveIdx = Math.min(pitchCurve.length - 1, Math.max(0, Math.floor(curSec / dt)));
+        const pRatio = pitchCurve[curveIdx];
+        const dRatio = durCurve[curveIdx];
+        const wIdx = wordIdxCurve[curveIdx];
+
+        outWordTimeline.push({ outSec: outPos / sr, wordIdx: wIdx });
+
+        // 이전 프레임의 꼬리(이미 outSamples[outPos ... outPos + hopSyn]에 기록된 파형)와
+        // 가장 위상(Phase)이 일치하는 오프셋 bestDelta 탐색 (Cross-Correlation)
+        let bestDelta = 0;
+        if (outPos > 0) {
+            let maxCorr = -1e18;
+            const checkLen = Math.min(hopSyn >> 1, Math.floor(sr * 0.008));
+            for (let delta = -searchRange; delta <= searchRange; delta += 2) {
+                const candStart = inPos + delta;
+                if (candStart < 1 || candStart + winSize * pRatio >= inLen - 2) continue;
+                let corr = 0.0;
+                for (let j = 0; j < checkLen; j += 2) {
+                    const existing = outSamples[outPos + j];
+                    const candVal = inSamples[Math.floor(candStart + j * pRatio)];
+                    corr += existing * candVal;
+                }
+                if (corr > maxCorr) {
+                    maxCorr = corr;
+                    bestDelta = delta;
+                }
+            }
+        }
+
+        const readStart = Math.max(1, inPos + bestDelta);
+        for (let i = 0; i < winSize; i++) {
+            const val = sampleCubic(readStart + i * pRatio);
+            outSamples[outPos + i] += val * hann[i];
+        }
+
+        outPos += hopSyn;
+        inPos += hopSyn / Math.max(0.35, dRatio);
+    }
+
+    const finalLen = Math.max(winSize, outPos + hopSyn);
+    const ctx = getAudioContext();
+    const outBuffer = ctx.createBuffer(1, finalLen, sr);
+    outBuffer.getChannelData(0).set(outSamples.subarray(0, finalLen));
+
+    return { outBuffer, outWordTimeline };
+}
+
+// ============================================================================
+// 4. 🎤 내 목소리 녹음 및 경주어 고저장단 파라미터 자동 추출·학습 엔진
+// ============================================================================
+let mediaRecorder = null;
+let recordedChunks = [];
+let currentlyRecordingId = null;
+
+// 누적 학습 프로필 저장소
+let learnedProfile = {
+    sampleCount: 0,
+    baseF0Hz: 122,
+    peakF0Hz: 168,
+    highPitchRatio: 1.38,
+    lowPitchRatio: 0.94,
+    longStretch: 1.58,
+    glideSlope: 0.68,
+    endBoostSemitones: 1.8,
+    baseRate: 0.95
+};
+
+// localStorage에서 기존 학습 프로필 로드
+try {
+    const saved = localStorage.getItem('gyeongju_learned_prosody_v2');
+    if (saved) {
+        const parsed = JSON.parse(saved);
+        if (parsed && parsed.sampleCount > 0) {
+            learnedProfile = { ...learnedProfile, ...parsed };
+        }
+    }
+} catch (e) {}
+
+/**
+ * 자기상관(Normalized Autocorrelation) 기반 정밀 F0 피치 추적기 (70Hz ~ 340Hz)
+ */
+function extractPitchTrackFromVoice(samples, sr) {
+    const hop = Math.floor(sr * 0.01); // 10ms
+    const win = Math.floor(sr * 0.035); // 35ms
+    const minLag = Math.floor(sr / 340);
+    const maxLag = Math.floor(sr / 70);
+    const numFrames = Math.max(1, Math.floor((samples.length - win) / hop));
+
+    const rawF0 = new Float32Array(numFrames);
+    const rmsArr = new Float32Array(numFrames);
+    let maxRms = 1e-6;
+
+    for (let f = 0; f < numFrames; f++) {
+        const start = f * hop;
+        let sumSq = 0;
+        for (let i = 0; i < win; i++) {
+            const v = samples[start + i];
+            sumSq += v * v;
+        }
+        const r = Math.sqrt(sumSq / win);
+        rmsArr[f] = r;
+        if (r > maxRms) maxRms = r;
+    }
+
+    const voiceThresh = maxRms * 0.08;
+
+    for (let f = 0; f < numFrames; f++) {
+        if (rmsArr[f] < voiceThresh) {
+            rawF0[f] = 0;
+            continue;
+        }
+        const start = f * hop;
+        let bestLag = 0;
+        let bestNormCorr = 0;
+
+        for (let lag = minLag; lag <= maxLag; lag++) {
+            let corr = 0;
+            let e1 = 0;
+            let e2 = 0;
+            const len = win - lag;
+            for (let i = 0; i < len; i += 2) {
+                const a = samples[start + i];
+                const b = samples[start + i + lag];
+                corr += a * b;
+                e1 += a * a;
+                e2 += b * b;
+            }
+            const denom = Math.sqrt(e1 * e2);
+            const norm = denom > 1e-9 ? corr / denom : 0;
+            if (norm > bestNormCorr) {
+                bestNormCorr = norm;
+                bestLag = lag;
+            }
+        }
+
+        if (bestNormCorr >= 0.52 && bestLag > 0) {
+            rawF0[f] = sr / bestLag;
+        } else {
+            rawF0[f] = 0;
+        }
+    }
+
+    // 5-프레임 중앙값 필터(Median Filter)로 옥타브 점프 노이즈 제거
+    const cleanF0 = new Float32Array(numFrames);
+    for (let f = 0; f < numFrames; f++) {
+        if (rawF0[f] === 0) continue;
+        const neighbors = [];
+        for (let d = -2; d <= 2; d++) {
+            const idx = f + d;
+            if (idx >= 0 && idx < numFrames && rawF0[idx] > 0) {
+                neighbors.push(rawF0[idx]);
+            }
+        }
+        neighbors.sort((a, b) => a - b);
+        cleanF0[f] = neighbors[Math.floor(neighbors.length / 2)];
+    }
+
+    return { f0: cleanF0, rms: rmsArr, maxRms, dt: 0.01 };
+}
+
+/**
+ * 사용자의 육성 녹음(AudioBuffer)과 문장의 성조/장단 표기(words)를 대조하여
+ * 6가지 경주말 운율 파라미터를 자동 산출하고 학습 프로필을 업데이트!
+ */
+function analyzeUserProsodyAndLearn(sentId, audioBuffer, words) {
+    const sr = audioBuffer.sampleRate;
+    const samples = audioBuffer.getChannelData(0);
+    const { f0, rms, maxRms, dt } = extractPitchTrackFromVoice(samples, sr);
+
+    // 유성음 시작/끝 프레임 찾기
+    let firstF = 0;
+    let lastF = f0.length - 1;
+    while (firstF < f0.length && rms[firstF] < maxRms * 0.08) firstF++;
+    while (lastF > firstF && rms[lastF] < maxRms * 0.08) lastF--;
+
+    const startSec = firstF * dt;
+    const endSec = Math.max(startSec + 0.2, lastF * dt);
+    const userSpeechDur = endSec - startSec;
+
+    // 전체 유성음 F0 분포 확인
+    const allVoicedF0 = [];
+    for (let i = firstF; i <= lastF; i++) {
+        if (f0[i] > 70 && f0[i] < 340) allVoicedF0.push(f0[i]);
+    }
+    if (allVoicedF0.length < 8) {
+        alert("목소리가 너무 작거나 짧아서 피치를 추출하지 못했습니다. 마이크 가까이에서 다시 읽어주세요.");
+        return null;
+    }
+    allVoicedF0.sort((a, b) => a - b);
+
+    // 문장 내 음절 리스트 펼치기 및 에너지 골짜기(Energy Valley) 기반 장모음/단모음 지속시간 추정
+    const allSyls = [];
+    words.forEach((w, wIdx) => {
+        w.syls.forEach((s, sIdx) => {
+            allSyls.push({
+                ...s,
+                wordIdx: wIdx,
+                isWordEnd: (sIdx === w.syls.length - 1)
+            });
+        });
+    });
+
+    // 에너지 지속 구간으로 장모음 배율 추정 + 음절별 F0 매핑
+    // 먼저 각 음절에 예상 구간 할당 후 주변 에너지/피치 피크로 미세 정렬
+    const weights = allSyls.map(s => s.isLong ? 1.55 : 1.0);
+    const totW = weights.reduce((a, b) => a + b, 0) || 1.0;
+
+    let curT = startSec;
+    const lowSylPitches = [];
+    const highSylPitches = [];
+    const wordEndHighPitches = [];
+    const glideRatios = [];
+    const longEnergyScores = [];
+    const shortEnergyScores = [];
+    const normTrackForCanvas = []; // [{ normX: 0..1, pitchRatio: ... }]
+
+    allSyls.forEach((s, idx) => {
+        const estDur = (weights[idx] / totW) * userSpeechDur;
+        const t0 = curT;
+        const t1 = curT + estDur;
+        curT = t1;
+
+        const fStart = Math.max(firstF, Math.floor(t0 / dt));
+        const fEnd = Math.min(lastF, Math.ceil(t1 / dt));
+        const sylF0s = [];
+        let activeFrames = 0;
+
+        for (let f = fStart; f <= fEnd; f++) {
+            if (rms[f] > maxRms * 0.12) activeFrames++;
+            if (f0[f] > 70) sylF0s.push({ frame: f, val: f0[f] });
+        }
+
+        if (s.isLong) {
+            longEnergyScores.push(activeFrames * dt);
+        } else {
+            shortEnergyScores.push(activeFrames * dt);
+        }
+
+        if (sylF0s.length > 0) {
+            const vals = sylF0s.map(x => x.val).sort((a, b) => a - b);
+            const med = vals[Math.floor(vals.length * 0.5)];
+            const p80 = vals[Math.floor(vals.length * 0.8)];
+
+            if (s.tone === 'H') {
+                highSylPitches.push(p80);
+                if (s.isWordEnd) {
+                    wordEndHighPitches.push(vals[vals.length - 1]);
+                }
+                // 음절 전반부 vs 후반부 상승 기울기 측정
+                if (sylF0s.length >= 3) {
+                    const firstThird = sylF0s[0].val;
+                    const lastThird = p80;
+                    if (lastThird > firstThird) {
+                        const g = Math.min(1.0, (lastThird - firstThird) / (firstThird * 0.35));
+                        glideRatios.push(Math.max(0.3, g));
+                    }
+                }
+            } else {
+                lowSylPitches.push(med);
+            }
+        }
+    });
+
+    // 1. 평조(L) 기준 주파수 및 고조(H) 주파수 계산
+    const median = arr => {
+        if (!arr || arr.length === 0) return 0;
+        const s = [...arr].sort((a, b) => a - b);
+        return s[Math.floor(s.length / 2)];
+    };
+
+    const baseF0 = lowSylPitches.length > 0
+        ? median(lowSylPitches)
+        : allVoicedF0[Math.floor(allVoicedF0.length * 0.3)];
+
+    const highF0 = highSylPitches.length > 0
+        ? median(highSylPitches)
+        : allVoicedF0[Math.floor(allVoicedF0.length * 0.82)];
+
+    // 캔버스 오버레이용 정규화 F0 궤적 저장
+    for (let f = firstF; f <= lastF; f++) {
+        if (f0[f] > 70) {
+            const normX = (f - firstF) / Math.max(1, lastF - firstF);
+            const ratio = (f0[f] / baseF0) * learnedProfile.lowPitchRatio;
+            normTrackForCanvas.push({ normX, ratio });
+        }
+    }
+
+    // 2. 고조(′) 피치 상승 배율 (1.15 ~ 1.65 범위로 안전 클램핑)
+    let rawHighRatio = highF0 / Math.max(75, baseF0);
+    if (rawHighRatio < 1.16) {
+        // 만약 전체 음역대 상위 85%와 하위 25% 차이가 더 뚜렷하면 보완 반영
+        const p85 = allVoicedF0[Math.floor(allVoicedF0.length * 0.85)];
+        const p25 = allVoicedF0[Math.floor(allVoicedF0.length * 0.25)];
+        rawHighRatio = Math.max(rawHighRatio, p85 / Math.max(75, p25));
+    }
+    const extractedHighRatio = Math.max(1.18, Math.min(1.65, rawHighRatio));
+
+    // 3. 장모음 연장 배율 계산
+    let extractedLongStretch = learnedProfile.longStretch;
+    if (longEnergyScores.length > 0 && shortEnergyScores.length > 0) {
+        const avgLong = longEnergyScores.reduce((a, b) => a + b, 0) / longEnergyScores.length;
+        const avgShort = shortEnergyScores.reduce((a, b) => a + b, 0) / shortEnergyScores.length;
+        if (avgShort > 0.04) {
+            extractedLongStretch = Math.max(1.25, Math.min(2.05, (avgLong / avgShort) * 1.12));
+        }
+    }
+
+    // 4. 상승 기울기(Glide) 계산
+    const extractedGlide = glideRatios.length > 0
+        ? Math.max(0.35, Math.min(0.95, median(glideRatios)))
+        : 0.68;
+
+    // 5. 어절 끝 고조 추가 상승폭 (반음)
+    let extractedEndBoost = 1.8;
+    if (wordEndHighPitches.length > 0) {
+        const endF0 = median(wordEndHighPitches);
+        const boostRatio = Math.max(1.02, endF0 / Math.max(80, highF0 * 0.94));
+        extractedEndBoost = Math.max(0.8, Math.min(3.6, Math.log2(boostRatio) * 12));
+    }
+
+    // 6. 전체 발화 속도 (표준 음절당 0.19초 기준 비교)
+    const expectedStandardDur = totW * 0.195;
+    const extractedRate = Math.max(0.78, Math.min(1.15, expectedStandardDur / Math.max(0.3, userSpeechDur)));
+
+    // 누적 학습 업데이트 (기존 학습이 있으면 가중 평균, 첫 학습이면 100% 반영)
+    const prevN = learnedProfile.sampleCount;
+    const wNew = prevN === 0 ? 1.0 : 0.6;
+    const wOld = 1.0 - wNew;
+
+    learnedProfile = {
+        sampleCount: prevN + 1,
+        baseF0Hz: Math.round(learnedProfile.baseF0Hz * wOld + baseF0 * wNew),
+        peakF0Hz: Math.round(learnedProfile.peakF0Hz * wOld + highF0 * wNew),
+        highPitchRatio: Number((learnedProfile.highPitchRatio * wOld + extractedHighRatio * wNew).toFixed(2)),
+        lowPitchRatio: learnedProfile.lowPitchRatio,
+        longStretch: Number((learnedProfile.longStretch * wOld + extractedLongStretch * wNew).toFixed(2)),
+        glideSlope: Number((learnedProfile.glideSlope * wOld + extractedGlide * wNew).toFixed(2)),
+        endBoostSemitones: Number((learnedProfile.endBoostSemitones * wOld + extractedEndBoost * wNew).toFixed(1)),
+        baseRate: Number((learnedProfile.baseRate * wOld + extractedRate * wNew).toFixed(2))
+    };
+
+    try {
+        localStorage.setItem('gyeongju_learned_prosody_v2', JSON.stringify(learnedProfile));
+    } catch (e) {}
+
+    // 슬라이더 및 대시보드 UI에 즉시 반영!
+    applyLearnedProfileToSliders();
+
+    return {
+        baseF0: Math.round(baseF0),
+        highF0: Math.round(highF0),
+        extractedHighRatio: extractedHighRatio.toFixed(2),
+        extractedLongStretch: extractedLongStretch.toFixed(2),
+        extractedGlide: extractedGlide.toFixed(2),
+        extractedEndBoost: extractedEndBoost.toFixed(1),
+        extractedRate: extractedRate.toFixed(2),
+        normTrackForCanvas
+    };
+}
+
+function applyLearnedProfileToSliders() {
+    document.getElementById('slHighPitch').value = String(learnedProfile.highPitchRatio);
+    document.getElementById('slLowPitch').value = String(learnedProfile.lowPitchRatio);
+    document.getElementById('slLongStretch').value = String(learnedProfile.longStretch);
+    document.getElementById('slGlide').value = String(learnedProfile.glideSlope);
+    document.getElementById('slEndBoost').value = String(learnedProfile.endBoostSemitones);
+    document.getElementById('slBaseRate').value = String(learnedProfile.baseRate);
+
+    updateSliders();
+    updateLearnedDashboardUI();
+}
+
+function updateLearnedDashboardUI() {
+    const semitones = (Math.log2(learnedProfile.highPitchRatio) * 12).toFixed(1);
+    document.getElementById('mBaseF0').innerText = `${learnedProfile.baseF0Hz} Hz`;
+    document.getElementById('mPeakF0').innerText = `고조(′) 평균: ${learnedProfile.peakF0Hz} Hz`;
+    document.getElementById('mHighRatio').innerText = `${learnedProfile.highPitchRatio}x (+${semitones}st)`;
+    document.getElementById('mLongStretch').innerText = `${learnedProfile.longStretch}배`;
+    document.getElementById('mGlideSlope').innerText = `${learnedProfile.glideSlope} (S-곡선)`;
+    document.getElementById('mEndingLift').innerText = `+${learnedProfile.endBoostSemitones} 반음`;
+    document.getElementById('mSpeakRate').innerText = `${learnedProfile.baseRate}x`;
+    document.getElementById('mSampleCount').innerText = `학습 문장: ${learnedProfile.sampleCount}개`;
+
+    const badge = document.getElementById('learnedBadge');
+    if (learnedProfile.sampleCount > 0) {
+        badge.style.background = "#c8e6c9";
+        badge.style.color = "#1b5e20";
+        badge.innerText = `✅ 내 육성 학습 적용 중 (누적 ${learnedProfile.sampleCount}회 보정됨)`;
+    } else {
+        badge.style.background = "#ffe082";
+        badge.style.color = "#bf360c";
+        badge.innerText = "기본 프로필 (시범 녹음 대기 중)";
+    }
+
+    const jsonBox = document.getElementById('learnedJsonBox');
+    jsonBox.textContent = JSON.stringify({
+        description: "경주어(경상도) 사용자 육성 학습 고저장단 파라미터 프로필",
+        learnedSentencesCount: learnedProfile.sampleCount,
+        speakerBasePitchHz: learnedProfile.baseF0Hz,
+        speakerHighPitchHz: learnedProfile.peakF0Hz,
+        parameters: {
+            highTonePitchRatio: learnedProfile.highPitchRatio,
+            highToneSemitones: Number(semitones),
+            lowToneBaseRatio: learnedProfile.lowPitchRatio,
+            longVowelDurationStretch: learnedProfile.longStretch,
+            sCurveGlideSmoothness: learnedProfile.glideSlope,
+            wordFinalHighBoostSemitones: learnedProfile.endBoostSemitones,
+            speakingRateMultiplier: learnedProfile.baseRate
+        }
+    }, null, 2);
+}
+
+function toggleLearnedJson() {
+    const box = document.getElementById('learnedJsonBox');
+    if (box.style.display === 'block') {
+        box.style.display = 'none';
+    } else {
+        updateLearnedDashboardUI();
+        box.style.display = 'block';
+        navigator.clipboard?.writeText(box.textContent).catch(() => {});
+    }
+}
+
+function clearLearnedProfile() {
+    localStorage.removeItem('gyeongju_learned_prosody_v2');
+    learnedProfile = {
+        sampleCount: 0,
+        baseF0Hz: 122,
+        peakF0Hz: 168,
+        highPitchRatio: 1.38,
+        lowPitchRatio: 0.94,
+        longStretch: 1.58,
+        glideSlope: 0.68,
+        endBoostSemitones: 1.8,
+        baseRate: 0.95
+    };
+    resetSliders();
+    updateLearnedDashboardUI();
+}
+
+/**
+ * 마이크 시범 녹음 시작 / 종료 토글
+ */
+async function toggleRecordSentence(sentId) {
+    stopAllAudio();
+
+    const btn = document.getElementById(`btnRec-${sentId}`);
+    const card = document.getElementById(`card-${sentId}`);
+    const msgEl = document.getElementById(`recMsg-${sentId}`);
+
+    // 이미 녹음 중이면 녹음 종료 및 분석 실행
+    if (currentlyRecordingId === sentId && mediaRecorder && mediaRecorder.state === 'recording') {
+        mediaRecorder.stop();
+        return;
+    }
+
+    try {
+        const stream = await navigator.mediaDevices.getUserMedia({
+            audio: {
+                echoCancellation: false,
+                noiseSuppression: false,
+                autoGainControl: false
+            }
+        });
+        recordedChunks = [];
+        currentlyRecordingId = sentId;
+        mediaRecorder = new MediaRecorder(stream);
+
+        if (btn) {
+            btn.classList.add('recording-active');
+            btn.innerHTML = "⏹ 녹음 완료 · 내 억양 분석하기";
+        }
+        if (card) card.classList.add('recording');
+        if (msgEl) {
+            msgEl.style.display = 'block';
+            msgEl.innerHTML = "🔴 <b>마이크 녹음 중...</b> 문장의 강세(′)와 장모음(가아·사아)을 살려 읽으신 후 <b>[⏹ 녹음 완료]</b>를 눌러주세요.";
+        }
+
+        mediaRecorder.ondataavailable = (e) => {
+            if (e.data && e.data.size > 0) recordedChunks.push(e.data);
+        };
+
+        mediaRecorder.onstop = async () => {
+            stream.getTracks().forEach(t => t.stop());
+            if (btn) {
+                btn.classList.remove('recording-active');
+                btn.innerHTML = "🎤 내가 읽어 학습시키기";
+            }
+            if (card) card.classList.remove('recording');
+            currentlyRecordingId = null;
+
+            const blob = new Blob(recordedChunks, { type: mediaRecorder.mimeType || 'audio/webm' });
+            const arr = await blob.arrayBuffer();
+            const ctx = getAudioContext();
+            const audioBuf = await ctx.decodeAudioData(arr);
+
+            const dialectText = getSentenceTextById(sentId);
+            const words = parseDialectSentence(dialectText);
+            const result = analyzeUserProsodyAndLearn(sentId, audioBuf, words);
+
+            if (result) {
+                userRecordings.set(sentId, {
+                    buffer: audioBuf,
+                    f0Track: result.normTrackForCanvas,
+                    analysis: result
+                });
+                const myBtn = document.getElementById(`btnMy-${sentId}`);
+                if (myBtn) myBtn.style.display = 'inline-flex';
+
+                if (msgEl) {
+                    msgEl.style.display = 'block';
+                    msgEl.innerHTML =
+                        `✅ <b>내 육성 분석 및 파라미터 자동 보정 완료!</b> ` +
+                        `(내 평조: <b>${result.baseF0}Hz</b> → 고조: <b>${result.highF0}Hz [${result.extractedHighRatio}x]</b>, ` +
+                        `장모음 연장: <b>${result.extractedLongStretch}배</b>, 어미 리프트: <b>+${result.extractedEndBoost}st</b>, 속도: <b>${result.extractedRate}x</b>)<br>` +
+                        `👉 이제 <b>[🌊 2. 물 흐르듯 연속 사투리 합성]</b>을 누르거나 다른 문장을 재생하면 방금 읽으신 억양 규칙을 그대로 따라 읽습니다!`;
+                }
+                renderAllCanvases();
+            }
+        };
+
+        mediaRecorder.start();
+    } catch (err) {
+        alert("마이크 접근 권한이 필요합니다: " + err.message);
+    }
+}
+
+function playUserRecording(sentId) {
+    stopAllAudio();
+    const rec = userRecordings.get(sentId);
+    if (!rec || !rec.buffer) return;
+    const ctx = getAudioContext();
+    const src = ctx.createBufferSource();
+    src.buffer = rec.buffer;
+    src.connect(ctx.destination);
+    currentSourceNode = src;
+    src.start();
+}
+
+// ============================================================================
+// 5. 연속 문장 재생 제어 및 실시간 캔버스 애니메이션
+// ============================================================================
+function getProsodyParams() {
+    return {
+        highPitch: parseFloat(document.getElementById('slHighPitch').value) || 1.38,
+        lowPitch: parseFloat(document.getElementById('slLowPitch').value) || 0.94,
+        longStretch: parseFloat(document.getElementById('slLongStretch').value) || 1.58,
+        glide: parseFloat(document.getElementById('slGlide').value) || 0.68,
+        endBoostSemitones: parseFloat(document.getElementById('slEndBoost').value) || 1.8,
+        baseRate: parseFloat(document.getElementById('slBaseRate').value) || 0.95
+    };
+}
+
+function stopAllAudio() {
+    if (animFrameId) {
+        cancelAnimationFrame(animFrameId);
+        animFrameId = null;
+    }
+    if (currentSourceNode) {
+        try { currentSourceNode.stop(); } catch (e) {}
+        currentSourceNode = null;
+    }
+    if (window.speechSynthesis) {
+        window.speechSynthesis.cancel();
+    }
+    document.querySelectorAll('.sentence-card, .custom-box').forEach(el => el.classList.remove('playing'));
+    document.querySelectorAll('.word-group').forEach(el => el.classList.remove('active-chunk'));
+    renderAllCanvases();
+}
+
+/**
+ * [물 흐르듯 이어지는 연속 파형 재생]
+ * 1) 문장 전체를 한 호흡으로 발음한 연속 AudioBuffer를 가져옴
+ * 2) mode === 'orig'이면 원본 연속 파형 재생
+ * 3) mode === 'prosody'이면 Cross-Correlation WSOLA 엔진으로
+ *    단 한 번의 어절 절단도 없이 연속 파형 위에서 고저(F0 S-Curve)와 장모음(Duration)을 동시에 변조하여 재생!
+ */
+async function playContinuousSentence(sentId, mode, onlyWordIdx = -1) {
+    stopAllAudio();
+
+    const dialectText = getSentenceTextById(sentId);
+    if (!dialectText) return;
+
+    const allWords = parseDialectSentence(dialectText);
+    const words = (onlyWordIdx >= 0 && allWords[onlyWordIdx]) ? [allWords[onlyWordIdx]] : allWords;
+    const collapseLong = document.getElementById('chkCollapseLong').checked;
+    const cleanText = buildContinuousTtsText(words, mode === 'prosody' ? collapseLong : false);
+
+    const cardEl = document.getElementById(`card-${sentId}`);
+    const statusEl = document.getElementById(`status-${sentId}`);
+    if (cardEl) cardEl.classList.add('playing');
+
+    try {
+        const baseBuffer = await fetchContinuousSentenceBuffer(cleanText, statusEl);
+        const ctx = getAudioContext();
+        const params = getProsodyParams();
+
+        let playBuffer = baseBuffer;
+        let outWordTimeline = [];
+
+        if (mode === 'prosody') {
+            if (statusEl) statusEl.innerText = "연속 파형 WSOLA 고저장단 변조 중...";
+            const samples = baseBuffer.getChannelData(0);
+            const env = analyzeSpeechEnvelope(samples, baseBuffer.sampleRate);
+            const { pitchCurve, durCurve, wordIdxCurve, dt } = buildContinuousProsodyCurves(
+                words, env.startSec, env.endSec, baseBuffer.duration, params, env.rms, env.maxRms
+            );
+            const res = synthesizeContinuousWSOLA(baseBuffer, pitchCurve, durCurve, wordIdxCurve, dt);
+            playBuffer = res.outBuffer;
+            outWordTimeline = res.outWordTimeline;
+        }
+
+        if (statusEl) {
+            statusEl.innerText = mode === 'prosody'
+                ? "🌊 무단절 연속 사투리 파형 재생 중..."
+                : "🔊 표준 평문 연속 재생 중...";
+        }
+
+        const src = ctx.createBufferSource();
+        src.buffer = playBuffer;
+        src.connect(ctx.destination);
+        currentSourceNode = src;
+
+        const startTime = ctx.currentTime;
+        const totalDur = playBuffer.duration;
+
+        // 실시간 재생 헤드(Playhead) 및 활성 어절 하이라이트 애니메이션
+        const animate = () => {
+            const elapsed = ctx.currentTime - startTime;
+            if (elapsed >= totalDur || currentSourceNode !== src) {
+                return;
+            }
+            const progress = Math.max(0, Math.min(1, elapsed / totalDur));
+            let activeW = onlyWordIdx;
+            if (onlyWordIdx < 0 && outWordTimeline.length > 0) {
+                for (let i = outWordTimeline.length - 1; i >= 0; i--) {
+                    if (elapsed >= outWordTimeline[i].outSec) {
+                        activeW = outWordTimeline[i].wordIdx;
+                        break;
+                    }
+                }
+            }
+            drawPitchContour(`canvas-${sentId}`, allWords, activeW, progress, sentId);
+            highlightWordDom(sentId, activeW);
+            animFrameId = requestAnimationFrame(animate);
+        };
+
+        src.onended = () => {
+            if (currentSourceNode === src) {
+                currentSourceNode = null;
+                if (cardEl) cardEl.classList.remove('playing');
+                if (statusEl) statusEl.innerText = "재생 완료";
+                drawPitchContour(`canvas-${sentId}`, allWords, -1, -1, sentId);
+                highlightWordDom(sentId, -1);
+            }
+        };
+
+        src.start();
+        animFrameId = requestAnimationFrame(animate);
+
+    } catch (err) {
+        // 외부 스트림이 차단되었거나 오프라인일 경우: 단어 내부 절단 없이 호흡군(Breath-Group) 단위로 이어 읽는 내장 음성 폴백
+        if (window.speechSynthesis) {
+            if (statusEl) statusEl.innerText = "🎙️ 내장 연속 호흡군 모드로 재생 중...";
+            const params = getProsodyParams();
+            window.speechSynthesis.cancel();
+            const clauses = cleanText.split(/(?<=[,\.!\?])\s+/);
+            clauses.forEach((cl, cIdx) => {
+                const u = new SpeechSynthesisUtterance(cl);
+                u.lang = 'ko-KR';
+                if (mode === 'prosody') {
+                    u.pitch = params.lowPitch * (params.highPitch * 0.85);
+                    u.rate = params.baseRate / ( (dialectText.includes('아아') || dialectText.includes('사아') || dialectText.includes('가아') || dialectText.includes('초온') || dialectText.includes('해애')) ? (params.longStretch * 0.78) : 1.0 );
+                } else {
+                    u.pitch = 1.0;
+                    u.rate = params.baseRate;
+                }
+                if (cIdx === clauses.length - 1) {
+                    u.onend = () => {
+                        if (cardEl) cardEl.classList.remove('playing');
+                        if (statusEl) statusEl.innerText = "재생 완료";
+                    };
+                }
+                window.speechSynthesis.speak(u);
+            });
+            return;
+        }
+        if (statusEl) statusEl.innerText = "오류: " + err.message;
+        if (cardEl) cardEl.classList.remove('playing');
+    }
+}
+
+// ============================================================================
+// 6. F0 피치 곡선 + 내 육성 F0 오버레이 시각화 (HTML5 Canvas)
+// ============================================================================
+function drawPitchContour(canvasId, words, activeWordIdx = -1, playProgress = -1, sentId = "") {
     const canvas = document.getElementById(canvasId);
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
@@ -700,30 +1857,29 @@ function drawPitchContour(canvasId, words, activeWordIdx = -1) {
     const H = canvas.height;
     ctx.clearRect(0, 0, W, H);
 
-    // 배경 그리드
+    // 배경 눈금선
     ctx.strokeStyle = "rgba(255,255,255,0.08)";
     ctx.lineWidth = 1;
-    [22, 45, 68].forEach(y => {
+    [22, 48, 74].forEach(y => {
         ctx.beginPath();
         ctx.moveTo(0, y);
         ctx.lineTo(W, y);
         ctx.stroke();
     });
 
-    const highPitch = parseFloat(document.getElementById('slHighPitch').value);
-    const lowPitch = parseFloat(document.getElementById('slLowPitch').value);
-    const longStretch = parseFloat(document.getElementById('slLongStretch').value);
-    const endingLift = document.getElementById('chkEndingLift').checked;
+    const params = getProsodyParams();
+    const pLow = params.lowPitch;
+    const pHigh = params.lowPitch * params.highPitch;
+    const endBoostRatio = Math.pow(2, params.endBoostSemitones / 12.0);
 
-    // 모든 음절의 시간 가중치와 목표 피치 계산
     const timeline = [];
     words.forEach((w, wIdx) => {
         w.syls.forEach((s, sIdx) => {
-            const durWeight = s.isLong ? longStretch : 1.0;
             const isWordEnd = (sIdx === w.syls.length - 1);
-            let targetPitch = (s.tone === 'H') ? highPitch : lowPitch;
-            if (isWordEnd && s.tone === 'H' && endingLift) {
-                targetPitch += 0.06; // 어미 상승 강조
+            const durWeight = s.isLong ? params.longStretch : 1.0;
+            let targetPitch = (s.tone === 'H') ? pHigh : pLow;
+            if (isWordEnd && s.tone === 'H') {
+                targetPitch *= Math.min(1.22, endBoostRatio);
             }
             timeline.push({
                 char: s.char,
@@ -735,8 +1891,7 @@ function drawPitchContour(canvasId, words, activeWordIdx = -1) {
                 pitch: targetPitch
             });
         });
-        // 어절 간 짧은 휴지 가중치
-        timeline.push({ isPause: true, weight: 0.25, wordIdx: wIdx, pitch: lowPitch });
+        timeline.push({ isPause: true, weight: 0.22, wordIdx: wIdx, pitch: pLow });
     });
 
     if (timeline.length === 0) return;
@@ -744,26 +1899,23 @@ function drawPitchContour(canvasId, words, activeWordIdx = -1) {
     const padX = 24;
     const usableW = W - padX * 2;
 
-    // 좌표 매핑
     const pitchToY = (p) => {
-        // p: 0.70 ~ 1.75 -> Y: 72 ~ 14
-        const norm = (p - 0.70) / (1.75 - 0.70);
-        return 72 - Math.max(0, Math.min(1, norm)) * 58;
+        const norm = (p - 0.72) / (1.72 - 0.72);
+        return 78 - Math.max(0, Math.min(1, norm)) * 62;
     };
 
-    // 1) 표준어 평문 TTS 기준선 (끝에서 뚝 떨어지는 점선)
+    // 1) 표준어 평문 TTS 기준선 (점선)
     ctx.save();
     ctx.setLineDash([4, 4]);
-    ctx.strokeStyle = "rgba(148, 163, 184, 0.45)";
-    ctx.lineWidth = 1.5;
+    ctx.strokeStyle = "rgba(148, 163, 184, 0.4)";
+    ctx.lineWidth = 1.4;
     ctx.beginPath();
-    ctx.moveTo(padX, pitchToY(1.02));
-    ctx.lineTo(padX + usableW * 0.82, pitchToY(0.96));
-    ctx.lineTo(padX + usableW, pitchToY(0.75));
+    ctx.moveTo(padX, pitchToY(1.0));
+    ctx.lineTo(padX + usableW * 0.84, pitchToY(0.95));
+    ctx.lineTo(padX + usableW, pitchToY(0.76));
     ctx.stroke();
     ctx.restore();
 
-    // 각 음절 중심 X, Y 계산
     let accW = 0;
     const points = [];
     timeline.forEach(item => {
@@ -773,31 +1925,41 @@ function drawPitchContour(canvasId, words, activeWordIdx = -1) {
         accW += item.weight;
 
         if (!item.isPause) {
-            // 활성 어절 하이라이트 배경
             if (item.wordIdx === activeWordIdx) {
-                ctx.fillStyle = "rgba(255, 193, 7, 0.18)";
+                ctx.fillStyle = "rgba(255, 193, 7, 0.20)";
                 ctx.fillRect(startX, 4, spanW, H - 8);
             }
-            // 장모음 구간 표시 바
             if (item.isLong) {
                 ctx.fillStyle = "rgba(186, 104, 200, 0.22)";
                 ctx.fillRect(startX + 1, 8, spanW - 2, H - 16);
             }
 
-            if (item.isLong && item.tone === 'H') {
-                // 장모음 + 고조는 낮게 시작해서 부드럽게 치고 올라가는 2포인트 구성
-                points.push({ x: startX + spanW * 0.25, y: pitchToY(lowPitch + 0.12), item, label: false });
-                points.push({ x: startX + spanW * 0.80, y: pitchToY(item.pitch), item, label: true, centerX: midX });
-            } else if (item.isWordEnd && item.tone === 'H' && endingLift) {
-                points.push({ x: startX + spanW * 0.3, y: pitchToY(item.pitch - 0.12), item, label: false });
-                points.push({ x: startX + spanW * 0.85, y: pitchToY(item.pitch), item, label: true, centerX: midX });
+            if ((item.isLong && item.tone === 'H') || (item.isWordEnd && item.tone === 'H')) {
+                const entryP = pLow + (item.pitch - pLow) * (1.0 - params.glide * 0.7);
+                points.push({ x: startX + spanW * 0.22, y: pitchToY(entryP), item, label: false });
+                points.push({ x: startX + spanW * 0.82, y: pitchToY(item.pitch), item, label: true, centerX: midX });
             } else {
                 points.push({ x: midX, y: pitchToY(item.pitch), item, label: true, centerX: midX });
             }
         }
     });
 
-    // 2) 코사인 S-Curve 실선 그리기
+    // 2) 내가 녹음한 육성 F0 곡선 오버레이 (노란색 실선)
+    const userRec = userRecordings.get(sentId);
+    if (userRec && userRec.f0Track && userRec.f0Track.length > 1) {
+        ctx.strokeStyle = "#fbbf24";
+        ctx.lineWidth = 2.2;
+        ctx.beginPath();
+        userRec.f0Track.forEach((pt, idx) => {
+            const x = padX + pt.normX * usableW;
+            const y = pitchToY(pt.ratio);
+            if (idx === 0) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+        });
+        ctx.stroke();
+    }
+
+    // 3) 합성 목표 코사인 S-Curve 실선 (하늘색)
     if (points.length > 0) {
         ctx.strokeStyle = "#38bdf8";
         ctx.lineWidth = 2.6;
@@ -817,7 +1979,6 @@ function drawPitchContour(canvasId, words, activeWordIdx = -1) {
         }
         ctx.stroke();
 
-        // 3) 음절 포인트 및 글자 표시
         points.forEach(pt => {
             if (!pt.label) return;
             ctx.beginPath();
@@ -831,367 +1992,22 @@ function drawPitchContour(canvasId, words, activeWordIdx = -1) {
             ctx.fillText(pt.item.char, pt.centerX, H - 6);
         });
     }
+
+    // 4) 실시간 재생 진행 바(Playhead)
+    if (playProgress >= 0 && playProgress <= 1) {
+        const px = padX + playProgress * usableW;
+        ctx.strokeStyle = "#f43f5e";
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(px, 2);
+        ctx.lineTo(px, H - 2);
+        ctx.stroke();
+    }
 }
 
 // ============================================================================
-// 4. 음성 목록 관리 및 실시간 사투리 운율 시퀀서 (Serverless & Local Hybrid)
+// 7. UI 렌더링 및 이벤트 핸들러
 // ============================================================================
-let availableKoVoices = [];
-let selectedVoice = null;
-let localServerAvailable = false;
-let activePlayToken = 0;
-
-// 로컬 Praat 서버(http://localhost:5050) 실행 여부 자동 감지 (옵션)
-async function checkLocalPraatServer() {
-    try {
-        const ctrl = new AbortController();
-        const tid = setTimeout(() => ctrl.abort(), 400);
-        const res = await fetch("http://localhost:5050/", { signal: ctrl.signal });
-        clearTimeout(tid);
-        if (res.ok) {
-            localServerAvailable = true;
-            document.getElementById('engineDot').style.background = "#00e676";
-            document.getElementById('engineStatusText').innerText =
-                "정밀 Praat PSOLA 로컬 엔진 자동 연결됨 + 브라우저 실시간 합성 동시 지원 (무파일 0MB)";
-        }
-    } catch (e) {
-        localServerAvailable = false;
-    }
-}
-
-function loadVoices() {
-    if (!window.speechSynthesis) return;
-    const all = window.speechSynthesis.getVoices() || [];
-    availableKoVoices = all.filter(v => v.lang && (v.lang.startsWith('ko') || v.lang.toLowerCase().includes('kr')));
-    const sel = document.getElementById('voiceSelect');
-    if (!sel) return;
-    sel.innerHTML = "";
-
-    if (availableKoVoices.length === 0) {
-        const opt = document.createElement('option');
-        opt.value = "";
-        opt.textContent = "기본 한국어 음성 (브라우저 내장)";
-        sel.appendChild(opt);
-        return;
-    }
-
-    // 남성 음성(InJoon, 인준, Male 등)을 최우선 정렬
-    availableKoVoices.sort((a, b) => {
-        const aMale = /injoon|인준|male|남성|ism|kob/i.test(a.name + " " + a.voiceURI) ? 0 : 1;
-        const bMale = /injoon|인준|male|남성|ism|kob/i.test(b.name + " " + b.voiceURI) ? 0 : 1;
-        return aMale - bMale;
-    });
-
-    availableKoVoices.forEach((v, idx) => {
-        const opt = document.createElement('option');
-        opt.value = String(idx);
-        const isMale = /injoon|인준|male|남성|ism|kob/i.test(v.name + " " + v.voiceURI);
-        opt.textContent = `${isMale ? '👨 [남성] ' : '👩 '}${v.name}`;
-        sel.appendChild(opt);
-    });
-
-    selectedVoice = availableKoVoices[0];
-}
-
-function onVoiceSelectChange() {
-    const sel = document.getElementById('voiceSelect');
-    const idx = parseInt(sel.value, 10);
-    if (!isNaN(idx) && availableKoVoices[idx]) {
-        selectedVoice = availableKoVoices[idx];
-    }
-}
-
-if (window.speechSynthesis) {
-    window.speechSynthesis.onvoiceschanged = loadVoices;
-    setTimeout(loadVoices, 100);
-}
-
-/**
- * [핵심] 문장 단위 경상도 성조·고저장단 실시간 합성 시퀀서 (2번 방식 브라우저 구현)
- * --------------------------------------------------------------------------
- * 왜 기존 TTS는 사투리가 어색했는가?
- * 1) 모음 2개 연타(사아, 가아, 해애, 초온)를 그대로 넣으면 TTS가 "사-아"로 성문 파열음을 넣어 끊어 읽음.
- *    -> 장모음 구간을 부드럽게 늘인 속도(rate / longStretch)와 결합 음절/연장 발음으로 보정!
- * 2) 문장이나 어절 끝에 고조(′)가 있으면 한국어 TTS는 무조건 어미를 내려 읽음.
- *    -> 어절 끝 고조 구간에 상승 억양 곡선(? 억양 힌트 + 고조 피치)을 부여하여 끝을 자연스럽게 들어올림!
- * 3) 고음(H)과 저음(L)이 바뀔 때 부드럽게 이어지도록 동일 성조 마디(Tone Group) 단위로 묶어 발화!
- */
-function buildProsodicChunksForWord(wordObj, params) {
-    const syls = wordObj.syls;
-    const chunks = [];
-    const n = syls.length;
-
-    // 어절 내 모든 음절이 평조(L)이고 장모음도 없으면 어절 통째로 반환
-    const hasHigh = syls.some(s => s.tone === 'H');
-    const hasLong = syls.some(s => s.isLong);
-    if (!hasHigh && !hasLong) {
-        const text = syls.map(s => s.speakChar + s.punc).join('');
-        return [{
-            text,
-            pitch: params.lowPitch,
-            rate: params.baseRate,
-            wordIndex: wordObj.wordIndex
-        }];
-    }
-
-    // 음절들을 순회하며 성조(H/L) 및 장모음(isLong) 특성이 같은 연속 구간끼리 병합하되,
-    // 마지막 음절이 고조(H)인 경우 어미 하강을 막기 위해 상승 억양 처리
-    let i = 0;
-    while (i < n) {
-        const cur = syls[i];
-        const isLastSyl = (i === n - 1);
-
-        // 케이스 A: 장모음 음절 (모음 2개 연타: 사아′, 가아′, 초온′, 해애′ 등)
-        if (cur.isLong) {
-            // 장모음 뒤에 같은 성조의 짧은 음절이 바로 이어지면 자연스러운 연결을 위해 함께 묶되 속도를 늦춤
-            let combinedText = cur.rawPair + cur.punc;
-            let j = i + 1;
-            // 장모음 단독 또는 직후 동일 성조 음절 병합
-            if (j < n && syls[j].tone === cur.tone && !syls[j].isLong && !(j === n - 1 && syls[j].tone === 'H')) {
-                combinedText += syls[j].speakChar + syls[j].punc;
-                j++;
-            }
-            const isChunkEndOfWord = (j === n);
-            let finalText = combinedText;
-            if (isChunkEndOfWord && cur.tone === 'H' && params.endingLift) {
-                finalText = finalText.replace(/[\.\,\!\?]*$/, '') + '?';
-            }
-            chunks.push({
-                text: finalText,
-                pitch: cur.tone === 'H' ? params.highPitch : params.lowPitch,
-                rate: Math.max(0.55, params.baseRate / (params.longStretch * 0.92)),
-                wordIndex: wordObj.wordIndex
-            });
-            i = j;
-            continue;
-        }
-
-        // 케이스 B: 어절의 마지막 음절이 단독 고조(H)인 경우 (예: 가새′, 갈꾸리′, 보또랑′, 애이′가 등)
-        if (isLastSyl && cur.tone === 'H') {
-            let finalText = cur.speakChar;
-            if (params.endingLift) {
-                finalText += '?';
-            }
-            chunks.push({
-                text: finalText,
-                pitch: Math.min(1.8, params.highPitch + 0.06),
-                rate: params.baseRate * 0.94,
-                wordIndex: wordObj.wordIndex
-            });
-            i++;
-            continue;
-        }
-
-        // 케이스 C: 일반 연속 동일 성조(H 또는 L) 구간 병합
-        let runText = cur.speakChar + cur.punc;
-        let j = i + 1;
-        while (j < n && syls[j].tone === cur.tone && !syls[j].isLong) {
-            // 단, 마지막 음절이 H이고 현재 L 구간이면 분리
-            runText += syls[j].speakChar + syls[j].punc;
-            j++;
-        }
-        const reachesEnd = (j === n);
-        if (reachesEnd && cur.tone === 'H' && params.endingLift) {
-            runText = runText.replace(/[\.\,\!\?]*$/, '') + '?';
-        }
-        chunks.push({
-            text: runText,
-            pitch: cur.tone === 'H' ? params.highPitch : params.lowPitch,
-            rate: cur.tone === 'H' ? params.baseRate * 0.95 : params.baseRate * 1.02,
-            wordIndex: wordObj.wordIndex
-        });
-        i = j;
-    }
-
-    return chunks;
-}
-
-function getProsodyParams() {
-    const highPitch = parseFloat(document.getElementById('slHighPitch').value) || 1.42;
-    const lowPitch = parseFloat(document.getElementById('slLowPitch').value) || 0.85;
-    const longStretch = parseFloat(document.getElementById('slLongStretch').value) || 1.55;
-    const baseRate = parseFloat(document.getElementById('slBaseRate').value) || 0.94;
-    const endingLift = document.getElementById('chkEndingLift').checked;
-    return { highPitch, lowPitch, longStretch, baseRate, endingLift };
-}
-
-function stopAllSpeech() {
-    activePlayToken++;
-    if (window.speechSynthesis) {
-        window.speechSynthesis.cancel();
-    }
-    if (window.currentAudioObj) {
-        window.currentAudioObj.pause();
-        window.currentAudioObj = null;
-    }
-    document.querySelectorAll('.sentence-card, .custom-box').forEach(el => el.classList.remove('playing'));
-    document.querySelectorAll('.word-group').forEach(el => el.classList.remove('active-chunk'));
-    renderAllCanvases();
-}
-
-async function playSingleWord(sentId, wordIdx) {
-    stopAllSpeech();
-    const token = ++activePlayToken;
-    const dialectText = getSentenceTextById(sentId);
-    const words = parseDialectSentence(dialectText);
-    const targetWord = words[wordIdx];
-    if (!targetWord) return;
-
-    const params = getProsodyParams();
-    drawPitchContour(`canvas-${sentId}`, words, wordIdx);
-    highlightWordDom(sentId, wordIdx);
-
-    // 로컬 Praat 서버 연결 시 메모리 스트리밍 우선 사용
-    if (localServerAvailable) {
-        try {
-            const semitoneLift = (Math.log2(params.highPitch / params.lowPitch) * 12).toFixed(1);
-            const res = await fetch("http://localhost:5050/prosody", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    text: targetWord.raw,
-                    mode: "prosody",
-                    semitone_lift: parseFloat(semitoneLift),
-                    long_stretch: params.longStretch
-                })
-            });
-            if (res.ok && token === activePlayToken) {
-                const blob = await res.blob();
-                const url = URL.createObjectURL(blob);
-                const audio = new Audio(url);
-                window.currentAudioObj = audio;
-                audio.onended = () => {
-                    URL.revokeObjectURL(url);
-                    drawPitchContour(`canvas-${sentId}`, words, -1);
-                    highlightWordDom(sentId, -1);
-                };
-                await audio.play();
-                return;
-            }
-        } catch (e) {}
-    }
-
-    const chunks = buildProsodicChunksForWord(targetWord, params);
-    speakChunksSequentially(chunks, sentId, words, token);
-}
-
-async function playSentence(sentId, mode) {
-    stopAllSpeech();
-    const token = ++activePlayToken;
-    const dialectText = getSentenceTextById(sentId);
-    if (!dialectText) return;
-
-    const words = parseDialectSentence(dialectText);
-    const params = getProsodyParams();
-    const cardEl = document.getElementById(`card-${sentId}`);
-    if (cardEl) cardEl.classList.add('playing');
-
-    // 1. 로컬 Praat PSOLA 서버가 켜져 있는 경우: 디스크 저장 없이 메모리 즉석 합성 스트리밍
-    if (localServerAvailable) {
-        try {
-            const semitoneLift = (Math.log2(params.highPitch / params.lowPitch) * 12).toFixed(1);
-            const res = await fetch("http://localhost:5050/prosody", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    text: dialectText,
-                    mode: mode,
-                    semitone_lift: parseFloat(semitoneLift),
-                    long_stretch: params.longStretch
-                })
-            });
-            if (res.ok && token === activePlayToken) {
-                const blob = await res.blob();
-                const url = URL.createObjectURL(blob);
-                const audio = new Audio(url);
-                window.currentAudioObj = audio;
-                audio.onended = () => {
-                    URL.revokeObjectURL(url);
-                    if (cardEl) cardEl.classList.remove('playing');
-                    drawPitchContour(`canvas-${sentId}`, words, -1);
-                    highlightWordDom(sentId, -1);
-                };
-                await audio.play();
-                return;
-            }
-        } catch (e) {}
-    }
-
-    // 2. GitHub Pages 서버리스 브라우저 실시간 합성 모드
-    if (!window.speechSynthesis) {
-        alert("이 브라우저는 Web Speech API 음성 합성을 지원하지 않습니다.");
-        return;
-    }
-
-    if (mode === 'orig') {
-        // [1. 표준 평문 TTS]: 성조 부호 제거 후 평탄하게 한 문장으로 발화
-        const cleanPlain = dialectText.replace(/['′″ːˈˌ\^\[\]]/g, '').trim();
-        const u = new SpeechSynthesisUtterance(cleanPlain);
-        u.lang = 'ko-KR';
-        if (selectedVoice) u.voice = selectedVoice;
-        u.pitch = 1.0;
-        u.rate = params.baseRate;
-        u.onend = () => {
-            if (cardEl) cardEl.classList.remove('playing');
-        };
-        window.speechSynthesis.speak(u);
-        return;
-    }
-
-    // [2. 경상도 고저장단 실시간 합성 (2번 방식)]
-    // 문장 내 모든 어절의 운율 마디(Prosodic Chunks)를 생성하고, 인접한 동일 평조 구간은 병합하여 끊김 없이 부드럽게 발화
-    const rawChunks = [];
-    words.forEach(w => {
-        const wChunks = buildProsodicChunksForWord(w, params);
-        rawChunks.push(...wChunks);
-    });
-
-    // 연속된 평조(L) 마디끼리는 하나로 합쳐서 문장 흐름을 매끄럽게 유지
-    const mergedChunks = [];
-    rawChunks.forEach(ch => {
-        if (mergedChunks.length > 0) {
-            const prev = mergedChunks[mergedChunks.length - 1];
-            if (Math.abs(prev.pitch - ch.pitch) < 0.04 && Math.abs(prev.rate - ch.rate) < 0.05 && !prev.text.endsWith('?')) {
-                prev.text += " " + ch.text;
-                return;
-            }
-        }
-        mergedChunks.push({ ...ch });
-    });
-
-    speakChunksSequentially(mergedChunks, sentId, words, token);
-}
-
-function speakChunksSequentially(chunks, sentId, words, token) {
-    if (!window.speechSynthesis || chunks.length === 0) return;
-
-    chunks.forEach((ch, idx) => {
-        const u = new SpeechSynthesisUtterance(ch.text);
-        u.lang = 'ko-KR';
-        if (selectedVoice) u.voice = selectedVoice;
-        u.pitch = ch.pitch;
-        u.rate = ch.rate;
-
-        u.onstart = () => {
-            if (token !== activePlayToken) return;
-            drawPitchContour(`canvas-${sentId}`, words, ch.wordIndex);
-            highlightWordDom(sentId, ch.wordIndex);
-        };
-
-        if (idx === chunks.length - 1) {
-            u.onend = () => {
-                if (token !== activePlayToken) return;
-                const cardEl = document.getElementById(`card-${sentId}`);
-                if (cardEl) cardEl.classList.remove('playing');
-                drawPitchContour(`canvas-${sentId}`, words, -1);
-                highlightWordDom(sentId, -1);
-            };
-        }
-
-        window.speechSynthesis.speak(u);
-    });
-}
-
 function highlightWordDom(sentId, wordIdx) {
     const container = document.getElementById(sentId === 'custom' ? 'customTokens' : `tokens-${sentId}`);
     if (!container) return;
@@ -1208,27 +2024,17 @@ function getSentenceTextById(sentId) {
     return found ? found.dialect : "";
 }
 
-// ============================================================================
-// 5. UI 렌더링 및 이벤트 연결
-// ============================================================================
 function renderTokensHtml(sentId, words) {
     return words.map((w, wIdx) => {
         const chips = w.syls.map(s => {
             let cls = "syl-L";
             let tag = "";
-            if (s.tone === 'H' && s.isLong) {
-                cls = "syl-HL";
-                tag = "′ː";
-            } else if (s.tone === 'H') {
-                cls = "syl-H";
-                tag = "′";
-            } else if (s.isLong) {
-                cls = "syl-LL";
-                tag = "ː";
-            }
+            if (s.tone === 'H' && s.isLong) { cls = "syl-HL"; tag = "′ː"; }
+            else if (s.tone === 'H') { cls = "syl-H"; tag = "′"; }
+            else if (s.isLong) { cls = "syl-LL"; tag = "ː"; }
             return `<span class="syl-chip ${cls}">${s.char}${tag}</span>`;
         }).join('');
-        return `<span class="word-group" title="클릭하면 이 어절만 사투리 억양으로 발화합니다" onclick="playSingleWord('${sentId}', ${wIdx})">${chips}</span>`;
+        return `<span class="word-group" title="클릭하면 이 어절만 연속 파형 변조로 발화합니다" onclick="playContinuousSentence('${sentId}', 'prosody', ${wIdx})">${chips}</span>`;
     }).join('');
 }
 
@@ -1239,31 +2045,36 @@ function renderSentencesList() {
         const tokensHtml = renderTokensHtml(item.id, words);
         return `
         <div class="sentence-card" id="card-${item.id}">
-            <div class="sent-header">
-                <div>
-                    <span class="sent-num">예문 ${idx + 1}</span>
-                    <span class="sent-dialect">${item.dialect}</span>
-                    <span class="sent-note">${item.note}</span>
-                </div>
+            <div>
+                <span class="sent-num">예문 ${idx + 1}</span>
+                <span class="sent-dialect">${item.dialect}</span>
+                <span class="sent-note">${item.note}</span>
             </div>
             <div class="sent-std">표준어: ${item.standard}</div>
             <div class="tokens-wrap" id="tokens-${item.id}">${tokensHtml}</div>
             <div class="canvas-wrap">
                 <div class="canvas-legend">
-                    <span>성조(F0) 곡선 및 장모음 비율 시각화</span>
-                    <span>어절 클릭 시 개별 청취 가능</span>
+                    <span>성조(F0) S-Curve 및 장모음 비율 (노란선=내 녹음 육성 궤적)</span>
+                    <span id="status-${item.id}">대기 중</span>
                 </div>
-                <canvas id="canvas-${item.id}" class="pitch-canvas" width="860" height="86"></canvas>
+                <canvas id="canvas-${item.id}" class="pitch-canvas" width="880" height="96"></canvas>
             </div>
             <div class="btn-row">
-                <button class="play-btn btn-orig" onclick="playSentence('${item.id}', 'orig')">
-                    🔊 1. 표준 평문 TTS (비교용)
+                <button class="play-btn btn-orig" onclick="playContinuousSentence('${item.id}', 'orig')">
+                    🔊 1. 표준 평문 연속 듣기
                 </button>
-                <button class="play-btn btn-prosody" onclick="playSentence('${item.id}', 'prosody')">
-                    🔥 2. 경상도 고저장단 실시간 합성 (2번 방식)
+                <button class="play-btn btn-prosody" onclick="playContinuousSentence('${item.id}', 'prosody')">
+                    🌊 2. 물 흐르듯 연속 사투리 합성 (무단절 WSOLA)
                 </button>
-                <button class="play-btn btn-stop" onclick="stopAllSpeech()">⏹ 정지</button>
+                <button class="play-btn btn-rec" id="btnRec-${item.id}" onclick="toggleRecordSentence('${item.id}')">
+                    🎤 내가 읽어 학습시키기
+                </button>
+                <button class="play-btn btn-myvoice" id="btnMy-${item.id}" style="display:none;" onclick="playUserRecording('${item.id}')">
+                    🎧 내 녹음 듣기
+                </button>
+                <button class="play-btn btn-stop" onclick="stopAllAudio()">⏹ 정지</button>
             </div>
+            <div class="rec-status-msg" id="recMsg-${item.id}"></div>
         </div>
         `;
     }).join('');
@@ -1273,14 +2084,14 @@ function updateCustomCard() {
     const text = document.getElementById('customInput').value.trim();
     const words = parseDialectSentence(text);
     document.getElementById('customTokens').innerHTML = renderTokensHtml('custom', words);
-    drawPitchContour('canvas-custom', words, -1);
+    drawPitchContour('canvas-custom', words, -1, -1, 'custom');
 }
 
 function renderAllCanvases() {
     updateCustomCard();
     TEST_SENTENCES.forEach(item => {
         const words = parseDialectSentence(item.dialect);
-        drawPitchContour(`canvas-${item.id}`, words, -1);
+        drawPitchContour(`canvas-${item.id}`, words, -1, -1, item.id);
     });
 }
 
@@ -1288,30 +2099,34 @@ function updateSliders() {
     const hp = parseFloat(document.getElementById('slHighPitch').value);
     const lp = parseFloat(document.getElementById('slLowPitch').value);
     const ls = parseFloat(document.getElementById('slLongStretch').value);
+    const gl = parseFloat(document.getElementById('slGlide').value);
+    const eb = parseFloat(document.getElementById('slEndBoost').value);
     const br = parseFloat(document.getElementById('slBaseRate').value);
 
-    const semitones = (Math.log2(hp / lp) * 12).toFixed(1);
-    document.getElementById('valHighPitch').innerText = `${hp.toFixed(2)} (+${semitones}st)`;
-    document.getElementById('valLowPitch').innerText = `${lp.toFixed(2)}`;
+    const semitones = (Math.log2(hp) * 12).toFixed(1);
+    document.getElementById('valHighPitch').innerText = `${hp.toFixed(2)}x (+${semitones}st)`;
+    document.getElementById('valLowPitch').innerText = `${lp.toFixed(2)}x`;
     document.getElementById('valLongStretch').innerText = `${ls.toFixed(2)}배 연장`;
+    document.getElementById('valGlide').innerText = `${gl.toFixed(2)}`;
+    document.getElementById('valEndBoost').innerText = `+${eb.toFixed(1)} 반음`;
     document.getElementById('valBaseRate').innerText = `${br.toFixed(2)}x`;
 
     renderAllCanvases();
 }
 
 function resetSliders() {
-    document.getElementById('slHighPitch').value = "1.42";
-    document.getElementById('slLowPitch').value = "0.85";
-    document.getElementById('slLongStretch').value = "1.55";
-    document.getElementById('slBaseRate').value = "0.94";
-    document.getElementById('chkEndingLift').checked = true;
+    document.getElementById('slHighPitch').value = "1.38";
+    document.getElementById('slLowPitch').value = "0.94";
+    document.getElementById('slLongStretch').value = "1.58";
+    document.getElementById('slGlide').value = "0.68";
+    document.getElementById('slEndBoost').value = "1.8";
+    document.getElementById('slBaseRate').value = "0.95";
     updateSliders();
 }
 
 window.addEventListener('DOMContentLoaded', () => {
     renderSentencesList();
-    renderAllCanvases();
-    checkLocalPraatServer();
+    applyLearnedProfileToSliders();
 });
 </script>
 </body>
