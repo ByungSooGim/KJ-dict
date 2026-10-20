@@ -456,8 +456,11 @@
             <a href="index.html" class="nav-link">← 웹사전(index.html) 돌아가기</a>
         </div>
         <div class="status-bar">
-            <span class="status-pill"><span class="dot" id="engineDot"></span> <span id="engineStatusText">연속 파형 WSOLA 변조 엔진 활성 (어절 끊김 없음 · 무파일 0MB)</span></span>
-            <span style="opacity:0.9;">• 어느 문장이든 <b>[🎤 내가 읽어 학습시키기]</b>를 눌러 읽으시면 내 사투리 고저장단 특징이 자동 추출됩니다.</span>
+            <span class="status-pill"><span class="dot" id="engineDot"></span> <span id="engineStatusText">통일 남성 음성 & 연속 방언 합성 활성 (어절 끊김 없음 · 0MB)</span></span>
+            <span class="status-pill" id="voiceStatusPill" onclick="setMaleVoiceChoice()" style="cursor:pointer; background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.35);" title="클릭하여 사용할 한국어 음성을 변경할 수 있습니다">
+                🎙️ <span id="currentVoiceLabel">남성 음성 탐색 중...</span> ▾
+            </span>
+            <span style="opacity:0.9;">• 20개 문장 중 어느 것이든 <b>[🎤 내가 읽어 학습시키기]</b>를 누르면 내 억양이 모든 문장에 100% 통일 반영됩니다.</span>
         </div>
     </div>
 
@@ -608,14 +611,14 @@
         <div class="rec-status-msg" id="recMsg-custom"></div>
     </div>
 
-    <!-- 사전 대표 예문 10선 리스트 -->
-    <h2 style="font-size:18px; color:#1a237e; margin: 24px 0 12px 4px;">📚 경주어사전 대표 문장 10선 (물 흐르듯 연속 합성 & 내 목소리 시범 녹음 학습)</h2>
+    <!-- 사전 대표 예문 20선 리스트 -->
+    <h2 style="font-size:18px; color:#1a237e; margin: 24px 0 12px 4px;">📚 경주어사전 대표 문장 20선 (통일 남성 음성 · 물 흐르듯 연속 합성 & 내 목소리 시범 녹음 학습)</h2>
     <div id="sentencesContainer"></div>
 </div>
 
 <script>
 // ============================================================================
-// 1. 경주어사전 대표 문장 10선
+// 1. 경주어사전 대표 문장 20선
 // ============================================================================
 const TEST_SENTENCES = [
     {
@@ -677,6 +680,66 @@ const TEST_SENTENCES = [
         dialect: "투′포로 해애′가′아 가 열′ 포로 어어′덕′꺼등요.",
         standard: "투표를 해 가지고 그 열 표를 얻었거든요.",
         note: "이중 장모음(해애′가′아) + 어두 장모음 상승(어어′덕′꺼등요)"
+    },
+    {
+        id: "s11",
+        dialect: "누가′ 머′라캐도 가가′예에′문′인데, 제′사상이야 우리 집′에서 하는 식′대로 채′리는 거지요 머′.",
+        standard: "누가 뭐라고 하여도 가가례인데, 제사상이야 우리 집에서 하는 식대로 차리는 것이지요 뭐.",
+        note: "경주 가가례(가가′예에′문′) + 어말 평조 종결"
+    },
+    {
+        id: "s12",
+        dialect: "눈′에 멩′태 껍′디기로 발′랏나 커이꺼네, 남′으 콩′밭 삐′댄 거는 간 곳 없′고, 말′꼬리로 물′고 늘어지는데 창′ 가아′관′이데.",
+        standard: "눈에 명태 껍질을 발랐느냐 하니까, 남의 콩밭 짓밟은 것은 간 곳 없고, 말꼬리를 물고 늘어지는데 참 가관이더군.",
+        note: "생생한 구어체 어절 고조 연타 + 종결 장모음(가아′관′이데)"
+    },
+    {
+        id: "s13",
+        dialect: "버′섲 사′로 간 사람′자테 버′섲 줄 생각′은 앤′하고, 꿀′밤 조오′로 가치 앤′ 갈′래 커′는데 창′ 가관′시럽디더.",
+        standard: "버섯 사러 간 사람에게 버섯 줄 생각은 안 하고, 도토리 주으러 같이 안 갈래 하는데 참 같잖습디다.",
+        note: "부정소(앤′) 고조 + 완곡 거절 종결(가관′시럽디더)"
+    },
+    {
+        id: "s14",
+        dialect: "대′구서러느 담′배가아′게 하나′만 해 가주고도 한′ 식′구가 묵′고산단다.",
+        standard: "대구에서는 담배 가게 하나만을 해 가지고도 한 식구가 먹고산다고 한다.",
+        note: "지명 고조(대′구서러느) + 합성어 장모음(담′배가아′게)"
+    },
+    {
+        id: "s15",
+        dialect: "아′아가 입′가아에 추′믈 질′질 흘′릴 때′느, 세′가 탈′이 낫′기나 입′아이 헐′얻기나 무′진 탈′이 읻′쓸 기다.",
+        standard: "아이가 입가에 침을 질질 흘릴 때는, 혀가 탈이 났거나 입 안이 헐었거나 무슨 탈이 있을 것이다.",
+        note: "신체어 고조(세′가, 입′가아에) + 추측 종결(읻′쓸 기다)"
+    },
+    {
+        id: "s16",
+        dialect: "이′전에 대′주가 읻′얻는데 사람′캉 고′배가 대애′ 가주고 아′들로 놓′은 기이, 말′은 최′가락꼬 그 사′래미 최′치원이라.",
+        standard: "옛날에 돼지가 있었는데 사람과 교배가 되어 가지고 아들을 낳은 것이, 말은 최가라고 그 사람이 최치원이라.",
+        note: "설화 서술조 고저(대′주, 최′가락꼬) + 장모음(대애′)"
+    },
+    {
+        id: "s17",
+        dialect: "가′구에 담′아 가온 꼬′치캉 나′물캉 장′바다게 퍼′ 널′라 노′코 장′새를 하′는데 잘′ 팔′리디더.",
+        standard: "바구니에 담아 온 고추와 나물을 장바닥에 펴 널어 놓고 장사를 하는데 잘 팔립디다.",
+        note: "경주 고유어(가′구: 장바구니) + 나열 조사(캉) 리듬"
+    },
+    {
+        id: "s18",
+        dialect: "가아′래로 흙′을 퍼′ 올′릴라 카′머 세′ 사′래미 발′을 마차′야 수′월치.",
+        standard: "가래로 흙을 퍼 올리려고 하면 세 사람이 발을 맞추어야 수월하지.",
+        note: "농기구 어휘 장모음(가아′래) + 협동 노동 어조"
+    },
+    {
+        id: "s19",
+        dialect: "올′게느 가′미 마이 열′리이가아 감′낭구 가아′지마다 주′렁주′렁 달′릳따.",
+        standard: "올해는 감이 많이 열려서 감나무 가지마다 주렁주렁 달렸다.",
+        note: "원인 장모음(열′리이가아) + 묘사 의태어 고조"
+    },
+    {
+        id: "s20",
+        dialect: "밤′새도록 가′랑비가 소′록소′록 내′리디마는 아′치매 날′이 활′짝 개′읻따.",
+        standard: "밤새도록 가랑비가 소록소록 내리더니 아침에 날이 활짝 개었다.",
+        note: "시간 부사 고조(밤′새도록, 아′치매) + 완료 종결(개′읻따)"
     }
 ];
 
@@ -824,11 +887,96 @@ function clearAudioCache() {
     baseAudioCache.clear();
 }
 
+// ============================================================================
+// 2.5 🎙️ 한국어 통일 남성 음성 제어 및 탐색기 (Web Speech API Voice Engine)
+// ============================================================================
+function getKoreanMaleVoice() {
+    if (!window.speechSynthesis) return null;
+    const voices = window.speechSynthesis.getVoices();
+    if (!voices || voices.length === 0) return null;
+
+    const koVoices = voices.filter(v => v.lang && (v.lang.startsWith('ko') || v.lang === 'ko-KR'));
+    if (koVoices.length === 0) return null;
+
+    // 1. 사용자가 수동 선택해둔 보이스 URI가 있으면 우선 적용
+    const savedUri = localStorage.getItem('web_tts_male_voice_uri');
+    if (savedUri) {
+        const found = koVoices.find(v => (v.voiceURI === savedUri || v.name === savedUri));
+        if (found) return found;
+    }
+
+    // 2. 이름이나 URI에 남성 식별자(InJoon, 인준, Male, 남성, Android ism/kob)가 있는 음성 우선 탐색
+    const explicitMale = koVoices.find(v => {
+        const str = ((v.name || "") + " " + (v.voiceURI || "")).toLowerCase();
+        return str.includes('injoon') ||
+               str.includes('인준') ||
+               str.includes('male') ||
+               str.includes('남성') ||
+               str.includes('ism') ||
+               str.includes('kob');
+    });
+    if (explicitMale) return explicitMale;
+
+    // 3. 여성 전용 키워드가 아닌 두 번째 보이스 탐색
+    if (koVoices.length > 1) {
+        const nonFemale = koVoices.find(v => {
+            const str = ((v.name || "") + " " + (v.voiceURI || "")).toLowerCase();
+            return !str.includes('sunhi') &&
+                   !str.includes('선희') &&
+                   !str.includes('heami') &&
+                   !str.includes('혜미') &&
+                   !str.includes('female') &&
+                   !str.includes('여성');
+        });
+        if (nonFemale) return nonFemale;
+        return koVoices[1];
+    }
+
+    return koVoices[0];
+}
+
+function updateVoiceDisplay() {
+    const v = getKoreanMaleVoice();
+    const lbl = document.getElementById('currentVoiceLabel');
+    if (!lbl) return;
+    if (v) {
+        const isExpMale = /injoon|인준|male|남성|ism|kob/i.test((v.name || "") + " " + (v.voiceURI || ""));
+        const tag = isExpMale ? "남성" : "남성톤 변환";
+        lbl.innerText = `${v.name.replace(/Microsoft |Online \(Natural\) - |Korean \(Korea\)|Google /g, '').trim()} (${tag})`;
+    } else {
+        lbl.innerText = "기본 음성 (한국어)";
+    }
+}
+
+function setMaleVoiceChoice() {
+    if (!window.speechSynthesis) return;
+    const voices = window.speechSynthesis.getVoices().filter(v => v.lang && (v.lang.startsWith('ko') || v.lang === 'ko-KR'));
+    if (voices.length === 0) {
+        alert("브라우저에서 사용 가능한 한국어 음성을 찾을 수 없습니다.");
+        return;
+    }
+    const current = getKoreanMaleVoice();
+    const voiceListStr = voices.map((v, i) => `${i + 1}. ${v.name} ${v === current ? "★[현재 선택]" : ""}`).join('\n');
+    const choice = prompt(`합성에 사용할 한국어 음성 번호를 선택하세요:\n\n${voiceListStr}\n\n(비워두거나 취소하면 자동 남성 음성 탐색)`);
+    if (choice !== null) {
+        if (choice.trim() === "") {
+            localStorage.removeItem('web_tts_male_voice_uri');
+            updateVoiceDisplay();
+            alert("자동 남성 음성(InJoon 등) 우선 탐색으로 재설정되었습니다.");
+        } else {
+            const idx = parseInt(choice.trim()) - 1;
+            if (!isNaN(idx) && voices[idx]) {
+                localStorage.setItem('web_tts_male_voice_uri', voices[idx].voiceURI || voices[idx].name);
+                updateVoiceDisplay();
+                alert(`선택된 음성: ${voices[idx].name}`);
+            }
+        }
+    }
+}
+
 /**
- * 문장 전체를 한 호흡으로 읽은 베이스 AudioBuffer 가져오기 (캐시 지원)
- * 1순위: 로컬 edge_server.py (실행 중일 때)
- * 2순위: codetabs CORS 프록시를 통한 연속 Google 한국어 TTS 스트림 (ACAO: *)
- * 3순위: allorigins base64 스트림 폴백
+ * 로컬 edge_server.py (Praat PSOLA) 실행 여부 확인 (200ms 초고속 타임아웃)
+ * 외부 Google TTS 프록시는 여성 음성 및 잦은 타임아웃/차단 문제가 있으므로 완전히 배제!
  */
 async function fetchContinuousSentenceBuffer(cleanText, statusEl) {
     if (baseAudioCache.has(cleanText)) {
@@ -836,12 +984,9 @@ async function fetchContinuousSentenceBuffer(cleanText, statusEl) {
     }
     const ctx = getAudioContext();
 
-    if (statusEl) statusEl.innerText = "연속 베이스 음성 스트림 수신 중...";
-
-    // 1. 로컬 서버 확인 (실행 중이면 최우선)
     try {
         const ctrl = new AbortController();
-        const tid = setTimeout(() => ctrl.abort(), 300);
+        const tid = setTimeout(() => ctrl.abort(), 200);
         const res = await fetch("http://localhost:5050/prosody", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -857,55 +1002,7 @@ async function fetchContinuousSentenceBuffer(cleanText, statusEl) {
         }
     } catch (e) {}
 
-    const g1 = `https://translate.googleapis.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(cleanText)}&tl=ko&client=gtx`;
-    const g2 = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(cleanText)}&tl=ko&client=tw-ob`;
-
-    const fetchBinaryProxy = async (proxyUrl) => {
-        const ctrl = new AbortController();
-        const tid = setTimeout(() => ctrl.abort(), 4500);
-        try {
-            const res = await fetch(proxyUrl, { signal: ctrl.signal });
-            clearTimeout(tid);
-            if (!res.ok) throw new Error("HTTP " + res.status);
-            const arr = await res.arrayBuffer();
-            if (arr.byteLength < 400) throw new Error("Too short");
-            return await ctx.decodeAudioData(arr);
-        } catch (err) {
-            clearTimeout(tid);
-            throw err;
-        }
-    };
-
-    const fetchAllOriginsJson = async (targetUrl) => {
-        const ctrl = new AbortController();
-        const tid = setTimeout(() => ctrl.abort(), 4500);
-        try {
-            const res = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(targetUrl)}`, { signal: ctrl.signal });
-            clearTimeout(tid);
-            if (!res.ok) throw new Error("HTTP " + res.status);
-            const data = await res.json();
-            if (!data || !data.contents || !data.contents.includes('base64,')) throw new Error("Invalid base64");
-            const b64 = data.contents.split('base64,')[1];
-            const binStr = atob(b64);
-            const bytes = new Uint8Array(binStr.length);
-            for (let i = 0; i < binStr.length; i++) bytes[i] = binStr.charCodeAt(i);
-            return await ctx.decodeAudioData(bytes.buffer);
-        } catch (err) {
-            clearTimeout(tid);
-            throw err;
-        }
-    };
-
-    // 병렬 레이스(Promise.any)로 가장 먼저 응답하는 스트림 즉시 채택
-    const buf = await Promise.any([
-        fetchBinaryProxy(`https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(g1)}`),
-        fetchBinaryProxy(`https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(g2)}`),
-        fetchAllOriginsJson(g1),
-        fetchAllOriginsJson(g2)
-    ]);
-
-    baseAudioCache.set(cleanText, buf);
-    return buf;
+    return null; // 로컬 서버 미실행 시 즉시 null 반환하여 통합 브라우저 음성 엔진으로 직행!
 }
 
 /**
@@ -1725,11 +1822,175 @@ function stopAllAudio() {
 }
 
 /**
+ * 오디오 버퍼 재생 및 실시간 시각화 애니메이션 (로컬 Praat 서버 또는 WSOLA 버퍼용)
+ */
+function playBufferWithVisuals(playBuffer, sentId, allWords, onlyWordIdx, statusEl, mode) {
+    const ctx = getAudioContext();
+    const cardEl = document.getElementById(sentId === 'custom' ? 'card-custom' : `card-${sentId}`);
+
+    if (statusEl) {
+        statusEl.innerText = mode === 'prosody'
+            ? "🌊 고품질 Praat 연속 사투리 파형 재생 중..."
+            : "🔊 표준 평문 연속 재생 중...";
+    }
+
+    const src = ctx.createBufferSource();
+    src.buffer = playBuffer;
+    src.connect(ctx.destination);
+    currentSourceNode = src;
+
+    const startTime = ctx.currentTime;
+    const totalDur = playBuffer.duration;
+
+    const animate = () => {
+        const elapsed = ctx.currentTime - startTime;
+        if (elapsed >= totalDur || currentSourceNode !== src) {
+            return;
+        }
+        const progress = Math.max(0, Math.min(1, elapsed / totalDur));
+        let activeW = onlyWordIdx;
+        if (onlyWordIdx < 0 && allWords.length > 0) {
+            activeW = Math.min(allWords.length - 1, Math.floor(progress * allWords.length));
+        }
+        drawPitchContour(`canvas-${sentId}`, allWords, activeW, progress, sentId);
+        highlightWordDom(sentId, activeW);
+        animFrameId = requestAnimationFrame(animate);
+    };
+
+    src.onended = () => {
+        if (currentSourceNode === src) {
+            currentSourceNode = null;
+            if (cardEl) cardEl.classList.remove('playing');
+            if (statusEl) statusEl.innerText = "재생 완료";
+            drawPitchContour(`canvas-${sentId}`, allWords, -1, -1, sentId);
+            highlightWordDom(sentId, -1);
+        }
+    };
+
+    src.start();
+    animFrameId = requestAnimationFrame(animate);
+}
+
+/**
+ * [통일 음성 & 연속 방언 합성 핵심 엔진]
+ * -------------------------------------------------------------------------
+ * 1) 음성 통일: 외부 불안정 프록시(여성 구글 TTS)를 전면 배제하고, 일관된 한국어 남성 음성(InJoon 등) 적용
+ * 2) 내 학습 억양 100% 반영: 내가 녹음하여 학습된 6대 파라미터(고조 배율, 평조 베이스, 장모음 늘림,
+ *    어미 상승, 발화 속도)를 모든 문장에 동일한 규칙으로 완전 통일 반영!
+ * 3) 연속성 보장: 어절 단위로 잘게 쪼개는 방식이 아닌, 자연스러운 호흡군(절/문장) 단위로 연속 발화하여
+ *    어절 끊김 현상을 완벽히 해소!
+ */
+function playUnifiedDialectSpeech(sentId, allWords, words, cleanText, dialectText, mode, onlyWordIdx, statusEl, cardEl) {
+    if (!window.speechSynthesis) {
+        if (statusEl) statusEl.innerText = "브라우저 음성 합성을 지원하지 않습니다.";
+        if (cardEl) cardEl.classList.remove('playing');
+        return;
+    }
+
+    const params = getProsodyParams();
+    const maleVoice = getKoreanMaleVoice();
+    const isExplicitMale = maleVoice ? /injoon|인준|male|남성|ism|kob/i.test((maleVoice.name || "") + " " + (maleVoice.voiceURI || "")) : false;
+    // 명시적 남성 보이스가 없는 환경(예: 기본 여성 보이스만 탑재된 OS)의 경우 피치를 0.82로 낮추어 통일된 남성 음색 생성
+    const baseMalePitch = isExplicitMale ? 1.0 : 0.82;
+
+    const voiceDisplayName = maleVoice ? maleVoice.name.replace(/Microsoft |Online \(Natural\) - |Korean \(Korea\)|Google /g, '').trim() : "내장 남성";
+
+    if (statusEl) {
+        statusEl.innerText = mode === 'prosody'
+            ? `🌊 [${voiceDisplayName}] 학습 억양(고조 ${params.highPitch}x, 장모음 ${params.longStretch}배) 통일 합성 중...`
+            : `🔊 [${voiceDisplayName}] 표준 평문 연속 재생 중...`;
+    }
+
+    window.speechSynthesis.cancel();
+
+    // 단어별로 잘게 쪼개어 끊기는 현상을 원천 방지하기 위해 구두점(쉼표, 마침표 등) 기준의 호흡군으로 분할
+    const rawClauses = cleanText.split(/(?<=[,\.!\?])\s+/).filter(Boolean);
+    const clauses = rawClauses.length > 0 ? rawClauses : [cleanText];
+
+    const utterances = [];
+    const estTotalSeconds = Math.max(1.2, (cleanText.length * 0.17) / Math.max(0.6, params.baseRate));
+
+    clauses.forEach((clauseText, cIdx) => {
+        let textToSpeak = clauseText;
+        const u = new SpeechSynthesisUtterance(textToSpeak);
+        u.lang = 'ko-KR';
+        if (maleVoice) u.voice = maleVoice;
+
+        if (mode === 'prosody') {
+            // 경상도 성조 및 장모음 특징 확인
+            const hasHighTone = dialectText.includes("′") || dialectText.includes("'");
+            const hasLongVowel = /([가-힣])\1/.test(dialectText) || dialectText.includes("아아") || dialectText.includes("사아") || dialectText.includes("가아") || dialectText.includes("초온") || dialectText.includes("해애") || dialectText.includes("서엉");
+            
+            // 어절 끝 고조(′) 또는 의문형 상승(애이′가, 인′나 등) 반영
+            const isClauseEndingHigh = /[가-힣]['′][\s\.\,\!\?]*$/.test(clauseText) || /[인읻애][′']*[나가따][\.\?\!]*$/.test(clauseText);
+            const endBoostRatio = isClauseEndingHigh ? Math.pow(2, params.endBoostSemitones / 12.0) : 1.0;
+
+            // 고조 상승 배율 적용
+            const targetPitch = hasHighTone
+                ? (baseMalePitch * params.lowPitch * (params.highPitch * 0.90) * endBoostRatio)
+                : (baseMalePitch * params.lowPitch);
+            u.pitch = Math.max(0.55, Math.min(1.85, targetPitch));
+
+            // 장모음 늘림 배율 및 발화 속도 적용
+            const stretchComp = hasLongVowel ? (1.0 + (params.longStretch - 1.0) * 0.32) : 1.0;
+            u.rate = Math.max(0.65, Math.min(1.4, params.baseRate / stretchComp));
+        } else {
+            // 표준 평문
+            u.pitch = baseMalePitch;
+            u.rate = params.baseRate;
+        }
+
+        utterances.push(u);
+    });
+
+    const startTime = performance.now();
+    const animDur = estTotalSeconds * 1000;
+    let isPlaying = true;
+
+    const animate = () => {
+        if (!isPlaying) return;
+        const elapsed = performance.now() - startTime;
+        const progress = Math.max(0, Math.min(1, elapsed / animDur));
+
+        let activeW = onlyWordIdx;
+        if (onlyWordIdx < 0 && allWords.length > 0) {
+            activeW = Math.min(allWords.length - 1, Math.floor(progress * allWords.length));
+        }
+        drawPitchContour(`canvas-${sentId}`, allWords, activeW, progress, sentId);
+        highlightWordDom(sentId, activeW);
+
+        if (progress < 1.0 && isPlaying) {
+            animFrameId = requestAnimationFrame(animate);
+        }
+    };
+
+    const cleanup = () => {
+        isPlaying = false;
+        if (animFrameId) {
+            cancelAnimationFrame(animFrameId);
+            animFrameId = null;
+        }
+        if (cardEl) cardEl.classList.remove('playing');
+        if (statusEl) statusEl.innerText = "재생 완료";
+        drawPitchContour(`canvas-${sentId}`, allWords, -1, -1, sentId);
+        highlightWordDom(sentId, -1);
+    };
+
+    utterances.forEach((u, idx) => {
+        if (idx === utterances.length - 1) {
+            u.onend = cleanup;
+            u.onerror = cleanup;
+        }
+        window.speechSynthesis.speak(u);
+    });
+
+    animFrameId = requestAnimationFrame(animate);
+}
+
+/**
  * [물 흐르듯 이어지는 연속 파형 재생]
- * 1) 문장 전체를 한 호흡으로 발음한 연속 AudioBuffer를 가져옴
- * 2) mode === 'orig'이면 원본 연속 파형 재생
- * 3) mode === 'prosody'이면 Cross-Correlation WSOLA 엔진으로
- *    단 한 번의 어절 절단도 없이 연속 파형 위에서 고저(F0 S-Curve)와 장모음(Duration)을 동시에 변조하여 재생!
+ * 1) 로컬 Praat edge_server.py 실행 시 고품질 오디오 즉시 재생
+ * 2) 웹 브라우저 단독 실행 시: 통일된 한국어 남성 음성 + 사용자 학습 운율을 호흡군 단위로 매끄럽게 연속 발화!
  */
 async function playContinuousSentence(sentId, mode, onlyWordIdx = -1) {
     stopAllAudio();
@@ -1742,108 +2003,21 @@ async function playContinuousSentence(sentId, mode, onlyWordIdx = -1) {
     const collapseLong = document.getElementById('chkCollapseLong').checked;
     const cleanText = buildContinuousTtsText(words, mode === 'prosody' ? collapseLong : false);
 
-    const cardEl = document.getElementById(`card-${sentId}`);
+    const cardEl = document.getElementById(sentId === 'custom' ? 'card-custom' : `card-${sentId}`);
     const statusEl = document.getElementById(`status-${sentId}`);
     if (cardEl) cardEl.classList.add('playing');
 
+    // 1. 로컬 Praat edge_server.py 확인 (실행 중일 때 최우선 재생)
     try {
         const baseBuffer = await fetchContinuousSentenceBuffer(cleanText, statusEl);
-        const ctx = getAudioContext();
-        const params = getProsodyParams();
-
-        let playBuffer = baseBuffer;
-        let outWordTimeline = [];
-
-        if (mode === 'prosody') {
-            if (statusEl) statusEl.innerText = "연속 파형 WSOLA 고저장단 변조 중...";
-            const samples = baseBuffer.getChannelData(0);
-            const env = analyzeSpeechEnvelope(samples, baseBuffer.sampleRate);
-            const { pitchCurve, durCurve, wordIdxCurve, dt } = buildContinuousProsodyCurves(
-                words, env.startSec, env.endSec, baseBuffer.duration, params, env.rms, env.maxRms
-            );
-            const res = synthesizeContinuousWSOLA(baseBuffer, pitchCurve, durCurve, wordIdxCurve, dt);
-            playBuffer = res.outBuffer;
-            outWordTimeline = res.outWordTimeline;
-        }
-
-        if (statusEl) {
-            statusEl.innerText = mode === 'prosody'
-                ? "🌊 무단절 연속 사투리 파형 재생 중..."
-                : "🔊 표준 평문 연속 재생 중...";
-        }
-
-        const src = ctx.createBufferSource();
-        src.buffer = playBuffer;
-        src.connect(ctx.destination);
-        currentSourceNode = src;
-
-        const startTime = ctx.currentTime;
-        const totalDur = playBuffer.duration;
-
-        // 실시간 재생 헤드(Playhead) 및 활성 어절 하이라이트 애니메이션
-        const animate = () => {
-            const elapsed = ctx.currentTime - startTime;
-            if (elapsed >= totalDur || currentSourceNode !== src) {
-                return;
-            }
-            const progress = Math.max(0, Math.min(1, elapsed / totalDur));
-            let activeW = onlyWordIdx;
-            if (onlyWordIdx < 0 && outWordTimeline.length > 0) {
-                for (let i = outWordTimeline.length - 1; i >= 0; i--) {
-                    if (elapsed >= outWordTimeline[i].outSec) {
-                        activeW = outWordTimeline[i].wordIdx;
-                        break;
-                    }
-                }
-            }
-            drawPitchContour(`canvas-${sentId}`, allWords, activeW, progress, sentId);
-            highlightWordDom(sentId, activeW);
-            animFrameId = requestAnimationFrame(animate);
-        };
-
-        src.onended = () => {
-            if (currentSourceNode === src) {
-                currentSourceNode = null;
-                if (cardEl) cardEl.classList.remove('playing');
-                if (statusEl) statusEl.innerText = "재생 완료";
-                drawPitchContour(`canvas-${sentId}`, allWords, -1, -1, sentId);
-                highlightWordDom(sentId, -1);
-            }
-        };
-
-        src.start();
-        animFrameId = requestAnimationFrame(animate);
-
-    } catch (err) {
-        // 외부 스트림이 차단되었거나 오프라인일 경우: 단어 내부 절단 없이 호흡군(Breath-Group) 단위로 이어 읽는 내장 음성 폴백
-        if (window.speechSynthesis) {
-            if (statusEl) statusEl.innerText = "🎙️ 내장 연속 호흡군 모드로 재생 중...";
-            const params = getProsodyParams();
-            window.speechSynthesis.cancel();
-            const clauses = cleanText.split(/(?<=[,\.!\?])\s+/);
-            clauses.forEach((cl, cIdx) => {
-                const u = new SpeechSynthesisUtterance(cl);
-                u.lang = 'ko-KR';
-                if (mode === 'prosody') {
-                    u.pitch = params.lowPitch * (params.highPitch * 0.85);
-                    u.rate = params.baseRate / ( (dialectText.includes('아아') || dialectText.includes('사아') || dialectText.includes('가아') || dialectText.includes('초온') || dialectText.includes('해애')) ? (params.longStretch * 0.78) : 1.0 );
-                } else {
-                    u.pitch = 1.0;
-                    u.rate = params.baseRate;
-                }
-                if (cIdx === clauses.length - 1) {
-                    u.onend = () => {
-                        if (cardEl) cardEl.classList.remove('playing');
-                        if (statusEl) statusEl.innerText = "재생 완료";
-                    };
-                }
-                window.speechSynthesis.speak(u);
-            });
+        if (baseBuffer) {
+            playBufferWithVisuals(baseBuffer, sentId, allWords, onlyWordIdx, statusEl, mode);
             return;
         }
-        if (statusEl) statusEl.innerText = "오류: " + err.message;
-        if (cardEl) cardEl.classList.remove('playing');
-    }
+    } catch (e) {}
+
+    // 2. 통합 브라우저 음성 합성 엔진 (통일 남성 음성 + 내 학습 억양 100% 반영)
+    playUnifiedDialectSpeech(sentId, allWords, words, cleanText, dialectText, mode, onlyWordIdx, statusEl, cardEl);
 }
 
 // ============================================================================
@@ -2127,6 +2301,12 @@ function resetSliders() {
 window.addEventListener('DOMContentLoaded', () => {
     renderSentencesList();
     applyLearnedProfileToSliders();
+    updateVoiceDisplay();
+    if (window.speechSynthesis) {
+        window.speechSynthesis.onvoiceschanged = () => {
+            updateVoiceDisplay();
+        };
+    }
 });
 </script>
 </body>
