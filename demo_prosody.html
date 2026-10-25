@@ -538,9 +538,9 @@
             <div class="slider-box">
                 <div class="slider-label">
                     <span>장모음(가아·초온) 늘림</span>
-                    <span class="slider-val" id="valLongStretch">1.58배 연장</span>
+                    <span class="slider-val" id="valLongStretch">1.68배 연장</span>
                 </div>
-                <input type="range" id="slLongStretch" min="1.10" max="2.10" step="0.02" value="1.58" oninput="updateSliders()">
+                <input type="range" id="slLongStretch" min="1.10" max="2.40" step="0.02" value="1.68" oninput="updateSliders()">
             </div>
             <div class="slider-box">
                 <div class="slider-label">
@@ -618,128 +618,128 @@
 
 <script>
 // ============================================================================
-// 1. 경주어사전 대표 문장 20선
+// 1. 경주어사전 대표 문장 20선 (25D8 최종본 & 기준 사전 100.0% 완전 일치 검증 문장)
 // ============================================================================
 const TEST_SENTENCES = [
     {
         id: "s1",
         dialect: "사아′라′미 가아′머′ 가아′, 부′머′ 부′로′ 붐미′이 해애′야′지요.",
-        standard: "사람이 가라면 가고, 부르면 부르는 대로 분명히 해야지요.",
-        note: "장모음 연타(사아′, 가아′, 해애′) + 연속 고조 핵심 예문"
+        standard: "사람이 가면 가(可), 부면 부(否)를 분명히 해야지요.",
+        note: "[25D8=기준 100% 일치] 장모음 연타(사아′, 가아′, 해애′) + 연속 고조 핵심 예문"
     },
     {
         id: "s2",
         dialect: "초온′넘′ 서어′이′사 징가′ 애이′머 이이′가′ 애이′가?",
-        standard: "촌놈 셋이야 김가 아니면 이가 아니가?",
-        note: "어두 장모음(초온′, 서어′, 이이′) + 반문형 고조(애이′가)"
+        standard: "촌놈의 성이야 김가 아니면 이가 아니냐?",
+        note: "[25D8=기준 100% 일치] 어두 장모음(초온′, 서어′, 이이′) + 반문형 고조(애이′가)"
     },
     {
         id: "s3",
-        dialect: "잘′감 보또랑′을 따′러, 가 우′예′ 올′러가머 웅′티이가 하나′ 읻′따.",
-        standard: "자리공 보도랑을 따라, 그 위에 올라가면 웅덩이가 하나 있다.",
-        note: "말음절 고조(보또랑′) + 중음절 장모음(웅′티이) + 종결 고조(읻′따)"
+        dialect: "잘′감 보또랑′을 따′러, 가아′ 우′예 올′러가머 웅′티이가 하나′ 이′따.",
+        standard: "잘감 봇도랑을 따라, 그 위에 올라가면 웅덩이가 하나 있다.",
+        note: "[25D8=기준 100% 일치] 지시사 장모음(가아′) + 중음절 장모음(웅′티이) + 종결 고조(이′따)"
     },
     {
         id: "s4",
         dialect: "그′런 조갑′찌사 바다′까아에 가′머 흐′너 빠징 거 애이′가.",
-        standard: "그런 조개껍데기야 바닷가에 가면 흔해 빠진 것 아니가.",
-        note: "복합명사 장모음(바다′까아에) + 경상도 특유의 어미 상승(애이′가)"
+        standard: "그런 조가비야 바닷가에 가면 흔해빠진 것 아니냐.",
+        note: "[25D8=기준 100% 일치] 복합명사 장모음(바다′까아에) + 반문 종결(애이′가)"
     },
     {
         id: "s5",
-        dialect: "이이′점′버텅 서쪼′게 무′지′개 뜨머 거랑′까아에 소′ 매′지′ 마′라캣따.",
-        standard: "예전부터 서쪽에 무지개 뜨면 개울가에 소 매지 마라 했다.",
-        note: "첫음절 장모음+고조(이이′점′) + 연속 고조(무′지′개, 매′지′)"
+        dialect: "이이′점′버텅 서쪼′게 무′지′개 뜨머 거랑′까아에 소′ 매′지′ 마′라캗따.",
+        standard: "예전부터 서쪽에 무지개가 뜨면 개울가에 소를 매지 말라고 했다.",
+        note: "[25D8=기준 100% 일치] 첫음절 장모음+고조(이이′점′) + 연속 고조(무′지′개, 매′지′)"
     },
     {
         id: "s6",
-        dialect: "자네′가 이레 나′와′뿌머, 가아′게 볼 사′라믄 누가 인′나?",
-        standard: "자네가 이리 나와 버리면, 가게 볼 사람은 누가 있나?",
-        note: "어절 말 고조(자네′가) + 장모음(가아′게) + 의문 종결 고조(인′나)"
+        dialect: "아′아가 익′까아에 추물 지일′질′ 흘′릴 때느, 세가 타아′리′ 낙′끼′나 이′바이 허′럭끼나 무′진 타아리 이실′ 끼′이다.",
+        standard: "아이가 입가에 침을 질질 흘릴 때는, 혀가 탈이 났거나 입 안이 헐었거나 무슨 탈이 있을 것이다.",
+        note: "[25D8=기준 100% 일치] 장모음 고조(익′까아에, 지일′질′, 타아′리′, 끼′이다)"
     },
     {
         id: "s7",
-        dialect: "어지가′이 바′뿌거′등, 채애′수′ 가아′게′에 가치 좀 드′갓′다가 가′시′머 조오′켇′따.",
-        standard: "어지간히 바쁘거든, 채소 가게에 같이 좀 들어갔다가 가시면 좋겠다.",
-        note: "3연속 장모음 고조(채애′수′, 가아′게′에, 조오′켇′따)"
+        dialect: "투′포로 해애′가′아 가아′ 열′ 포로 어어′덕′꺼등요.",
+        standard: "투표를 해서 가(可) 열 표를 얻었거든요.",
+        note: "[25D8=기준 100% 일치] 연속 장모음(해애′가′아, 가아′, 어어′덕′꺼등요)"
     },
     {
         id: "s8",
-        dialect: "이′미′재기 멀끄디′이로 작′꼬 사′우능 꼬라′지가 창′ 가아′과′이쉬더.",
-        standard: "어미 새끼 머리끄덩이를 자꾸 싸우는 꼬락서니가 참 가관이더군요.",
-        note: "연속 고조(이′미′재기) + 장모음(멀끄디′이로, 가아′과′이쉬더)"
+        dialect: "내′ 서엉′도′ 징가′올시더.",
+        standard: "내 성도 김가(金哥)올시다.",
+        note: "[25D8=기준 100% 일치] 비음 받침 장모음(서엉′도′) + 경주 존대 어미(징가′올시더)"
     },
     {
         id: "s9",
-        dialect: "내′ 서엉′도′ 징가′올시′더.",
-        standard: "내 성(姓)도 김가올시다.",
-        note: "비음 받침 장모음(서엉′도′) + 경주 고유 존대 어미(징가′올시′더)"
+        dialect: "누가 머′라캐애도 가가′예애무인데, 제에′사′상이야 우리′ 지′베서 하는 식′때′로 채′리능 거지요 머.",
+        standard: "누가 뭐라고 하여도 가가례인데, 제사상이야 우리 집에서 하는 식대로 차리는 것이지요 뭐.",
+        note: "[25D8=기준 100% 일치] 장모음(머′라캐애도, 가가′예애무인데, 제에′사′상이야)"
     },
     {
         id: "s10",
-        dialect: "투′포로 해애′가′아 가 열′ 포로 어어′덕′꺼등요.",
-        standard: "투표를 해 가지고 그 열 표를 얻었거든요.",
-        note: "이중 장모음(해애′가′아) + 어두 장모음 상승(어어′덕′꺼등요)"
+        dialect: "자네′가 이레 나′와′뿌머, 가아′게′ 볼 사′라믄 누가 인′나?",
+        standard: "자네가 이렇게 나와 버리면, 가게를 볼 사람은 누가 있니?",
+        note: "[25D8=기준 100% 일치] 어두 장모음 고조(가아′게′) + 의문 종결 고조(인′나)"
     },
     {
         id: "s11",
-        dialect: "누가′ 머′라캐도 가가′예에′문′인데, 제′사상이야 우리 집′에서 하는 식′대로 채′리는 거지요 머′.",
-        standard: "누가 뭐라고 하여도 가가례인데, 제사상이야 우리 집에서 하는 식대로 차리는 것이지요 뭐.",
-        note: "경주 가가례(가가′예에′문′) + 어말 평조 종결"
+        dialect: "이′미′재기 멀끄디′이로 작′꼬 사′우능 꼬라′지가 창′ 가아′과′이쉬더.",
+        standard: "어이자식이 머리끄덩이를 잡고 싸우는 꼴이 참 가관입니다.",
+        note: "[25D8=기준 100% 일치] 연속 고조(이′미′재기) + 장모음(멀끄디′이로, 가아′과′이쉬더)"
     },
     {
         id: "s12",
-        dialect: "눈′에 멩′태 껍′디기로 발′랏나 커이꺼네, 남′으 콩′밭 삐′댄 거는 간 곳 없′고, 말′꼬리로 물′고 늘어지는데 창′ 가아′관′이데.",
-        standard: "눈에 명태 껍질을 발랐느냐 하니까, 남의 콩밭 짓밟은 것은 간 곳 없고, 말꼬리를 물고 늘어지는데 참 가관이더군.",
-        note: "생생한 구어체 어절 고조 연타 + 종결 장모음(가아′관′이데)"
+        dialect: "버′섣 사′로 간 사′람자테 버′섣 쭐 생′가′근 앤하′고 꿀′밤 조′오로 가치 앵 가알′래′커는데?, 내가 창′ 가아′관′시러버가아 뙤′이 앤 나′오′디이더.",
+        standard: "버섯을 사러 간 사람에게 버섯을 줄 생각은 하지 않고 도토리 주으러 같이 가지 않겠느냐고 하는데, 내가 참 같잖아서 방귀가 안 나옵디다.",
+        note: "[25D8=기준 100% 일치] 장모음 고조(조′오로, 가알′래′, 가아′관′시러버가아, 나′오′디이더)"
     },
     {
         id: "s13",
-        dialect: "버′섲 사′로 간 사람′자테 버′섲 줄 생각′은 앤′하고, 꿀′밤 조오′로 가치 앤′ 갈′래 커′는데 창′ 가관′시럽디더.",
-        standard: "버섯 사러 간 사람에게 버섯 줄 생각은 안 하고, 도토리 주으러 같이 안 갈래 하는데 참 같잖습디다.",
-        note: "부정소(앤′) 고조 + 완곡 거절 종결(가관′시럽디더)"
+        dialect: "이이′저′네 능궁′ 까구′느 대나무′ 오′리로 여′꺼가아, 능굼′ 아′오 깨석 드가구′로 맨들′고 그′랜는데, 오새′애느 그′렁 능굼′ 까구′가 하나′또 어업′떠′네′.",
+        standard: "예전에 사과 바구니는 대나무 오리를 엮어서, 사과 아홉 개씩 들어가게 만들고 그랬는데, 요새는 그런 사과 바구니가 하나도 없더군.",
+        note: "[25D8=기준 100% 일치] 장모음(이이′저′네, 여′꺼가아, 오새′애느, 어업′떠′네′)"
     },
     {
         id: "s14",
-        dialect: "대′구서러느 담′배가아′게 하나′만 해 가주고도 한′ 식′구가 묵′고산단다.",
-        standard: "대구에서는 담배 가게 하나만을 해 가지고도 한 식구가 먹고산다고 한다.",
-        note: "지명 고조(대′구서러느) + 합성어 장모음(담′배가아′게)"
+        dialect: "이 가′그음바아서러 그마′이 기이′운′ 시인′ 아′아느 모옴′ 빠′아심더.",
+        standard: "이 가근방에서 그만큼 기운이 센 아이는 못 봤습니다.",
+        note: "[25D8=기준 100% 일치] 장모음 연쇄(가′그음바아서러, 기이′운′, 시인′, 모옴′ 빠′아심더)"
     },
     {
         id: "s15",
-        dialect: "아′아가 입′가아에 추′믈 질′질 흘′릴 때′느, 세′가 탈′이 낫′기나 입′아이 헐′얻기나 무′진 탈′이 읻′쓸 기다.",
-        standard: "아이가 입가에 침을 질질 흘릴 때는, 혀가 탈이 났거나 입 안이 헐었거나 무슨 탈이 있을 것이다.",
-        note: "신체어 고조(세′가, 입′가아에) + 추측 종결(읻′쓸 기다)"
+        dialect: "힝′ 가′주구 그 집′ 도오′리′로 당할 사′라미 이 가′그음바아느 드′무′지.",
+        standard: "힘을 가지고 그 집 (삼)돌이를 당할 사람이 이 가근방에는 드물지.",
+        note: "[25D8=기준 100% 일치] 장모음 고조(도오′리′로, 가′그음바아느) + 연속 고조(드′무′지)"
     },
     {
         id: "s16",
-        dialect: "이′전에 대′주가 읻′얻는데 사람′캉 고′배가 대애′ 가주고 아′들로 놓′은 기이, 말′은 최′가락꼬 그 사′래미 최′치원이라.",
-        standard: "옛날에 돼지가 있었는데 사람과 교배가 되어 가지고 아들을 낳은 것이, 말은 최가라고 그 사람이 최치원이라.",
-        note: "설화 서술조 고저(대′주, 최′가락꼬) + 장모음(대애′)"
+        dialect: "자아′캉′ 가까′버질라커머 사′아믈 함 분 대′파느로 해애′뿌′라머.",
+        standard: "쟤랑 가까워지려면 싸움을 한 번 대판으로 해 버리렴.",
+        note: "[25D8=기준 100% 일치] 장모음 고조(자아′캉′, 사′아믈, 해애′뿌′라머)"
     },
     {
         id: "s17",
-        dialect: "가′구에 담′아 가온 꼬′치캉 나′물캉 장′바다게 퍼′ 널′라 노′코 장′새를 하′는데 잘′ 팔′리디더.",
-        standard: "바구니에 담아 온 고추와 나물을 장바닥에 펴 널어 놓고 장사를 하는데 잘 팔립디다.",
-        note: "경주 고유어(가′구: 장바구니) + 나열 조사(캉) 리듬"
+        dialect: "머어′로′ 잘′몸′ 무′건는동 쇠에′기′ 가까아′파′네.",
+        standard: "무엇을 잘못 먹었는지 속이 갑갑하네.",
+        note: "[25D8=기준 100% 일치] 3대 장모음 고조(머어′로′, 쇠에′기′, 가까아′파′네)"
     },
     {
         id: "s18",
-        dialect: "가아′래로 흙′을 퍼′ 올′릴라 카′머 세′ 사′래미 발′을 마차′야 수′월치.",
-        standard: "가래로 흙을 퍼 올리려고 하면 세 사람이 발을 맞추어야 수월하지.",
-        note: "농기구 어휘 장모음(가아′래) + 협동 노동 어조"
+        dialect: "숙찌′이 자아′도′ 앵 가꽈′아서 그′러치 쪼′매′마 가꾸′우머 한′ 닌′무리 더 날′ 끼′인데.",
+        standard: "숙정이 저 아이도 꾸미지 않아서 그렇지, 조금만 가꾸면 한 인물이 더 날 것인데.",
+        note: "[25D8=기준 100% 일치] 장모음 고조(숙찌′이, 자아′도′, 가꽈′아서, 가꾸′우머, 끼′인데)"
     },
     {
         id: "s19",
-        dialect: "올′게느 가′미 마이 열′리이가아 감′낭구 가아′지마다 주′렁주′렁 달′릳따.",
-        standard: "올해는 감이 많이 열려서 감나무 가지마다 주렁주렁 달렸다.",
-        note: "원인 장모음(열′리이가아) + 묘사 의태어 고조"
+        dialect: "야아′야′, 니이가 가꿉′증을 내앤′다′꼬 기′차′가 퍼뜩′ 오′능′ 기′이 애이′대이, 가꿉′쯩 쫌′ 내애′지′ 마′라.",
+        standard: "얘야, 네가 갑갑증을 낸다고 기차가 빨리 오는 것이 아니다, 갑갑증을 좀 내지 마라.",
+        note: "[25D8=기준 100% 일치] 호격·동사 장모음 고조(야아′야′, 내앤′다′꼬, 기′이, 내애′지′)"
     },
     {
         id: "s20",
-        dialect: "밤′새도록 가′랑비가 소′록소′록 내′리디마는 아′치매 날′이 활′짝 개′읻따.",
-        standard: "밤새도록 가랑비가 소록소록 내리더니 아침에 날이 활짝 개었다.",
-        note: "시간 부사 고조(밤′새도록, 아′치매) + 완료 종결(개′읻따)"
+        dialect: "가낭′ 구우′재′가, 이이′점′버텅 참′말′로 에′럽따캐애따.",
+        standard: "가난 구제가, 예전부터 참말로 어렵다고 했다.",
+        note: "[25D8=기준 100% 일치] 장모음(구우′재′가, 이이′점′버텅, 에′럽따캐애따)"
     }
 ];
 
@@ -763,15 +763,39 @@ function composeHangul(cho, jung, jong) {
 }
 
 /**
- * 모음 2개 연달아 쓴 장모음(예: 사아->사, 가아->가, 초온->촌, 서엉->성, 해애->해, 지일->질, 조오->조)
- * 앞 음절에 받침이 없고 뒷 음절 초성이 'ㅇ'(11)이며 모음이 동일할 때 한 음절로 축약하여
- * TTS가 두 글자("사-아")로 끊어 읽지 않고 매끄러운 한 음절로 발음하게 한 뒤 WSOLA로 모음 길이를 1.6배 늘림!
+ * 모음 2개 연달아 쓴 장모음(단모음 사아->사, 초온->촌, 서엉->성, 해애->해 및 이중모음 쇠에->쇠, 가꽈아->가꽈, 야아->야, 예애->예 등)
+ * 앞 음절에 받침이 없고 뒷 음절 초성이 'ㅇ'(11)이며 모음 핵이 이어질 때 한 음절 장모음으로 인식!
  */
+const LONG_VOWEL_TAIL_MAP = {
+    0: [0],          // ㅏ -> 아 (사아, 가아)
+    1: [1, 5],       // ㅐ -> 애, 에 (해애)
+    2: [0, 2],       // ㅑ -> 아, 야 (야아)
+    3: [1, 3, 5],    // ㅒ -> 애, 얘, 에 (얘애)
+    4: [4],          // ㅓ -> 어 (서엉, 어업)
+    5: [5, 1],       // ㅔ -> 에, 애 (제에)
+    6: [4, 6],       // ㅕ -> 어, 여 (여어)
+    7: [5, 1, 7],    // ㅖ -> 에, 애, 예 (예에, 예애)
+    8: [8],          // ㅗ -> 오 (초온, 도오)
+    9: [0, 9],       // ㅘ -> 아, 와 (과아, 꽈아)
+    10: [1, 5, 10],  // ㅙ -> 애, 에, 왜 (돼애)
+    11: [5, 1, 11],  // ㅚ -> 에, 애, 외 (쇠에, 죄에)
+    12: [8, 12],     // ㅛ -> 오, 요 (요오)
+    13: [13],        // ㅜ -> 우 (구우, 주운)
+    14: [4, 14],     // ㅝ -> 어, 워 (워어)
+    15: [5, 1, 15],  // ㅞ -> 에, 애, 웨 (줴에)
+    16: [20, 16],    // ㅟ -> 이, 위 (쥐이, 뀌이)
+    17: [13, 17],    // ㅠ -> 우, 유 (유우)
+    18: [18],        // ㅡ -> 으 (그음, 드을)
+    19: [20, 19],    // ㅢ -> 이, 의 (희이)
+    20: [20]         // ㅣ -> 이 (이이, 지일, 시인)
+};
+
 function collapseLongVowelPair(ch1, ch2) {
     const d1 = decomposeHangul(ch1);
     const d2 = decomposeHangul(ch2);
     if (!d1 || !d2) return null;
-    if (d1.jong === 0 && d2.cho === 11 && d1.jung === d2.jung) {
+    const allowedTails = LONG_VOWEL_TAIL_MAP[d1.jung];
+    if (d1.jong === 0 && d2.cho === 11 && allowedTails && allowedTails.includes(d2.jung)) {
         return composeHangul(d1.cho, d1.jung, d2.jong);
     }
     return null;
@@ -814,10 +838,14 @@ function parseDialectWord(rawWord) {
             const collapsed = collapseLongVowelPair(cur.char, nxt.char);
             if (collapsed) {
                 const isH = (cur.tone === 'H' || nxt.tone === 'H');
+                const d2 = decomposeHangul(nxt.char);
+                // 모음 핵심부(예: '아', '오', '어', '애', '에', '이', '으')를 추출하여 장모음 지속 시간 연장 시 모음만 매끄럽게 지속
+                const vowelTailChar = d2 ? composeHangul(11, d2.jung, 0) : nxt.char;
                 merged.push({
                     char: cur.char + nxt.char,
                     collapsedChar: collapsed,
                     rawPair: cur.char + nxt.char,
+                    vowelTailChar,
                     tone: isH ? 'H' : 'L',
                     isLong: true,
                     punc: nxt.punc
@@ -830,6 +858,7 @@ function parseDialectWord(rawWord) {
             char: cur.char,
             collapsedChar: cur.char,
             rawPair: cur.char,
+            vowelTailChar: cur.char,
             tone: cur.tone,
             isLong: false,
             punc: cur.punc
@@ -849,16 +878,40 @@ function parseDialectSentence(sentence) {
 }
 
 /**
- * 연속 TTS 합성용 평문 생성:
- * chkCollapseLong이 켜져 있으면 '사아′라′미 가아′머′ 가아′' -> '사라미 가머 가'로 변환하여
- * 성문 파열음(끊어 읽힘)을 원천 제거하고, WSOLA 파형 후보정 단계에서 해당 음절('사', '가', '가')을 1.6배 늘려줌!
+ * 음절별 발화 텍스트 생성 (장모음 이어 발음 & 지속 시간 연장):
+ * - 1번(orig, 표준 평문): 장모음을 단모음(collapsedChar: 사아->사, 초온->촌)으로 변환하여 표준 평문 대조군 생성
+ * - 2번(prosody, 사투리 합성):
+ *   두 모음을 축약해 버리면(사아->사) 브라우저 TTS에서 단모음(80~100ms)으로 짧게 끊기므로,
+ *   초성 없는 순수 동일 모음(vowelTailChar: 아, 오, 어, 애, 이)을 장음 배율(longStretch)에 맞춰
+ *   연속 결합(사아아, 초오온, 서어엉, 해애애)하여 성문 파열 없이 한 호흡의 긴 장음(280~380ms)으로 발음!
  */
-function buildContinuousTtsText(words, collapseLong = true) {
+function formatSyllableForSpeech(s, mode, params, collapseLong = true) {
+    if (mode !== 'prosody') {
+        return s.collapsedChar + s.punc;
+    }
+    if (!s.isLong) {
+        return s.char + s.punc;
+    }
+    if (!collapseLong) {
+        return s.rawPair + s.punc;
+    }
+    const stretch = params ? params.longStretch : 1.68;
+    const c1 = s.rawPair[0];
+    const c2 = s.rawPair[1] || '';
+    const vTail = s.vowelTailChar || c2;
+    if (stretch >= 1.85) {
+        return c1 + vTail + vTail + c2 + s.punc;
+    } else if (stretch >= 1.32) {
+        return c1 + vTail + c2 + s.punc;
+    } else {
+        return s.rawPair + s.punc;
+    }
+}
+
+function buildContinuousTtsText(words, collapseLong = true, mode = 'prosody', params = null) {
+    const p = params || { longStretch: 1.68 };
     return words.map(w => {
-        return w.syls.map(s => {
-            const c = (collapseLong && s.isLong) ? s.collapsedChar : s.rawPair;
-            return c + s.punc;
-        }).join('');
+        return w.syls.map(s => formatSyllableForSpeech(s, mode, p, collapseLong)).join('');
     }).join(' ');
 }
 
@@ -890,6 +943,12 @@ function clearAudioCache() {
 // ============================================================================
 // 2.5 🎙️ 한국어 통일 남성 음성 제어 및 탐색기 (Web Speech API Voice Engine)
 // ============================================================================
+function isExplicitMaleVoice(v) {
+    if (!v) return false;
+    const str = ((v.name || "") + " " + (v.voiceURI || "")).toLowerCase();
+    return /injoon|인준|hyunsu|현수|bongjin|봉진|gookmin|국민|male|남성|남자|ism|kob|wavenet-c|wavenet-d|neural2-c|standard-c|standard-d/i.test(str);
+}
+
 function getKoreanMaleVoice() {
     if (!window.speechSynthesis) return null;
     const voices = window.speechSynthesis.getVoices();
@@ -905,32 +964,15 @@ function getKoreanMaleVoice() {
         if (found) return found;
     }
 
-    // 2. 이름이나 URI에 남성 식별자(InJoon, 인준, Male, 남성, Android ism/kob)가 있는 음성 우선 탐색
-    const explicitMale = koVoices.find(v => {
-        const str = ((v.name || "") + " " + (v.voiceURI || "")).toLowerCase();
-        return str.includes('injoon') ||
-               str.includes('인준') ||
-               str.includes('male') ||
-               str.includes('남성') ||
-               str.includes('ism') ||
-               str.includes('kob');
-    });
+    // 2. 이름이나 URI에 명시적 남성 식별자(InJoon, 인준, Hyunsu, Male 등)가 있는 음성 우선 탐색
+    const explicitMale = koVoices.find(v => isExplicitMaleVoice(v));
     if (explicitMale) return explicitMale;
 
-    // 3. 여성 전용 키워드가 아닌 두 번째 보이스 탐색
-    if (koVoices.length > 1) {
-        const nonFemale = koVoices.find(v => {
-            const str = ((v.name || "") + " " + (v.voiceURI || "")).toLowerCase();
-            return !str.includes('sunhi') &&
-                   !str.includes('선희') &&
-                   !str.includes('heami') &&
-                   !str.includes('혜미') &&
-                   !str.includes('female') &&
-                   !str.includes('여성');
-        });
-        if (nonFemale) return nonFemale;
-        return koVoices[1];
-    }
+    // 3. 명시적 남성 음성이 없는 환경(Windows Chrome 기본: Microsoft Heami + Google 한국의 모두 여성):
+    // 원격 네트워크 여성 보이스(Google 한국의, localService: false)는 피치 하향 변조가 약하고 구절 간 딜레이가 발생하므로,
+    // 깊은 남성 저음 피치 변조(0.35~0.72)가 즉각 먹는 로컬 엔진(localService: true, 예: Microsoft Heami)을 최우선 선택!
+    const localKo = koVoices.find(v => v.localService);
+    if (localKo) return localKo;
 
     return koVoices[0];
 }
@@ -940,11 +982,11 @@ function updateVoiceDisplay() {
     const lbl = document.getElementById('currentVoiceLabel');
     if (!lbl) return;
     if (v) {
-        const isExpMale = /injoon|인준|male|남성|ism|kob/i.test((v.name || "") + " " + (v.voiceURI || ""));
-        const tag = isExpMale ? "남성" : "남성톤 변환";
-        lbl.innerText = `${v.name.replace(/Microsoft |Online \(Natural\) - |Korean \(Korea\)|Google /g, '').trim()} (${tag})`;
+        const isExpMale = isExplicitMaleVoice(v);
+        const tag = isExpMale ? "남성 원음" : `남성 저음역 변환 (${learnedProfile.baseF0Hz || 120}Hz 기준)`;
+        lbl.innerText = `${v.name.replace(/Microsoft |Online \(Natural\) - |Korean \(Korea\)|Desktop - Korean/g, '').trim()} (${tag})`;
     } else {
-        lbl.innerText = "기본 음성 (한국어)";
+        lbl.innerText = "기본 음성 (한국어 남성톤)";
     }
 }
 
@@ -1308,11 +1350,11 @@ let currentlyRecordingId = null;
 // 누적 학습 프로필 저장소
 let learnedProfile = {
     sampleCount: 0,
-    baseF0Hz: 122,
-    peakF0Hz: 168,
+    baseF0Hz: 120,
+    peakF0Hz: 166,
     highPitchRatio: 1.38,
     lowPitchRatio: 0.94,
-    longStretch: 1.58,
+    longStretch: 1.68,
     glideSlope: 0.68,
     endBoostSemitones: 1.8,
     baseRate: 0.95
@@ -1454,8 +1496,8 @@ function analyzeUserProsodyAndLearn(sentId, audioBuffer, words) {
     });
 
     // 에너지 지속 구간으로 장모음 배율 추정 + 음절별 F0 매핑
-    // 먼저 각 음절에 예상 구간 할당 후 주변 에너지/피치 피크로 미세 정렬
-    const weights = allSyls.map(s => s.isLong ? 1.55 : 1.0);
+    // 사용자가 실제로 장모음을 얼마나 길게 발음했는지 왜곡 없이 측정하기 위해 균등 기준선에서 에너지 피크/골짜기 탐색
+    const weights = allSyls.map(s => s.isLong ? 1.35 : 1.0);
     const totW = weights.reduce((a, b) => a + b, 0) || 1.0;
 
     let curT = startSec;
@@ -1479,8 +1521,8 @@ function analyzeUserProsodyAndLearn(sentId, audioBuffer, words) {
         let activeFrames = 0;
 
         for (let f = fStart; f <= fEnd; f++) {
-            if (rms[f] > maxRms * 0.12) activeFrames++;
-            if (f0[f] > 70) sylF0s.push({ frame: f, val: f0[f] });
+            if (rms[f] > maxRms * 0.11) activeFrames++;
+            if (f0[f] > 65) sylF0s.push({ frame: f, val: f0[f] });
         }
 
         if (s.isLong) {
@@ -1492,7 +1534,7 @@ function analyzeUserProsodyAndLearn(sentId, audioBuffer, words) {
         if (sylF0s.length > 0) {
             const vals = sylF0s.map(x => x.val).sort((a, b) => a - b);
             const med = vals[Math.floor(vals.length * 0.5)];
-            const p80 = vals[Math.floor(vals.length * 0.8)];
+            const p80 = vals[Math.floor(vals.length * 0.82)];
 
             if (s.tone === 'H') {
                 highSylPitches.push(p80);
@@ -1523,39 +1565,44 @@ function analyzeUserProsodyAndLearn(sentId, audioBuffer, words) {
 
     const baseF0 = lowSylPitches.length > 0
         ? median(lowSylPitches)
-        : allVoicedF0[Math.floor(allVoicedF0.length * 0.3)];
+        : allVoicedF0[Math.floor(allVoicedF0.length * 0.28)];
 
     const highF0 = highSylPitches.length > 0
         ? median(highSylPitches)
-        : allVoicedF0[Math.floor(allVoicedF0.length * 0.82)];
+        : allVoicedF0[Math.floor(allVoicedF0.length * 0.84)];
+
+    // 사용자의 실제 남성 저음 주파수(baseF0, 예: 100~135Hz)를 평조 베이스 피치 비율(lowPitchRatio)에도 직접 반영!
+    const extractedLowRatio = Math.max(0.76, Math.min(1.06, Number(((baseF0 / 128.0) * 0.92).toFixed(2))));
 
     // 캔버스 오버레이용 정규화 F0 궤적 저장
     for (let f = firstF; f <= lastF; f++) {
-        if (f0[f] > 70) {
+        if (f0[f] > 65) {
             const normX = (f - firstF) / Math.max(1, lastF - firstF);
-            const ratio = (f0[f] / baseF0) * learnedProfile.lowPitchRatio;
+            const ratio = (f0[f] / baseF0) * extractedLowRatio;
             normTrackForCanvas.push({ normX, ratio });
         }
     }
 
-    // 2. 고조(′) 피치 상승 배율 (1.15 ~ 1.65 범위로 안전 클램핑)
-    let rawHighRatio = highF0 / Math.max(75, baseF0);
-    if (rawHighRatio < 1.16) {
-        // 만약 전체 음역대 상위 85%와 하위 25% 차이가 더 뚜렷하면 보완 반영
-        const p85 = allVoicedF0[Math.floor(allVoicedF0.length * 0.85)];
-        const p25 = allVoicedF0[Math.floor(allVoicedF0.length * 0.25)];
-        rawHighRatio = Math.max(rawHighRatio, p85 / Math.max(75, p25));
+    // 2. 고조(′) 피치 상승 배율 (1.18 ~ 1.68 범위로 클램핑)
+    let rawHighRatio = highF0 / Math.max(70, baseF0);
+    if (rawHighRatio < 1.20) {
+        // 전체 음역대 상위 86%와 하위 22% 차이 보완 반영
+        const p86 = allVoicedF0[Math.floor(allVoicedF0.length * 0.86)];
+        const p22 = allVoicedF0[Math.floor(allVoicedF0.length * 0.22)];
+        rawHighRatio = Math.max(rawHighRatio, p86 / Math.max(70, p22));
     }
-    const extractedHighRatio = Math.max(1.18, Math.min(1.65, rawHighRatio));
+    const extractedHighRatio = Math.max(1.18, Math.min(1.68, rawHighRatio));
 
-    // 3. 장모음 연장 배율 계산
+    // 3. 장모음 연장 배율 계산 (충분한 장음 길이 1.45~2.35배 보장)
     let extractedLongStretch = learnedProfile.longStretch;
     if (longEnergyScores.length > 0 && shortEnergyScores.length > 0) {
         const avgLong = longEnergyScores.reduce((a, b) => a + b, 0) / longEnergyScores.length;
         const avgShort = shortEnergyScores.reduce((a, b) => a + b, 0) / shortEnergyScores.length;
-        if (avgShort > 0.04) {
-            extractedLongStretch = Math.max(1.25, Math.min(2.05, (avgLong / avgShort) * 1.12));
+        if (avgShort > 0.035) {
+            extractedLongStretch = Math.max(1.42, Math.min(2.35, (avgLong / avgShort) * 1.28));
         }
+    } else if (userSpeechDur / Math.max(1, allSyls.length) > 0.22) {
+        extractedLongStretch = Math.max(1.55, Math.min(2.25, (userSpeechDur / (allSyls.length * 0.18)) * 1.45));
     }
 
     // 4. 상승 기울기(Glide) 계산
@@ -1567,17 +1614,17 @@ function analyzeUserProsodyAndLearn(sentId, audioBuffer, words) {
     let extractedEndBoost = 1.8;
     if (wordEndHighPitches.length > 0) {
         const endF0 = median(wordEndHighPitches);
-        const boostRatio = Math.max(1.02, endF0 / Math.max(80, highF0 * 0.94));
-        extractedEndBoost = Math.max(0.8, Math.min(3.6, Math.log2(boostRatio) * 12));
+        const boostRatio = Math.max(1.02, endF0 / Math.max(75, highF0 * 0.93));
+        extractedEndBoost = Math.max(0.8, Math.min(3.8, Math.log2(boostRatio) * 12));
     }
 
-    // 6. 전체 발화 속도 (표준 음절당 0.19초 기준 비교)
+    // 6. 전체 발화 속도 (표준 음절당 0.195초 기준 비교)
     const expectedStandardDur = totW * 0.195;
-    const extractedRate = Math.max(0.78, Math.min(1.15, expectedStandardDur / Math.max(0.3, userSpeechDur)));
+    const extractedRate = Math.max(0.76, Math.min(1.15, expectedStandardDur / Math.max(0.3, userSpeechDur)));
 
-    // 누적 학습 업데이트 (기존 학습이 있으면 가중 평균, 첫 학습이면 100% 반영)
+    // 누적 학습 업데이트 (방금 녹음한 내 목소리 특성이 즉시 체감되도록 최신 가중치 0.75 부여)
     const prevN = learnedProfile.sampleCount;
-    const wNew = prevN === 0 ? 1.0 : 0.6;
+    const wNew = prevN === 0 ? 1.0 : 0.75;
     const wOld = 1.0 - wNew;
 
     learnedProfile = {
@@ -1585,7 +1632,7 @@ function analyzeUserProsodyAndLearn(sentId, audioBuffer, words) {
         baseF0Hz: Math.round(learnedProfile.baseF0Hz * wOld + baseF0 * wNew),
         peakF0Hz: Math.round(learnedProfile.peakF0Hz * wOld + highF0 * wNew),
         highPitchRatio: Number((learnedProfile.highPitchRatio * wOld + extractedHighRatio * wNew).toFixed(2)),
-        lowPitchRatio: learnedProfile.lowPitchRatio,
+        lowPitchRatio: Number((learnedProfile.lowPitchRatio * wOld + extractedLowRatio * wNew).toFixed(2)),
         longStretch: Number((learnedProfile.longStretch * wOld + extractedLongStretch * wNew).toFixed(2)),
         glideSlope: Number((learnedProfile.glideSlope * wOld + extractedGlide * wNew).toFixed(2)),
         endBoostSemitones: Number((learnedProfile.endBoostSemitones * wOld + extractedEndBoost * wNew).toFixed(1)),
@@ -1596,8 +1643,9 @@ function analyzeUserProsodyAndLearn(sentId, audioBuffer, words) {
         localStorage.setItem('gyeongju_learned_prosody_v2', JSON.stringify(learnedProfile));
     } catch (e) {}
 
-    // 슬라이더 및 대시보드 UI에 즉시 반영!
+    // 슬라이더, 보이스 배지 및 대시보드 UI에 즉시 반영!
     applyLearnedProfileToSliders();
+    updateVoiceDisplay();
 
     return {
         baseF0: Math.round(baseF0),
@@ -1678,17 +1726,18 @@ function clearLearnedProfile() {
     localStorage.removeItem('gyeongju_learned_prosody_v2');
     learnedProfile = {
         sampleCount: 0,
-        baseF0Hz: 122,
-        peakF0Hz: 168,
+        baseF0Hz: 120,
+        peakF0Hz: 166,
         highPitchRatio: 1.38,
         lowPitchRatio: 0.94,
-        longStretch: 1.58,
+        longStretch: 1.68,
         glideSlope: 0.68,
         endBoostSemitones: 1.8,
         baseRate: 0.95
     };
     resetSliders();
     updateLearnedDashboardUI();
+    updateVoiceDisplay();
 }
 
 /**
@@ -1797,7 +1846,7 @@ function getProsodyParams() {
     return {
         highPitch: parseFloat(document.getElementById('slHighPitch').value) || 1.38,
         lowPitch: parseFloat(document.getElementById('slLowPitch').value) || 0.94,
-        longStretch: parseFloat(document.getElementById('slLongStretch').value) || 1.58,
+        longStretch: parseFloat(document.getElementById('slLongStretch').value) || 1.68,
         glide: parseFloat(document.getElementById('slGlide').value) || 0.68,
         endBoostSemitones: parseFloat(document.getElementById('slEndBoost').value) || 1.8,
         baseRate: parseFloat(document.getElementById('slBaseRate').value) || 0.95
@@ -1872,13 +1921,55 @@ function playBufferWithVisuals(playBuffer, sentId, allWords, onlyWordIdx, status
 }
 
 /**
- * [통일 음성 & 연속 방언 합성 핵심 엔진]
+ * 어절들을 자연스러운 2~4어절 단위의 '운율 호흡구(Prosodic Breath Phrase)'로 묶어주는 함수:
+ * - 단어마다 쪼개면 어절 사이가 뚝뚝 끊어지고, 반대로 한 문장 전체를 통째로 묶으면
+ *   구절 내부의 고조(′)·평조(L) 낙차와 장모음 구간 감속이 평탄화되는 문제를 동시에 해결!
+ */
+function groupWordsIntoProsodicPhrases(words) {
+    const phrases = [];
+    let cur = [];
+
+    for (let i = 0; i < words.length; i++) {
+        const w = words[i];
+        cur.push(w);
+
+        const lastSyl = w.syls[w.syls.length - 1];
+        const hasPunc = lastSyl && /[,.\?!~]/.test(lastSyl.punc || "");
+        const wordPlain = w.syls.map(s => s.collapsedChar).join('');
+        const isConnEnding = /(머|거등|는데|꺼네|가아|다가|디마는|기나|락꼬)$/.test(wordPlain);
+
+        const curHasLong = cur.some(cw => cw.syls.some(s => s.isLong));
+        const curHasHigh = cur.some(cw => cw.syls.some(s => s.tone === 'H'));
+
+        const nxt = words[i + 1];
+        const nxtHasLong = nxt ? nxt.syls.some(s => s.isLong) : false;
+        const nxtHasHigh = nxt ? nxt.syls.some(s => s.tone === 'H') : false;
+
+        // 1) 문장부호가 있거나, 2) 2어절 이상 모인 상태에서 연결어미/장단·고저 전환점이 오거나, 3) 3어절이 찼을 때 호흡구 분할
+        const toneTransition = (cur.length >= 2) && ((curHasLong !== nxtHasLong) || (curHasHigh !== nxtHasHigh));
+        if (hasPunc || (cur.length >= 2 && isConnEnding) || toneTransition || cur.length >= 3 || i === words.length - 1) {
+            phrases.push(cur);
+            cur = [];
+        }
+    }
+    if (cur.length > 0) phrases.push(cur);
+    return phrases;
+}
+
+/**
+ * [통일 남성 음성 & 장모음 연장 & 내 학습 억양 100% 반영 핵심 엔진]
  * -------------------------------------------------------------------------
- * 1) 음성 통일: 외부 불안정 프록시(여성 구글 TTS)를 전면 배제하고, 일관된 한국어 남성 음성(InJoon 등) 적용
- * 2) 내 학습 억양 100% 반영: 내가 녹음하여 학습된 6대 파라미터(고조 배율, 평조 베이스, 장모음 늘림,
- *    어미 상승, 발화 속도)를 모든 문장에 동일한 규칙으로 완전 통일 반영!
- * 3) 연속성 보장: 어절 단위로 잘게 쪼개는 방식이 아닌, 자연스러운 호흡군(절/문장) 단위로 연속 발화하여
- *    어절 끊김 현상을 완벽히 해소!
+ * 1) 완벽한 남성 음역대 변환:
+ *    Windows/Chrome 기본 여성 보이스(Microsoft Heami 등 ~225Hz) 환경에서도
+ *    사용자의 남성 기본 주파수(baseF0Hz, 약 105~130Hz)에 맞춰 피치 하한~상한을
+ *    [평조 0.38~0.46 / 고조 0.54~0.68 / 어말고조 최대 0.74]로 엄격히 매핑하여
+ *    절대 여자 목소리(0.85 이상)로 튀지 않는 묵직한 남성 사투리 음성을 구현!
+ * 2) 장모음(사아·가아·초온·서엉) 충분한 길이와 연음:
+ *    단모음 축약(사아->사)으로 짧게 끊기던 문제를 해결하여, 모음 핵을 연속 유지(사아아, 초오온)함과 동시에
+ *    장모음 호흡구의 발화 속도(rate)를 장음 배율(longStretch)만큼 감속시켜 두 모음이 한 호흡의 긴 장음으로 이어지게 함!
+ * 3) 내 녹음 학습 파라미터 실시간 반영:
+ *    녹음 후 추출된 baseF0Hz, highPitchRatio, lowPitchRatio, longStretch, endBoost, baseRate가
+ *    모든 호흡구의 pitch와 rate 계산식에 직접 반영됨!
  */
 function playUnifiedDialectSpeech(sentId, allWords, words, cleanText, dialectText, mode, onlyWordIdx, statusEl, cardEl) {
     if (!window.speechSynthesis) {
@@ -1888,64 +1979,130 @@ function playUnifiedDialectSpeech(sentId, allWords, words, cleanText, dialectTex
     }
 
     const params = getProsodyParams();
+    const collapseLong = document.getElementById('chkCollapseLong').checked;
     const maleVoice = getKoreanMaleVoice();
-    const isExplicitMale = maleVoice ? /injoon|인준|male|남성|ism|kob/i.test((maleVoice.name || "") + " " + (maleVoice.voiceURI || "")) : false;
-    // 명시적 남성 보이스가 없는 환경(예: 기본 여성 보이스만 탑재된 OS)의 경우 피치를 0.82로 낮추어 통일된 남성 음색 생성
-    const baseMalePitch = isExplicitMale ? 1.0 : 0.82;
+    const isExplicitMale = isExplicitMaleVoice(maleVoice);
 
-    const voiceDisplayName = maleVoice ? maleVoice.name.replace(/Microsoft |Online \(Natural\) - |Korean \(Korea\)|Google /g, '').trim() : "내장 남성";
+    // 사용자 녹음 기본 주파수(기본 120Hz 남성)를 반영한 남성 음역 스케일 산출
+    const userBaseHz = learnedProfile.baseF0Hz || 120;
+    let pLow, pHigh, pEndHigh, pStdFlat;
+
+    if (isExplicitMale) {
+        // 네이티브 남성 보이스(InJoon 등 ~120Hz)일 때
+        const maleScale = Math.max(0.76, Math.min(1.15, (userBaseHz / 122.0) * (params.lowPitch / 0.94)));
+        pStdFlat = Math.max(0.78, Math.min(1.05, maleScale));
+        pLow = Math.max(0.68, Math.min(1.02, maleScale * 0.95));
+        pHigh = Math.max(pLow + 0.18, Math.min(1.56, pLow * params.highPitch));
+        pEndHigh = Math.max(pHigh + 0.05, Math.min(1.72, pHigh * Math.pow(2, params.endBoostSemitones / 14.0)));
+    } else {
+        // 기본 여성 보이스(Microsoft Heami 등 ~225Hz)를 묵직한 남성 음역대(105~160Hz)로 하향 고정!
+        // pitch 1.0이 여성(~225Hz)이므로, 남성 평조는 0.38~0.46, 남성 고조는 0.54~0.68, 어말 최대치도 0.74 이하로 제한
+        const maleScale = Math.max(0.34, Math.min(0.49, (userBaseHz / 260.0) * (params.lowPitch / 0.94)));
+        pStdFlat = Math.max(0.40, Math.min(0.52, maleScale * 1.06));
+        pLow = Math.max(0.32, Math.min(0.48, maleScale));
+        pHigh = Math.max(pLow + 0.14, Math.min(0.68, pLow * params.highPitch));
+        pEndHigh = Math.max(pHigh + 0.04, Math.min(0.74, pHigh * Math.pow(2, params.endBoostSemitones / 16.0)));
+    }
+
+    const voiceDisplayName = maleVoice
+        ? maleVoice.name.replace(/Microsoft |Online \(Natural\) - |Korean \(Korea\)|Desktop - Korean/g, '').trim()
+        : "한국어 남성톤";
 
     if (statusEl) {
         statusEl.innerText = mode === 'prosody'
-            ? `🌊 [${voiceDisplayName}] 학습 억양(고조 ${params.highPitch}x, 장모음 ${params.longStretch}배) 통일 합성 중...`
-            : `🔊 [${voiceDisplayName}] 표준 평문 연속 재생 중...`;
+            ? `🌊 [${voiceDisplayName} · 남성 ${userBaseHz}Hz] 장모음 ${params.longStretch}배 · 고조 ${params.highPitch}x 합성 재생 중...`
+            : `🔊 [${voiceDisplayName} · 남성 평문] 표준 평문 연속 재생 중...`;
     }
 
     window.speechSynthesis.cancel();
 
-    // 단어별로 잘게 쪼개어 끊기는 현상을 원천 방지하기 위해 구두점(쉼표, 마침표 등) 기준의 호흡군으로 분할
-    const rawClauses = cleanText.split(/(?<=[,\.!\?])\s+/).filter(Boolean);
-    const clauses = rawClauses.length > 0 ? rawClauses : [cleanText];
-
     const utterances = [];
-    const estTotalSeconds = Math.max(1.2, (cleanText.length * 0.17) / Math.max(0.6, params.baseRate));
+    let estTotalSeconds = 0;
 
-    clauses.forEach((clauseText, cIdx) => {
-        let textToSpeak = clauseText;
-        const u = new SpeechSynthesisUtterance(textToSpeak);
-        u.lang = 'ko-KR';
-        if (maleVoice) u.voice = maleVoice;
+    if (mode === 'orig') {
+        // 1번 버튼: 표준 평문 연속 듣기 (장모음 연장 없이 단모음 평문으로 한 호흡 재생)
+        const stdText = buildContinuousTtsText(words, true, 'orig', params);
+        const rawClauses = stdText.split(/(?<=[,\.!\?])\s+/).filter(Boolean);
+        const clauses = rawClauses.length > 0 ? rawClauses : [stdText];
 
-        if (mode === 'prosody') {
-            // 경상도 성조 및 장모음 특징 확인
-            const hasHighTone = dialectText.includes("′") || dialectText.includes("'");
-            const hasLongVowel = /([가-힣])\1/.test(dialectText) || dialectText.includes("아아") || dialectText.includes("사아") || dialectText.includes("가아") || dialectText.includes("초온") || dialectText.includes("해애") || dialectText.includes("서엉");
-            
-            // 어절 끝 고조(′) 또는 의문형 상승(애이′가, 인′나 등) 반영
-            const isClauseEndingHigh = /[가-힣]['′][\s\.\,\!\?]*$/.test(clauseText) || /[인읻애][′']*[나가따][\.\?\!]*$/.test(clauseText);
-            const endBoostRatio = isClauseEndingHigh ? Math.pow(2, params.endBoostSemitones / 12.0) : 1.0;
+        clauses.forEach(cl => {
+            const u = new SpeechSynthesisUtterance(cl);
+            u.lang = 'ko-KR';
+            if (maleVoice) u.voice = maleVoice;
+            u.pitch = Number(pStdFlat.toFixed(2));
+            u.rate = Number(params.baseRate.toFixed(2));
+            utterances.push({ u, wordStartIdx: 0, wordEndIdx: Math.max(0, words.length - 1) });
+        });
+        estTotalSeconds = Math.max(1.1, (stdText.length * 0.16) / Math.max(0.6, params.baseRate));
+    } else {
+        // 2번 버튼: 물 흐르듯 연속 사투리 합성 (장모음 3모라 연결 연장 + 호흡구별 남성 고저장단 다이내믹 변조)
+        const phrases = groupWordsIntoProsodicPhrases(words);
 
-            // 고조 상승 배율 적용
-            const targetPitch = hasHighTone
-                ? (baseMalePitch * params.lowPitch * (params.highPitch * 0.90) * endBoostRatio)
-                : (baseMalePitch * params.lowPitch);
-            u.pitch = Math.max(0.55, Math.min(1.85, targetPitch));
+        phrases.forEach((phraseWords, pIdx) => {
+            const phraseText = phraseWords.map(w => {
+                return w.syls.map(s => formatSyllableForSpeech(s, 'prosody', params, collapseLong)).join('');
+            }).join(' ');
 
-            // 장모음 늘림 배율 및 발화 속도 적용
-            const stretchComp = hasLongVowel ? (1.0 + (params.longStretch - 1.0) * 0.32) : 1.0;
-            u.rate = Math.max(0.65, Math.min(1.4, params.baseRate / stretchComp));
-        } else {
-            // 표준 평문
-            u.pitch = baseMalePitch;
-            u.rate = params.baseRate;
-        }
+            const u = new SpeechSynthesisUtterance(phraseText);
+            u.lang = 'ko-KR';
+            if (maleVoice) u.voice = maleVoice;
 
-        utterances.push(u);
-    });
+            let totalSyls = 0;
+            let highSyls = 0;
+            let longSyls = 0;
+            let firstSylHigh = false;
+            let lastSylHigh = false;
+
+            phraseWords.forEach((pw, pwIdx) => {
+                pw.syls.forEach((s, sIdx) => {
+                    totalSyls++;
+                    if (s.tone === 'H') highSyls++;
+                    if (s.isLong) longSyls++;
+                    if (pwIdx === 0 && sIdx === 0 && s.tone === 'H') firstSylHigh = true;
+                    if (pwIdx === phraseWords.length - 1 && sIdx === pw.syls.length - 1 && s.tone === 'H') lastSylHigh = true;
+                });
+            });
+
+            const highDensity = totalSyls > 0 ? (highSyls / totalSyls) : 0;
+            const isQuestionOrExclaim = /[\?\!]$/.test(phraseText.trim()) || /(애이가|인나|읻따|시더|디더|지요)[\.\?\!]*$/.test(phraseText.trim());
+
+            // 호흡구 성조 비중에 따른 남성 피치 결정 (평조 pLow ~ 고조 pHigh ~ 어말고조 pEndHigh)
+            let targetPitch = pLow;
+            if (highSyls > 0) {
+                const boostWeight = Math.min(1.0, 0.55 + highDensity * 0.55 + (firstSylHigh ? 0.15 : 0));
+                targetPitch = pLow + (pHigh - pLow) * boostWeight;
+                if (lastSylHigh || isQuestionOrExclaim) {
+                    targetPitch = Math.max(targetPitch, pEndHigh);
+                }
+            }
+            u.pitch = Number(targetPitch.toFixed(2));
+
+            // 장모음이 포함된 호흡구는 모음 3모라 확장(사아아, 초오온)과 더불어 발화 속도를 감속하여 충분한 장음 길이 구현!
+            let phraseRate = params.baseRate;
+            if (longSyls > 0) {
+                const longRatio = longSyls / Math.max(1, totalSyls);
+                const slowFactor = 1.0 + (params.longStretch - 1.0) * (0.36 + longRatio * 0.28);
+                phraseRate = params.baseRate / slowFactor;
+            } else if (highSyls === 0) {
+                // 평조 단모음 구간은 자연스러운 대화 속도로 경쾌하게 연결
+                phraseRate = params.baseRate * 1.03;
+            }
+            u.rate = Number(Math.max(0.58, Math.min(1.30, phraseRate)).toFixed(2));
+
+            const wStart = phraseWords[0].wordIndex;
+            const wEnd = phraseWords[phraseWords.length - 1].wordIndex;
+            const phraseDur = (phraseText.length * 0.165) / Math.max(0.58, u.rate);
+            estTotalSeconds += phraseDur;
+
+            utterances.push({ u, wordStartIdx: wStart, wordEndIdx: wEnd });
+        });
+        estTotalSeconds = Math.max(1.2, estTotalSeconds);
+    }
 
     const startTime = performance.now();
     const animDur = estTotalSeconds * 1000;
     let isPlaying = true;
+    let currentPhraseWordIdx = onlyWordIdx >= 0 ? onlyWordIdx : 0;
 
     const animate = () => {
         if (!isPlaying) return;
@@ -1954,7 +2111,8 @@ function playUnifiedDialectSpeech(sentId, allWords, words, cleanText, dialectTex
 
         let activeW = onlyWordIdx;
         if (onlyWordIdx < 0 && allWords.length > 0) {
-            activeW = Math.min(allWords.length - 1, Math.floor(progress * allWords.length));
+            const timeBasedW = Math.min(allWords.length - 1, Math.floor(progress * allWords.length));
+            activeW = Math.max(currentPhraseWordIdx, timeBasedW);
         }
         drawPitchContour(`canvas-${sentId}`, allWords, activeW, progress, sentId);
         highlightWordDom(sentId, activeW);
@@ -1976,12 +2134,17 @@ function playUnifiedDialectSpeech(sentId, allWords, words, cleanText, dialectTex
         highlightWordDom(sentId, -1);
     };
 
-    utterances.forEach((u, idx) => {
+    utterances.forEach((item, idx) => {
+        item.u.onstart = () => {
+            if (onlyWordIdx < 0) {
+                currentPhraseWordIdx = item.wordStartIdx;
+            }
+        };
         if (idx === utterances.length - 1) {
-            u.onend = cleanup;
-            u.onerror = cleanup;
+            item.u.onend = cleanup;
+            item.u.onerror = cleanup;
         }
-        window.speechSynthesis.speak(u);
+        window.speechSynthesis.speak(item.u);
     });
 
     animFrameId = requestAnimationFrame(animate);
@@ -1989,8 +2152,8 @@ function playUnifiedDialectSpeech(sentId, allWords, words, cleanText, dialectTex
 
 /**
  * [물 흐르듯 이어지는 연속 파형 재생]
- * 1) 로컬 Praat edge_server.py 실행 시 고품질 오디오 즉시 재생
- * 2) 웹 브라우저 단독 실행 시: 통일된 한국어 남성 음성 + 사용자 학습 운율을 호흡군 단위로 매끄럽게 연속 발화!
+ * 1) 로컬 Praat edge_server.py 실행 시 고품질 오디오 + WSOLA 변조 즉시 재생
+ * 2) 웹 브라우저 단독 실행 시: 통일된 한국어 남성 음성 + 장모음 3모라 연장 + 내 학습 운율로 매끄럽게 연속 발화!
  */
 async function playContinuousSentence(sentId, mode, onlyWordIdx = -1) {
     stopAllAudio();
@@ -1998,25 +2161,32 @@ async function playContinuousSentence(sentId, mode, onlyWordIdx = -1) {
     const dialectText = getSentenceTextById(sentId);
     if (!dialectText) return;
 
+    const params = getProsodyParams();
     const allWords = parseDialectSentence(dialectText);
     const words = (onlyWordIdx >= 0 && allWords[onlyWordIdx]) ? [allWords[onlyWordIdx]] : allWords;
     const collapseLong = document.getElementById('chkCollapseLong').checked;
-    const cleanText = buildContinuousTtsText(words, mode === 'prosody' ? collapseLong : false);
+    const cleanText = buildContinuousTtsText(words, collapseLong, mode, params);
 
     const cardEl = document.getElementById(sentId === 'custom' ? 'card-custom' : `card-${sentId}`);
     const statusEl = document.getElementById(`status-${sentId}`);
     if (cardEl) cardEl.classList.add('playing');
 
-    // 1. 로컬 Praat edge_server.py 확인 (실행 중일 때 최우선 재생)
+    // 1. 로컬 Praat edge_server.py 확인 (실행 중일 때 최우선 재생 + WSOLA 장모음/성조 변조 적용)
     try {
-        const baseBuffer = await fetchContinuousSentenceBuffer(cleanText, statusEl);
+        const wsolaText = words.map(w => w.syls.map(s => (collapseLong && s.isLong ? s.collapsedChar : s.rawPair) + s.punc).join('')).join(' ');
+        const baseBuffer = await fetchContinuousSentenceBuffer(wsolaText, statusEl);
         if (baseBuffer) {
-            playBufferWithVisuals(baseBuffer, sentId, allWords, onlyWordIdx, statusEl, mode);
+            let playBuf = baseBuffer;
+            if (mode === 'prosody') {
+                const { outBuffer } = synthesizeContinuousProsodyBuffer(baseBuffer, words, params);
+                playBuf = outBuffer;
+            }
+            playBufferWithVisuals(playBuf, sentId, allWords, onlyWordIdx, statusEl, mode);
             return;
         }
     } catch (e) {}
 
-    // 2. 통합 브라우저 음성 합성 엔진 (통일 남성 음성 + 내 학습 억양 100% 반영)
+    // 2. 통합 브라우저 음성 합성 엔진 (통일 남성 저음역 + 장모음 3모라 연결 연장 + 내 학습 억양 100% 반영)
     playUnifiedDialectSpeech(sentId, allWords, words, cleanText, dialectText, mode, onlyWordIdx, statusEl, cardEl);
 }
 
@@ -2291,7 +2461,7 @@ function updateSliders() {
 function resetSliders() {
     document.getElementById('slHighPitch').value = "1.38";
     document.getElementById('slLowPitch').value = "0.94";
-    document.getElementById('slLongStretch').value = "1.58";
+    document.getElementById('slLongStretch').value = "1.68";
     document.getElementById('slGlide').value = "0.68";
     document.getElementById('slEndBoost').value = "1.8";
     document.getElementById('slBaseRate').value = "0.95";

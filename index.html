@@ -686,14 +686,17 @@
             </div>
             <div class="rec-container" id="recommendList"></div>
         </div>
-        <!-- 발음 듣기 기능 안내 버튼 및 팝업 (첫 페이지 하단) -->
-        <div id="guideSection" class="guide-btn-wrap">
+        <!-- 발음 듣기 기능 안내 버튼 및 억양 학습 실험실 바로가기 (첫 페이지 하단) -->
+        <div id="guideSection" class="guide-btn-wrap" style="gap: 10px; flex-wrap: wrap;">
             <button type="button" class="guide-btn" onclick="togglePronGuideModal()">
                 <svg viewBox="0 0 24 24" style="width:16px; height:16px; fill:currentColor;">
                     <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
                 </svg>
                 발음 듣기 기능 안내
             </button>
+            <a href="demo_prosody.html" class="guide-btn" style="text-decoration:none; background:#e3f2fd; color:#0d47a1; border-color:#90caf9;">
+                🌊 억양 학습 실험실 (내 목소리 보정)
+            </a>
         </div>
 
         <!-- 발음 듣기 안내 모달 팝업 -->
@@ -748,7 +751,7 @@
         });
         /* --- [1. 변수 및 환경 설정] --- */
         let dictData = [], currentItem = null, searchTimer, currentPage = 1, filteredData = [];
-        const itemsPerPage = 50, DB_NAME = "GyeongjuDictDB", STORE_NAME = "dictionary", DATA_VERSION = "20261018_v81";
+        const itemsPerPage = 50, DB_NAME = "GyeongjuDictDB", STORE_NAME = "dictionary", DATA_VERSION = "20261018_v8";
         const posMap = { '󰃃': '명사', '󰂿': '동사', '󰃰': '형용사', '󰂽': '대명사', '󰃌': '부사', '󰃲': '활용어미', '󰃥': '접사', '󰃆': '어미', '󰂴': '관형사', '󰂳': '감탄사', '󰃓': '수사', '󰃫': '참고', '󰃩': '준말' };
         const consonants = ['ㄱ', 'ㄲ', 'ㄴ', 'ㄷ', 'ㄸ', 'ㄹ', 'ㅁ', 'ㅂ', 'ㅃ', 'ㅅ', 'ㅆ', 'ㅇ', 'ㅈ', 'ㅉ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ'];
         const CHOSUNG = ['ㄱ', 'ㄲ', 'ㄴ', 'ㄷ', 'ㄸ', 'ㄹ', 'ㅁ', 'ㅂ', 'ㅃ', 'ㅅ', 'ㅆ', 'ㅇ', 'ㅈ', 'ㅉ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ'];
@@ -1376,10 +1379,38 @@
         }
 
         // ========================================================
-        // [2번 TTS 시험용]: 마지막 음절 강세(' 또는 ′)를 '?'로 치환 + 남성 음성 발화
+        // [2번 TTS 핵심 엔진]: 통일 남성 저음역 + 장모음 3모라 연결 연장 + 내 학습 억양(localStorage) 100% 연동
         // ========================================================
 
-        // 1. 한국어 남성 음성 탐색 헬퍼 (Edge InJoon, Android Google 한국어 남성 등)
+        function getLearnedProsodyProfile() {
+            const def = {
+                sampleCount: 0,
+                baseF0Hz: 120,
+                peakF0Hz: 166,
+                highPitchRatio: 1.38,
+                lowPitchRatio: 0.94,
+                longStretch: 1.68,
+                glideSlope: 0.68,
+                endBoostSemitones: 1.8,
+                baseRate: 0.95
+            };
+            try {
+                const saved = localStorage.getItem('gyeongju_learned_prosody_v2');
+                if (saved) {
+                    const parsed = JSON.parse(saved);
+                    if (parsed) return { ...def, ...parsed };
+                }
+            } catch (e) {}
+            return def;
+        }
+
+        function isExplicitMaleVoice(v) {
+            if (!v) return false;
+            const str = ((v.name || "") + " " + (v.voiceURI || "")).toLowerCase();
+            return /injoon|인준|hyunsu|현수|bongjin|봉진|gookmin|국민|male|남성|남자|ism|kob|wavenet-c|wavenet-d|neural2-c|standard-c|standard-d/i.test(str);
+        }
+
+        // 1. 한국어 남성 음성 탐색 헬퍼 (로컬 피치 변조가 잘 먹는 음성 우선 선택)
         function getKoreanMaleVoice() {
             if (!window.speechSynthesis) return null;
             const voices = window.speechSynthesis.getVoices();
@@ -1395,32 +1426,14 @@
                 if (found) return found;
             }
 
-            // 1. 이름이나 URI에 남성 식별자(InJoon, 인준, Male, 남성, Android ism/kob)가 있는 음성 우선 탐색
-            const explicitMale = koVoices.find(v => {
-                const str = ((v.name || "") + " " + (v.voiceURI || "")).toLowerCase();
-                return str.includes('injoon') ||
-                       str.includes('인준') ||
-                       str.includes('male') ||
-                       str.includes('남성') ||
-                       str.includes('ism') ||
-                       str.includes('kob');
-            });
+            // 1. 이름이나 URI에 명시적 남성 식별자(InJoon, 인준, Hyunsu, Male 등)가 있는 음성 우선 탐색
+            const explicitMale = koVoices.find(v => isExplicitMaleVoice(v));
             if (explicitMale) return explicitMale;
 
-            // 2. 여성 전용 키워드가 아닌 두 번째 보이스 탐색
-            if (koVoices.length > 1) {
-                const nonFemale = koVoices.find(v => {
-                    const str = ((v.name || "") + " " + (v.voiceURI || "")).toLowerCase();
-                    return !str.includes('sunhi') &&
-                           !str.includes('선희') &&
-                           !str.includes('heami') &&
-                           !str.includes('혜미') &&
-                           !str.includes('female') &&
-                           !str.includes('여성');
-                });
-                if (nonFemale) return nonFemale;
-                return koVoices[1];
-            }
+            // 2. 명시적 남성 보이스가 없을 때(Windows Chrome 기본 등):
+            // 원격 여성 보이스(Google 한국의, localService: false) 대신 깊은 남성 피치 하향(0.35~0.72)이 즉시 적용되는 로컬 보이스(localService: true) 우선 선택!
+            const localKo = koVoices.find(v => v.localService);
+            if (localKo) return localKo;
 
             return koVoices[0];
         }
@@ -1433,8 +1446,9 @@
                 alert("브라우저에서 사용 가능한 한국어 음성을 찾을 수 없습니다.");
                 return;
             }
-            const voiceListStr = voices.map((v, i) => `${i + 1}. ${v.name} (${v.lang})`).join('\n');
-            const choice = prompt(`2번 TTS에서 사용할 남성 음성 번호를 선택하세요:\n\n${voiceListStr}\n\n(비워두면 자동 남성 음성 탐색)`);
+            const current = getKoreanMaleVoice();
+            const voiceListStr = voices.map((v, i) => `${i + 1}. ${v.name} ${v === current ? "★[현재 선택]" : ""}`).join('\n');
+            const choice = prompt(`2번 TTS에서 사용할 한국어 음성 번호를 선택하세요:\n\n${voiceListStr}\n\n(비워두면 자동 남성 음성 탐색)`);
             if (choice !== null) {
                 if (choice.trim() === "") {
                     localStorage.removeItem('web_tts_male_voice_uri');
@@ -1449,9 +1463,151 @@
             }
         }
 
-        // 2. 강세 기호를 '?'로 치환하는 헬퍼
-        function convertEndingStressToQuestion(rawText) {
-            if (!rawText) return "";
+        // 한글 자모 분해 및 장모음(사아·가아·초온·서엉·해애) 3모라 연결 연장 파서
+        const DIALECT_TONE_CHARS = new Set(["'", "′", "″", "ː", "ˈ", "ˌ", "^"]);
+
+        function decomposeHangulSyl(ch) {
+            const code = ch.charCodeAt(0);
+            if (code < 0xAC00 || code > 0xD7A3) return null;
+            const offset = code - 0xAC00;
+            return {
+                cho: Math.floor(offset / (21 * 28)),
+                jung: Math.floor((offset % (21 * 28)) / 28),
+                jong: offset % 28
+            };
+        }
+
+        function composeHangulSyl(cho, jung, jong) {
+            return String.fromCharCode(0xAC00 + (cho * 21 + jung) * 28 + jong);
+        }
+
+        const DIALECT_LONG_VOWEL_TAIL_MAP = {
+            0: [0], 1: [1, 5], 2: [0, 2], 3: [1, 3, 5], 4: [4], 5: [5, 1],
+            6: [4, 6], 7: [5, 1, 7], 8: [8], 9: [0, 9], 10: [1, 5, 10],
+            11: [5, 1, 11], 12: [8, 12], 13: [13], 14: [4, 14], 15: [5, 1, 15],
+            16: [20, 16], 17: [13, 17], 18: [18], 19: [20, 19], 20: [20]
+        };
+
+        function collapseDialectLongPair(ch1, ch2) {
+            const d1 = decomposeHangulSyl(ch1);
+            const d2 = decomposeHangulSyl(ch2);
+            if (!d1 || !d2) return null;
+            const allowed = DIALECT_LONG_VOWEL_TAIL_MAP[d1.jung];
+            if (d1.jong === 0 && d2.cho === 11 && allowed && allowed.includes(d2.jung)) {
+                return composeHangulSyl(d1.cho, d1.jung, d2.jong);
+            }
+            return null;
+        }
+
+        function parseDialectWordForSpeech(rawWord) {
+            const chars = Array.from(rawWord.trim());
+            const n = chars.length;
+            const rawSyls = [];
+            let i = 0;
+            while (i < n) {
+                const ch = chars[i];
+                if (ch >= '가' && ch <= '힣') {
+                    let j = i + 1;
+                    let hasTone = false;
+                    while (j < n && DIALECT_TONE_CHARS.has(chars[j])) {
+                        hasTone = true;
+                        j++;
+                    }
+                    let punc = "";
+                    while (j < n && !(chars[j] >= '가' && chars[j] <= '힣') && !DIALECT_TONE_CHARS.has(chars[j])) {
+                        punc += chars[j];
+                        j++;
+                    }
+                    rawSyls.push({ char: ch, tone: hasTone ? 'H' : 'L', punc });
+                    i = j;
+                } else {
+                    i++;
+                }
+            }
+
+            const merged = [];
+            let skip = false;
+            for (let k = 0; k < rawSyls.length; k++) {
+                if (skip) { skip = false; continue; }
+                const cur = rawSyls[k];
+                if (k + 1 < rawSyls.length && !cur.punc) {
+                    const nxt = rawSyls[k + 1];
+                    const collapsed = collapseDialectLongPair(cur.char, nxt.char);
+                    if (collapsed) {
+                        const isH = (cur.tone === 'H' || nxt.tone === 'H');
+                        const d2 = decomposeHangulSyl(nxt.char);
+                        const vowelTailChar = d2 ? composeHangulSyl(11, d2.jung, 0) : nxt.char;
+                        merged.push({
+                            char: cur.char + nxt.char,
+                            collapsedChar: collapsed,
+                            rawPair: cur.char + nxt.char,
+                            vowelTailChar,
+                            tone: isH ? 'H' : 'L',
+                            isLong: true,
+                            punc: nxt.punc
+                        });
+                        skip = true;
+                        continue;
+                    }
+                }
+                merged.push({
+                    char: cur.char,
+                    collapsedChar: cur.char,
+                    rawPair: cur.char,
+                    vowelTailChar: cur.char,
+                    tone: cur.tone,
+                    isLong: false,
+                    punc: cur.punc
+                });
+            }
+            return merged;
+        }
+
+        function formatSylForDialectSpeech(s, longStretch) {
+            if (!s.isLong) return s.char + s.punc;
+            const c1 = s.rawPair[0];
+            const c2 = s.rawPair[1] || '';
+            const vTail = s.vowelTailChar || c2;
+            if (longStretch >= 1.85) {
+                return c1 + vTail + vTail + c2 + s.punc;
+            } else if (longStretch >= 1.32) {
+                return c1 + vTail + c2 + s.punc;
+            }
+            return s.rawPair + s.punc;
+        }
+
+        function groupDialectWordsForSpeech(words) {
+            const phrases = [];
+            let cur = [];
+            for (let i = 0; i < words.length; i++) {
+                const w = words[i];
+                cur.push(w);
+                const lastSyl = w.syls[w.syls.length - 1];
+                const hasPunc = lastSyl && /[,.\?!~]/.test(lastSyl.punc || "");
+                const wordPlain = w.syls.map(s => s.collapsedChar).join('');
+                const isConnEnding = /(머|거등|는데|꺼네|가아|다가|디마는|기나|락꼬)$/.test(wordPlain);
+
+                const curHasLong = cur.some(cw => cw.syls.some(s => s.isLong));
+                const curHasHigh = cur.some(cw => cw.syls.some(s => s.tone === 'H'));
+                const nxt = words[i + 1];
+                const nxtHasLong = nxt ? nxt.syls.some(s => s.isLong) : false;
+                const nxtHasHigh = nxt ? nxt.syls.some(s => s.tone === 'H') : false;
+
+                const toneTransition = (cur.length >= 2) && ((curHasLong !== nxtHasLong) || (curHasHigh !== nxtHasHigh));
+                if (hasPunc || (cur.length >= 2 && isConnEnding) || toneTransition || cur.length >= 3 || i === words.length - 1) {
+                    phrases.push(cur);
+                    cur = [];
+                }
+            }
+            if (cur.length > 0) phrases.push(cur);
+            return phrases;
+        }
+
+        // 3. 2번 하늘색 스피커 발화 함수 (장모음 3모라 연장 + 남성 저음역 + 내 학습 억양 100% 반영)
+        function speakDialectWebSpeechQuestion(rawText) {
+            if (!rawText || !window.speechSynthesis) return;
+            window.speechSynthesis.cancel();
+
             let text = rawText.trim();
             if (text.startsWith('[') && text.endsWith(']')) {
                 text = text.slice(1, -1).trim();
@@ -1461,43 +1617,89 @@
             text = text.replace(/<[^>]+>/g, '');
             text = text.replace(/°/g, '');
 
-            // '/'로 구분된 복수 발음 분리 처리
-            const parts = text.split('/');
-            const processedParts = parts.map(part => {
-                let p = part.trim();
-                if (!p) return "";
-                // 어절/표제어 끝 음절에 강세(' 또는 ′)가 있는 경우 이를 '?'로 치환하여 의문 억양(상승조) 유도
-                p = p.replace(/([가-힣])['′]+([\s\.\,\!\?]|$)/g, '$1?$2');
-                // 남은 강세 기호 제거 및 구두점 정리
-                p = p.replace(/['′]/g, '').replace(/\?[\.\,]/g, '?').trim();
-                return p;
-            });
-
-            return processedParts.filter(Boolean).join(', ').replace(/\s+/g, ' ').trim();
-        }
-
-        // 3. 2번 TTS 발화 함수 (물음표 종결 억양 상승 시험 + 남성 음성)
-        function speakDialectWebSpeechQuestion(rawText) {
-            if (!rawText || !window.speechSynthesis) return;
-            window.speechSynthesis.cancel();
-
-            const speechText = convertEndingStressToQuestion(rawText);
-            if (!speechText) return;
-
-            const utterance = new SpeechSynthesisUtterance(speechText);
-            utterance.lang = 'ko-KR';
-            utterance.rate = 0.92;
-
+            const learned = getLearnedProsodyProfile();
             const maleVoice = getKoreanMaleVoice();
-            if (maleVoice) {
-                utterance.voice = maleVoice;
-                const isExplicitMale = /injoon|인준|male|남성|ism|kob/i.test((maleVoice.name || "") + " " + (maleVoice.voiceURI || ""));
-                utterance.pitch = isExplicitMale ? 1.0 : 0.85; // 명시적 남성 보이스가 아니면 pitch를 낮춰 남성톤 구현
+            const isExpMale = isExplicitMaleVoice(maleVoice);
+            const userBaseHz = learned.baseF0Hz || 120;
+
+            let pLow, pHigh, pEndHigh;
+            if (isExpMale) {
+                const maleScale = Math.max(0.76, Math.min(1.15, (userBaseHz / 122.0) * (learned.lowPitchRatio / 0.94)));
+                pLow = Math.max(0.68, Math.min(1.02, maleScale * 0.95));
+                pHigh = Math.max(pLow + 0.18, Math.min(1.56, pLow * learned.highPitchRatio));
+                pEndHigh = Math.max(pHigh + 0.05, Math.min(1.72, pHigh * Math.pow(2, learned.endBoostSemitones / 14.0)));
             } else {
-                utterance.pitch = 0.85;
+                const maleScale = Math.max(0.34, Math.min(0.49, (userBaseHz / 260.0) * (learned.lowPitchRatio / 0.94)));
+                pLow = Math.max(0.32, Math.min(0.48, maleScale));
+                pHigh = Math.max(pLow + 0.14, Math.min(0.68, pLow * learned.highPitchRatio));
+                pEndHigh = Math.max(pHigh + 0.04, Math.min(0.74, pHigh * Math.pow(2, learned.endBoostSemitones / 16.0)));
             }
 
-            window.speechSynthesis.speak(utterance);
+            // '/'로 구분된 복수 발음 각각 처리
+            const parts = text.split('/').map(p => p.trim()).filter(Boolean);
+
+            parts.forEach(part => {
+                const rawWords = part.split(/\s+/).filter(Boolean);
+                const words = rawWords.map((rw, wIdx) => ({
+                    wordIndex: wIdx,
+                    raw: rw,
+                    syls: parseDialectWordForSpeech(rw)
+                })).filter(w => w.syls.length > 0);
+
+                if (words.length === 0) return;
+
+                const phrases = groupDialectWordsForSpeech(words);
+                phrases.forEach(phraseWords => {
+                    const phraseText = phraseWords.map(w => {
+                        return w.syls.map(s => formatSylForDialectSpeech(s, learned.longStretch)).join('');
+                    }).join(' ');
+
+                    const u = new SpeechSynthesisUtterance(phraseText);
+                    u.lang = 'ko-KR';
+                    if (maleVoice) u.voice = maleVoice;
+
+                    let totalSyls = 0;
+                    let highSyls = 0;
+                    let longSyls = 0;
+                    let firstSylHigh = false;
+                    let lastSylHigh = false;
+
+                    phraseWords.forEach((pw, pwIdx) => {
+                        pw.syls.forEach((s, sIdx) => {
+                            totalSyls++;
+                            if (s.tone === 'H') highSyls++;
+                            if (s.isLong) longSyls++;
+                            if (pwIdx === 0 && sIdx === 0 && s.tone === 'H') firstSylHigh = true;
+                            if (pwIdx === phraseWords.length - 1 && sIdx === pw.syls.length - 1 && s.tone === 'H') lastSylHigh = true;
+                        });
+                    });
+
+                    const highDensity = totalSyls > 0 ? (highSyls / totalSyls) : 0;
+                    const isQuestionOrExclaim = /[\?\!]$/.test(phraseText.trim()) || /(애이가|인나|읻따|시더|디더|지요)[\.\?\!]*$/.test(phraseText.trim());
+
+                    let targetPitch = pLow;
+                    if (highSyls > 0) {
+                        const boostWeight = Math.min(1.0, 0.55 + highDensity * 0.55 + (firstSylHigh ? 0.15 : 0));
+                        targetPitch = pLow + (pHigh - pLow) * boostWeight;
+                        if (lastSylHigh || isQuestionOrExclaim) {
+                            targetPitch = Math.max(targetPitch, pEndHigh);
+                        }
+                    }
+                    u.pitch = Number(targetPitch.toFixed(2));
+
+                    let phraseRate = learned.baseRate;
+                    if (longSyls > 0) {
+                        const longRatio = longSyls / Math.max(1, totalSyls);
+                        const slowFactor = 1.0 + (learned.longStretch - 1.0) * (0.36 + longRatio * 0.28);
+                        phraseRate = learned.baseRate / slowFactor;
+                    } else if (highSyls === 0) {
+                        phraseRate = learned.baseRate * 1.03;
+                    }
+                    u.rate = Number(Math.max(0.58, Math.min(1.30, phraseRate)).toFixed(2));
+
+                    window.speechSynthesis.speak(u);
+                });
+            });
         }
 
         // 표제어 전용 2번 발화
