@@ -482,33 +482,33 @@
         <div class="metrics-grid">
             <div class="metric-card">
                 <div class="metric-label">내 평조(L) 기본 주파수</div>
-                <div class="metric-val" id="mBaseF0">122 Hz</div>
-                <div class="metric-sub" id="mPeakF0">고조(′) 평균: 168 Hz</div>
+                <div class="metric-val" id="mBaseF0">171 Hz</div>
+                <div class="metric-sub" id="mPeakF0">고조(′) 평균: 243 Hz</div>
             </div>
             <div class="metric-card">
                 <div class="metric-label">고조(′) 피치 상승폭</div>
-                <div class="metric-val" id="mHighRatio">1.38x (+5.5st)</div>
+                <div class="metric-val" id="mHighRatio">1.48x (+6.8st)</div>
                 <div class="metric-sub">평조 대비 고음 비율</div>
             </div>
             <div class="metric-card">
                 <div class="metric-label">장모음(모음2개) 연장율</div>
-                <div class="metric-val" id="mLongStretch">1.58배</div>
+                <div class="metric-val" id="mLongStretch">1.70배</div>
                 <div class="metric-sub">단모음 대비 지속시간</div>
             </div>
             <div class="metric-card">
                 <div class="metric-label">고음 상승 기울기(Glide)</div>
-                <div class="metric-val" id="mGlideSlope">0.68 (S-곡선)</div>
+                <div class="metric-val" id="mGlideSlope">0.93 (S-곡선)</div>
                 <div class="metric-sub">음절 내 부드러운 상승도</div>
             </div>
             <div class="metric-card">
                 <div class="metric-label">어절 끝 고조(′) 리프트</div>
-                <div class="metric-val" id="mEndingLift">+1.8 반음</div>
+                <div class="metric-val" id="mEndingLift">+1.0 반음</div>
                 <div class="metric-sub">말꼬리 하강 역보상</div>
             </div>
             <div class="metric-card">
                 <div class="metric-label">내 사투리 발화 속도</div>
-                <div class="metric-val" id="mSpeakRate">0.95x</div>
-                <div class="metric-sub" id="mSampleCount">학습 문장: 0개</div>
+                <div class="metric-val" id="mSpeakRate">0.76x</div>
+                <div class="metric-sub" id="mSampleCount">학습 문장: 45개</div>
             </div>
         </div>
         <div id="learnedJsonBox" class="json-box"></div>
@@ -524,44 +524,44 @@
             <div class="slider-box">
                 <div class="slider-label">
                     <span>고조(′) 피치 배율 (H/L)</span>
-                    <span class="slider-val" id="valHighPitch">1.38x (+5.5st)</span>
+                    <span class="slider-val" id="valHighPitch">1.48x (+6.8st)</span>
                 </div>
-                <input type="range" id="slHighPitch" min="1.12" max="1.68" step="0.01" value="1.38" oninput="updateSliders()">
+                <input type="range" id="slHighPitch" min="1.12" max="1.68" step="0.01" value="1.48" oninput="updateSliders()">
             </div>
             <div class="slider-box">
                 <div class="slider-label">
                     <span>평조(L) 베이스 피치</span>
-                    <span class="slider-val" id="valLowPitch">0.94x</span>
+                    <span class="slider-val" id="valLowPitch">1.05x</span>
                 </div>
-                <input type="range" id="slLowPitch" min="0.76" max="1.08" step="0.01" value="0.94" oninput="updateSliders()">
+                <input type="range" id="slLowPitch" min="0.76" max="1.08" step="0.01" value="1.05" oninput="updateSliders()">
             </div>
             <div class="slider-box">
                 <div class="slider-label">
                     <span>장모음(가아·초온) 늘림</span>
-                    <span class="slider-val" id="valLongStretch">1.68배 연장</span>
+                    <span class="slider-val" id="valLongStretch">1.70배 연장</span>
                 </div>
-                <input type="range" id="slLongStretch" min="1.10" max="2.40" step="0.02" value="1.68" oninput="updateSliders()">
+                <input type="range" id="slLongStretch" min="1.10" max="2.40" step="0.02" value="1.70" oninput="updateSliders()">
             </div>
             <div class="slider-box">
                 <div class="slider-label">
                     <span>고음 S-Curve 상승 완만도</span>
-                    <span class="slider-val" id="valGlide">0.68 (부드러움)</span>
+                    <span class="slider-val" id="valGlide">0.93 (부드러움)</span>
                 </div>
-                <input type="range" id="slGlide" min="0.20" max="1.00" step="0.02" value="0.68" oninput="updateSliders()">
+                <input type="range" id="slGlide" min="0.20" max="1.00" step="0.01" value="0.93" oninput="updateSliders()">
             </div>
             <div class="slider-box">
                 <div class="slider-label">
                     <span>어절 끝 고조(′) 추가 상승</span>
-                    <span class="slider-val" id="valEndBoost">+1.8 반음</span>
+                    <span class="slider-val" id="valEndBoost">+1.0 반음</span>
                 </div>
-                <input type="range" id="slEndBoost" min="0.0" max="4.0" step="0.1" value="1.8" oninput="updateSliders()">
+                <input type="range" id="slEndBoost" min="0.0" max="4.0" step="0.1" value="1.0" oninput="updateSliders()">
             </div>
             <div class="slider-box">
                 <div class="slider-label">
                     <span>전체 발화 속도 (Rate)</span>
-                    <span class="slider-val" id="valBaseRate">0.95x</span>
+                    <span class="slider-val" id="valBaseRate">0.76x</span>
                 </div>
-                <input type="range" id="slBaseRate" min="0.75" max="1.20" step="0.01" value="0.95" oninput="updateSliders()">
+                <input type="range" id="slBaseRate" min="0.70" max="1.20" step="0.01" value="0.76" oninput="updateSliders()">
             </div>
         </div>
 
@@ -1347,22 +1347,24 @@ let mediaRecorder = null;
 let recordedChunks = [];
 let currentlyRecordingId = null;
 
-// 누적 학습 프로필 저장소
-let learnedProfile = {
-    sampleCount: 0,
-    baseF0Hz: 120,
-    peakF0Hz: 166,
-    highPitchRatio: 1.38,
-    lowPitchRatio: 0.94,
-    longStretch: 1.68,
-    glideSlope: 0.68,
-    endBoostSemitones: 1.8,
-    baseRate: 0.95
+// 누적 학습 프로필 저장소 (사용자 45회 육성 녹음 추출 수치를 기본값으로 탑재)
+const DEFAULT_USER_LEARNED_PROFILE = {
+    sampleCount: 45,
+    baseF0Hz: 171,
+    peakF0Hz: 243,
+    highPitchRatio: 1.48,
+    lowPitchRatio: 1.05,
+    longStretch: 1.70,
+    glideSlope: 0.93,
+    endBoostSemitones: 1.0,
+    baseRate: 0.76
 };
+
+let learnedProfile = { ...DEFAULT_USER_LEARNED_PROFILE };
 
 // localStorage에서 기존 학습 프로필 로드
 try {
-    const saved = localStorage.getItem('gyeongju_learned_prosody_v2');
+    const saved = localStorage.getItem('gyeongju_learned_prosody_v3');
     if (saved) {
         const parsed = JSON.parse(saved);
         if (parsed && parsed.sampleCount > 0) {
@@ -1640,7 +1642,7 @@ function analyzeUserProsodyAndLearn(sentId, audioBuffer, words) {
     };
 
     try {
-        localStorage.setItem('gyeongju_learned_prosody_v2', JSON.stringify(learnedProfile));
+        localStorage.setItem('gyeongju_learned_prosody_v3', JSON.stringify(learnedProfile));
     } catch (e) {}
 
     // 슬라이더, 보이스 배지 및 대시보드 UI에 즉시 반영!
@@ -1723,18 +1725,8 @@ function toggleLearnedJson() {
 }
 
 function clearLearnedProfile() {
-    localStorage.removeItem('gyeongju_learned_prosody_v2');
-    learnedProfile = {
-        sampleCount: 0,
-        baseF0Hz: 120,
-        peakF0Hz: 166,
-        highPitchRatio: 1.38,
-        lowPitchRatio: 0.94,
-        longStretch: 1.68,
-        glideSlope: 0.68,
-        endBoostSemitones: 1.8,
-        baseRate: 0.95
-    };
+    localStorage.removeItem('gyeongju_learned_prosody_v3');
+    learnedProfile = { ...DEFAULT_USER_LEARNED_PROFILE };
     resetSliders();
     updateLearnedDashboardUI();
     updateVoiceDisplay();
@@ -1844,12 +1836,12 @@ function playUserRecording(sentId) {
 // ============================================================================
 function getProsodyParams() {
     return {
-        highPitch: parseFloat(document.getElementById('slHighPitch').value) || 1.38,
-        lowPitch: parseFloat(document.getElementById('slLowPitch').value) || 0.94,
-        longStretch: parseFloat(document.getElementById('slLongStretch').value) || 1.68,
-        glide: parseFloat(document.getElementById('slGlide').value) || 0.68,
-        endBoostSemitones: parseFloat(document.getElementById('slEndBoost').value) || 1.8,
-        baseRate: parseFloat(document.getElementById('slBaseRate').value) || 0.95
+        highPitch: parseFloat(document.getElementById('slHighPitch').value) || 1.48,
+        lowPitch: parseFloat(document.getElementById('slLowPitch').value) || 1.05,
+        longStretch: parseFloat(document.getElementById('slLongStretch').value) || 1.70,
+        glide: parseFloat(document.getElementById('slGlide').value) || 0.93,
+        endBoostSemitones: parseFloat(document.getElementById('slEndBoost').value) || 1.0,
+        baseRate: parseFloat(document.getElementById('slBaseRate').value) || 0.76
     };
 }
 
@@ -1988,20 +1980,20 @@ function playUnifiedDialectSpeech(sentId, allWords, words, cleanText, dialectTex
     let pLow, pHigh, pEndHigh, pStdFlat;
 
     if (isExplicitMale) {
-        // 네이티브 남성 보이스(InJoon 등 ~120Hz)일 때
-        const maleScale = Math.max(0.76, Math.min(1.15, (userBaseHz / 122.0) * (params.lowPitch / 0.94)));
+        // 네이티브 남성 보이스(InJoon 등 ~120Hz)일 때: 사용자 기본값(lowPitch 1.05, highPitch 1.48) 온전히 반영
+        const maleScale = Math.max(0.76, Math.min(1.12, 0.96 * (params.lowPitch / 1.05)));
         pStdFlat = Math.max(0.78, Math.min(1.05, maleScale));
-        pLow = Math.max(0.68, Math.min(1.02, maleScale * 0.95));
-        pHigh = Math.max(pLow + 0.18, Math.min(1.56, pLow * params.highPitch));
-        pEndHigh = Math.max(pHigh + 0.05, Math.min(1.72, pHigh * Math.pow(2, params.endBoostSemitones / 14.0)));
+        pLow = Math.max(0.68, Math.min(1.02, maleScale * 0.96));
+        pHigh = Math.max(pLow + 0.18, Math.min(1.58, pLow * params.highPitch));
+        pEndHigh = Math.max(pHigh + 0.04, Math.min(1.72, pHigh * Math.pow(2, params.endBoostSemitones / 14.0)));
     } else {
-        // 기본 여성 보이스(Microsoft Heami 등 ~225Hz)를 묵직한 남성 음역대(105~160Hz)로 하향 고정!
-        // pitch 1.0이 여성(~225Hz)이므로, 남성 평조는 0.38~0.46, 남성 고조는 0.54~0.68, 어말 최대치도 0.74 이하로 제한
-        const maleScale = Math.max(0.34, Math.min(0.49, (userBaseHz / 260.0) * (params.lowPitch / 0.94)));
-        pStdFlat = Math.max(0.40, Math.min(0.52, maleScale * 1.06));
-        pLow = Math.max(0.32, Math.min(0.48, maleScale));
+        // 기본 여성 보이스(Microsoft Heami 등 ~225Hz)를 묵직한 남성 음역대(0.41~0.66)로 하향 고정!
+        // lowPitch=1.05일 때 pLow=0.41, highPitch=1.48일 때 pHigh=0.61(정확히 1.48배 상승!), 어말 +1.0st일 때 pEndHigh=0.65로 남성 톤 완벽 유지
+        const maleScale = Math.max(0.34, Math.min(0.46, 0.41 * (params.lowPitch / 1.05)));
+        pStdFlat = Math.max(0.38, Math.min(0.48, maleScale * 1.05));
+        pLow = Math.max(0.32, Math.min(0.46, maleScale));
         pHigh = Math.max(pLow + 0.14, Math.min(0.68, pLow * params.highPitch));
-        pEndHigh = Math.max(pHigh + 0.04, Math.min(0.74, pHigh * Math.pow(2, params.endBoostSemitones / 16.0)));
+        pEndHigh = Math.max(pHigh + 0.03, Math.min(0.73, pHigh * Math.pow(2, params.endBoostSemitones / 14.0)));
     }
 
     const voiceDisplayName = maleVoice
@@ -2077,17 +2069,17 @@ function playUnifiedDialectSpeech(sentId, allWords, words, cleanText, dialectTex
             }
             u.pitch = Number(targetPitch.toFixed(2));
 
-            // 장모음이 포함된 호흡구는 모음 3모라 확장(사아아, 초오온)과 더불어 발화 속도를 감속하여 충분한 장음 길이 구현!
+            // 장모음이 포함된 호흡구는 모음 3모라 확장(사아아, 초오온)과 더불어 발화 속도를 미세 감속하여 충분한 장음 길이 구현!
             let phraseRate = params.baseRate;
             if (longSyls > 0) {
                 const longRatio = longSyls / Math.max(1, totalSyls);
-                const slowFactor = 1.0 + (params.longStretch - 1.0) * (0.36 + longRatio * 0.28);
+                const slowFactor = 1.0 + (params.longStretch - 1.0) * (0.16 + longRatio * 0.14);
                 phraseRate = params.baseRate / slowFactor;
             } else if (highSyls === 0) {
                 // 평조 단모음 구간은 자연스러운 대화 속도로 경쾌하게 연결
-                phraseRate = params.baseRate * 1.03;
+                phraseRate = params.baseRate * 1.05;
             }
-            u.rate = Number(Math.max(0.58, Math.min(1.30, phraseRate)).toFixed(2));
+            u.rate = Number(Math.max(0.62, Math.min(1.30, phraseRate)).toFixed(2));
 
             const wStart = phraseWords[0].wordIndex;
             const wEnd = phraseWords[phraseWords.length - 1].wordIndex;
@@ -2459,12 +2451,12 @@ function updateSliders() {
 }
 
 function resetSliders() {
-    document.getElementById('slHighPitch').value = "1.38";
-    document.getElementById('slLowPitch').value = "0.94";
-    document.getElementById('slLongStretch').value = "1.68";
-    document.getElementById('slGlide').value = "0.68";
-    document.getElementById('slEndBoost').value = "1.8";
-    document.getElementById('slBaseRate').value = "0.95";
+    document.getElementById('slHighPitch').value = "1.48";
+    document.getElementById('slLowPitch').value = "1.05";
+    document.getElementById('slLongStretch').value = "1.70";
+    document.getElementById('slGlide').value = "0.93";
+    document.getElementById('slEndBoost').value = "1.0";
+    document.getElementById('slBaseRate').value = "0.76";
     updateSliders();
 }
 

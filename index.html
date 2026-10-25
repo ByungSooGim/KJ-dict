@@ -1384,18 +1384,18 @@
 
         function getLearnedProsodyProfile() {
             const def = {
-                sampleCount: 0,
-                baseF0Hz: 120,
-                peakF0Hz: 166,
-                highPitchRatio: 1.38,
-                lowPitchRatio: 0.94,
-                longStretch: 1.68,
-                glideSlope: 0.68,
-                endBoostSemitones: 1.8,
-                baseRate: 0.95
+                sampleCount: 45,
+                baseF0Hz: 171,
+                peakF0Hz: 243,
+                highPitchRatio: 1.48,
+                lowPitchRatio: 1.05,
+                longStretch: 1.70,
+                glideSlope: 0.93,
+                endBoostSemitones: 1.0,
+                baseRate: 0.76
             };
             try {
-                const saved = localStorage.getItem('gyeongju_learned_prosody_v2');
+                const saved = localStorage.getItem('gyeongju_learned_prosody_v3');
                 if (saved) {
                     const parsed = JSON.parse(saved);
                     if (parsed) return { ...def, ...parsed };
@@ -1624,15 +1624,15 @@
 
             let pLow, pHigh, pEndHigh;
             if (isExpMale) {
-                const maleScale = Math.max(0.76, Math.min(1.15, (userBaseHz / 122.0) * (learned.lowPitchRatio / 0.94)));
-                pLow = Math.max(0.68, Math.min(1.02, maleScale * 0.95));
-                pHigh = Math.max(pLow + 0.18, Math.min(1.56, pLow * learned.highPitchRatio));
-                pEndHigh = Math.max(pHigh + 0.05, Math.min(1.72, pHigh * Math.pow(2, learned.endBoostSemitones / 14.0)));
+                const maleScale = Math.max(0.76, Math.min(1.12, 0.96 * (learned.lowPitchRatio / 1.05)));
+                pLow = Math.max(0.68, Math.min(1.02, maleScale * 0.96));
+                pHigh = Math.max(pLow + 0.18, Math.min(1.58, pLow * learned.highPitchRatio));
+                pEndHigh = Math.max(pHigh + 0.04, Math.min(1.72, pHigh * Math.pow(2, learned.endBoostSemitones / 14.0)));
             } else {
-                const maleScale = Math.max(0.34, Math.min(0.49, (userBaseHz / 260.0) * (learned.lowPitchRatio / 0.94)));
-                pLow = Math.max(0.32, Math.min(0.48, maleScale));
+                const maleScale = Math.max(0.34, Math.min(0.46, 0.41 * (learned.lowPitchRatio / 1.05)));
+                pLow = Math.max(0.32, Math.min(0.46, maleScale));
                 pHigh = Math.max(pLow + 0.14, Math.min(0.68, pLow * learned.highPitchRatio));
-                pEndHigh = Math.max(pHigh + 0.04, Math.min(0.74, pHigh * Math.pow(2, learned.endBoostSemitones / 16.0)));
+                pEndHigh = Math.max(pHigh + 0.03, Math.min(0.73, pHigh * Math.pow(2, learned.endBoostSemitones / 14.0)));
             }
 
             // '/'로 구분된 복수 발음 각각 처리
@@ -1690,12 +1690,12 @@
                     let phraseRate = learned.baseRate;
                     if (longSyls > 0) {
                         const longRatio = longSyls / Math.max(1, totalSyls);
-                        const slowFactor = 1.0 + (learned.longStretch - 1.0) * (0.36 + longRatio * 0.28);
+                        const slowFactor = 1.0 + (learned.longStretch - 1.0) * (0.16 + longRatio * 0.14);
                         phraseRate = learned.baseRate / slowFactor;
                     } else if (highSyls === 0) {
-                        phraseRate = learned.baseRate * 1.03;
+                        phraseRate = learned.baseRate * 1.05;
                     }
-                    u.rate = Number(Math.max(0.58, Math.min(1.30, phraseRate)).toFixed(2));
+                    u.rate = Number(Math.max(0.62, Math.min(1.30, phraseRate)).toFixed(2));
 
                     window.speechSynthesis.speak(u);
                 });
