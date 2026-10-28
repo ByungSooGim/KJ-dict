@@ -478,6 +478,58 @@
             margin: 10px 0 6px;
         }
 
+        /* 발음 속도 조절 패널 스타일 */
+        .speed-control-box {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 8px 14px;
+            margin: 0 0 12px;
+            font-size: 13.5px;
+            color: #334155;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+        }
+
+        .speed-control-title {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 700;
+            white-space: nowrap;
+            color: #1e293b;
+        }
+
+        .speed-slider-wrap {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex: 1;
+            max-width: 260px;
+        }
+
+        .speed-slider {
+            width: 100%;
+            height: 6px;
+            border-radius: 4px;
+            accent-color: var(--point);
+            cursor: pointer;
+        }
+
+        .speed-val-badge {
+            font-size: 12px;
+            font-weight: 700;
+            color: #0d47a1;
+            background: #e0f2fe;
+            padding: 2px 7px;
+            border-radius: 6px;
+            min-width: 38px;
+            text-align: center;
+        }
+
         .guide-btn {
             background: #fff;
             border: 1.5px solid var(--point);
@@ -686,6 +738,23 @@
             </div>
             <div class="rec-container" id="recommendList"></div>
         </div>
+
+        <!-- 첫 페이지 발음 속도 조절 바 -->
+        <div id="speedSection" class="speed-control-box">
+            <div class="speed-control-title">
+                <svg viewBox="0 0 24 24" style="width:16px; height:16px; fill:var(--point); vertical-align:-2px;">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/>
+                </svg>
+                발음 빠르기
+            </div>
+            <div class="speed-slider-wrap">
+                <span style="font-size:11.5px; color:#64748b;">느림</span>
+                <input type="range" id="speechRateSlider" class="speed-slider" min="0.60" max="1.30" step="0.02" value="0.76" oninput="onSpeedSliderChange(this.value)">
+                <span style="font-size:11.5px; color:#64748b;">빠름</span>
+                <span id="speedValBadge" class="speed-val-badge">0.76x</span>
+            </div>
+        </div>
+
         <!-- 발음 듣기 기능 안내 버튼 및 억양 학습 실험실 바로가기 (첫 페이지 하단) -->
         <div id="guideSection" class="guide-btn-wrap" style="gap: 10px; flex-wrap: wrap;">
             <button type="button" class="guide-btn" onclick="togglePronGuideModal()">
@@ -1271,7 +1340,7 @@
             const BASE_PITCH = 1.0;
             const stressVal = parseFloat(localStorage.getItem('web_tts_stress_pitch') || "1.4");
             const STRESS_PITCH = (isNaN(stressVal) || stressVal <= 0) ? 1.4 : stressVal;
-            const BASE_RATE = 0.92;
+            const BASE_RATE = getEffectiveSpeechRate(0.92);
 
             let koVoice = null;
             try {
@@ -1364,7 +1433,7 @@
 
             const utterance = new SpeechSynthesisUtterance(speechText);
             utterance.lang = 'ko-KR';
-            utterance.rate = 0.92;
+            utterance.rate = getEffectiveSpeechRate(0.92);
             utterance.pitch = 1.0;
 
             try {
@@ -1379,10 +1448,46 @@
         }
 
         // ========================================================
+        // [발음 속도 조절 헬퍼]
+        // ========================================================
+        function getEffectiveSpeechRate(fallback = 0.76) {
+            const saved = localStorage.getItem('web_tts_user_speed');
+            if (saved) {
+                const val = parseFloat(saved);
+                if (!isNaN(val) && val >= 0.5 && val <= 1.5) return val;
+            }
+            return fallback;
+        }
+
+        function onSpeedSliderChange(val) {
+            const num = parseFloat(val);
+            if (isNaN(num)) return;
+            const badge = document.getElementById('speedValBadge');
+            if (badge) badge.innerText = `${num.toFixed(2)}x`;
+            localStorage.setItem('web_tts_user_speed', num.toFixed(2));
+
+            // 학습 프로필 저장소(gyeongju_learned_prosody_v3)의 baseRate도 동기화
+            try {
+                const profile = getLearnedProsodyProfile();
+                profile.baseRate = Number(num.toFixed(2));
+                localStorage.setItem('gyeongju_learned_prosody_v3', JSON.stringify(profile));
+            } catch (e) {}
+        }
+
+        function initSpeedSlider() {
+            const currentSpeed = getEffectiveSpeechRate(0.76);
+            const slider = document.getElementById('speechRateSlider');
+            const badge = document.getElementById('speedValBadge');
+            if (slider) slider.value = String(currentSpeed);
+            if (badge) badge.innerText = `${currentSpeed.toFixed(2)}x`;
+        }
+
+        // ========================================================
         // [2번 TTS 핵심 엔진]: 통일 남성 저음역 + 장모음 3모라 연결 연장 + 내 학습 억양(localStorage) 100% 연동
         // ========================================================
 
         function getLearnedProsodyProfile() {
+            const currentSpeed = getEffectiveSpeechRate(0.76);
             const def = {
                 sampleCount: 45,
                 baseF0Hz: 171,
@@ -1392,13 +1497,13 @@
                 longStretch: 1.70,
                 glideSlope: 0.93,
                 endBoostSemitones: 1.0,
-                baseRate: 0.76
+                baseRate: currentSpeed
             };
             try {
                 const saved = localStorage.getItem('gyeongju_learned_prosody_v3');
                 if (saved) {
                     const parsed = JSON.parse(saved);
-                    if (parsed) return { ...def, ...parsed };
+                    if (parsed) return { ...def, ...parsed, baseRate: currentSpeed };
                 }
             } catch (e) {}
             return def;
@@ -1587,14 +1692,10 @@
                 const wordPlain = w.syls.map(s => s.collapsedChar).join('');
                 const isConnEnding = /(머|거등|는데|꺼네|가아|다가|디마는|기나|락꼬)$/.test(wordPlain);
 
-                const curHasLong = cur.some(cw => cw.syls.some(s => s.isLong));
-                const curHasHigh = cur.some(cw => cw.syls.some(s => s.tone === 'H'));
-                const nxt = words[i + 1];
-                const nxtHasLong = nxt ? nxt.syls.some(s => s.isLong) : false;
-                const nxtHasHigh = nxt ? nxt.syls.some(s => s.tone === 'H') : false;
-
-                const toneTransition = (cur.length >= 2) && ((curHasLong !== nxtHasLong) || (curHasHigh !== nxtHasHigh));
-                if (hasPunc || (cur.length >= 2 && isConnEnding) || toneTransition || cur.length >= 3 || i === words.length - 1) {
+                // 1) 문장부호(쉼표/마침표 등)가 있거나
+                // 2) 4어절 이상 충분히 이어진 뒤 자연스러운 연결어미가 올 때
+                // 3) 또는 호흡이 너무 길어져 6어절에 도달했거나 문장 끝일 때만 호흡구 분할
+                if (hasPunc || (cur.length >= 4 && isConnEnding) || cur.length >= 6 || i === words.length - 1) {
                     phrases.push(cur);
                     cur = [];
                 }
@@ -1759,6 +1860,8 @@
             if (recList) recList.style.display = 'none';
             const guideModal = document.getElementById('guideModalOverlay');
             if (guideModal) guideModal.style.display = 'none';
+            const speedSec = document.getElementById('speedSection');
+            if (speedSec) speedSec.style.display = 'none';
 
             // 1. item.pos_symbol이 있을 경우, 각 글자를 순회하며 한글 품사로 변환합니다.
             const posText = posMap[item.pos_symbol] || item.pos_symbol || "", pBadge = document.getElementById('v-pos'); pBadge.innerText = posText; pBadge.style.display = posText ? 'inline-block' : 'none';
@@ -1856,6 +1959,9 @@
             // 발음 듣기 기능 안내 버튼 다시 보이기
             const guideSec = document.getElementById('guideSection');
             if (guideSec) guideSec.style.display = 'flex';
+            // 발음 빠르기 조절 바 다시 보이기
+            const speedSec = document.getElementById('speedSection');
+            if (speedSec) speedSec.style.display = 'flex';
         }
 
         /* --- 발음 듣기 기능 안내 모달 토글 함수 --- */
@@ -1904,6 +2010,7 @@
         document.getElementById('diaSearch').addEventListener('input', (e) => debounceSearch('dia', e.target.value.trim()));
         document.getElementById('stdSearch').addEventListener('input', (e) => debounceSearch('std', e.target.value.trim()));
         ['ㄱ', 'ㄴ', 'ㄷ', 'ㄹ', 'ㅁ', 'ㅂ', 'ㅅ', 'ㅇ', 'ㅈ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ'].forEach(c => { const btn = document.createElement('div'); btn.className = 'nav-btn'; btn.innerText = c; btn.onclick = () => searchByInitial(c); document.getElementById('consonantNav').appendChild(btn); });
+        initSpeedSlider(); // 발음 빠르기 슬라이더 초기화
         init(); // 앱 시작
 
         /* --- [9. 핸드폰 뒤로 가기 버튼 방어 및 종료 확인] --- */

@@ -1913,9 +1913,9 @@ function playBufferWithVisuals(playBuffer, sentId, allWords, onlyWordIdx, status
 }
 
 /**
- * 어절들을 자연스러운 2~4어절 단위의 '운율 호흡구(Prosodic Breath Phrase)'로 묶어주는 함수:
- * - 단어마다 쪼개면 어절 사이가 뚝뚝 끊어지고, 반대로 한 문장 전체를 통째로 묶으면
- *   구절 내부의 고조(′)·평조(L) 낙차와 장모음 구간 감속이 평탄화되는 문제를 동시에 해결!
+ * 어절들을 자연스러운 4~6어절 단위의 '운율 호흡구(Prosodic Breath Phrase)'로 묶어주는 함수:
+ * - 잦은 호흡 분할로 문장이 끊기던 현상을 완화하여, 문장부호(, . ? ! ~)나
+ *   자연스러운 쉼 지점 전까지는 4~6어절 이상 길게 이어서 한 호흡으로 발화!
  */
 function groupWordsIntoProsodicPhrases(words) {
     const phrases = [];
@@ -1930,16 +1930,10 @@ function groupWordsIntoProsodicPhrases(words) {
         const wordPlain = w.syls.map(s => s.collapsedChar).join('');
         const isConnEnding = /(머|거등|는데|꺼네|가아|다가|디마는|기나|락꼬)$/.test(wordPlain);
 
-        const curHasLong = cur.some(cw => cw.syls.some(s => s.isLong));
-        const curHasHigh = cur.some(cw => cw.syls.some(s => s.tone === 'H'));
-
-        const nxt = words[i + 1];
-        const nxtHasLong = nxt ? nxt.syls.some(s => s.isLong) : false;
-        const nxtHasHigh = nxt ? nxt.syls.some(s => s.tone === 'H') : false;
-
-        // 1) 문장부호가 있거나, 2) 2어절 이상 모인 상태에서 연결어미/장단·고저 전환점이 오거나, 3) 3어절이 찼을 때 호흡구 분할
-        const toneTransition = (cur.length >= 2) && ((curHasLong !== nxtHasLong) || (curHasHigh !== nxtHasHigh));
-        if (hasPunc || (cur.length >= 2 && isConnEnding) || toneTransition || cur.length >= 3 || i === words.length - 1) {
+        // 1) 문장부호(쉼표/마침표 등)가 있거나
+        // 2) 4어절 이상 충분히 이어진 뒤 자연스러운 연결어미가 올 때
+        // 3) 또는 호흡이 너무 길어져 6어절에 도달했거나 문장 끝일 때만 호흡구 분할
+        if (hasPunc || (cur.length >= 4 && isConnEnding) || cur.length >= 6 || i === words.length - 1) {
             phrases.push(cur);
             cur = [];
         }
