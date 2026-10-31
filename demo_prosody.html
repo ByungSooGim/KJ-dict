@@ -526,7 +526,7 @@
                     <span>고조(′) 피치 배율 (H/L)</span>
                     <span class="slider-val" id="valHighPitch">1.48x (+6.8st)</span>
                 </div>
-                <input type="range" id="slHighPitch" min="1.12" max="1.68" step="0.01" value="1.48" oninput="updateSliders()">
+                <input type="range" id="slHighPitch" min="1.12" max="2.20" step="0.01" value="1.48" oninput="updateSliders()">
             </div>
             <div class="slider-box">
                 <div class="slider-label">
@@ -1917,6 +1917,8 @@ function playBufferWithVisuals(playBuffer, sentId, allWords, onlyWordIdx, status
  * - 잦은 호흡 분할로 문장이 끊기던 현상을 완화하여, 문장부호(, . ? ! ~)나
  *   자연스러운 쉼 지점 전까지는 4~6어절 이상 길게 이어서 한 호흡으로 발화!
  */
+const SKY_MAX_PHRASE_WORDS = 10;
+
 function groupWordsIntoProsodicPhrases(words) {
     const phrases = [];
     let cur = [];
@@ -1927,13 +1929,9 @@ function groupWordsIntoProsodicPhrases(words) {
 
         const lastSyl = w.syls[w.syls.length - 1];
         const hasPunc = lastSyl && /[,.\?!~]/.test(lastSyl.punc || "");
-        const wordPlain = w.syls.map(s => s.collapsedChar).join('');
-        const isConnEnding = /(머|거등|는데|꺼네|가아|다가|디마는|기나|락꼬)$/.test(wordPlain);
 
-        // 1) 문장부호(쉼표/마침표 등)가 있거나
-        // 2) 4어절 이상 충분히 이어진 뒤 자연스러운 연결어미가 올 때
-        // 3) 또는 호흡이 너무 길어져 6어절에 도달했거나 문장 끝일 때만 호흡구 분할
-        if (hasPunc || (cur.length >= 4 && isConnEnding) || cur.length >= 6 || i === words.length - 1) {
+        // 문장부호(, . ? ! ~)가 있거나 최대 10어절에 도달했거나 문장 끝일 때만 호흡구 분할 (중간 쉼 제거)
+        if (hasPunc || cur.length >= SKY_MAX_PHRASE_WORDS || i === words.length - 1) {
             phrases.push(cur);
             cur = [];
         }
@@ -1945,17 +1943,13 @@ function groupWordsIntoProsodicPhrases(words) {
 /**
  * [통일 남성 음성 & 장모음 연장 & 내 학습 억양 100% 반영 핵심 엔진]
  * -------------------------------------------------------------------------
- * 1) 완벽한 남성 음역대 변환:
+ * 1) 남성 음역대 및 고저 대비 대폭 확장:
  *    Windows/Chrome 기본 여성 보이스(Microsoft Heami 등 ~225Hz) 환경에서도
- *    사용자의 남성 기본 주파수(baseF0Hz, 약 105~130Hz)에 맞춰 피치 하한~상한을
- *    [평조 0.38~0.46 / 고조 0.54~0.68 / 어말고조 최대 0.74]로 엄격히 매핑하여
- *    절대 여자 목소리(0.85 이상)로 튀지 않는 묵직한 남성 사투리 음성을 구현!
+ *    사용자의 남성 기본 주파수(baseF0Hz)에 맞춰 평조는 0.38로 낮추고, 고조는 최대 0.95까지
+ *    시원하게 올려 경상도 특유의 가파른 고저 악센트를 명확히 체감!
  * 2) 장모음(사아·가아·초온·서엉) 충분한 길이와 연음:
- *    단모음 축약(사아->사)으로 짧게 끊기던 문제를 해결하여, 모음 핵을 연속 유지(사아아, 초오온)함과 동시에
- *    장모음 호흡구의 발화 속도(rate)를 장음 배율(longStretch)만큼 감속시켜 두 모음이 한 호흡의 긴 장음으로 이어지게 함!
- * 3) 내 녹음 학습 파라미터 실시간 반영:
- *    녹음 후 추출된 baseF0Hz, highPitchRatio, lowPitchRatio, longStretch, endBoost, baseRate가
- *    모든 호흡구의 pitch와 rate 계산식에 직접 반영됨!
+ *    모음 핵 연속 연장(사아아, 초오온)과 발화 속도 감속으로 3모라 장음 완벽 구현!
+ * 3) 한 호흡구 최대 10어절까지 자연스럽게 연속 발화!
  */
 function playUnifiedDialectSpeech(sentId, allWords, words, cleanText, dialectText, mode, onlyWordIdx, statusEl, cardEl) {
     if (!window.speechSynthesis) {
@@ -1969,25 +1963,24 @@ function playUnifiedDialectSpeech(sentId, allWords, words, cleanText, dialectTex
     const maleVoice = getKoreanMaleVoice();
     const isExplicitMale = isExplicitMaleVoice(maleVoice);
 
-    // 사용자 녹음 기본 주파수(기본 120Hz 남성)를 반영한 남성 음역 스케일 산출
+    // 사용자 녹음 기본 주파수를 반영한 남성 음역 스케일 산출
     const userBaseHz = learnedProfile.baseF0Hz || 120;
     let pLow, pHigh, pEndHigh, pStdFlat;
 
     if (isExplicitMale) {
-        // 네이티브 남성 보이스(InJoon 등 ~120Hz)일 때: 사용자 기본값(lowPitch 1.05, highPitch 1.48) 온전히 반영
-        const maleScale = Math.max(0.76, Math.min(1.12, 0.96 * (params.lowPitch / 1.05)));
-        pStdFlat = Math.max(0.78, Math.min(1.05, maleScale));
-        pLow = Math.max(0.68, Math.min(1.02, maleScale * 0.96));
-        pHigh = Math.max(pLow + 0.18, Math.min(1.58, pLow * params.highPitch));
-        pEndHigh = Math.max(pHigh + 0.04, Math.min(1.72, pHigh * Math.pow(2, params.endBoostSemitones / 14.0)));
+        // 네이티브 남성 보이스(InJoon 등 ~120Hz)일 때
+        pLow = Math.max(0.70, Math.min(1.00, 0.88 * (params.lowPitch / 1.05)));
+        pStdFlat = Math.max(0.78, Math.min(1.05, pLow * 1.05));
+        const gap = pLow * (params.highPitch - 1.0);
+        pHigh = Math.min(1.85, pLow + Math.max(0.22, gap));
+        pEndHigh = Math.min(1.95, Math.max(pHigh + 0.06, pHigh * Math.pow(2, Math.max(0.5, params.endBoostSemitones) / 12.0)));
     } else {
-        // 기본 여성 보이스(Microsoft Heami 등 ~225Hz)를 묵직한 남성 음역대(0.41~0.66)로 하향 고정!
-        // lowPitch=1.05일 때 pLow=0.41, highPitch=1.48일 때 pHigh=0.61(정확히 1.48배 상승!), 어말 +1.0st일 때 pEndHigh=0.65로 남성 톤 완벽 유지
-        const maleScale = Math.max(0.34, Math.min(0.46, 0.41 * (params.lowPitch / 1.05)));
-        pStdFlat = Math.max(0.38, Math.min(0.48, maleScale * 1.05));
-        pLow = Math.max(0.32, Math.min(0.46, maleScale));
-        pHigh = Math.max(pLow + 0.14, Math.min(0.68, pLow * params.highPitch));
-        pEndHigh = Math.max(pHigh + 0.03, Math.min(0.73, pHigh * Math.pow(2, params.endBoostSemitones / 14.0)));
+        // 기본 여성 보이스(Microsoft Heami 등 ~225Hz)를 남성 음역으로 하향: 평조 0.38, 고조 최대 0.95
+        pLow = Math.max(0.32, Math.min(0.44, 0.38 * (params.lowPitch / 1.05)));
+        pStdFlat = Math.max(0.36, Math.min(0.48, pLow * 1.05));
+        const gap = pLow * (params.highPitch - 1.0);
+        pHigh = Math.min(0.95, pLow + Math.max(0.18, gap));
+        pEndHigh = Math.min(1.02, Math.max(pHigh + 0.05, pHigh * Math.pow(2, Math.max(0.5, params.endBoostSemitones) / 12.0)));
     }
 
     const voiceDisplayName = maleVoice
@@ -2120,18 +2113,20 @@ function playUnifiedDialectSpeech(sentId, allWords, words, cleanText, dialectTex
         highlightWordDom(sentId, -1);
     };
 
-    utterances.forEach((item, idx) => {
-        item.u.onstart = () => {
-            if (onlyWordIdx < 0) {
-                currentPhraseWordIdx = item.wordStartIdx;
+    setTimeout(() => {
+        utterances.forEach((item, idx) => {
+            item.u.onstart = () => {
+                if (onlyWordIdx < 0) {
+                    currentPhraseWordIdx = item.wordStartIdx;
+                }
+            };
+            if (idx === utterances.length - 1) {
+                item.u.onend = cleanup;
+                item.u.onerror = cleanup;
             }
-        };
-        if (idx === utterances.length - 1) {
-            item.u.onend = cleanup;
-            item.u.onerror = cleanup;
-        }
-        window.speechSynthesis.speak(item.u);
-    });
+            window.speechSynthesis.speak(item.u);
+        });
+    }, 50);
 
     animFrameId = requestAnimationFrame(animate);
 }

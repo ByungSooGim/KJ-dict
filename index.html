@@ -481,9 +481,9 @@
         /* 발음 속도 조절 패널 스타일 */
         .speed-control-box {
             display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 12px;
+            flex-direction: column;
+            align-items: stretch;
+            gap: 8px;
             background: #f8fafc;
             border: 1px solid #e2e8f0;
             border-radius: 12px;
@@ -492,6 +492,13 @@
             font-size: 13.5px;
             color: #334155;
             box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+        }
+
+        .speed-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
         }
 
         .speed-control-title {
@@ -741,17 +748,34 @@
 
         <!-- 첫 페이지 발음 속도 조절 바 -->
         <div id="speedSection" class="speed-control-box">
-            <div class="speed-control-title">
-                <svg viewBox="0 0 24 24" style="width:16px; height:16px; fill:var(--point); vertical-align:-2px;">
-                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/>
-                </svg>
-                발음 빠르기
+            <div class="speed-row">
+                <div class="speed-control-title">
+                    <svg viewBox="0 0 24 24" style="width:16px; height:16px; fill:var(--point); vertical-align:-2px;">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/>
+                    </svg>
+                    발음 빠르기
+                </div>
+                <div class="speed-slider-wrap">
+                    <span style="font-size:11.5px; color:#64748b;">느림</span>
+                    <input type="range" id="speechRateSlider" class="speed-slider" min="0.60" max="1.30" step="0.02" value="0.76" oninput="onSpeedSliderChange(this.value)">
+                    <span style="font-size:11.5px; color:#64748b;">빠름</span>
+                    <span id="speedValBadge" class="speed-val-badge">0.76x</span>
+                </div>
             </div>
-            <div class="speed-slider-wrap">
-                <span style="font-size:11.5px; color:#64748b;">느림</span>
-                <input type="range" id="speechRateSlider" class="speed-slider" min="0.60" max="1.30" step="0.02" value="0.76" oninput="onSpeedSliderChange(this.value)">
-                <span style="font-size:11.5px; color:#64748b;">빠름</span>
-                <span id="speedValBadge" class="speed-val-badge">0.76x</span>
+            <!-- 2번(하늘색) 스피커 전용: 고조(′) 높이 조절 바 -->
+            <div class="speed-row" title="하늘색(2번) 스피커에서 고조(′) 음절이 평조보다 얼마나 더 높게 올라갈지 조절합니다">
+                <div class="speed-control-title">
+                    <svg viewBox="0 0 24 24" style="width:16px; height:16px; fill:#0284c7; vertical-align:-2px;">
+                        <path d="M4 20h4V10H4v10zm6 0h4V4h-4v16zm6 0h4v-7h-4v7z"/>
+                    </svg>
+                    고음 높이
+                </div>
+                <div class="speed-slider-wrap">
+                    <span style="font-size:11.5px; color:#64748b;">낮게</span>
+                    <input type="range" id="highBoostSlider" class="speed-slider" min="1.00" max="2.20" step="0.05" value="1.50" oninput="onHighBoostSliderChange(this.value)">
+                    <span style="font-size:11.5px; color:#64748b;">높게</span>
+                    <span id="highBoostBadge" class="speed-val-badge">1.50x</span>
+                </div>
             </div>
         </div>
 
@@ -1326,6 +1350,7 @@
         function speakDialectWebSpeech(rawText) {
             if (!rawText || !window.speechSynthesis) return;
             window.speechSynthesis.cancel(); // 이전 재생 취소 (QUEUE_FLUSH)
+            skySpeakToken++; // 대기 중인 2번(하늘색) 지연 발화 무효화
 
             let text = rawText.trim();
             if (text.startsWith('[') && text.endsWith(']')) {
@@ -1428,6 +1453,7 @@
             // 기본 1번 TTS: 예문은 마지막 글자 분리 없이 한 번에 자연스럽게 발화
             if (!window.speechSynthesis) return;
             window.speechSynthesis.cancel();
+            skySpeakToken++; // 대기 중인 2번(하늘색) 지연 발화 무효화
             const speechText = prepareDialectSpeechText(text);
             if (!speechText) return;
 
@@ -1480,6 +1506,41 @@
             const badge = document.getElementById('speedValBadge');
             if (slider) slider.value = String(currentSpeed);
             if (badge) badge.innerText = `${currentSpeed.toFixed(2)}x`;
+
+            const hb = getEffectiveHighBoost();
+            const hbSlider = document.getElementById('highBoostSlider');
+            const hbBadge = document.getElementById('highBoostBadge');
+            if (hbSlider) hbSlider.value = String(hb);
+            if (hbBadge) hbBadge.innerText = `${hb.toFixed(2)}x`;
+        }
+
+        // ========================================================
+        // [고음 높이 조절 헬퍼] - 2번(하늘색) 스피커 전용
+        // 평조(L)와 고조(′) 사이의 피치 간격을 몇 배로 벌릴지 결정 (1.00 = 학습 원본 간격)
+        // ========================================================
+        const DEFAULT_HIGH_BOOST = 1.50;
+
+        function getEffectiveHighBoost() {
+            const saved = parseFloat(localStorage.getItem('web_tts_high_boost'));
+            if (!isNaN(saved) && saved >= 1.0 && saved <= 2.2) return saved;
+            return DEFAULT_HIGH_BOOST;
+        }
+
+        function onHighBoostSliderChange(val) {
+            const num = parseFloat(val);
+            if (isNaN(num)) return;
+            const badge = document.getElementById('highBoostBadge');
+            if (badge) badge.innerText = `${num.toFixed(2)}x`;
+            localStorage.setItem('web_tts_high_boost', num.toFixed(2));
+        }
+
+        // Chrome은 첫 호출 시 getVoices()가 빈 배열을 반환하므로 미리 음성 목록을 로드해 둠
+        // (첫 클릭에서 남성 판별이 실패해 엉뚱한 피치로 읽히는 버그 방지)
+        if (window.speechSynthesis) {
+            try {
+                window.speechSynthesis.getVoices();
+                window.speechSynthesis.addEventListener('voiceschanged', () => window.speechSynthesis.getVoices());
+            } catch (e) {}
         }
 
         // ========================================================
@@ -1681,6 +1742,9 @@
             return s.rawPair + s.punc;
         }
 
+        // 2번(하늘색) 스피커 호흡구 최대 어절 수: 문장부호(, . ? ! ~)가 없으면 최대 10어절까지 한 호흡으로 이어 읽음
+        const SKY_MAX_PHRASE_WORDS = 10;
+
         function groupDialectWordsForSpeech(words) {
             const phrases = [];
             let cur = [];
@@ -1689,13 +1753,10 @@
                 cur.push(w);
                 const lastSyl = w.syls[w.syls.length - 1];
                 const hasPunc = lastSyl && /[,.\?!~]/.test(lastSyl.punc || "");
-                const wordPlain = w.syls.map(s => s.collapsedChar).join('');
-                const isConnEnding = /(머|거등|는데|꺼네|가아|다가|디마는|기나|락꼬)$/.test(wordPlain);
 
-                // 1) 문장부호(쉼표/마침표 등)가 있거나
-                // 2) 4어절 이상 충분히 이어진 뒤 자연스러운 연결어미가 올 때
-                // 3) 또는 호흡이 너무 길어져 6어절에 도달했거나 문장 끝일 때만 호흡구 분할
-                if (hasPunc || (cur.length >= 4 && isConnEnding) || cur.length >= 6 || i === words.length - 1) {
+                // 1) 실제 문장부호가 있을 때, 2) 10어절에 도달했을 때, 3) 문장 끝일 때만 호흡구 분할
+                // (연결어미·장단/고저 전환점에서는 더 이상 끊지 않음)
+                if (hasPunc || cur.length >= SKY_MAX_PHRASE_WORDS || i === words.length - 1) {
                     phrases.push(cur);
                     cur = [];
                 }
@@ -1704,10 +1765,18 @@
             return phrases;
         }
 
+        // 연속 클릭 시 이전 클릭의 지연 발화가 뒤늦게 끼어드는 버그 방지용 토큰
+        let skySpeakToken = 0;
+
         // 3. 2번 하늘색 스피커 발화 함수 (장모음 3모라 연장 + 남성 저음역 + 내 학습 억양 100% 반영)
         function speakDialectWebSpeechQuestion(rawText) {
             if (!rawText || !window.speechSynthesis) return;
             window.speechSynthesis.cancel();
+            // 1번(파란색) 버튼이 사전 생성 MP3를 재생 중이면 겹치지 않게 정지
+            if (window.currentAudio) {
+                try { window.currentAudio.pause(); } catch (e) {}
+                window.currentAudio = null;
+            }
 
             let text = rawText.trim();
             if (text.startsWith('[') && text.endsWith(']')) {
@@ -1721,23 +1790,28 @@
             const learned = getLearnedProsodyProfile();
             const maleVoice = getKoreanMaleVoice();
             const isExpMale = isExplicitMaleVoice(maleVoice);
-            const userBaseHz = learned.baseF0Hz || 120;
+            const highBoost = getEffectiveHighBoost();
+            const endLiftRatio = Math.pow(2, Math.max(0.5, learned.endBoostSemitones) / 12.0);
 
+            // 평조(L)~고조(′) 피치 간격 = 학습 간격(highPitchRatio-1) × 고음 높이 배율(highBoost)
             let pLow, pHigh, pEndHigh;
             if (isExpMale) {
-                const maleScale = Math.max(0.76, Math.min(1.12, 0.96 * (learned.lowPitchRatio / 1.05)));
-                pLow = Math.max(0.68, Math.min(1.02, maleScale * 0.96));
-                pHigh = Math.max(pLow + 0.18, Math.min(1.58, pLow * learned.highPitchRatio));
-                pEndHigh = Math.max(pHigh + 0.04, Math.min(1.72, pHigh * Math.pow(2, learned.endBoostSemitones / 14.0)));
+                // 네이티브 남성 보이스(~120Hz 기준, pitch 1.0 = 남성 원음)
+                pLow = Math.max(0.70, Math.min(1.00, 0.88 * (learned.lowPitchRatio / 1.05)));
+                const gap = pLow * (learned.highPitchRatio - 1.0) * highBoost;
+                pHigh = Math.min(1.85, pLow + Math.max(0.22, gap));
+                pEndHigh = Math.min(1.95, Math.max(pHigh + 0.06, pHigh * endLiftRatio));
             } else {
-                const maleScale = Math.max(0.34, Math.min(0.46, 0.41 * (learned.lowPitchRatio / 1.05)));
-                pLow = Math.max(0.32, Math.min(0.46, maleScale));
-                pHigh = Math.max(pLow + 0.14, Math.min(0.68, pLow * learned.highPitchRatio));
-                pEndHigh = Math.max(pHigh + 0.03, Math.min(0.73, pHigh * Math.pow(2, learned.endBoostSemitones / 14.0)));
+                // 여성 기본 보이스(Heami 등 ~225Hz)를 남성 음역으로 하향: 평조는 더 낮게(0.38), 고조는 더 높게
+                pLow = Math.max(0.32, Math.min(0.44, 0.38 * (learned.lowPitchRatio / 1.05)));
+                const gap = pLow * (learned.highPitchRatio - 1.0) * highBoost;
+                pHigh = Math.min(0.95, pLow + Math.max(0.16, gap));
+                pEndHigh = Math.min(1.02, Math.max(pHigh + 0.05, pHigh * endLiftRatio));
             }
 
             // '/'로 구분된 복수 발음 각각 처리
             const parts = text.split('/').map(p => p.trim()).filter(Boolean);
+            const queue = [];
 
             parts.forEach(part => {
                 const rawWords = part.split(/\s+/).filter(Boolean);
@@ -1753,7 +1827,8 @@
                 phrases.forEach(phraseWords => {
                     const phraseText = phraseWords.map(w => {
                         return w.syls.map(s => formatSylForDialectSpeech(s, learned.longStretch)).join('');
-                    }).join(' ');
+                    }).join(' ').trim();
+                    if (!phraseText) return;
 
                     const u = new SpeechSynthesisUtterance(phraseText);
                     u.lang = 'ko-KR';
@@ -1776,17 +1851,18 @@
                     });
 
                     const highDensity = totalSyls > 0 ? (highSyls / totalSyls) : 0;
-                    const isQuestionOrExclaim = /[\?\!]$/.test(phraseText.trim()) || /(애이가|인나|읻따|시더|디더|지요)[\.\?\!]*$/.test(phraseText.trim());
+                    const isQuestionOrExclaim = /[\?\!]$/.test(phraseText) || /(애이가|인나|읻따|시더|디더|지요)[\.\?\!]*$/.test(phraseText);
 
+                    // 고조(′)가 있는 호흡구는 고음 쪽으로 강하게 끌어올림 (기존보다 가중치 상향)
                     let targetPitch = pLow;
                     if (highSyls > 0) {
-                        const boostWeight = Math.min(1.0, 0.55 + highDensity * 0.55 + (firstSylHigh ? 0.15 : 0));
+                        const boostWeight = Math.min(1.0, 0.62 + highDensity * 0.80 + (firstSylHigh ? 0.15 : 0));
                         targetPitch = pLow + (pHigh - pLow) * boostWeight;
                         if (lastSylHigh || isQuestionOrExclaim) {
                             targetPitch = Math.max(targetPitch, pEndHigh);
                         }
                     }
-                    u.pitch = Number(targetPitch.toFixed(2));
+                    u.pitch = Number(Math.max(0.1, Math.min(2.0, targetPitch)).toFixed(2));
 
                     let phraseRate = learned.baseRate;
                     if (longSyls > 0) {
@@ -1796,11 +1872,20 @@
                     } else if (highSyls === 0) {
                         phraseRate = learned.baseRate * 1.05;
                     }
-                    u.rate = Number(Math.max(0.62, Math.min(1.30, phraseRate)).toFixed(2));
+                    u.rate = Number(Math.max(0.55, Math.min(1.40, phraseRate)).toFixed(2));
 
-                    window.speechSynthesis.speak(u);
+                    queue.push(u);
                 });
             });
+
+            if (queue.length === 0) return;
+
+            // Chrome에서 cancel() 직후 곧바로 speak()하면 첫 발화가 누락되는 버그가 있어 짧게 지연 후 큐잉
+            const myToken = ++skySpeakToken;
+            setTimeout(() => {
+                if (myToken !== skySpeakToken) return; // 그 사이 다른 버튼이 눌렸으면 무시
+                queue.forEach(u => window.speechSynthesis.speak(u));
+            }, 60);
         }
 
         // 표제어 전용 2번 발화
