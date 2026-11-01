@@ -681,39 +681,6 @@
         </div>
         <div id="consonantNav" class="nav-grid"></div>
 
-        <!-- 발음 속도 및 고음 높이 조절 바 (기본화면 & 단어 페이지 상시 표시) -->
-        <div id="speedSection" class="speed-control-box">
-            <div class="speed-row">
-                <div class="speed-control-title">
-                    <svg viewBox="0 0 24 24" style="width:16px; height:16px; fill:var(--point); vertical-align:-2px;">
-                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/>
-                    </svg>
-                    발음 빠르기
-                </div>
-                <div class="speed-slider-wrap">
-                    <span style="font-size:11.5px; color:#64748b;">느림</span>
-                    <input type="range" id="speechRateSlider" class="speed-slider" min="0.60" max="1.30" step="0.02" value="0.76" oninput="onSpeedSliderChange(this.value)">
-                    <span style="font-size:11.5px; color:#64748b;">빠름</span>
-                    <span id="speedValBadge" class="speed-val-badge">0.76x</span>
-                </div>
-            </div>
-            <!-- 2번(하늘색) 스피커 전용: 고조(′) 높이 조절 바 -->
-            <div class="speed-row" title="하늘색(2번) 스피커에서 고조(′) 음절이 평조보다 얼마나 더 높게 올라갈지 조절합니다">
-                <div class="speed-control-title">
-                    <svg viewBox="0 0 24 24" style="width:16px; height:16px; fill:#0284c7; vertical-align:-2px;">
-                        <path d="M4 20h4V10H4v10zm6 0h4V4h-4v16zm6 0h4v-7h-4v7z"/>
-                    </svg>
-                    고음 높이
-                </div>
-                <div class="speed-slider-wrap">
-                    <span style="font-size:11.5px; color:#64748b;">낮게</span>
-                    <input type="range" id="highBoostSlider" class="speed-slider" min="1.00" max="2.80" step="0.05" value="1.50" oninput="onHighBoostSliderChange(this.value)">
-                    <span style="font-size:11.5px; color:#64748b;">높게</span>
-                    <span id="highBoostBadge" class="speed-val-badge">1.50x</span>
-                </div>
-            </div>
-        </div>
-
         <div id="searchList">
             <div id="resCount"
                 style="padding:6px; font-size:13px; color:#999; text-align:center; border-bottom:1px solid #f5f5f5;">
@@ -820,6 +787,39 @@
                     </p>
                 </div>
                 <button type="button" class="guide-modal-close-btn" onclick="togglePronGuideModal()">닫기</button>
+            </div>
+        </div>
+
+        <!-- 발음 속도 및 고음 높이 조절 바 (저작권 바로 위, 기본화면 & 단어 페이지 상시 노출) -->
+        <div id="speedSection" class="speed-control-box">
+            <div class="speed-row">
+                <div class="speed-control-title">
+                    <svg viewBox="0 0 24 24" style="width:16px; height:16px; fill:var(--point); vertical-align:-2px;">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/>
+                    </svg>
+                    발음 빠르기
+                </div>
+                <div class="speed-slider-wrap">
+                    <span style="font-size:11.5px; color:#64748b;">느림</span>
+                    <input type="range" id="speechRateSlider" class="speed-slider" min="0.60" max="1.30" step="0.02" value="0.76" oninput="onSpeedSliderChange(this.value)">
+                    <span style="font-size:11.5px; color:#64748b;">빠름</span>
+                    <span id="speedValBadge" class="speed-val-badge">0.76x</span>
+                </div>
+            </div>
+            <!-- 2번(하늘색) 스피커 전용: 고조(′) 높이 조절 바 -->
+            <div class="speed-row" title="하늘색(2번) 스피커에서 고조(′) 음절이 평조보다 얼마나 더 높게 올라갈지 조절합니다">
+                <div class="speed-control-title">
+                    <svg viewBox="0 0 24 24" style="width:16px; height:16px; fill:#0284c7; vertical-align:-2px;">
+                        <path d="M4 20h4V10H4v10zm6 0h4V4h-4v16zm6 0h4v-7h-4v7z"/>
+                    </svg>
+                    고음 높이
+                </div>
+                <div class="speed-slider-wrap">
+                    <span style="font-size:11.5px; color:#64748b;">낮게</span>
+                    <input type="range" id="highBoostSlider" class="speed-slider" min="1.00" max="2.80" step="0.05" value="1.50" oninput="onHighBoostSliderChange(this.value)">
+                    <span style="font-size:11.5px; color:#64748b;">높게</span>
+                    <span id="highBoostBadge" class="speed-val-badge">1.50x</span>
+                </div>
             </div>
         </div>
 
