@@ -1543,16 +1543,30 @@
             if (slider) slider.value = String(currentSpeed);
             if (badge) badge.innerText = `${currentSpeed.toFixed(2)}x`;
 
-            const hb = getEffectiveHighBoost();
-            const hbSlider = document.getElementById('highBoostSlider');
-            const hbBadge = document.getElementById('highBoostBadge');
-            if (hbSlider) hbSlider.value = String(hb);
-            if (hbBadge) hbBadge.innerText = `${hb.toFixed(2)}x`;
             const tg = getEffectiveToneGap();
             const tgSlider = document.getElementById('toneGapSlider');
             const tgBadge = document.getElementById('toneGapBadge');
             if (tgSlider) tgSlider.value = String(tg);
             if (tgBadge) tgBadge.innerText = `${tg.toFixed(1)}반음`;
+        }
+
+        // ========================================================
+        // [고음 높이 조절 헬퍼] - 2번(하늘색) 스피커 전용
+        // ========================================================
+        const DEFAULT_HIGH_BOOST = 1.50;
+
+        function getEffectiveHighBoost() {
+            const saved = parseFloat(localStorage.getItem('web_tts_high_boost'));
+            if (!isNaN(saved) && saved >= 1.0 && saved <= 3.0) return saved;
+            return DEFAULT_HIGH_BOOST;
+        }
+
+        function onHighBoostSliderChange(val) {
+            const num = parseFloat(val);
+            if (isNaN(num)) return;
+            const badge = document.getElementById('highBoostBadge');
+            if (badge) badge.innerText = `${num.toFixed(2)}x`;
+            localStorage.setItem('web_tts_high_boost', num.toFixed(2));
         }
 
         // ========================================================
