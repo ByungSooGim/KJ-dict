@@ -1702,9 +1702,8 @@
                 if (k + 1 < rawSyls.length && !cur.punc) {
                     const nxt = rawSyls[k + 1];
                     const collapsed = collapseDialectLongPair(cur.char, nxt.char);
-                    // 두 모음의 성조가 같은 경우에만 단일 장음절로 병합 (가아′, 보′오처럼 성조가 다르면 높낮이 변화를 살리기 위해 분리)
-                    if (collapsed && (cur.tone === nxt.tone)) {
-                        const isH = (cur.tone === 'H');
+                    if (collapsed) {
+                        const isH = (cur.tone === 'H' || nxt.tone === 'H');
                         const d2 = decomposeHangulSyl(nxt.char);
                         const vowelTailChar = d2 ? composeHangulSyl(11, d2.jung, 0) : nxt.char;
                         merged.push({
@@ -1759,6 +1758,7 @@
                 const hasPunc = lastSyl && /[,.\?!~]/.test(lastSyl.punc || "");
 
                 // 1) 실제 문장부호가 있을 때, 2) 10어절에 도달했을 때, 3) 문장 끝일 때만 호흡구 분할
+                // (연결어미·장단/고저 전환점에서는 더 이상 끊지 않음)
                 if (hasPunc || cur.length >= SKY_MAX_PHRASE_WORDS || i === words.length - 1) {
                     phrases.push(cur);
                     cur = [];
@@ -1768,81 +1768,10 @@
             return phrases;
         }
 
-        // 연속된 동일 성조(L끼리 또는 H끼리) 음절들을 청크로 묶어,
-        // 브라우저 TTS가 '저음 구간'과 '고음 구간' 사이에서 실제로 피치를 극적으로 점프하도록 구성
-        function buildToneChunksForSpeech(phraseWords, learned, pLow, pHigh, pEndHigh) {
-            const allSyls = [];
-            phraseWords.forEach((pw, pwIdx) => {
-                pw.syls.forEach((s, sIdx) => {
-                    const isWordEnd = (sIdx === pw.syls.length - 1);
-                    const isPhraseEnd = (pwIdx === phraseWords.length - 1 && isWordEnd);
-                    allSyls.push({
-                        syl: s,
-                        wordIndex: pwIdx,
-                        isWordEnd,
-                        isPhraseEnd,
-                        formatted: formatSylForDialectSpeech(s, learned.longStretch),
-                        tone: s.tone
-                    });
-                });
-            });
-
-            if (allSyls.length === 0) return [];
-
-            const chunks = [];
-            let curChunk = {
-                tone: allSyls[0].tone,
-                syls: [allSyls[0]]
-            };
-
-            for (let i = 1; i < allSyls.length; i++) {
-                const item = allSyls[i];
-                if (item.tone === curChunk.tone) {
-                    curChunk.syls.push(item);
-                } else {
-                    chunks.push(curChunk);
-                    curChunk = {
-                        tone: item.tone,
-                        syls: [item]
-                    };
-                }
-            }
-            chunks.push(curChunk);
-
-            return chunks.map((chunk, cIdx) => {
-                const chunkText = chunk.syls.map((item, idx) => {
-                    const nextItem = chunk.syls[idx + 1];
-                    return item.formatted + (item.isWordEnd && nextItem ? ' ' : '');
-                }).join('').trim();
-
-                const isLastChunk = (cIdx === chunks.length - 1);
-                const hasLong = chunk.syls.some(item => item.syl.isLong);
-
-                let pitch = (chunk.tone === 'H') ? pHigh : pLow;
-                if (chunk.tone === 'H' && isLastChunk) {
-                    pitch = Math.max(pitch, pEndHigh);
-                }
-
-                let rate = learned.baseRate;
-                if (hasLong) {
-                    rate = Number((learned.baseRate / (1.0 + (learned.longStretch - 1.0) * 0.22)).toFixed(2));
-                } else if (chunk.tone === 'L') {
-                    rate = Number((learned.baseRate * 1.04).toFixed(2));
-                }
-
-                return {
-                    text: chunkText,
-                    pitch: Number(Math.max(0.1, Math.min(2.0, pitch)).toFixed(2)),
-                    rate: Number(Math.max(0.55, Math.min(1.40, rate)).toFixed(2)),
-                    tone: chunk.tone
-                };
-            }).filter(c => c.text.length > 0);
-        }
-
         // 연속 클릭 시 이전 클릭의 지연 발화가 뒤늦게 끼어드는 버그 방지용 토큰
         let skySpeakToken = 0;
 
-        // 3. 2번 하늘색 스피커 발화 함수 (성조 청크별 극적 고저 피치 점프 + 장모음 3모라 연장 + 남성 저음역)
+        // 3. 2번 하늘색 스피커 발화 함수 (장모음 3모라 연장 + 남성 저음역 + 내 학습 억양 100% 반영)
         function speakDialectWebSpeechQuestion(rawText) {
             if (!rawText || !window.speechSynthesis) return;
             window.speechSynthesis.cancel();
@@ -1865,23 +1794,22 @@
             const maleVoice = getKoreanMaleVoice();
             const isExpMale = isExplicitMaleVoice(maleVoice);
             const highBoost = getEffectiveHighBoost();
-            const endLiftRatio = Math.pow(2, Math.max(0.6, learned.endBoostSemitones) / 10.0);
+            const endLiftRatio = Math.pow(2, Math.max(0.5, learned.endBoostSemitones) / 12.0);
 
-            // 저음과 고음의 차이를 사람이 귀로 즉시 체감할 수 있도록 피치 낙차를 대폭 확장
+            // 평조(L)~고조(′) 피치 간격 = 학습 간격(highPitchRatio-1) × 고음 높이 배율(highBoost)
             let pLow, pHigh, pEndHigh;
             if (isExpMale) {
-                // 네이티브 남성 보이스(~120Hz 기준)
-                pLow = Math.max(0.52, Math.min(0.82, 0.68 * (learned.lowPitchRatio / 1.05)));
-                const gap = pLow * (learned.highPitchRatio - 1.0) * highBoost * 1.6;
-                pHigh = Math.min(2.00, pLow + Math.max(0.40, gap));
-                pEndHigh = Math.min(2.00, Math.max(pHigh + 0.12, pHigh * endLiftRatio));
+                // 네이티브 남성 보이스(~120Hz 기준, pitch 1.0 = 남성 원음)
+                pLow = Math.max(0.68, Math.min(0.95, 0.82 * (learned.lowPitchRatio / 1.05)));
+                const gap = pLow * Math.max(0.48, (learned.highPitchRatio - 1.0) * 1.35) * highBoost;
+                pHigh = Math.min(1.95, pLow + gap);
+                pEndHigh = Math.min(2.00, Math.max(pHigh + 0.08, pHigh * endLiftRatio));
             } else {
-                // 여성 기본 보이스(Heami 등 ~225Hz) 환경:
-                // 평조는 0.26~0.32로 바닥까지 깊게 깔고, 고조는 슬라이더 배율에 따라 0.95~1.45까지 가파르게 솟아오름!
-                pLow = Math.max(0.22, Math.min(0.34, 0.28 * (learned.lowPitchRatio / 1.05)));
-                const gap = 0.35 * Math.max(0.65, (learned.highPitchRatio - 1.0) * 1.7) * highBoost;
-                pHigh = Math.min(1.45, pLow + gap);
-                pEndHigh = Math.min(1.55, Math.max(pHigh + 0.10, pHigh * endLiftRatio));
+                // 여성 기본 보이스(Heami 등 ~225Hz)를 남성 음역으로 하향: 평조는 0.35로 깊게 낮추고, 고조는 0.75~1.15로 시원하게 상승
+                pLow = Math.max(0.30, Math.min(0.42, 0.35 * (learned.lowPitchRatio / 1.05)));
+                const gap = pLow * Math.max(0.55, (learned.highPitchRatio - 1.0) * 1.45) * highBoost;
+                pHigh = Math.min(1.15, pLow + gap);
+                pEndHigh = Math.min(1.22, Math.max(pHigh + 0.06, pHigh * endLiftRatio));
             }
 
             // '/'로 구분된 복수 발음 각각 처리
@@ -1900,15 +1828,56 @@
 
                 const phrases = groupDialectWordsForSpeech(words);
                 phrases.forEach(phraseWords => {
-                    const toneChunks = buildToneChunksForSpeech(phraseWords, learned, pLow, pHigh, pEndHigh);
-                    toneChunks.forEach(chunk => {
-                        const u = new SpeechSynthesisUtterance(chunk.text);
-                        u.lang = 'ko-KR';
-                        if (maleVoice) u.voice = maleVoice;
-                        u.pitch = chunk.pitch;
-                        u.rate = chunk.rate;
-                        queue.push(u);
+                    const phraseText = phraseWords.map(w => {
+                        return w.syls.map(s => formatSylForDialectSpeech(s, learned.longStretch)).join('');
+                    }).join(' ').trim();
+                    if (!phraseText) return;
+
+                    const u = new SpeechSynthesisUtterance(phraseText);
+                    u.lang = 'ko-KR';
+                    if (maleVoice) u.voice = maleVoice;
+
+                    let totalSyls = 0;
+                    let highSyls = 0;
+                    let longSyls = 0;
+                    let firstSylHigh = false;
+                    let lastSylHigh = false;
+
+                    phraseWords.forEach((pw, pwIdx) => {
+                        pw.syls.forEach((s, sIdx) => {
+                            totalSyls++;
+                            if (s.tone === 'H') highSyls++;
+                            if (s.isLong) longSyls++;
+                            if (pwIdx === 0 && sIdx === 0 && s.tone === 'H') firstSylHigh = true;
+                            if (pwIdx === phraseWords.length - 1 && sIdx === pw.syls.length - 1 && s.tone === 'H') lastSylHigh = true;
+                        });
                     });
+
+                    const highDensity = totalSyls > 0 ? (highSyls / totalSyls) : 0;
+                    const isQuestionOrExclaim = /[\?\!]$/.test(phraseText) || /(애이가|인나|읻따|시더|디더|지요)[\.\?\!]*$/.test(phraseText);
+
+                    // 고조(′)가 있는 호흡구는 고음 쪽으로 강하게 끌어올림 (기존보다 가중치 상향)
+                    let targetPitch = pLow;
+                    if (highSyls > 0) {
+                        const boostWeight = Math.min(1.0, 0.70 + highDensity * 0.70 + (firstSylHigh ? 0.18 : 0));
+                        targetPitch = pLow + (pHigh - pLow) * boostWeight;
+                        if (lastSylHigh || isQuestionOrExclaim) {
+                            targetPitch = Math.max(targetPitch, pEndHigh);
+                        }
+                    }
+                    u.pitch = Number(Math.max(0.1, Math.min(2.0, targetPitch)).toFixed(2));
+
+                    let phraseRate = learned.baseRate;
+                    if (longSyls > 0) {
+                        const longRatio = longSyls / Math.max(1, totalSyls);
+                        const slowFactor = 1.0 + (learned.longStretch - 1.0) * (0.16 + longRatio * 0.14);
+                        phraseRate = learned.baseRate / slowFactor;
+                    } else if (highSyls === 0) {
+                        phraseRate = learned.baseRate * 1.05;
+                    }
+                    u.rate = Number(Math.max(0.55, Math.min(1.40, phraseRate)).toFixed(2));
+
+                    queue.push(u);
                 });
             });
 
