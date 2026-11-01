@@ -1773,23 +1773,36 @@
             return s.rawPair + s.punc;
         }
 
-        // 2번(하늘색) 스피커 호흡구 최대 어절 수: 문장부호(, . ? ! ~)가 없으면 최대 10어절까지 한 호흡으로 이어 읽음
-        const SKY_MAX_PHRASE_WORDS = 10;
+        // 2번(하늘색) 스피커 호흡구 묶기:
+        // - 단어(어절) 내부에서는 절대 쪼개지 않아 글자 사이가 뚝뚝 끊기는 현상을 원천 방지!
+        // - 어절 단위로만 묶되, 평조 어절(L)과 고조 어절(H, ′ 포함)의 성조가 크게 바뀌는 어절 경계 또는 문장부호에서만 호흡구를 나누어
+        //   자연스럽게 이어 읽으면서도 구절 간 저음↔고음 대비를 확실하게 살림!
+        const SKY_MAX_PHRASE_WORDS = 5;
 
         function groupDialectWordsForSpeech(words) {
             const phrases = [];
             let cur = [];
+            let curHasHigh = null;
+
             for (let i = 0; i < words.length; i++) {
                 const w = words[i];
-                cur.push(w);
+                const wordHasHigh = w.syls.some(s => s.tone === 'H');
                 const lastSyl = w.syls[w.syls.length - 1];
                 const hasPunc = lastSyl && /[,.\?!~]/.test(lastSyl.punc || "");
 
-                // 1) 실제 문장부호가 있을 때, 2) 10어절에 도달했을 때, 3) 문장 끝일 때만 호흡구 분할
-                // (연결어미·장단/고저 전환점에서는 더 이상 끊지 않음)
+                // 이미 현재 호흡구에 어절이 있고, 새 어절의 고음 유무(평조 어절 vs 고조 어절)가 달라질 때 어절 경계에서 분리
+                if (cur.length > 0 && curHasHigh !== null && wordHasHigh !== curHasHigh) {
+                    phrases.push(cur);
+                    cur = [];
+                }
+
+                cur.push(w);
+                curHasHigh = wordHasHigh;
+
                 if (hasPunc || cur.length >= SKY_MAX_PHRASE_WORDS || i === words.length - 1) {
                     phrases.push(cur);
                     cur = [];
+                    curHasHigh = null;
                 }
             }
             if (cur.length > 0) phrases.push(cur);
@@ -1799,68 +1812,8 @@
         // 연속 클릭 시 이전 클릭의 지연 발화가 뒤늦게 끼어드는 버그 방지용 토큰
         let skySpeakToken = 0;
 
-        // [제안 A + C 반영] 2번(하늘색) 스피커 전용:
-        // 문장 내부에서 연속된 평조(L+) 덩어리와 고조(H+) 덩어리를 자동으로 묶어,
-        // 글자 단위로 끊기지 않고 부드럽게 이어 읽으면서도 저음(0.30~0.55) ↔ 고음(1.40~2.00 + '?' 억양 리프트)으로
-        // 1옥타브(12반음) 이상의 확실한 고저 낙차를 구현!
-        function buildSkyToneRunSegments(words, longStretch) {
-            const rawRuns = [];
-            let curTone = null;
-            let curText = "";
-            let curSylCount = 0;
-            let curLongCount = 0;
-            let curHasQuestion = false;
-
-            const flushRun = (isPhraseEnd = false) => {
-                const trimmed = curText.trim();
-                if (!trimmed) return;
-                rawRuns.push({
-                    tone: curTone || 'L',
-                    text: trimmed,
-                    sylCount: curSylCount,
-                    longCount: curLongCount,
-                    hasQuestion: curHasQuestion,
-                    isPhraseEnd
-                });
-                curTone = null;
-                curText = "";
-                curSylCount = 0;
-                curLongCount = 0;
-                curHasQuestion = false;
-            };
-
-            words.forEach((w, wIdx) => {
-                w.syls.forEach((s, sIdx) => {
-                    const isWordEnd = (sIdx === w.syls.length - 1);
-                    const hasClauseBreak = /[,.\?!~]/.test(s.punc || "");
-                    const formatted = formatSylForDialectSpeech(s, longStretch) + (isWordEnd ? " " : "");
-
-                    // 이전 성조(L vs H)와 달라지면 새로운 성조 덩어리(Run)로 분리
-                    if (curTone !== null && s.tone !== curTone) {
-                        flushRun(false);
-                    }
-                    curTone = s.tone;
-                    curText += formatted;
-                    curSylCount++;
-                    if (s.isLong) curLongCount++;
-                    if (/\?/.test(s.punc || "") || (isWordEnd && /(애이가|인나|읻따|시더|디더|능교|는교|지요)$/.test(w.raw.replace(/[^가-힣]/g, '')))) {
-                        curHasQuestion = true;
-                    }
-
-                    // 쉼표·마침표·물음표 등 구절 경계에서는 호흡 분리
-                    if (hasClauseBreak) {
-                        flushRun(true);
-                    }
-                });
-            });
-            flushRun(true);
-
-            // 너무 짧은 1음절 평조(L)가 고조(H)들 사이에 끼어 어색하게 끊기는 것을 방지하기 위해,
-            // 고조(H)는 독립된 봉우리로 살리고 불필요한 미세 쪼개짐만 정돈
-            return rawRuns;
-        }
-
-        // 3. 2번 하늘색 스피커 발화 함수 (성조 덩어리 L+/H+ 분할 + 고저 간격 슬라이더 연동 + 고음 '?' 리프트 + 장모음 3모라 연장)
+        // 3. 2번 하늘색 스피커 발화 함수
+        // (단어 내부 분할 금지로 매끄럽게 연결 + 호흡구 단위 육성 highPitchRatio & 고저간격 슬라이더 연동 + 장모음 3모라 연장)
         function speakDialectWebSpeechQuestion(rawText) {
             if (!rawText || !window.speechSynthesis) return;
             window.speechSynthesis.cancel();
@@ -1883,22 +1836,24 @@
             const maleVoice = getKoreanMaleVoice();
             const isExpMale = isExplicitMaleVoice(maleVoice);
 
-            // 하단 [고저 간격] 조절바(#toneGapSlider, 0 ~ 18반음, 기본 12반음=1옥타브)와 100% 연동!
+            // 사용자 육성 학습 비율(highPitchRatio = 1.48)과 하단 [고저 간격] 조절바(#toneGapSlider, 기본 12반음)를 결합
             const gapSemitones = getEffectiveToneGap();
-            const octaveFactor = gapSemitones / 12.0; // 12반음일 때 1.0, 18반음일 때 1.5, 0반음일 때 0.0
+            const octaveFactor = gapSemitones / 12.0; // 12반음=1.0, 18반음=1.5, 0반음=0.0
+            const learnedBoost = Math.max(0.45, (learned.highPitchRatio - 1.0) * 1.45); // 육성 1.48 기준 약 0.70
 
-            // 평조(L)와 고조(H)의 피치 상한선을 2.0까지 대폭 개방하여 확실한 1옥타브 이상의 낙차 형성
             let pLow, pHigh, pEndHigh;
             if (isExpMale) {
                 // 네이티브 남성 보이스(~120Hz 기준)
-                pLow = Math.max(0.45, Math.min(0.95, 0.85 - octaveFactor * 0.30)); // 12반음일 때 0.55
-                pHigh = Math.max(pLow, Math.min(2.00, pLow + octaveFactor * 1.15)); // 12반음일 때 1.70 (약 3배 피치 비율)
-                pEndHigh = Math.min(2.00, pHigh + octaveFactor * 0.25);             // 12반음일 때 1.95
+                pLow = Math.max(0.50, Math.min(0.95, 0.84 * (learned.lowPitchRatio / 1.05) - octaveFactor * 0.22));
+                const gap = (pLow * learnedBoost + 0.55) * octaveFactor;
+                pHigh = Math.max(pLow, Math.min(1.95, pLow + gap));
+                pEndHigh = Math.min(2.00, pHigh + 0.18 * octaveFactor);
             } else {
-                // 기본 보이스(Heami 등)를 깊은 저음(0.32)에서 시원한 고음(1.65~1.95)까지 폭넓게 벌림
-                pLow = Math.max(0.25, Math.min(0.75, 0.62 - octaveFactor * 0.30)); // 12반음일 때 0.32
-                pHigh = Math.max(pLow, Math.min(2.00, pLow + octaveFactor * 1.35)); // 12반음일 때 1.67
-                pEndHigh = Math.min(2.00, pHigh + octaveFactor * 0.28);             // 12반음일 때 1.95
+                // 기본 보이스(Heami 등)를 남성 저음역(0.32~0.38)으로 낮추고 고조 구절은 최대 1.65~1.90까지 시원하게 상승
+                pLow = Math.max(0.28, Math.min(0.65, 0.42 * (learned.lowPitchRatio / 1.05) - octaveFactor * 0.10));
+                const gap = (pLow * learnedBoost + 0.95) * octaveFactor;
+                pHigh = Math.max(pLow, Math.min(1.90, pLow + gap));
+                pEndHigh = Math.min(2.00, pHigh + 0.20 * octaveFactor);
             }
 
             // '/'로 구분된 복수 발음 각각 처리
@@ -1915,40 +1870,62 @@
 
                 if (words.length === 0) return;
 
-                const runs = buildSkyToneRunSegments(words, learned.longStretch);
-                runs.forEach((run, rIdx) => {
-                    let segText = run.text;
-                    if (!segText) return;
+                const phrases = groupDialectWordsForSpeech(words);
+                phrases.forEach((phraseWords, pIdx) => {
+                    let phraseText = phraseWords.map(w => {
+                        return w.syls.map(s => formatSylForDialectSpeech(s, learned.longStretch)).join('');
+                    }).join(' ').trim();
+                    if (!phraseText) return;
 
-                    // 고조(H) 구간이고 고저 간격이 6반음 이상으로 설정된 경우:
-                    // 끝에 '?' 억양 트리거를 결합하여 브라우저 TTS의 자체 의문문 끝올림(+4~6반음 상승)까지 이끌어냄!
-                    if (run.tone === 'H' && gapSemitones >= 6.0 && !/[\?\!]$/.test(segText)) {
-                        segText = segText.replace(/[\.\,~]+$/, '').trim() + '?';
+                    let totalSyls = 0;
+                    let highSyls = 0;
+                    let longSyls = 0;
+                    let firstSylHigh = false;
+                    let lastSylHigh = false;
+
+                    phraseWords.forEach((pw, pwIdx) => {
+                        pw.syls.forEach((s, sIdx) => {
+                            totalSyls++;
+                            if (s.tone === 'H') highSyls++;
+                            if (s.isLong) longSyls++;
+                            if (pwIdx === 0 && sIdx === 0 && s.tone === 'H') firstSylHigh = true;
+                            if (pwIdx === phraseWords.length - 1 && sIdx === pw.syls.length - 1 && s.tone === 'H') lastSylHigh = true;
+                        });
+                    });
+
+                    const highDensity = totalSyls > 0 ? (highSyls / totalSyls) : 0;
+                    const isLastPhrase = (pIdx === phrases.length - 1);
+                    const isQuestionOrExclaim = /[\?\!]$/.test(phraseText) || /(애이가|인나|읻따|시더|디더|능교|는교|지요)[\.\?\!]*$/.test(phraseText);
+
+                    // 문장 맨 끝(또는 구절 끝) 어절의 마지막 음절이 고조(′)이면 '?'를 붙여 말꼬리가 내려가지 않고 치고 올라가게 함
+                    // (문장 중간 어절에는 '?'를 붙이지 않아 뚝뚝 끊기는 현상 방지!)
+                    if ((lastSylHigh && isLastPhrase) && gapSemitones >= 4.0 && !/[\?\!]$/.test(phraseText)) {
+                        phraseText = phraseText.replace(/[\.\,~]+$/, '').trim() + '?';
                     }
 
-                    const u = new SpeechSynthesisUtterance(segText);
+                    const u = new SpeechSynthesisUtterance(phraseText);
                     u.lang = 'ko-KR';
                     if (maleVoice) u.voice = maleVoice;
 
                     let targetPitch = pLow;
-                    if (run.tone === 'H') {
-                        targetPitch = (run.isPhraseEnd || run.hasQuestion || rIdx === runs.length - 1) ? pEndHigh : pHigh;
+                    if (highSyls > 0) {
+                        const boostWeight = Math.min(1.0, 0.72 + highDensity * 0.45 + (firstSylHigh ? 0.15 : 0));
+                        targetPitch = pLow + (pHigh - pLow) * boostWeight;
+                        if (lastSylHigh || isQuestionOrExclaim) {
+                            targetPitch = Math.max(targetPitch, pEndHigh);
+                        }
                     }
                     u.pitch = Number(Math.max(0.1, Math.min(2.0, targetPitch)).toFixed(2));
 
-                    // 속도 조절: 고조(H) 및 장모음 구간은 또렷하고 길게 들리도록 살짝 여유를 주고,
-                    // 평조(L) 구간은 자연스럽게 이어지도록 경쾌하게 발화
-                    let segRate = learned.baseRate;
-                    if (run.longCount > 0) {
-                        const longRatio = run.longCount / Math.max(1, run.sylCount);
-                        const slowFactor = 1.0 + (learned.longStretch - 1.0) * (0.18 + longRatio * 0.16);
-                        segRate = learned.baseRate / slowFactor;
-                    } else if (run.tone === 'H') {
-                        segRate = learned.baseRate * 0.94;
-                    } else {
-                        segRate = learned.baseRate * 1.08;
+                    let phraseRate = learned.baseRate;
+                    if (longSyls > 0) {
+                        const longRatio = longSyls / Math.max(1, totalSyls);
+                        const slowFactor = 1.0 + (learned.longStretch - 1.0) * (0.16 + longRatio * 0.14);
+                        phraseRate = learned.baseRate / slowFactor;
+                    } else if (highSyls === 0) {
+                        phraseRate = learned.baseRate * 1.06;
                     }
-                    u.rate = Number(Math.max(0.55, Math.min(1.45, segRate)).toFixed(2));
+                    u.rate = Number(Math.max(0.55, Math.min(1.40, phraseRate)).toFixed(2));
 
                     queue.push(u);
                 });
