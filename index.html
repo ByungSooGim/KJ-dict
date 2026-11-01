@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>경주말 방언 사전</title>
+    <title>신라수도 경주지역 사투리 사전</title>
     <style>
         /* --- 공통 테마 및 레이아웃 정의 --- */
         :root {
@@ -673,13 +673,47 @@
                     stroke-width="5" />
                 <rect x="47" y="42" width="6" height="8" fill="currentColor" />
             </svg>
-            <div class="logo-text">경주말 방언 사전</div>
+            <div class="logo-text">신라수도 경주지역 사투리 사전</div>
         </div>
         <div class="search-row">
             <input type="text" id="diaSearch" placeholder="방언 표제어 검색 ">
             <input type="text" id="stdSearch" placeholder="표준어 검색">
         </div>
         <div id="consonantNav" class="nav-grid"></div>
+
+        <!-- 발음 속도 및 고음 높이 조절 바 (기본화면 & 단어 페이지 상시 표시) -->
+        <div id="speedSection" class="speed-control-box">
+            <div class="speed-row">
+                <div class="speed-control-title">
+                    <svg viewBox="0 0 24 24" style="width:16px; height:16px; fill:var(--point); vertical-align:-2px;">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/>
+                    </svg>
+                    발음 빠르기
+                </div>
+                <div class="speed-slider-wrap">
+                    <span style="font-size:11.5px; color:#64748b;">느림</span>
+                    <input type="range" id="speechRateSlider" class="speed-slider" min="0.60" max="1.30" step="0.02" value="0.76" oninput="onSpeedSliderChange(this.value)">
+                    <span style="font-size:11.5px; color:#64748b;">빠름</span>
+                    <span id="speedValBadge" class="speed-val-badge">0.76x</span>
+                </div>
+            </div>
+            <!-- 2번(하늘색) 스피커 전용: 고조(′) 높이 조절 바 -->
+            <div class="speed-row" title="하늘색(2번) 스피커에서 고조(′) 음절이 평조보다 얼마나 더 높게 올라갈지 조절합니다">
+                <div class="speed-control-title">
+                    <svg viewBox="0 0 24 24" style="width:16px; height:16px; fill:#0284c7; vertical-align:-2px;">
+                        <path d="M4 20h4V10H4v10zm6 0h4V4h-4v16zm6 0h4v-7h-4v7z"/>
+                    </svg>
+                    고음 높이
+                </div>
+                <div class="speed-slider-wrap">
+                    <span style="font-size:11.5px; color:#64748b;">낮게</span>
+                    <input type="range" id="highBoostSlider" class="speed-slider" min="1.00" max="2.80" step="0.05" value="1.50" oninput="onHighBoostSliderChange(this.value)">
+                    <span style="font-size:11.5px; color:#64748b;">높게</span>
+                    <span id="highBoostBadge" class="speed-val-badge">1.50x</span>
+                </div>
+            </div>
+        </div>
+
         <div id="searchList">
             <div id="resCount"
                 style="padding:6px; font-size:13px; color:#999; text-align:center; border-bottom:1px solid #f5f5f5;">
@@ -746,38 +780,7 @@
             <div class="rec-container" id="recommendList"></div>
         </div>
 
-        <!-- 첫 페이지 발음 속도 조절 바 -->
-        <div id="speedSection" class="speed-control-box">
-            <div class="speed-row">
-                <div class="speed-control-title">
-                    <svg viewBox="0 0 24 24" style="width:16px; height:16px; fill:var(--point); vertical-align:-2px;">
-                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/>
-                    </svg>
-                    발음 빠르기
-                </div>
-                <div class="speed-slider-wrap">
-                    <span style="font-size:11.5px; color:#64748b;">느림</span>
-                    <input type="range" id="speechRateSlider" class="speed-slider" min="0.60" max="1.30" step="0.02" value="0.76" oninput="onSpeedSliderChange(this.value)">
-                    <span style="font-size:11.5px; color:#64748b;">빠름</span>
-                    <span id="speedValBadge" class="speed-val-badge">0.76x</span>
-                </div>
-            </div>
-            <!-- 2번(하늘색) 스피커 전용: 고조(′) 높이 조절 바 -->
-            <div class="speed-row" title="하늘색(2번) 스피커에서 고조(′) 음절이 평조보다 얼마나 더 높게 올라갈지 조절합니다">
-                <div class="speed-control-title">
-                    <svg viewBox="0 0 24 24" style="width:16px; height:16px; fill:#0284c7; vertical-align:-2px;">
-                        <path d="M4 20h4V10H4v10zm6 0h4V4h-4v16zm6 0h4v-7h-4v7z"/>
-                    </svg>
-                    고음 높이
-                </div>
-                <div class="speed-slider-wrap">
-                    <span style="font-size:11.5px; color:#64748b;">낮게</span>
-                    <input type="range" id="highBoostSlider" class="speed-slider" min="1.00" max="2.20" step="0.05" value="1.50" oninput="onHighBoostSliderChange(this.value)">
-                    <span style="font-size:11.5px; color:#64748b;">높게</span>
-                    <span id="highBoostBadge" class="speed-val-badge">1.50x</span>
-                </div>
-            </div>
-        </div>
+
 
         <!-- 발음 듣기 기능 안내 버튼 및 억양 학습 실험실 바로가기 (첫 페이지 하단) -->
         <div id="guideSection" class="guide-btn-wrap" style="gap: 10px; flex-wrap: wrap;">
@@ -1522,7 +1525,7 @@
 
         function getEffectiveHighBoost() {
             const saved = parseFloat(localStorage.getItem('web_tts_high_boost'));
-            if (!isNaN(saved) && saved >= 1.0 && saved <= 2.2) return saved;
+            if (!isNaN(saved) && saved >= 1.0 && saved <= 3.0) return saved;
             return DEFAULT_HIGH_BOOST;
         }
 
@@ -1797,16 +1800,16 @@
             let pLow, pHigh, pEndHigh;
             if (isExpMale) {
                 // 네이티브 남성 보이스(~120Hz 기준, pitch 1.0 = 남성 원음)
-                pLow = Math.max(0.70, Math.min(1.00, 0.88 * (learned.lowPitchRatio / 1.05)));
-                const gap = pLow * (learned.highPitchRatio - 1.0) * highBoost;
-                pHigh = Math.min(1.85, pLow + Math.max(0.22, gap));
-                pEndHigh = Math.min(1.95, Math.max(pHigh + 0.06, pHigh * endLiftRatio));
+                pLow = Math.max(0.68, Math.min(0.95, 0.82 * (learned.lowPitchRatio / 1.05)));
+                const gap = pLow * Math.max(0.48, (learned.highPitchRatio - 1.0) * 1.35) * highBoost;
+                pHigh = Math.min(1.95, pLow + gap);
+                pEndHigh = Math.min(2.00, Math.max(pHigh + 0.08, pHigh * endLiftRatio));
             } else {
-                // 여성 기본 보이스(Heami 등 ~225Hz)를 남성 음역으로 하향: 평조는 더 낮게(0.38), 고조는 더 높게
-                pLow = Math.max(0.32, Math.min(0.44, 0.38 * (learned.lowPitchRatio / 1.05)));
-                const gap = pLow * (learned.highPitchRatio - 1.0) * highBoost;
-                pHigh = Math.min(0.95, pLow + Math.max(0.16, gap));
-                pEndHigh = Math.min(1.02, Math.max(pHigh + 0.05, pHigh * endLiftRatio));
+                // 여성 기본 보이스(Heami 등 ~225Hz)를 남성 음역으로 하향: 평조는 0.35로 깊게 낮추고, 고조는 0.75~1.15로 시원하게 상승
+                pLow = Math.max(0.30, Math.min(0.42, 0.35 * (learned.lowPitchRatio / 1.05)));
+                const gap = pLow * Math.max(0.55, (learned.highPitchRatio - 1.0) * 1.45) * highBoost;
+                pHigh = Math.min(1.15, pLow + gap);
+                pEndHigh = Math.min(1.22, Math.max(pHigh + 0.06, pHigh * endLiftRatio));
             }
 
             // '/'로 구분된 복수 발음 각각 처리
@@ -1856,7 +1859,7 @@
                     // 고조(′)가 있는 호흡구는 고음 쪽으로 강하게 끌어올림 (기존보다 가중치 상향)
                     let targetPitch = pLow;
                     if (highSyls > 0) {
-                        const boostWeight = Math.min(1.0, 0.62 + highDensity * 0.80 + (firstSylHigh ? 0.15 : 0));
+                        const boostWeight = Math.min(1.0, 0.70 + highDensity * 0.70 + (firstSylHigh ? 0.18 : 0));
                         targetPitch = pLow + (pHigh - pLow) * boostWeight;
                         if (lastSylHigh || isQuestionOrExclaim) {
                             targetPitch = Math.max(targetPitch, pEndHigh);
@@ -1938,15 +1941,19 @@
                 }
             }
 
-            // 상세 보기 진입 시 추천 단어 목록 숨기기
+            // 상세 보기 진입 시 추천 단어 및 안내 버튼 숨기기
             const recSec = document.getElementById('recSection');
             if (recSec) recSec.style.display = 'none';
             const recList = document.getElementById('recommendList');
             if (recList) recList.style.display = 'none';
             const guideModal = document.getElementById('guideModalOverlay');
             if (guideModal) guideModal.style.display = 'none';
+            // 발음 듣기 기능안내와 억양 학습 실험실 안내는 단어 페이지에서 숨김
+            const guideSec = document.getElementById('guideSection');
+            if (guideSec) guideSec.style.display = 'none';
+            // 조절바 2개(발음 빠르기, 고음 높이)는 단어 페이지에서도 계속 보이게 유지
             const speedSec = document.getElementById('speedSection');
-            if (speedSec) speedSec.style.display = 'none';
+            if (speedSec) speedSec.style.display = 'flex';
 
             // 1. item.pos_symbol이 있을 경우, 각 글자를 순회하며 한글 품사로 변환합니다.
             const posText = posMap[item.pos_symbol] || item.pos_symbol || "", pBadge = document.getElementById('v-pos'); pBadge.innerText = posText; pBadge.style.display = posText ? 'inline-block' : 'none';

@@ -453,7 +453,7 @@
                 <p>1) 어절마다 끊어지지 않고 한 호흡의 연속 음성 파형(WSOLA) 위에서 고저(F0)와 장단(Duration)을 물 흐르듯 변조합니다.<br>
                    2) 내가 직접 문장을 읽어주면 브라우저가 피치·길이·어미 상승률을 분석해 파라미터를 자동 보정하고 다른 문장도 내 억양대로 따라 읽습니다.</p>
             </div>
-            <a href="index.html" class="nav-link">← 웹사전(index.html) 돌아가기</a>
+            <a href="index.html" class="nav-link">← 신라수도 경주지역 사투리 사전(index.html) 돌아가기</a>
         </div>
         <div class="status-bar">
             <span class="status-pill"><span class="dot" id="engineDot"></span> <span id="engineStatusText">통일 남성 음성 & 연속 방언 합성 활성 (어절 끊김 없음 · 0MB)</span></span>
@@ -526,7 +526,7 @@
                     <span>고조(′) 피치 배율 (H/L)</span>
                     <span class="slider-val" id="valHighPitch">1.48x (+6.8st)</span>
                 </div>
-                <input type="range" id="slHighPitch" min="1.12" max="2.20" step="0.01" value="1.48" oninput="updateSliders()">
+                <input type="range" id="slHighPitch" min="1.12" max="2.80" step="0.01" value="1.48" oninput="updateSliders()">
             </div>
             <div class="slider-box">
                 <div class="slider-label">
@@ -1969,18 +1969,18 @@ function playUnifiedDialectSpeech(sentId, allWords, words, cleanText, dialectTex
 
     if (isExplicitMale) {
         // 네이티브 남성 보이스(InJoon 등 ~120Hz)일 때
-        pLow = Math.max(0.70, Math.min(1.00, 0.88 * (params.lowPitch / 1.05)));
+        pLow = Math.max(0.68, Math.min(0.95, 0.82 * (params.lowPitch / 1.05)));
         pStdFlat = Math.max(0.78, Math.min(1.05, pLow * 1.05));
-        const gap = pLow * (params.highPitch - 1.0);
-        pHigh = Math.min(1.85, pLow + Math.max(0.22, gap));
-        pEndHigh = Math.min(1.95, Math.max(pHigh + 0.06, pHigh * Math.pow(2, Math.max(0.5, params.endBoostSemitones) / 12.0)));
+        const gap = pLow * Math.max(0.48, (params.highPitch - 1.0) * 1.35);
+        pHigh = Math.min(1.95, pLow + gap);
+        pEndHigh = Math.min(2.00, Math.max(pHigh + 0.08, pHigh * Math.pow(2, Math.max(0.5, params.endBoostSemitones) / 12.0)));
     } else {
-        // 기본 여성 보이스(Microsoft Heami 등 ~225Hz)를 남성 음역으로 하향: 평조 0.38, 고조 최대 0.95
-        pLow = Math.max(0.32, Math.min(0.44, 0.38 * (params.lowPitch / 1.05)));
+        // 기본 여성 보이스(Microsoft Heami 등 ~225Hz)를 남성 음역으로 하향: 평조 0.35, 고조 최대 1.15
+        pLow = Math.max(0.30, Math.min(0.42, 0.35 * (params.lowPitch / 1.05)));
         pStdFlat = Math.max(0.36, Math.min(0.48, pLow * 1.05));
-        const gap = pLow * (params.highPitch - 1.0);
-        pHigh = Math.min(0.95, pLow + Math.max(0.18, gap));
-        pEndHigh = Math.min(1.02, Math.max(pHigh + 0.05, pHigh * Math.pow(2, Math.max(0.5, params.endBoostSemitones) / 12.0)));
+        const gap = pLow * Math.max(0.55, (params.highPitch - 1.0) * 1.45);
+        pHigh = Math.min(1.15, pLow + gap);
+        pEndHigh = Math.min(1.22, Math.max(pHigh + 0.06, pHigh * Math.pow(2, Math.max(0.5, params.endBoostSemitones) / 12.0)));
     }
 
     const voiceDisplayName = maleVoice
