@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>하늘색 TTS 실험실 – 브라우저 즉석 생성 + 음절 고저 곡선</title>
+<style>
+    body { font-family: "Malgun Gothic", sans-serif; margin: 16px; background: #f5f9fc; color: #222; }
+    h2 { margin: 0 0 8px; color: #1a6fa3; }
+    .box { background: #fff; border: 1px solid #cfe3f0; border-radius: 8px; padding: 12px; margin-bottom: 12px; }
+    textarea { width: 100%; height: 54px; font-size: 18px; box-sizing: border-box; }
+    button { font-size: 15px; padding: 6px 14px; margin: 4px 4px 4px 0; border-radius: 6px; border: 1px solid #7cc4ec; background: #e6f5fd; cursor: pointer; }
+    button.main { background: #4fb6ec; color: #fff; font-weight: bold; }
+    button:disabled { opacity: .5; cursor: default; }
+    .row { display: flex; align-items: center; gap: 10px; margin: 6px 0; flex-wrap: wrap; }
+    .row label.name { width: 150px; font-weight: bold; }
+    .row input[type=range] { flex: 1; min-width: 200px; }
+    .val { width: 90px; text-align: right; font-family: monospace; }
+    .hint { color: #777; font-size: 12px; }
+    #cv { width: 100%; height: 280px; background: #fff; border: 1px solid #cfe3f0; border-radius: 8px; }
+    #log { font-family: monospace; font-size: 12px; white-space: pre-wrap; color: #555; max-height: 160px; overflow: auto; }
+    select { font-size: 15px; }
+</style>
+</head>
+<body>
+<h2>하늘색 TTS 실험실 <span class="hint">(브라우저 내 신경망 TTS + 음절별 고저 곡선 PSOLA)</span></h2>
+
+<div class="box">
+    <div class="row">
+        <select id="sample"></select>
+        <span class="hint">′ 표시가 붙은 음절 = 고조(H), 나머지 = 평조(L)</span>
+    </div>
+    <textarea id="txt">가아′끈′하′다</textarea>
+    <div class="row">
+        <button id="btnGen" class="main" disabled>모델 로딩 중…</button>
+        <button id="btnPlay" disabled>▶ 다시 재생</button>
+        <button id="btnStop">■ 정지</button>
+        <label><input type="checkbox" id="loop" checked> 반복 재생</label>
+        <label><input type="checkbox" id="bypass"> 원본(변조 없음) 듣기</label>
+        <label>모델 <select id="dtype"><option value="q8">quantized (38MB)</option><option value="fp32">fp32 (114MB, 고음질)</option></select></label>
+    </div>
+</div>
+
+<div class="box" id="sliders"></div>
+
+<canvas id="cv" width="1200" height="280"></canvas>
+<div class="hint">회색 파형 · 세로선 = 추정 음절 경계 (빨강 H / 파랑 L) · 회색 점 = 원래 TTS 억양 · 주황선 = 적용 목표 곡선 (가로 점선 간격 = 1옥타브)</div>
+
+<div class="box"><div id="log"></div></div>
+
+<script type="module">
+import { pipeline, env } from 'https://cdn.jsdelivr.net/npm/@huggingface/transformers@3';
+env.allowLocalModels = false; // HuggingFace Hub(무료 CDN)에서 받고 브라우저 캐시에 저장
+
+// ==========================================================
+// 0. 공용 UI
+// ==========================================================
+const $ = id => document.getElementById(id);
+const log = (...a) => { $('log').textContent += a.join(' ') + '\n'; $('log').scrollTop = 1e9; };
+
+const SAMPLES = [
+    '가아′끈′하′다', '가′다′아오′다', '가아′꿍′가다′가', '가난하′다, 가난하′고, 가난하′지, 가난하더′라',
+    '가누′운다, 가누′우고, 가누′우지, 가누′우더라', '가′능′귀먹′따', '가대′기가대′기', '가담′해′애′가′아, 가담하′머'
+];
+SAMPLES.forEach(s => { const o = document.createElement('option'); o.value = o.textContent = s; $('sample').appendChild(o); });
+$('sample').onchange = () => { $('txt').value = $('sample').value; };
+
+const SLIDERS = [
+    { id: 'gap',   name: '고저 간격',     min: 0,   max: 18,  step: 0.5,  def: 9,    unit: '반음', hint: '문장 안 L↔H 차이 (12 = 1옥타브)' },
+    { id: 'base',  name: '기준 음높이',   min: -10, max: 8,   step: 0.5,  def: -2,   unit: '반음', hint: '평조(L) 높이 (원래 TTS 평균 대비)' },
+    { id: 'end',   name: '문말 고조 추가', min: 0,   max: 6,   step: 0.5,  def: 1.5,  unit: '반음', hint: '마지막 음절이 고조이거나 의문일 때 추가 상승' },
+    { id: 'glide', name: '글라이드',      min: 10,  max: 200, step: 5,    def: 60,   unit: 'ms',   hint: '고저 전환 부드러움' },
+    { id: 'keep',  name: '원래 억양 유지', min: 0,   max: 1,   step: 0.05, def: 0.25, unit: '',     hint: '0 = 완전 평탄화 후 곡선만, 1 = 원래 억양 위에 곡선' },
+    { id: 'speed', name: '속도',          min: 0.5, max: 1.5, step: 0.05, def: 0.85, unit: 'x',    hint: '피치와 독립적으로 길이만 변경' },
+];
+const P = {};
+SLIDERS.forEach(s => {
+    const saved = parseFloat(localStorage.getItem('ttslab_' + s.id));
+    P[s.id] = isNaN(saved) ? s.def : saved;
+    const row = document.createElement('div');
+    row.className = 'row';
+    row.innerHTML = `<label class="name">${s.name}</label>
+        <input type="range" id="sl_${s.id}" min="${s.min}" max="${s.max}" step="${s.step}" value="${P[s.id]}">
+        <span class="val" id="v_${s.id}"></span><span class="hint">${s.hint}</span>`;
+    $('sliders').appendChild(row);
+    const show = () => { $('v_' + s.id).textContent = `${(+P[s.id]).toFixed(s.step < 0.1 ? 2 : 1)} ${s.unit}`; };
+    show();
+    $('sl_' + s.id).addEventListener('input', e => {
+        P[s.id] = parseFloat(e.target.value);
+        localStorage.setItem('ttslab_' + s.id, String(P[s.id]));
+        show();
+        scheduleRerender();
+    });
+});
+$('bypass').onchange = () => scheduleRerender();
+$('loop').onchange = () => { if (curSrc) curSrc.loop = $('loop').checked; };
+
+// ==========================================================
+// 1. 방언 발음 파서 (index.html의 2번 엔진 로직과 동일)
+// ==========================================================
+const DIALECT_TONE_CHARS = new Set(["'", "′", "″", "ː", "ˈ", "ˌ", "^"]);
+function decomposeHangulSyl(ch) {
+    const code = ch.charCodeAt(0);
+    if (code < 0xAC00 || code > 0xD7A3) return null;
+    const o = code - 0xAC00;
+    return { cho: Math.floor(o / 588), jung: Math.floor((o % 588) / 28), jong: o % 28 };
+}
+function composeHangulSyl(cho, jung, jong) { return String.fromCharCode(0xAC00 + (cho * 21 + jung) * 28 + jong); }
+const LONG_TAIL = { 0:[0],1:[1,5],2:[0,2],3:[1,3,5],4:[4],5:[5,1],6:[4,6],7:[5,1,7],8:[8],9:[0,9],10:[1,5,10],
+    11:[5,1,11],12:[8,12],13:[13],14:[4,14],15:[5,1,15],16:[20,16],17:[13,17],18:[18],19:[20,19],20:[20] };
+function collapseLongPair(c1, c2) {
+    const d1 = decomposeHangulSyl(c1), d2 = decomposeHangulSyl(c2);
+    if (!d1 || !d2) return null;
+    const ok = LONG_TAIL[d1.jung];
+    if (d1.jong === 0 && d2.cho === 11 && ok && ok.includes(d2.jung)) return composeHangulSyl(d1.cho, d1.jung, d2.jong);
+    return null;
+}
+function parseWord(rawWord) {
+    const chars = Array.from(rawWord.trim()), n = chars.length, raw = [];
+    let i = 0;
+    while (i < n) {
+        const ch = chars[i];
+        if (ch >= '가' && ch <= '힣') {
+            let j = i + 1, hasTone = false;
+            while (j < n && DIALECT_TONE_CHARS.has(chars[j])) { hasTone = true; j++; }
+            let punc = '';
+            while (j < n && !(chars[j] >= '가' && chars[j] <= '힣') && !DIALECT_TONE_CHARS.has(chars[j])) { punc += chars[j]; j++; }
+            raw.push({ char: ch, tone: hasTone ? 'H' : 'L', punc });
+            i = j;
+        } else i++;
+    }
+    const merged = [];
+    for (let k = 0; k < raw.length; k++) {
+        const cur = raw[k];
+        if (k + 1 < raw.length && !cur.punc && collapseLongPair(cur.char, raw[k + 1].char)) {
+            const nxt = raw[k + 1];
+            merged.push({ syls: [cur.char, nxt.char], tones: [cur.tone, nxt.tone], tone: (cur.tone === 'H' || nxt.tone === 'H') ? 'H' : 'L', isLong: true, punc: nxt.punc });
+            k++;
+            continue;
+        }
+        merged.push({ syls: [cur.char], tones: [cur.tone], tone: cur.tone, isLong: false, punc: cur.punc });
+    }
+    return merged;
+}
+
+function cleanText(rawText) {
+    let t = rawText.trim();
+    if (t.startsWith('[') && t.endsWith(']')) t = t.slice(1, -1).trim();
+    t = t.replace(/\[(.*?)\]/g, ' $1 ');
+    t = t.replace(/\{([^/>-]+)[/>-][^}]+\}/g, '$1');
+    t = t.replace(/<[^>]+>/g, '').replace(/°/g, '').replace(/[()]/g, '');
+    return t;
+}
+
+// 텍스트 → 호흡구(문장부호 단위) 목록. 각 호흡구 = 음절 배열 {ch, tone, wordEnd, jong}
+function buildPhrases(rawText) {
+    const phrases = [];
+    cleanText(rawText).split('/').map(s => s.trim()).filter(Boolean).forEach(part => {
+        let cur = [];
+        const words = part.split(/\s+/).filter(Boolean);
+        words.forEach(w => {
+            const units = parseWord(w);
+            units.forEach((u, ui) => {
+                // 장모음은 원래 표기(예: 가아)를 그대로 2음절로 읽혀서 길게 발음
+                u.syls.forEach((ch, si) => {
+                    const d = decomposeHangulSyl(ch);
+                    cur.push({ ch, tone: u.tone, isLong: u.isLong, jong: d ? d.jong : 0, wordEnd: false });
+                });
+                if (ui === units.length - 1 && cur.length) cur[cur.length - 1].wordEnd = true;
+                if (/[,.\?!~]/.test(u.punc) && cur.length) {
+                    phrases.push({ syls: cur, question: /\?/.test(u.punc) });
+                    cur = [];
+                }
+            });
+        });
+        if (cur.length) phrases.push({ syls: cur, question: false });
+    });
+    return phrases;
+}
+
+// ==========================================================
+// 2. 한글 → 로마자 (MMS-TTS 한국어 모델은 uroman 입력을 받음)
+// ==========================================================
+const CHO  = ['g','kk','n','d','tt','r','m','b','pp','s','ss','','j','jj','ch','k','t','p','h'];
+const JUNG = ['a','ae','ya','yae','eo','e','yeo','ye','o','wa','wae','oe','yo','u','wo','we','wi','yu','eu','ui','i'];
+const JONG = ['','g','kk','gs','n','nj','nh','d','l','lg','lm','lb','ls','lt','lp','lh','m','b','bs','s','ss','ng','j','ch','k','t','p','h'];
+function romanizeSyl(ch) {
+    const d = decomposeHangulSyl(ch);
+    if (!d) return '';
+    return CHO[d.cho] + JUNG[d.jung] + JONG[d.jong];
+}
+function romanizePhrase(syls) {
+    let s = '';
+    syls.forEach(x => { s += romanizeSyl(x.ch); if (x.wordEnd) s += ' '; });
+    return s.trim();
+}
+
+// ==========================================================
+// 3. 신호 분석: 프레임 에너지 / F0 (NCCF) / 피치마크
+// ==========================================================
+const HOP_SEC = 0.01;
+
+function frameEnergyDb(x, sr) {
+    const hop = Math.round(sr * HOP_SEC), win = hop * 2;
+    const nF = Math.max(1, Math.floor(x.length / hop));
+    const db = new Float32Array(nF);
+    for (let f = 0; f < nF; f++) {
+        let e = 0, c = 0;
+        for (let i = f * hop - hop / 2; i < f * hop - hop / 2 + win; i++) { if (i >= 0 && i < x.length) { e += x[i] * x[i]; c++; } }
+        db[f] = 10 * Math.log10(e / Math.max(1, c) + 1e-10);
+    }
+    const sm = new Float32Array(nF);
+    for (let f = 0; f < nF; f++) {
+        let s = 0, c = 0;
+        for (let k = -2; k <= 2; k++) if (f + k >= 0 && f + k < nF) { s += db[f + k]; c++; }
+        sm[f] = s / c;
+    }
+    return sm;
+}
+
+function analyzeF0(x, sr, octaveFix = true) {
+    const hop = Math.round(sr * HOP_SEC), minLag = Math.floor(sr / 420), maxLag = Math.ceil(sr / 60), W = maxLag;
+    const nF = Math.max(1, Math.floor(x.length / hop));
+    const f0 = new Float32Array(nF);
+    const db = frameEnergyDb(x, sr);
+    let maxDb = -1e9; for (const v of db) maxDb = Math.max(maxDb, v);
+    const nccf = new Float32Array(maxLag + 2);
+    for (let f = 0; f < nF; f++) {
+        const s = f * hop - maxLag; // 프레임 중심 = f*hop
+        if (s < 0 || s + W + maxLag + 1 >= x.length || db[f] < maxDb - 35) continue;
+        let e0 = 0;
+        for (let i = 0; i < W; i++) e0 += x[s + i] * x[s + i];
+        let eL = 0;
+        for (let i = 0; i < W; i++) eL += x[s + minLag + i] * x[s + minLag + i];
+        let best = 0;
+        for (let lag = minLag; lag <= maxLag; lag++) {
+            if (lag > minLag) { const a = x[s + lag - 1], b = x[s + lag + W - 1]; eL += b * b - a * a; }
+            let num = 0;
+            for (let i = 0; i < W; i++) num += x[s + i] * x[s + i + lag];
+            const v = num / Math.sqrt(e0 * eL + 1e-12);
+            nccf[lag] = v;
+            if (v > best) best = v;
+        }
+        if (best < 0.5) continue;
+        // 배음 오류 방지: 최대값의 88% 이상인 첫 국소 최대 선택
+        let lagSel = -1;
+        for (let lag = minLag + 1; lag < maxLag; lag++) {
+            if (nccf[lag] >= 0.88 * best && nccf[lag] >= nccf[lag - 1] && nccf[lag] >= nccf[lag + 1]) { lagSel = lag; break; }
+        }
+        if (lagSel < 0) continue;
+        const a = nccf[lagSel - 1], b = nccf[lagSel], c = nccf[lagSel + 1];
+        const den = a - 2 * b + c;
+        const off = Math.abs(den) > 1e-9 ? 0.5 * (a - c) / den : 0;
+        f0[f] = sr / (lagSel + off);
+    }
+    // 중앙값 필터 + 고립 유성 프레임 제거 + 옥타브 튐 보정
+    const out = new Float32Array(nF);
+    for (let f = 0; f < nF; f++) {
+        if (!f0[f]) continue;
+        const win = [];
+        for (let k = -2; k <= 2; k++) if (f0[f + k]) win.push(f0[f + k]);
+        if (win.length < 3) continue;
+        win.sort((p, q) => p - q);
+        out[f] = win[Math.floor(win.length / 2)];
+    }
+    const voiced = Array.from(out).filter(v => v > 0).sort((p, q) => p - q);
+    const med = voiced.length ? voiced[Math.floor(voiced.length / 2)] : 150;
+    for (let f = 0; f < nF && octaveFix; f++) {
+        if (!out[f]) continue;
+        if (out[f] > med * 1.9) out[f] /= 2;
+        else if (out[f] < med / 1.9) out[f] *= 2;
+    }
+    return { f0: out, med, db };
+}
+
+function pitchMarks(x, sr, f0) {
+    const hop = Math.round(sr * HOP_SEC), N = x.length, uvP = Math.round(sr * 0.006);
+    const f0At = t => f0[Math.min(f0.length - 1, Math.max(0, Math.round(t / hop)))];
+    const marks = [];
+    let pos = 0, prevV = false;
+    while (pos < N) {
+        const F = f0At(pos);
+        if (F > 0) {
+            const Pd = sr / F;
+            let lo, hi;
+            if (prevV) { lo = Math.round(pos - 0.2 * Pd); hi = Math.round(pos + 0.2 * Pd); }
+            else { lo = Math.round(pos); hi = Math.round(pos + Pd); }
+            lo = Math.max(lo, marks.length ? marks[marks.length - 1].pos + 1 : 0);
+            hi = Math.min(hi, N - 1);
+            if (hi <= lo) break;
+            let m = lo;
+            for (let i = lo; i <= hi; i++) if (x[i] > x[m]) m = i;
+            marks.push({ pos: m, P: Math.round(Pd), v: true });
+            prevV = true;
+            pos = m + Pd;
+        } else {
+            marks.push({ pos: Math.round(pos), P: uvP, v: false });
+            prevV = false;
+            pos += uvP;
+        }
+    }
+    return marks;
+}
+
+// ==========================================================
+// 4. 음절 경계 추정 (에너지 골짜기 + 예상 길이 DP)
+// ==========================================================
+function segmentSyllables(x, sr, syls) {
+    const hop = Math.round(sr * HOP_SEC);
+    const db = frameEnergyDb(x, sr);
+    let maxDb = -1e9, minDb = 1e9;
+    for (const v of db) { maxDb = Math.max(maxDb, v); }
+    let st = 0, en = db.length - 1;
+    while (st < en && db[st] < maxDb - 40) st++;
+    while (en > st && db[en] < maxDb - 40) en--;
+    for (let f = st; f <= en; f++) minDb = Math.min(minDb, db[f]);
+    const T = en - st, n = syls.length;
+    const bc = f => (db[st + f] - minDb) / Math.max(1e-6, maxDb - minDb);
+    const w = syls.map(s => 1 + (s.jong ? 0.3 : 0) + (s.wordEnd ? 0.15 : 0));
+    const sumW = w.reduce((a, b) => a + b, 0);
+    const E = w.map(v => v / sumW * T);
+    let bounds = null;
+    if (n === 1 || T < n * 2) {
+        bounds = [0];
+        let acc = 0;
+        E.forEach(e => { acc += e; bounds.push(Math.round(acc)); });
+    } else {
+        const INF = 1e18, dp = new Float64Array((n + 1) * (T + 1)).fill(INF), bk = new Int32Array((n + 1) * (T + 1)).fill(-1);
+        dp[0] = 0;
+        for (let k = 1; k <= n; k++) {
+            const e = E[k - 1], minL = Math.max(2, Math.floor(0.35 * e)), maxL = Math.ceil(2.6 * e) + 2;
+            for (let f = 1; f <= T; f++) {
+                if (k === n && f !== T) continue;
+                const bcost = k < n ? 2.0 * bc(f) : 0;
+                let best = INF, arg = -1;
+                for (let L = minL; L <= maxL; L++) {
+                    const g = f - L;
+                    if (g < 0) break;
+                    const prev = dp[(k - 1) * (T + 1) + g];
+                    if (prev >= INF) continue;
+                    const c = prev + 0.8 * ((L - e) / e) ** 2 + bcost;
+                    if (c < best) { best = c; arg = g; }
+                }
+                dp[k * (T + 1) + f] = best;
+                bk[k * (T + 1) + f] = arg;
+            }
+        }
+        if (dp[n * (T + 1) + T] < INF) {
+            bounds = [T];
+            let f = T;
+            for (let k = n; k >= 1; k--) { f = bk[k * (T + 1) + f]; bounds.push(f); }
+            bounds.reverse();
+        } else {
+            bounds = [0]; let acc = 0; E.forEach(e => { acc += e; bounds.push(Math.round(acc)); });
+        }
+    }
+    return syls.map((s, i) => ({ ...s, start: (st + bounds[i]) * hop, end: (st + bounds[i + 1]) * hop }));
+}
+
+// ==========================================================
+// 5. 목표 피치 곡선 (반음, 10ms 프레임) + TD-PSOLA 합성
+// ==========================================================
+function buildContour(nF, segs, sr) {
+    const hop = Math.round(sr * HOP_SEC);
+    const C = new Float32Array(nF).fill(NaN);
+    segs.forEach(s => {
+        let lv = s.tone === 'H' ? P.gap : 0;
+        if (s.phraseLast && (s.tone === 'H' || s.question)) lv += P.end;
+        for (let f = Math.floor(s.start / hop); f < Math.ceil(s.end / hop) && f < nF; f++) C[f] = lv;
+    });
+    let last = NaN;
+    for (let f = 0; f < nF; f++) { if (isNaN(C[f])) C[f] = last; else last = C[f]; }
+    let first = C.find(v => !isNaN(v)); if (first === undefined) first = 0;
+    for (let f = 0; f < nF && isNaN(C[f]); f++) C[f] = first;
+    // 상승 코사인 커널로 스무딩 → 계단이 아니라 미끄러지듯 연결 (전체 폭 = 글라이드 시간)
+    const K = Math.max(1, Math.round(P.glide / 20));
+    const ker = []; let ks = 0;
+    for (let k = -K; k <= K; k++) { const v = 0.5 + 0.5 * Math.cos(Math.PI * k / (K + 1)); ker.push(v); ks += v; }
+    const S = new Float32Array(nF);
+    for (let f = 0; f < nF; f++) {
+        let s = 0;
+        for (let k = -K; k <= K; k++) s += C[Math.min(nF - 1, Math.max(0, f + k))] * ker[k + K];
+        S[f] = s / ks + P.base;
+    }
+    return S;
+}
+
+function psola(x, sr, marks, stretch, targetF0At) {
+    const N = x.length, outLen = Math.round(N * stretch);
+    const out = new Float32Array(outLen + 4096), ws = new Float32Array(outLen + 4096);
+    const mp = marks.map(m => m.pos);
+    const nearest = t => {
+        let lo = 0, hi = mp.length - 1;
+        while (hi - lo > 1) { const mid = (lo + hi) >> 1; if (mp[mid] < t) lo = mid; else hi = mid; }
+        return Math.abs(mp[lo] - t) <= Math.abs(mp[hi] - t) ? lo : hi;
+    };
+    let ts = 0;
+    while (ts < outLen) {
+        const ta = ts / stretch;
+        const m = marks[nearest(ta)];
+        const Pa = m.P;
+        let Ps = Pa;
+        if (m.v) { const F = targetF0At(ta); if (F > 0) Ps = sr / F; }
+        const half = Math.max(8, Math.round(m.v ? Math.min(Math.max(Pa, Ps), 1.5 * Pa) : Pa));
+        const c = Math.round(ts);
+        for (let k = -half; k <= half; k++) {
+            const src = m.pos + k, dst = c + k;
+            if (src < 0 || src >= N || dst < 0) continue;
+            const w = 0.5 + 0.5 * Math.cos(Math.PI * k / half);
+            out[dst] += x[src] * w;
+            ws[dst] += w;
+        }
+        ts += Math.max(8, Ps);
+    }
+    const y = new Float32Array(outLen);
+    for (let i = 0; i < outLen; i++) y[i] = ws[i] > 1e-4 ? out[i] / Math.max(ws[i], 0.4) : 0;
+    return y;
+}
+
+// ==========================================================
+// 6. 생성 파이프라인
+// ==========================================================
+let tts = null, sr = 16000;
+let A = null; // 분석 결과 캐시 {x, f0, med, marks, segs}
+let rendered = null;
+
+async function loadModel() {
+    const dtype = $('dtype').value;
+    $('btnGen').disabled = true;
+    $('btnGen').textContent = '모델 로딩 중…';
+    const t0 = performance.now();
+    const seen = {};
+    tts = await pipeline('text-to-speech', 'Xenova/mms-tts-kor', {
+        dtype,
+        progress_callback: p => {
+            if (p.status === 'progress' && p.file) {
+                const pct = Math.round(p.progress || 0);
+                if (seen[p.file] !== pct && pct % 10 === 0) { seen[p.file] = pct; $('btnGen').textContent = `다운로드 ${p.file.split('/').pop()} ${pct}%`; }
+            }
+        }
+    });
+    log(`모델 준비 완료 (${dtype}, ${((performance.now() - t0) / 1000).toFixed(1)}초, 다음부터는 브라우저 캐시 사용)`);
+    $('btnGen').disabled = false;
+    $('btnGen').textContent = '🔊 생성 · 재생';
+}
+$('dtype').onchange = () => loadModel().catch(e => log('모델 로드 실패: ' + e));
+
+async function generate() {
+    if (!tts) return;
+    const phrases = buildPhrases($('txt').value);
+    if (!phrases.length) { log('읽을 한글 음절이 없습니다.'); return; }
+    $('btnGen').disabled = true;
+    const t0 = performance.now();
+    const gap = new Float32Array(Math.round(sr * 0.15));
+    const pieces = [], segs = [];
+    let offset = 0;
+    for (let pi = 0; pi < phrases.length; pi++) {
+        const ph = phrases[pi];
+        const roman = romanizePhrase(ph.syls);
+        const out = await tts(roman);
+        sr = out.sampling_rate;
+        const x = out.audio;
+        log(`[${pi + 1}] ${ph.syls.map(s => s.ch + (s.tone === 'H' ? '′' : '')).join('')}  →  "${roman}"  (${(x.length / sr).toFixed(2)}초)`);
+        segmentSyllables(x, sr, ph.syls).forEach((s, i, arr) => {
+            segs.push({ ...s, start: s.start + offset, end: s.end + offset, phraseLast: i === arr.length - 1, question: ph.question });
+        });
+        pieces.push(x);
+        offset += x.length;
+        if (pi < phrases.length - 1) { pieces.push(gap); offset += gap.length; }
+    }
+    const x = new Float32Array(offset);
+    let o = 0; pieces.forEach(p => { x.set(p, o); o += p.length; });
+    const t1 = performance.now();
+    const { f0, med } = analyzeF0(x, sr);
+    const marks = pitchMarks(x, sr, f0);
+    A = { x, f0, med, marks, segs };
+    log(`TTS ${((t1 - t0) / 1000).toFixed(2)}초 · 분석 ${(performance.now() - t1).toFixed(0)}ms · 원래 평균 F0 ${med.toFixed(0)}Hz · 음절 ${segs.length}개`);
+    $('btnGen').disabled = false;
+    $('btnPlay').disabled = false;
+    render();
+    play(0);
+}
+
+function render() {
+    if (!A) return;
+    const t0 = performance.now();
+    const hop = Math.round(sr * HOP_SEC);
+    const stretch = 1 / P.speed;
+    const tail = new Float32Array(Math.round(sr * 0.45)); // 반복 재생 시 사이 쉼
+    let y;
+    if ($('bypass').checked) {
+        y = A.x;
+        A.contour = null;
+    } else {
+        const nF = A.f0.length;
+        const C = buildContour(nF, A.segs, sr);
+        A.contour = C;
+        const target = ta => {
+            const fr = ta / hop, f = Math.min(nF - 1, Math.max(0, Math.floor(fr))), f2 = Math.min(nF - 1, f + 1), a = fr - f;
+            const st = C[f] * (1 - a) + C[f2] * a;
+            let F = A.med * Math.pow(2, st / 12);
+            const o = A.f0[f];
+            if (o > 0 && P.keep > 0) F *= Math.pow(o / A.med, P.keep);
+            return F;
+        };
+        y = psola(A.x, sr, A.marks, stretch, target);
+    }
+    const z = new Float32Array(y.length + tail.length);
+    z.set(y);
+    rendered = { y: z, stretch: $('bypass').checked ? 1 : stretch, ms: performance.now() - t0 };
+    draw();
+}
+
+// ==========================================================
+// 7. 재생 (슬라이더 변경 시 재생 위치 유지 + 크로스페이드)
+// ==========================================================
+let ctx = null, curSrc = null, curGain = null, startedAt = 0, curDur = 1;
+function currentPos() {
+    if (!curSrc || !ctx) return 0;
+    const t = ctx.currentTime - startedAt;
+    return curSrc.loop ? (t % curDur) : Math.min(t, curDur);
+}
+function play(offsetSec) {
+    if (!rendered) return;
+    ctx = ctx || new AudioContext();
+    if (ctx.state === 'suspended') ctx.resume();
+    const buf = ctx.createBuffer(1, rendered.y.length, sr);
+    buf.copyToChannel(rendered.y, 0);
+    const src = ctx.createBufferSource();
+    src.buffer = buf;
+    src.loop = $('loop').checked;
+    const g = ctx.createGain();
+    src.connect(g).connect(ctx.destination);
+    const now = ctx.currentTime, fade = 0.035;
+    if (curSrc) {
+        curGain.gain.setValueAtTime(curGain.gain.value, now);
+        curGain.gain.linearRampToValueAtTime(0, now + fade);
+        try { curSrc.stop(now + fade + 0.01); } catch (e) {}
+        g.gain.setValueAtTime(0, now);
+        g.gain.linearRampToValueAtTime(1, now + fade);
+    }
+    const off = Math.max(0, Math.min(buf.duration - 0.01, offsetSec));
+    src.start(now, off);
+    startedAt = now - off;
+    curSrc = src; curGain = g; curDur = buf.duration;
+    src.onended = () => { if (curSrc === src) { curSrc = null; } };
+}
+function stop() { if (curSrc) { try { curSrc.stop(); } catch (e) {} curSrc = null; } }
+
+let rerenderTimer = null;
+function scheduleRerender() {
+    if (!A) return;
+    clearTimeout(rerenderTimer);
+    rerenderTimer = setTimeout(() => {
+        const wasPlaying = !!curSrc;
+        const oldDur = curDur, oldPos = currentPos();
+        render();
+        if (wasPlaying) play(oldPos / oldDur * (rendered.y.length / sr)); // 같은 위치에서 이어서
+    }, 40);
+}
+
+$('btnGen').onclick = () => generate().catch(e => { log('오류: ' + e); $('btnGen').disabled = false; });
+$('btnPlay').onclick = () => play(0);
+$('btnStop').onclick = stop;
+$('txt').addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); $('btnGen').click(); } });
+
+// ==========================================================
+// 8. 시각화
+// ==========================================================
+function draw() {
+    const cv = $('cv'), g = cv.getContext('2d'), W = cv.width, H = cv.height;
+    g.clearRect(0, 0, W, H);
+    if (!rendered || !A) return;
+    const y = rendered.y, dur = y.length / sr, st = rendered.stretch;
+    const tx = t => t / dur * W;
+    const STMIN = -14, STMAX = 26;
+    const ty = s => H - (s - STMIN) / (STMAX - STMIN) * H;
+    // 옥타브 가이드
+    g.strokeStyle = '#e3eef5'; g.setLineDash([4, 4]);
+    [-12, 0, 12, 24].forEach(s => { g.beginPath(); g.moveTo(0, ty(s)); g.lineTo(W, ty(s)); g.stroke(); g.fillStyle = '#9ab'; g.fillText(`${s > 0 ? '+' : ''}${s}`, 2, ty(s) - 2); });
+    g.setLineDash([]);
+    // 파형
+    g.strokeStyle = '#ccc'; g.beginPath();
+    const step = Math.max(1, Math.floor(y.length / W));
+    for (let px = 0; px < W; px++) {
+        let mx = 0; for (let i = px * step; i < (px + 1) * step && i < y.length; i++) mx = Math.max(mx, Math.abs(y[i]));
+        g.moveTo(px, H / 2 - mx * H * 0.45); g.lineTo(px, H / 2 + mx * H * 0.45);
+    }
+    g.stroke();
+    // 음절 경계
+    g.font = '15px Malgun Gothic';
+    A.segs.forEach(s => {
+        const x0 = tx(s.start / sr * st), x1 = tx(s.end / sr * st);
+        g.strokeStyle = s.tone === 'H' ? '#e55' : '#58c';
+        g.beginPath(); g.moveTo(x0, 0); g.lineTo(x0, H); g.stroke();
+        g.fillStyle = s.tone === 'H' ? '#e55' : '#36a';
+        g.fillText(s.ch, (x0 + x1) / 2 - 7, 18);
+    });
+    // 원래 F0
+    const hop = Math.round(sr * HOP_SEC);
+    g.fillStyle = '#999';
+    for (let f = 0; f < A.f0.length; f++) if (A.f0[f] > 0) {
+        const s = 12 * Math.log2(A.f0[f] / A.med);
+        g.fillRect(tx(f * hop / sr * st) - 1, ty(s) - 1, 2, 2);
+    }
+    // 목표 곡선
+    if (A.contour) {
+        g.strokeStyle = '#f39c12'; g.lineWidth = 2.5; g.beginPath();
+        let started = false;
+        for (let f = 0; f < A.contour.length; f++) {
+            const X = tx(f * hop / sr * st), Y = ty(A.contour[f]);
+            if (!started) { g.moveTo(X, Y); started = true; } else g.lineTo(X, Y);
+        }
+        g.stroke(); g.lineWidth = 1;
+    }
+    g.fillStyle = '#555';
+    g.fillText(`렌더 ${rendered.ms.toFixed(0)}ms · 고저 간격 ${P.gap}반음 (${(Math.pow(2, P.gap / 12)).toFixed(2)}배)`, W - 330, H - 6);
+}
+(function anim() {
+    if (rendered && curSrc) {
+        draw();
+        const g = $('cv').getContext('2d'), W = $('cv').width;
+        const x = currentPos() / (rendered.y.length / sr) * W;
+        g.strokeStyle = '#2a2'; g.beginPath(); g.moveTo(x, 0); g.lineTo(x, $('cv').height); g.stroke();
+    }
+    requestAnimationFrame(anim);
+})();
+
+// ==========================================================
+// 9. 자가 검증: 변조 결과의 실제 F0를 다시 측정해 음절별 목표와 비교 (?autotest=1)
+// ==========================================================
+function verifyRendered() {
+    if (!A || !rendered || !A.contour) return;
+    const st = rendered.stretch, hop = Math.round(sr * HOP_SEC);
+    const { f0 } = analyzeF0(rendered.y, sr, false);
+    const rows = [];
+    A.segs.forEach(s => {
+        const a = Math.round(s.start * st / hop), b = Math.round(s.end * st / hop);
+        const mid = [a + Math.round((b - a) * 0.3), a + Math.round((b - a) * 0.7)];
+        const v = []; for (let f = mid[0]; f <= mid[1]; f++) if (f0[f] > 0) v.push(12 * Math.log2(f0[f] / A.med));
+        v.sort((p, q) => p - q);
+        const tg = A.contour[Math.round((s.start + s.end) / 2 / hop)];
+        rows.push(`${s.ch}${s.tone === 'H' ? '′' : ' '} 목표 ${tg.toFixed(1)} / 측정 ${v.length ? v[v.length >> 1].toFixed(1) : '무성'}`);
+    });
+    log('검증(반음, 원래 평균 대비): ' + rows.join(' | '));
+}
+window.__verify = verifyRendered;
+
+const postLog = () => { try { fetch('/__autotest', { method: 'POST', body: $('log').textContent }); } catch (e) {} };
+const QS = new URLSearchParams(location.search);
+if (QS.get('dtype')) $('dtype').value = QS.get('dtype');
+log(`환경: crossOriginIsolated=${self.crossOriginIsolated}, CPU 코어=${navigator.hardwareConcurrency}, WebGPU=${!!navigator.gpu}`);
+loadModel().then(async () => {
+    if (!QS.has('autotest')) return;
+    for (const s of [SAMPLES[0], ...SAMPLES.slice(0, 4)]) { // 첫 번째는 워밍업
+        $('txt').value = s;
+        await generate();
+        verifyRendered();
+    }
+    postLog();
+}).catch(e => { log('모델 로드 실패: ' + e + '\n(로컬 서버(http://)로 열었는지 확인하세요)'); if (QS.has('autotest')) postLog(); });
+</script>
+</body>
+</html>
