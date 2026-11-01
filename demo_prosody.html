@@ -1969,18 +1969,18 @@ function playUnifiedDialectSpeech(sentId, allWords, words, cleanText, dialectTex
 
     if (isExplicitMale) {
         // 네이티브 남성 보이스(InJoon 등 ~120Hz)일 때
-        pLow = Math.max(0.68, Math.min(0.95, 0.82 * (params.lowPitch / 1.05)));
+        pLow = Math.max(0.52, Math.min(0.82, 0.68 * (params.lowPitch / 1.05)));
         pStdFlat = Math.max(0.78, Math.min(1.05, pLow * 1.05));
-        const gap = pLow * Math.max(0.48, (params.highPitch - 1.0) * 1.35);
-        pHigh = Math.min(1.95, pLow + gap);
-        pEndHigh = Math.min(2.00, Math.max(pHigh + 0.08, pHigh * Math.pow(2, Math.max(0.5, params.endBoostSemitones) / 12.0)));
+        const gap = pLow * (params.highPitch - 1.0) * 1.6;
+        pHigh = Math.min(2.00, pLow + Math.max(0.40, gap));
+        pEndHigh = Math.min(2.00, Math.max(pHigh + 0.12, pHigh * Math.pow(2, Math.max(0.6, params.endBoostSemitones) / 10.0)));
     } else {
-        // 기본 여성 보이스(Microsoft Heami 등 ~225Hz)를 남성 음역으로 하향: 평조 0.35, 고조 최대 1.15
-        pLow = Math.max(0.30, Math.min(0.42, 0.35 * (params.lowPitch / 1.05)));
+        // 기본 여성 보이스(Microsoft Heami 등 ~225Hz) 환경: 평조는 0.26~0.32, 고조는 최대 1.45!
+        pLow = Math.max(0.22, Math.min(0.34, 0.28 * (params.lowPitch / 1.05)));
         pStdFlat = Math.max(0.36, Math.min(0.48, pLow * 1.05));
-        const gap = pLow * Math.max(0.55, (params.highPitch - 1.0) * 1.45);
-        pHigh = Math.min(1.15, pLow + gap);
-        pEndHigh = Math.min(1.22, Math.max(pHigh + 0.06, pHigh * Math.pow(2, Math.max(0.5, params.endBoostSemitones) / 12.0)));
+        const gap = 0.35 * Math.max(0.65, (params.highPitch - 1.0) * 1.7);
+        pHigh = Math.min(1.45, pLow + gap);
+        pEndHigh = Math.min(1.55, Math.max(pHigh + 0.10, pHigh * Math.pow(2, Math.max(0.6, params.endBoostSemitones) / 10.0)));
     }
 
     const voiceDisplayName = maleVoice
@@ -2014,66 +2014,74 @@ function playUnifiedDialectSpeech(sentId, allWords, words, cleanText, dialectTex
         });
         estTotalSeconds = Math.max(1.1, (stdText.length * 0.16) / Math.max(0.6, params.baseRate));
     } else {
-        // 2번 버튼: 물 흐르듯 연속 사투리 합성 (장모음 3모라 연결 연장 + 호흡구별 남성 고저장단 다이내믹 변조)
+        // 2번 버튼: 물 흐르듯 연속 사투리 합성 (성조 청크별 극적 고저 피치 점프 + 장모음 3모라 연결 연장)
         const phrases = groupWordsIntoProsodicPhrases(words);
 
         phrases.forEach((phraseWords, pIdx) => {
-            const phraseText = phraseWords.map(w => {
-                return w.syls.map(s => formatSyllableForSpeech(s, 'prosody', params, collapseLong)).join('');
-            }).join(' ');
-
-            const u = new SpeechSynthesisUtterance(phraseText);
-            u.lang = 'ko-KR';
-            if (maleVoice) u.voice = maleVoice;
-
-            let totalSyls = 0;
-            let highSyls = 0;
-            let longSyls = 0;
-            let firstSylHigh = false;
-            let lastSylHigh = false;
-
+            const allSyls = [];
             phraseWords.forEach((pw, pwIdx) => {
                 pw.syls.forEach((s, sIdx) => {
-                    totalSyls++;
-                    if (s.tone === 'H') highSyls++;
-                    if (s.isLong) longSyls++;
-                    if (pwIdx === 0 && sIdx === 0 && s.tone === 'H') firstSylHigh = true;
-                    if (pwIdx === phraseWords.length - 1 && sIdx === pw.syls.length - 1 && s.tone === 'H') lastSylHigh = true;
+                    const isWordEnd = (sIdx === pw.syls.length - 1);
+                    allSyls.push({
+                        syl: s,
+                        wordIndex: pw.wordIndex,
+                        isWordEnd,
+                        formatted: formatSyllableForSpeech(s, 'prosody', params, collapseLong),
+                        tone: s.tone
+                    });
                 });
             });
 
-            const highDensity = totalSyls > 0 ? (highSyls / totalSyls) : 0;
-            const isQuestionOrExclaim = /[\?\!]$/.test(phraseText.trim()) || /(애이가|인나|읻따|시더|디더|지요)[\.\?\!]*$/.test(phraseText.trim());
+            if (allSyls.length === 0) return;
 
-            // 호흡구 성조 비중에 따른 남성 피치 결정 (평조 pLow ~ 고조 pHigh ~ 어말고조 pEndHigh)
-            let targetPitch = pLow;
-            if (highSyls > 0) {
-                const boostWeight = Math.min(1.0, 0.55 + highDensity * 0.55 + (firstSylHigh ? 0.15 : 0));
-                targetPitch = pLow + (pHigh - pLow) * boostWeight;
-                if (lastSylHigh || isQuestionOrExclaim) {
-                    targetPitch = Math.max(targetPitch, pEndHigh);
+            const chunks = [];
+            let curChunk = { tone: allSyls[0].tone, syls: [allSyls[0]] };
+            for (let i = 1; i < allSyls.length; i++) {
+                const item = allSyls[i];
+                if (item.tone === curChunk.tone) {
+                    curChunk.syls.push(item);
+                } else {
+                    chunks.push(curChunk);
+                    curChunk = { tone: item.tone, syls: [item] };
                 }
             }
-            u.pitch = Number(targetPitch.toFixed(2));
+            chunks.push(curChunk);
 
-            // 장모음이 포함된 호흡구는 모음 3모라 확장(사아아, 초오온)과 더불어 발화 속도를 미세 감속하여 충분한 장음 길이 구현!
-            let phraseRate = params.baseRate;
-            if (longSyls > 0) {
-                const longRatio = longSyls / Math.max(1, totalSyls);
-                const slowFactor = 1.0 + (params.longStretch - 1.0) * (0.16 + longRatio * 0.14);
-                phraseRate = params.baseRate / slowFactor;
-            } else if (highSyls === 0) {
-                // 평조 단모음 구간은 자연스러운 대화 속도로 경쾌하게 연결
-                phraseRate = params.baseRate * 1.05;
-            }
-            u.rate = Number(Math.max(0.62, Math.min(1.30, phraseRate)).toFixed(2));
+            chunks.forEach((chunk, cIdx) => {
+                const chunkText = chunk.syls.map((item, idx) => {
+                    const nextItem = chunk.syls[idx + 1];
+                    return item.formatted + (item.isWordEnd && nextItem ? ' ' : '');
+                }).join('').trim();
+                if (!chunkText) return;
 
-            const wStart = phraseWords[0].wordIndex;
-            const wEnd = phraseWords[phraseWords.length - 1].wordIndex;
-            const phraseDur = (phraseText.length * 0.165) / Math.max(0.58, u.rate);
-            estTotalSeconds += phraseDur;
+                const u = new SpeechSynthesisUtterance(chunkText);
+                u.lang = 'ko-KR';
+                if (maleVoice) u.voice = maleVoice;
 
-            utterances.push({ u, wordStartIdx: wStart, wordEndIdx: wEnd });
+                const isLastChunk = (cIdx === chunks.length - 1);
+                const hasLong = chunk.syls.some(item => item.syl.isLong);
+
+                let pitch = (chunk.tone === 'H') ? pHigh : pLow;
+                if (chunk.tone === 'H' && isLastChunk) {
+                    pitch = Math.max(pitch, pEndHigh);
+                }
+                u.pitch = Number(Math.max(0.1, Math.min(2.0, pitch)).toFixed(2));
+
+                let rate = params.baseRate;
+                if (hasLong) {
+                    rate = params.baseRate / (1.0 + (params.longStretch - 1.0) * 0.22);
+                } else if (chunk.tone === 'L') {
+                    rate = params.baseRate * 1.04;
+                }
+                u.rate = Number(Math.max(0.55, Math.min(1.40, rate)).toFixed(2));
+
+                const dur = (chunkText.length * 0.165) / Math.max(0.58, u.rate);
+                estTotalSeconds += dur;
+
+                const chunkStart = chunk.syls[0].wordIndex;
+                const chunkEnd = chunk.syls[chunk.syls.length - 1].wordIndex;
+                utterances.push({ u, wordStartIdx: chunkStart, wordEndIdx: chunkEnd });
+            });
         });
         estTotalSeconds = Math.max(1.2, estTotalSeconds);
     }
