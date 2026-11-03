@@ -811,8 +811,8 @@
                     <span id="speedValBadge" class="speed-val-badge">0.76x</span>
                 </div>
             </div>
-            <!-- 2번(하늘색) 스피커 전용: 문장 내 저음↔고음 간격(반음) 조절 바 -->
-            <div class="speed-row" title="2번(하늘색) 스피커에서 문장 내 평조(L)와 고조(H) 사이의 음높이 간격을 반음 단위로 조절합니다 (12반음 = 정확히 1옥타브)">
+            <!-- 2번(하늘색) 스피커 전용: 어절 내 평조(L)↔강세(′) 간격(반음) 조절 바 (기본 6.0반음 = 5~7반음 표준) -->
+            <div class="speed-row" title="2번(하늘색) 스피커에서 어절 내 평조 음절(L)과 강세 음절(′) 사이의 음높이 간격을 반음 단위로 조절합니다 (기본 6.0반음)">
                 <div class="speed-control-title">
                     <svg viewBox="0 0 24 24" style="width:16px; height:16px; fill:#00bcd4; vertical-align:-2px;">
                         <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
@@ -821,9 +821,9 @@
                 </div>
                 <div class="speed-slider-wrap">
                     <span style="font-size:11.5px; color:#64748b;">평탄</span>
-                    <input type="range" id="toneGapSlider" class="speed-slider" min="0" max="18" step="0.5" value="12" oninput="onToneGapSliderChange(this.value)">
-                    <span style="font-size:11.5px; color:#64748b;">1.5옥타브</span>
-                    <span id="toneGapBadge" class="speed-val-badge">12.0반음</span>
+                    <input type="range" id="toneGapSlider" class="speed-slider" min="0" max="12" step="0.5" value="6" oninput="onToneGapSliderChange(this.value)">
+                    <span style="font-size:11.5px; color:#64748b;">1옥타브</span>
+                    <span id="toneGapBadge" class="speed-val-badge">6.0반음</span>
                 </div>
             </div>
         </div>
@@ -1546,14 +1546,14 @@
         }
 
         // ========================================================
-        // [2번(하늘색) TTS 전용: 성조 고저 간격(반음) 조절 헬퍼]
-        // 문장 내 평조(L)와 고조(H) 사이의 피치 간격을 반음 단위로 조절 (12.0 = 정확히 1옥타브)
+        // [2번(하늘색) TTS 전용: 어절 내 평조(L)↔강세(′) 고저 간격(반음) 조절 헬퍼]
+        // 어절 내 평조 음절과 강세 음절 사이의 피치 간격을 반음 단위로 조절 (기본 6.0반음 = 5~7반음 표준)
         // ========================================================
-        const DEFAULT_TONE_GAP = 12.0;
+        const DEFAULT_TONE_GAP = 6.0;
 
         function getEffectiveToneGap() {
-            const saved = parseFloat(localStorage.getItem('web_tts_sky_gap'));
-            if (!isNaN(saved) && saved >= 0 && saved <= 18.0) return saved;
+            const saved = parseFloat(localStorage.getItem('web_tts_sky_gap_5_7'));
+            if (!isNaN(saved) && saved >= 0 && saved <= 12.0) return saved;
             return DEFAULT_TONE_GAP;
         }
 
@@ -1562,7 +1562,7 @@
             if (isNaN(num)) return;
             const badge = document.getElementById('toneGapBadge');
             if (badge) badge.innerText = `${num.toFixed(1)}반음`;
-            localStorage.setItem('web_tts_sky_gap', num.toFixed(1));
+            localStorage.setItem('web_tts_sky_gap_5_7', num.toFixed(1));
         }
 
         // Chrome은 첫 호출 시 getVoices()가 빈 배열을 반환하므로 미리 음성 목록을 로드해 둠
@@ -1773,39 +1773,74 @@
             return s.rawPair + s.punc;
         }
 
-        // 2번(하늘색) 스피커 호흡구 묶기:
-        // - 단어(어절) 내부에서는 절대 쪼개지 않아 글자 사이가 뚝뚝 끊기는 현상을 원천 방지!
-        // - 어절 단위로만 묶되, 평조 어절(L)과 고조 어절(H, ′ 포함)의 성조가 크게 바뀌는 어절 경계 또는 문장부호에서만 호흡구를 나누어
-        //   자연스럽게 이어 읽으면서도 구절 간 저음↔고음 대비를 확실하게 살림!
-        const SKY_MAX_PHRASE_WORDS = 5;
+        // 2번(하늘색) 스피커 전용: 어절 내 성조 패턴(앞·중간 강세 H-L vs 끝 강세 L-H vs 평조 L-L)에 따른
+        // 무분할(끊김 0초) 음절 포맷터
+        // - 장모음(isLong)은 3모라로 부드럽게 연장
+        // - 어절 앞·중간에 위치한 단모음 강세 음절(H)은 받침이 없을 때 모음 여운을 반박자 살짝 더해
+        //   한국어 여성 TTS가 첫/중간 강세 음절에서 최고 피치(+5~7반음)를 찍고 뒤 평조 음절에서 자연 하강(H->L)하도록 유도!
+        function formatSylForSkyIntraWord(s, sIdx, totalSyls, longStretch) {
+            if (s.isLong) {
+                return formatSylForDialectSpeech(s, longStretch);
+            }
+            // 어절 앞·중간에 있는 강세(H) 단모음 음절이고 뒤에 평조 음절이 이어질 때:
+            // 받침이 없는 개음절(예: 가′새, 거′기)이면 모음 핵을 반박자 공명시켜 TTS의 피치 피크를 해당 음절에 고정
+            if (s.tone === 'H' && sIdx < totalSyls - 1 && !s.punc) {
+                const dec = decomposeHangulSyl(s.char);
+                if (dec && dec.jong === 0) {
+                    const vTail = composeHangulSyl(11, dec.jung, 0);
+                    return s.char + vTail;
+                }
+            }
+            return s.char + (s.punc || "");
+        }
+
+        // 어절의 내부 성조 패턴 분류기:
+        // - 'FINAL_H' : 어절의 마지막 음절에 강세(′)가 있는 패턴 (예: 가새′, 갈꾸리′, 보소′ -> 저음 L에서 시작해 끝 음절만 +5~7반음 상승)
+        // - 'EARLY_H' : 어절의 첫/중간 음절에 강세(′)가 있고 끝은 평조인 패턴 (예: 가′새, 사아′람, 어데′서 -> 강세 음절 +5~7반음에서 뒤 음절 평조로 하강)
+        // - 'FLAT_L'  : 어절 전체가 평조인 패턴 (예: 사람, 그기 -> 여성 자연 평조 0.95로 차분하게 유지)
+        function classifyWordTonePattern(w) {
+            const syls = w.syls;
+            if (!syls || syls.length === 0) return 'FLAT_L';
+            const hasAnyH = syls.some(s => s.tone === 'H');
+            if (!hasAnyH) return 'FLAT_L';
+            const lastIsH = (syls[syls.length - 1].tone === 'H');
+            const firstIsL = (syls[0].tone === 'L');
+            if (lastIsH && (firstIsL || syls.length === 1)) {
+                return 'FINAL_H';
+            }
+            return 'EARLY_H';
+        }
+
+        // 어절 내부는 절대 쪼개지 않고, 같은 성조 곡선 방향을 가진 어절끼리 자연스럽게 묶어주는 함수
+        const SKY_MAX_PHRASE_WORDS = 4;
 
         function groupDialectWordsForSpeech(words) {
             const phrases = [];
             let cur = [];
-            let curHasHigh = null;
+            let curPattern = null;
 
             for (let i = 0; i < words.length; i++) {
                 const w = words[i];
-                const wordHasHigh = w.syls.some(s => s.tone === 'H');
+                const pat = classifyWordTonePattern(w);
                 const lastSyl = w.syls[w.syls.length - 1];
                 const hasPunc = lastSyl && /[,.\?!~]/.test(lastSyl.punc || "");
 
-                // 이미 현재 호흡구에 어절이 있고, 새 어절의 고음 유무(평조 어절 vs 고조 어절)가 달라질 때 어절 경계에서 분리
-                if (cur.length > 0 && curHasHigh !== null && wordHasHigh !== curHasHigh) {
-                    phrases.push(cur);
+                // 앞 어절이 끝올림(FINAL_H)이었거나, 성조 패턴(EARLY_H vs FINAL_H vs FLAT_L)이 바뀌면 어절 경계에서 분리
+                if (cur.length > 0 && (curPattern === 'FINAL_H' || pat !== curPattern)) {
+                    phrases.push({ words: cur, pattern: curPattern });
                     cur = [];
                 }
 
                 cur.push(w);
-                curHasHigh = wordHasHigh;
+                curPattern = pat;
 
                 if (hasPunc || cur.length >= SKY_MAX_PHRASE_WORDS || i === words.length - 1) {
-                    phrases.push(cur);
+                    phrases.push({ words: cur, pattern: curPattern });
                     cur = [];
-                    curHasHigh = null;
+                    curPattern = null;
                 }
             }
-            if (cur.length > 0) phrases.push(cur);
+            if (cur.length > 0) phrases.push({ words: cur, pattern: curPattern || 'FLAT_L' });
             return phrases;
         }
 
@@ -1813,7 +1848,7 @@
         let skySpeakToken = 0;
 
         // 3. 2번 하늘색 스피커 발화 함수
-        // (단어 내부 분할 금지로 매끄럽게 연결 + 호흡구 단위 육성 highPitchRatio & 고저간격 슬라이더 연동 + 장모음 3모라 연장)
+        // [여성 기본 음역대 평조(0.95) + 어절 내 평조(L)↔강세(′) 5~7반음(1.33~1.50x) 무분할 억양 유도]
         function speakDialectWebSpeechQuestion(rawText) {
             if (!rawText || !window.speechSynthesis) return;
             window.speechSynthesis.cancel();
@@ -1833,28 +1868,18 @@
             text = text.replace(/°/g, '');
 
             const learned = getLearnedProsodyProfile();
-            const maleVoice = getKoreanMaleVoice();
-            const isExpMale = isExplicitMaleVoice(maleVoice);
+            const voice = getKoreanMaleVoice();
 
-            // 사용자 육성 학습 비율(highPitchRatio = 1.48)과 하단 [고저 간격] 조절바(#toneGapSlider, 기본 12반음)를 결합
+            // 하단 [고저 간격(성조)] 조절바(#toneGapSlider, 기본 6.0반음 = 5~7반음의 정중앙)
+            // 6.0반음일 때 주파수 배율 = 2^(6/12) = 1.414배 (5반음=1.335배, 7반음=1.498배)
             const gapSemitones = getEffectiveToneGap();
-            const octaveFactor = gapSemitones / 12.0; // 12반음=1.0, 18반음=1.5, 0반음=0.0
-            const learnedBoost = Math.max(0.45, (learned.highPitchRatio - 1.0) * 1.45); // 육성 1.48 기준 약 0.70
+            const semitoneRatio = Math.pow(2, gapSemitones / 12.0); // 6반음 -> 1.414x
 
-            let pLow, pHigh, pEndHigh;
-            if (isExpMale) {
-                // 네이티브 남성 보이스(~120Hz 기준)
-                pLow = Math.max(0.50, Math.min(0.95, 0.84 * (learned.lowPitchRatio / 1.05) - octaveFactor * 0.22));
-                const gap = (pLow * learnedBoost + 0.55) * octaveFactor;
-                pHigh = Math.max(pLow, Math.min(1.95, pLow + gap));
-                pEndHigh = Math.min(2.00, pHigh + 0.18 * octaveFactor);
-            } else {
-                // 기본 보이스(Heami 등)를 남성 저음역(0.32~0.38)으로 낮추고 고조 구절은 최대 1.65~1.90까지 시원하게 상승
-                pLow = Math.max(0.28, Math.min(0.65, 0.42 * (learned.lowPitchRatio / 1.05) - octaveFactor * 0.10));
-                const gap = (pLow * learnedBoost + 0.95) * octaveFactor;
-                pHigh = Math.max(pLow, Math.min(1.90, pLow + gap));
-                pEndHigh = Math.min(2.00, pHigh + 0.20 * octaveFactor);
-            }
+            // 여성 목소리 자연 음역대에 맞춘 평조(pLow) 및 강세(pHigh = 평조 대비 +5~7반음) 설정:
+            // 기존처럼 0.35로 억지로 낮추지 않고, 맑고 자연스러운 여성 기본 음역(0.94~0.96, 약 215Hz)을 평조로 고정!
+            const pLow = 0.95;
+            // 5~7반음 상승 시: 0.95 * 1.414 = 약 1.35 ~ 1.48 (약 300~320Hz 여성 고조 음역)
+            const pHigh = Math.min(1.85, Math.max(pLow, pLow * semitoneRatio * 1.03));
 
             // '/'로 구분된 복수 발음 각각 처리
             const parts = text.split('/').map(p => p.trim()).filter(Boolean);
@@ -1870,60 +1895,63 @@
 
                 if (words.length === 0) return;
 
-                const phrases = groupDialectWordsForSpeech(words);
-                phrases.forEach((phraseWords, pIdx) => {
+                const phraseGroups = groupDialectWordsForSpeech(words);
+                phraseGroups.forEach(group => {
+                    const phraseWords = group.words;
+                    const pattern = group.pattern;
+
                     let phraseText = phraseWords.map(w => {
-                        return w.syls.map(s => formatSylForDialectSpeech(s, learned.longStretch)).join('');
+                        return w.syls.map((s, sIdx) => formatSylForSkyIntraWord(s, sIdx, w.syls.length, learned.longStretch)).join('');
                     }).join(' ').trim();
                     if (!phraseText) return;
 
                     let totalSyls = 0;
-                    let highSyls = 0;
                     let longSyls = 0;
-                    let firstSylHigh = false;
-                    let lastSylHigh = false;
-
-                    phraseWords.forEach((pw, pwIdx) => {
-                        pw.syls.forEach((s, sIdx) => {
+                    phraseWords.forEach(pw => {
+                        pw.syls.forEach(s => {
                             totalSyls++;
-                            if (s.tone === 'H') highSyls++;
                             if (s.isLong) longSyls++;
-                            if (pwIdx === 0 && sIdx === 0 && s.tone === 'H') firstSylHigh = true;
-                            if (pwIdx === phraseWords.length - 1 && sIdx === pw.syls.length - 1 && s.tone === 'H') lastSylHigh = true;
                         });
                     });
 
-                    const highDensity = totalSyls > 0 ? (highSyls / totalSyls) : 0;
-                    const isLastPhrase = (pIdx === phrases.length - 1);
-                    const isQuestionOrExclaim = /[\?\!]$/.test(phraseText) || /(애이가|인나|읻따|시더|디더|능교|는교|지요)[\.\?\!]*$/.test(phraseText);
-
-                    // 문장 맨 끝(또는 구절 끝) 어절의 마지막 음절이 고조(′)이면 '?'를 붙여 말꼬리가 내려가지 않고 치고 올라가게 함
-                    // (문장 중간 어절에는 '?'를 붙이지 않아 뚝뚝 끊기는 현상 방지!)
-                    if ((lastSylHigh && isLastPhrase) && gapSemitones >= 4.0 && !/[\?\!]$/.test(phraseText)) {
-                        phraseText = phraseText.replace(/[\.\,~]+$/, '').trim() + '?';
+                    // 어절 내 성조 위치 패턴별 5~7반음 차이 구현 (단어 쪼개기 없이 100% 한 숨으로 발화):
+                    // 1) 'FINAL_H' (어절 끝 강세, 예: 가새′, 갈꾸리′, 보소′):
+                    //    - 어절 끝에 '?' 의문 상승 억양을 걸어주고 베이스 피치를 여성 평조(pLow = 0.95)로 시작하면,
+                    //      앞의 평조 음절(가, 갈꾸)은 여성 평조(0.95, ~215Hz)로 읽히다가
+                    //      마지막 강세 음절(새′, 리′)만 한국어 여성 TTS의 의문 억양 곡선을 타고 정확히 +5~7반음(~310Hz) 솟구침!
+                    // 2) 'EARLY_H' (어절 앞/중간 강세, 예: 가′새, 사아′람, 어데′서):
+                    //    - 한국어 여성 TTS는 어절 첫/장음 음절에서 최고 피치를 찍고 어절 끝에서 5~6반음 자연 하강(Declination)하므로,
+                    //      의문부호 없이 마침 억양으로 두되 피치를 pHigh(1.38~1.48, +5~7반음)로 주면
+                    //      앞의 강세 음절(가′, 사아′)은 +6반음 고음으로 시작하고 뒤의 평조 음절(새, 람)은 자연 하강으로 평조(0.95)까지 내려와
+                    //      쪼개지 않고도 어절 내 H -> L (5~7반음) 낙차가 매끄럽게 형성됨!
+                    // 3) 'FLAT_L' (전체 평조):
+                    //    - 여성 평조(pLow = 0.95)로 차분하게 발화
+                    let targetPitch = pLow;
+                    if (pattern === 'FINAL_H') {
+                        if (gapSemitones >= 2.0 && !/[\?\!]$/.test(phraseText)) {
+                            phraseText = phraseText.replace(/[\.\,~]+$/, '').trim() + '?';
+                        }
+                        // 슬라이더가 6반음보다 더 높거나 낮을 때 미세 보정 (기본 6반음일 때는 0.98로 시작해 '?' 리프트로 끝 음절이 +6반음 상승)
+                        const finalBaseOffset = (gapSemitones - 6.0) * 0.035;
+                        targetPitch = Math.max(0.82, Math.min(1.45, pLow + 0.03 + finalBaseOffset));
+                    } else if (pattern === 'EARLY_H') {
+                        targetPitch = pHigh;
+                    } else {
+                        targetPitch = pLow;
                     }
 
                     const u = new SpeechSynthesisUtterance(phraseText);
                     u.lang = 'ko-KR';
-                    if (maleVoice) u.voice = maleVoice;
-
-                    let targetPitch = pLow;
-                    if (highSyls > 0) {
-                        const boostWeight = Math.min(1.0, 0.72 + highDensity * 0.45 + (firstSylHigh ? 0.15 : 0));
-                        targetPitch = pLow + (pHigh - pLow) * boostWeight;
-                        if (lastSylHigh || isQuestionOrExclaim) {
-                            targetPitch = Math.max(targetPitch, pEndHigh);
-                        }
-                    }
-                    u.pitch = Number(Math.max(0.1, Math.min(2.0, targetPitch)).toFixed(2));
+                    if (voice) u.voice = voice;
+                    u.pitch = Number(Math.max(0.5, Math.min(2.0, targetPitch)).toFixed(2));
 
                     let phraseRate = learned.baseRate;
                     if (longSyls > 0) {
                         const longRatio = longSyls / Math.max(1, totalSyls);
-                        const slowFactor = 1.0 + (learned.longStretch - 1.0) * (0.16 + longRatio * 0.14);
+                        const slowFactor = 1.0 + (learned.longStretch - 1.0) * (0.15 + longRatio * 0.12);
                         phraseRate = learned.baseRate / slowFactor;
-                    } else if (highSyls === 0) {
-                        phraseRate = learned.baseRate * 1.06;
+                    } else if (pattern === 'FLAT_L') {
+                        phraseRate = learned.baseRate * 1.04;
                     }
                     u.rate = Number(Math.max(0.55, Math.min(1.40, phraseRate)).toFixed(2));
 
