@@ -811,19 +811,19 @@
                     <span id="speedValBadge" class="speed-val-badge">0.76x</span>
                 </div>
             </div>
-            <!-- 2번(하늘색) 스피커 전용: 어절 내 평조(L)↔강세(′) 간격(반음) 조절 바 (기본 6.0반음 = 5~7반음 표준) -->
-            <div class="speed-row" title="2번(하늘색) 스피커에서 어절 내 평조 음절(L)과 강세 음절(′) 사이의 음높이 간격을 반음 단위로 조절합니다 (기본 6.0반음)">
+            <!-- 2번(하늘색) 스피커 전용: 강세(′) 고조 배율 조절 바 (demo_prosody.html 2번 버튼의 highPitchRatio 1.48x 연동) -->
+            <div class="speed-row" title="2번(하늘색) 스피커의 강세(′) 고조 피치 상승 배율을 조절합니다 (기본 1.48x = +6.8반음)">
                 <div class="speed-control-title">
                     <svg viewBox="0 0 24 24" style="width:16px; height:16px; fill:#00bcd4; vertical-align:-2px;">
                         <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
                     </svg>
-                    고저 간격(성조)
+                    강세(′) 고조 배율
                 </div>
                 <div class="speed-slider-wrap">
                     <span style="font-size:11.5px; color:#64748b;">평탄</span>
-                    <input type="range" id="toneGapSlider" class="speed-slider" min="0" max="12" step="0.5" value="6" oninput="onToneGapSliderChange(this.value)">
-                    <span style="font-size:11.5px; color:#64748b;">1옥타브</span>
-                    <span id="toneGapBadge" class="speed-val-badge">6.0반음</span>
+                    <input type="range" id="highPitchSlider" class="speed-slider" min="1.05" max="2.10" step="0.02" value="1.48" oninput="onHighPitchSliderChange(this.value)">
+                    <span style="font-size:11.5px; color:#64748b;">강하게</span>
+                    <span id="highPitchBadge" class="speed-val-badge">1.48x</span>
                 </div>
             </div>
         </div>
@@ -1361,8 +1361,8 @@
         // 브라우저 TTS의 자연스러운 말꼬리 하강(종결 억양)을 억제하고 경상도 고조 성조를 실현
         function speakDialectWebSpeech(rawText) {
             if (!rawText || !window.speechSynthesis) return;
+            stopSkyProsodyAudio(); // 2번(하늘색) 오디오/발화 정지
             window.speechSynthesis.cancel(); // 이전 재생 취소 (QUEUE_FLUSH)
-            skySpeakToken++; // 대기 중인 2번(하늘색) 지연 발화 무효화
 
             let text = rawText.trim();
             if (text.startsWith('[') && text.endsWith(']')) {
@@ -1449,6 +1449,7 @@
         // 일반 텍스트 읽기 함수 (예문/관용구 공용 - 사전 생성 오디오 우선, 예문은 음절 분할 없이 단일 문장으로 자연스럽게 발화)
         async function speakText(text) {
             if (!text) return;
+            stopSkyProsodyAudio(); // 2번(하늘색) 오디오/발화 정지
 
             // 사전 생성된 고음질 MP3가 존재하면 우선 재생
             try {
@@ -1465,7 +1466,6 @@
             // 기본 1번 TTS: 예문은 마지막 글자 분리 없이 한 번에 자연스럽게 발화
             if (!window.speechSynthesis) return;
             window.speechSynthesis.cancel();
-            skySpeakToken++; // 대기 중인 2번(하늘색) 지연 발화 무효화
             const speechText = prepareDialectSpeechText(text);
             if (!speechText) return;
 
@@ -1519,50 +1519,41 @@
             if (slider) slider.value = String(currentSpeed);
             if (badge) badge.innerText = `${currentSpeed.toFixed(2)}x`;
 
-            const tg = getEffectiveToneGap();
-            const tgSlider = document.getElementById('toneGapSlider');
-            const tgBadge = document.getElementById('toneGapBadge');
-            if (tgSlider) tgSlider.value = String(tg);
-            if (tgBadge) tgBadge.innerText = `${tg.toFixed(1)}반음`;
+            const hp = getEffectiveHighPitchRatio();
+            const hpSlider = document.getElementById('highPitchSlider');
+            const hpBadge = document.getElementById('highPitchBadge');
+            if (hpSlider) hpSlider.value = String(hp);
+            if (hpBadge) hpBadge.innerText = `${hp.toFixed(2)}x`;
         }
 
         // ========================================================
-        // [고음 높이 조절 헬퍼] - 2번(하늘색) 스피커 전용
+        // [강세(′) 고조 배율 조절 헬퍼] - 2번(하늘색) 스피커 전용 (demo_prosody.html의 highPitchRatio 1.48x 연동)
         // ========================================================
-        const DEFAULT_HIGH_BOOST = 1.50;
+        const DEFAULT_HIGH_PITCH_RATIO = 1.48;
 
-        function getEffectiveHighBoost() {
-            const saved = parseFloat(localStorage.getItem('web_tts_high_boost'));
-            if (!isNaN(saved) && saved >= 1.0 && saved <= 3.0) return saved;
-            return DEFAULT_HIGH_BOOST;
+        function getEffectiveHighPitchRatio() {
+            try {
+                const saved = localStorage.getItem('gyeongju_learned_prosody_v3');
+                if (saved) {
+                    const parsed = JSON.parse(saved);
+                    if (parsed && typeof parsed.highPitchRatio === 'number' && parsed.highPitchRatio >= 1.0 && parsed.highPitchRatio <= 2.5) {
+                        return parsed.highPitchRatio;
+                    }
+                }
+            } catch (e) {}
+            return DEFAULT_HIGH_PITCH_RATIO;
         }
 
-        function onHighBoostSliderChange(val) {
+        function onHighPitchSliderChange(val) {
             const num = parseFloat(val);
             if (isNaN(num)) return;
-            const badge = document.getElementById('highBoostBadge');
+            const badge = document.getElementById('highPitchBadge');
             if (badge) badge.innerText = `${num.toFixed(2)}x`;
-            localStorage.setItem('web_tts_high_boost', num.toFixed(2));
-        }
-
-        // ========================================================
-        // [2번(하늘색) TTS 전용: 어절 내 평조(L)↔강세(′) 고저 간격(반음) 조절 헬퍼]
-        // 어절 내 평조 음절과 강세 음절 사이의 피치 간격을 반음 단위로 조절 (기본 6.0반음 = 5~7반음 표준)
-        // ========================================================
-        const DEFAULT_TONE_GAP = 6.0;
-
-        function getEffectiveToneGap() {
-            const saved = parseFloat(localStorage.getItem('web_tts_sky_gap_5_7'));
-            if (!isNaN(saved) && saved >= 0 && saved <= 12.0) return saved;
-            return DEFAULT_TONE_GAP;
-        }
-
-        function onToneGapSliderChange(val) {
-            const num = parseFloat(val);
-            if (isNaN(num)) return;
-            const badge = document.getElementById('toneGapBadge');
-            if (badge) badge.innerText = `${num.toFixed(1)}반음`;
-            localStorage.setItem('web_tts_sky_gap_5_7', num.toFixed(1));
+            try {
+                const profile = getLearnedProsodyProfile();
+                profile.highPitchRatio = Number(num.toFixed(2));
+                localStorage.setItem('gyeongju_learned_prosody_v3', JSON.stringify(profile));
+            } catch (e) {}
         }
 
         // Chrome은 첫 호출 시 getVoices()가 빈 배열을 반환하므로 미리 음성 목록을 로드해 둠
@@ -1575,7 +1566,9 @@
         }
 
         // ========================================================
-        // [2번 TTS 핵심 엔진]: 통일 남성 저음역 + 장모음 3모라 연결 연장 + 내 학습 억양(localStorage) 100% 연동
+        // [2번 TTS 핵심 엔진]: demo_prosody.html의 "🌊 2. 물 흐르듯 연속 사투리 합성 (무단절 WSOLA)" 100% 동일 이식
+        // - 1단계: 로컬 Praat edge_server.py 실행 시 Cross-Correlation Phase-Locked Resampling WSOLA 합성 파형 재생
+        // - 2단계: 브라우저 단독 실행 시 통일 남성 저음역 + 장모음 3모라 연결 연장 + 내 학습 억양(localStorage) 연속 발화
         // ========================================================
 
         function getLearnedProsodyProfile() {
@@ -1599,6 +1592,18 @@
                 }
             } catch (e) {}
             return def;
+        }
+
+        function getSkyProsodyParams() {
+            const prof = getLearnedProsodyProfile();
+            return {
+                highPitch: Number(prof.highPitchRatio) || 1.48,
+                lowPitch: Number(prof.lowPitchRatio) || 1.05,
+                longStretch: Number(prof.longStretch) || 1.70,
+                glide: Number(prof.glideSlope) || 0.93,
+                endBoostSemitones: Number(prof.endBoostSemitones) || 1.0,
+                baseRate: Number(prof.baseRate) || 0.76
+            };
         }
 
         function isExplicitMaleVoice(v) {
@@ -1660,7 +1665,7 @@
             }
         }
 
-        // 한글 자모 분해 및 장모음(사아·가아·초온·서엉·해애) 3모라 연결 연장 파서
+        // 한글 자모 분해 및 장모음(사아·가아·초온·서엉·해애) 3모라 연결 연장 파서 (demo_prosody.html 동일)
         const DIALECT_TONE_CHARS = new Set(["'", "′", "″", "ː", "ˈ", "ˌ", "^"]);
 
         function decomposeHangulSyl(ch) {
@@ -1760,98 +1765,483 @@
             return merged;
         }
 
-        function formatSylForDialectSpeech(s, longStretch) {
-            if (!s.isLong) return s.char + s.punc;
+        function parseDialectSentenceForSpeech(sentence) {
+            const cleanSent = sentence.replace(/^\[|\]$/g, '').trim();
+            const rawWords = cleanSent.split(/\s+/).filter(Boolean);
+            return rawWords.map((rw, wIdx) => ({
+                wordIndex: wIdx,
+                raw: rw,
+                syls: parseDialectWordForSpeech(rw)
+            })).filter(w => w.syls.length > 0);
+        }
+
+        function formatSyllableForSpeech(s, mode, params, collapseLong = true) {
+            if (mode !== 'prosody') {
+                return s.collapsedChar + s.punc;
+            }
+            if (!s.isLong) {
+                return s.char + s.punc;
+            }
+            if (!collapseLong) {
+                return s.rawPair + s.punc;
+            }
+            const stretch = params ? params.longStretch : 1.68;
             const c1 = s.rawPair[0];
             const c2 = s.rawPair[1] || '';
             const vTail = s.vowelTailChar || c2;
-            if (longStretch >= 1.85) {
+            if (stretch >= 1.85) {
                 return c1 + vTail + vTail + c2 + s.punc;
-            } else if (longStretch >= 1.32) {
+            } else if (stretch >= 1.32) {
                 return c1 + vTail + c2 + s.punc;
+            } else {
+                return s.rawPair + s.punc;
             }
-            return s.rawPair + s.punc;
         }
 
-        // 2번(하늘색) 스피커 전용: 어절 내 성조 패턴(앞·중간 강세 H-L vs 끝 강세 L-H vs 평조 L-L)에 따른
-        // 무분할(끊김 0초) 음절 포맷터
-        // - 장모음(isLong)은 3모라로 부드럽게 연장
-        // - 어절 앞·중간에 위치한 단모음 강세 음절(H)은 받침이 없을 때 모음 여운을 반박자 살짝 더해
-        //   한국어 여성 TTS가 첫/중간 강세 음절에서 최고 피치(+5~7반음)를 찍고 뒤 평조 음절에서 자연 하강(H->L)하도록 유도!
-        function formatSylForSkyIntraWord(s, sIdx, totalSyls, longStretch) {
-            if (s.isLong) {
-                return formatSylForDialectSpeech(s, longStretch);
+        // ========================================================
+        // [무단절 WSOLA 음향 신호 처리 엔진] (demo_prosody.html 100% 동일)
+        // ========================================================
+        let skyAudioCtx = null;
+        let skyCurrentSourceNode = null;
+        const skyBaseAudioCache = new Map();
+        let skySpeakToken = 0;
+
+        function getSkyAudioContext() {
+            if (!skyAudioCtx) {
+                const AC = window.AudioContext || window.webkitAudioContext;
+                skyAudioCtx = new AC();
             }
-            // 어절 앞·중간에 있는 강세(H) 단모음 음절이고 뒤에 평조 음절이 이어질 때:
-            // 받침이 없는 개음절(예: 가′새, 거′기)이면 모음 핵을 반박자 공명시켜 TTS의 피치 피크를 해당 음절에 고정
-            if (s.tone === 'H' && sIdx < totalSyls - 1 && !s.punc) {
-                const dec = decomposeHangulSyl(s.char);
-                if (dec && dec.jong === 0) {
-                    const vTail = composeHangulSyl(11, dec.jung, 0);
-                    return s.char + vTail;
+            if (skyAudioCtx.state === 'suspended') {
+                skyAudioCtx.resume();
+            }
+            return skyAudioCtx;
+        }
+
+        function stopSkyProsodyAudio() {
+            skySpeakToken++;
+            if (skyCurrentSourceNode) {
+                try { skyCurrentSourceNode.stop(); } catch (e) {}
+                skyCurrentSourceNode = null;
+            }
+            if (window.speechSynthesis) {
+                window.speechSynthesis.cancel();
+            }
+        }
+
+        async function fetchContinuousSentenceBuffer(cleanText) {
+            if (skyBaseAudioCache.has(cleanText)) {
+                return skyBaseAudioCache.get(cleanText);
+            }
+            const ctx = getSkyAudioContext();
+            try {
+                const ctrl = new AbortController();
+                const tid = setTimeout(() => ctrl.abort(), 200);
+                const res = await fetch("http://localhost:5050/prosody", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ text: cleanText, mode: "orig" }),
+                    signal: ctrl.signal
+                });
+                clearTimeout(tid);
+                if (res.ok) {
+                    const arr = await res.arrayBuffer();
+                    const buf = await ctx.decodeAudioData(arr);
+                    skyBaseAudioCache.set(cleanText, buf);
+                    return buf;
+                }
+            } catch (e) {}
+            return null;
+        }
+
+        function analyzeSpeechEnvelope(samples, sr) {
+            const hop = Math.floor(sr * 0.01);
+            const win = Math.floor(sr * 0.025);
+            const numFrames = Math.max(1, Math.floor((samples.length - win) / hop));
+            const rms = new Float32Array(numFrames);
+            let maxRms = 1e-6;
+
+            for (let f = 0; f < numFrames; f++) {
+                const start = f * hop;
+                let sum = 0;
+                for (let i = 0; i < win; i++) {
+                    const v = samples[start + i] || 0;
+                    sum += v * v;
+                }
+                rms[f] = Math.sqrt(sum / win);
+                if (rms[f] > maxRms) maxRms = rms[f];
+            }
+
+            const thresh = maxRms * 0.06;
+            let firstFrame = 0;
+            let lastFrame = numFrames - 1;
+            while (firstFrame < numFrames && rms[firstFrame] < thresh) firstFrame++;
+            while (lastFrame > firstFrame && rms[lastFrame] < thresh) lastFrame--;
+
+            const startSec = Math.max(0.01, (firstFrame * hop) / sr - 0.02);
+            const endSec = Math.min(samples.length / sr - 0.01, (lastFrame * hop) / sr + 0.03);
+            return { startSec, endSec, rms, maxRms, hopSec: 0.01 };
+        }
+
+        function buildContinuousProsodyCurves(words, startSec, endSec, totalDurSec, params, rms, maxRms) {
+            const dt = 0.01;
+            const numSteps = Math.ceil(totalDurSec / dt) + 2;
+            const pitchCurve = new Float32Array(numSteps).fill(1.0);
+            const durCurve = new Float32Array(numSteps).fill(1.0 / params.baseRate);
+            const wordIdxCurve = new Int16Array(numSteps).fill(-1);
+
+            const speechSpan = Math.max(0.15, endSec - startSec);
+            const collapseLong = true;
+            const items = [];
+            words.forEach((w, wIdx) => {
+                w.syls.forEach((s, sIdx) => {
+                    const isWordEnd = (sIdx === w.syls.length - 1);
+                    const hasComma = /[,\.!\?]/.test(s.punc || "");
+                    const origWeight = s.isLong ? (collapseLong ? 1.12 : 1.75) : 1.0;
+                    items.push({
+                        syl: s,
+                        wordIdx: wIdx,
+                        isWordEnd,
+                        origWeight
+                    });
+                    if (hasComma) {
+                        items.push({ isPause: true, origWeight: 0.55, wordIdx: wIdx });
+                    }
+                });
+                items.push({ isPause: true, origWeight: 0.22, wordIdx: wIdx });
+            });
+
+            const totalOrigW = items.reduce((a, b) => a + b.origWeight, 0) || 1.0;
+            let curT = startSec;
+            const sylSpans = [];
+
+            items.forEach(it => {
+                const spanDur = (it.origWeight / totalOrigW) * speechSpan;
+                const t0 = curT;
+                const t1 = curT + spanDur;
+                curT = t1;
+                if (!it.isPause) {
+                    sylSpans.push({
+                        t0,
+                        t1,
+                        tMid: 0.5 * (t0 + t1),
+                        syl: it.syl,
+                        wordIdx: it.wordIdx,
+                        isWordEnd: it.isWordEnd
+                    });
+                }
+            });
+
+            const getDeclinationComp = (t) => {
+                const prog = Math.max(0, Math.min(1, (t - startSec) / speechSpan));
+                return 1.0 + prog * 0.08;
+            };
+
+            const keyPoints = [];
+            const pLow = params.lowPitch;
+            const pHigh = params.lowPitch * params.highPitch;
+            const endBoostRatio = Math.pow(2, params.endBoostSemitones / 12.0);
+
+            if (sylSpans.length > 0) {
+                keyPoints.push({ t: 0, p: pLow });
+                keyPoints.push({ t: startSec, p: sylSpans[0].syl.tone === 'H' ? pLow + (pHigh - pLow) * 0.35 : pLow });
+
+                sylSpans.forEach((sp) => {
+                    const s = sp.syl;
+                    const dur = sp.t1 - sp.t0;
+                    const comp = getDeclinationComp(sp.tMid);
+                    const targetH = pHigh * comp;
+                    const targetL = pLow * comp;
+
+                    const i0 = Math.max(0, Math.floor(sp.t0 / dt));
+                    const i1 = Math.min(numSteps - 1, Math.ceil(sp.t1 / dt));
+                    for (let k = i0; k <= i1; k++) {
+                        wordIdxCurve[k] = sp.wordIdx;
+                        if (s.isLong) {
+                            const localPos = (k * dt - sp.t0) / Math.max(0.01, dur);
+                            const bell = Math.sin(Math.PI * Math.max(0, Math.min(1, localPos)));
+                            const effectiveStretch = collapseLong ? params.longStretch : (1.0 + (params.longStretch - 1.0) * 0.55);
+                            const stretchHere = 1.0 + (effectiveStretch - 1.0) * Math.pow(bell, 0.75);
+                            durCurve[k] = stretchHere / params.baseRate;
+                        } else if (s.tone === 'H') {
+                            durCurve[k] = 1.08 / params.baseRate;
+                        } else {
+                            durCurve[k] = 0.96 / params.baseRate;
+                        }
+                    }
+
+                    if (sp.isWordEnd && s.tone === 'H') {
+                        const startGlide = pLow * comp + (targetH - pLow * comp) * (1.0 - params.glide * 0.65);
+                        keyPoints.push({ t: sp.t0 + dur * 0.20, p: startGlide });
+                        keyPoints.push({ t: sp.t0 + dur * 0.85, p: targetH * endBoostRatio });
+                        keyPoints.push({ t: sp.t1, p: targetH * endBoostRatio });
+                    } else if (s.isLong && s.tone === 'H') {
+                        const entryP = targetL + (targetH - targetL) * (1.0 - params.glide * 0.75);
+                        keyPoints.push({ t: sp.t0 + dur * 0.18, p: entryP });
+                        keyPoints.push({ t: sp.t0 + dur * 0.82, p: targetH });
+                    } else if (s.tone === 'H') {
+                        const entryP = targetL + (targetH - targetL) * (1.0 - params.glide * 0.5);
+                        keyPoints.push({ t: sp.t0 + dur * 0.22, p: entryP });
+                        keyPoints.push({ t: sp.t0 + dur * 0.75, p: targetH });
+                    } else {
+                        keyPoints.push({ t: sp.tMid, p: targetL });
+                    }
+                });
+
+                keyPoints.push({ t: totalDurSec, p: keyPoints[keyPoints.length - 1].p });
+            }
+
+            keyPoints.sort((a, b) => a.t - b.t);
+            for (let k = 0; k < keyPoints.length - 1; k++) {
+                const pt1 = keyPoints[k];
+                const pt2 = keyPoints[k + 1];
+                if (pt2.t <= pt1.t) continue;
+                const iStart = Math.max(0, Math.floor(pt1.t / dt));
+                const iEnd = Math.min(numSteps - 1, Math.ceil(pt2.t / dt));
+                for (let idx = iStart; idx <= iEnd; idx++) {
+                    const t = idx * dt;
+                    const frac = Math.max(0, Math.min(1, (t - pt1.t) / (pt2.t - pt1.t)));
+                    const smooth = 0.5 * (1.0 - Math.cos(Math.PI * frac));
+                    pitchCurve[idx] = pt1.p + (pt2.p - pt1.p) * smooth;
                 }
             }
-            return s.char + (s.punc || "");
-        }
 
-        // 어절의 내부 성조 패턴 분류기:
-        // - 'FINAL_H' : 어절의 마지막 음절에 강세(′)가 있는 패턴 (예: 가새′, 갈꾸리′, 보소′ -> 저음 L에서 시작해 끝 음절만 +5~7반음 상승)
-        // - 'EARLY_H' : 어절의 첫/중간 음절에 강세(′)가 있고 끝은 평조인 패턴 (예: 가′새, 사아′람, 어데′서 -> 강세 음절 +5~7반음에서 뒤 음절 평조로 하강)
-        // - 'FLAT_L'  : 어절 전체가 평조인 패턴 (예: 사람, 그기 -> 여성 자연 평조 0.95로 차분하게 유지)
-        function classifyWordTonePattern(w) {
-            const syls = w.syls;
-            if (!syls || syls.length === 0) return 'FLAT_L';
-            const hasAnyH = syls.some(s => s.tone === 'H');
-            if (!hasAnyH) return 'FLAT_L';
-            const lastIsH = (syls[syls.length - 1].tone === 'H');
-            const firstIsL = (syls[0].tone === 'L');
-            if (lastIsH && (firstIsL || syls.length === 1)) {
-                return 'FINAL_H';
+            if (rms && maxRms > 0) {
+                for (let idx = 0; idx < numSteps; idx++) {
+                    const rVal = idx < rms.length ? rms[idx] : 0;
+                    if (rVal < maxRms * 0.12) {
+                        durCurve[idx] = 1.0 / params.baseRate;
+                    }
+                }
             }
-            return 'EARLY_H';
+
+            return { pitchCurve, durCurve, wordIdxCurve, dt, sylSpans };
         }
 
-        // 어절 내부는 절대 쪼개지 않고, 같은 성조 곡선 방향을 가진 어절끼리 자연스럽게 묶어주는 함수
-        const SKY_MAX_PHRASE_WORDS = 4;
+        function synthesizeContinuousWSOLA(inBuffer, pitchCurve, durCurve, wordIdxCurve, dt) {
+            const sr = inBuffer.sampleRate;
+            const inSamples = inBuffer.getChannelData(0);
+            const inLen = inSamples.length;
 
-        function groupDialectWordsForSpeech(words) {
+            const winSize = Math.floor(sr * 0.032) & ~1;
+            const hopSyn = winSize >> 1;
+            const searchRange = Math.floor(sr * 0.007);
+
+            const hann = new Float32Array(winSize);
+            for (let i = 0; i < winSize; i++) {
+                hann[i] = 0.5 * (1.0 - Math.cos((2.0 * Math.PI * i) / winSize));
+            }
+
+            let estOutSamples = 0;
+            for (let i = 0; i < durCurve.length; i++) {
+                estOutSamples += Math.ceil(dt * sr * durCurve[i]);
+            }
+            const maxOutLen = estOutSamples + winSize * 4;
+            const outSamples = new Float32Array(maxOutLen);
+            const outWordTimeline = [];
+
+            let inPos = 0.0;
+            let outPos = 0;
+
+            const sampleCubic = (pos) => {
+                const idx = Math.floor(pos);
+                if (idx < 1 || idx >= inLen - 2) {
+                    return (idx >= 0 && idx < inLen) ? inSamples[idx] : 0.0;
+                }
+                const frac = pos - idx;
+                const y0 = inSamples[idx - 1];
+                const y1 = inSamples[idx];
+                const y2 = inSamples[idx + 1];
+                const y3 = inSamples[idx + 2];
+                const c0 = y1;
+                const c1 = 0.5 * (y2 - y0);
+                const c2 = y0 - 2.5 * y1 + 2.0 * y2 - 0.5 * y3;
+                const c3 = 0.5 * (y3 - y0) + 1.5 * (y1 - y2);
+                return ((c3 * frac + c2) * frac + c1) * frac + c0;
+            };
+
+            while (inPos < inLen - winSize * 2 && outPos + winSize < maxOutLen) {
+                const curSec = inPos / sr;
+                const curveIdx = Math.min(pitchCurve.length - 1, Math.max(0, Math.floor(curSec / dt)));
+                const pRatio = pitchCurve[curveIdx];
+                const dRatio = durCurve[curveIdx];
+                const wIdx = wordIdxCurve[curveIdx];
+
+                outWordTimeline.push({ outSec: outPos / sr, wordIdx: wIdx });
+
+                let bestDelta = 0;
+                if (outPos > 0) {
+                    let maxCorr = -1e18;
+                    const checkLen = Math.min(hopSyn >> 1, Math.floor(sr * 0.008));
+                    for (let delta = -searchRange; delta <= searchRange; delta += 2) {
+                        const candStart = inPos + delta;
+                        if (candStart < 1 || candStart + winSize * pRatio >= inLen - 2) continue;
+                        let corr = 0.0;
+                        for (let j = 0; j < checkLen; j += 2) {
+                            const existing = outSamples[outPos + j];
+                            const candVal = inSamples[Math.floor(candStart + j * pRatio)];
+                            corr += existing * candVal;
+                        }
+                        if (corr > maxCorr) {
+                            maxCorr = corr;
+                            bestDelta = delta;
+                        }
+                    }
+                }
+
+                const readStart = Math.max(1, inPos + bestDelta);
+                for (let i = 0; i < winSize; i++) {
+                    const val = sampleCubic(readStart + i * pRatio);
+                    outSamples[outPos + i] += val * hann[i];
+                }
+
+                outPos += hopSyn;
+                inPos += hopSyn / Math.max(0.35, dRatio);
+            }
+
+            const finalLen = Math.max(winSize, outPos + hopSyn);
+            const ctx = getSkyAudioContext();
+            const outBuffer = ctx.createBuffer(1, finalLen, sr);
+            outBuffer.getChannelData(0).set(outSamples.subarray(0, finalLen));
+
+            return { outBuffer, outWordTimeline };
+        }
+
+        function synthesizeContinuousProsodyBuffer(baseBuffer, words, params) {
+            const sr = baseBuffer.sampleRate;
+            const samples = baseBuffer.getChannelData(0);
+            const totalDurSec = baseBuffer.duration;
+            const { startSec, endSec, rms, maxRms } = analyzeSpeechEnvelope(samples, sr);
+            const { pitchCurve, durCurve, wordIdxCurve, dt } = buildContinuousProsodyCurves(
+                words, startSec, endSec, totalDurSec, params, rms, maxRms
+            );
+            return synthesizeContinuousWSOLA(baseBuffer, pitchCurve, durCurve, wordIdxCurve, dt);
+        }
+
+        // ========================================================
+        // [운율 호흡구 그룹핑 및 통합 연속 사투리 발화] (demo_prosody.html 2번 버튼 100% 동일)
+        // ========================================================
+        const SKY_MAX_PHRASE_WORDS = 10;
+
+        function groupWordsIntoProsodicPhrases(words) {
             const phrases = [];
             let cur = [];
-            let curPattern = null;
 
             for (let i = 0; i < words.length; i++) {
                 const w = words[i];
-                const pat = classifyWordTonePattern(w);
+                cur.push(w);
+
                 const lastSyl = w.syls[w.syls.length - 1];
                 const hasPunc = lastSyl && /[,.\?!~]/.test(lastSyl.punc || "");
 
-                // 앞 어절이 끝올림(FINAL_H)이었거나, 성조 패턴(EARLY_H vs FINAL_H vs FLAT_L)이 바뀌면 어절 경계에서 분리
-                if (cur.length > 0 && (curPattern === 'FINAL_H' || pat !== curPattern)) {
-                    phrases.push({ words: cur, pattern: curPattern });
-                    cur = [];
-                }
-
-                cur.push(w);
-                curPattern = pat;
-
+                // 문장부호(, . ? ! ~)가 있거나 최대 10어절에 도달했거나 문장 끝일 때만 호흡구 분할 (중간 쉼 제거)
                 if (hasPunc || cur.length >= SKY_MAX_PHRASE_WORDS || i === words.length - 1) {
-                    phrases.push({ words: cur, pattern: curPattern });
+                    phrases.push(cur);
                     cur = [];
-                    curPattern = null;
                 }
             }
-            if (cur.length > 0) phrases.push({ words: cur, pattern: curPattern || 'FLAT_L' });
+            if (cur.length > 0) phrases.push(cur);
             return phrases;
         }
 
-        // 연속 클릭 시 이전 클릭의 지연 발화가 뒤늦게 끼어드는 버그 방지용 토큰
-        let skySpeakToken = 0;
+        function playUnifiedDialectSpeechForSky(wordsList, params, myToken) {
+            if (!window.speechSynthesis) return;
 
-        // 3. 2번 하늘색 스피커 발화 함수
-        // [여성 기본 음역대 평조(0.95) + 어절 내 평조(L)↔강세(′) 5~7반음(1.33~1.50x) 무분할 억양 유도]
-        function speakDialectWebSpeechQuestion(rawText) {
-            if (!rawText || !window.speechSynthesis) return;
+            const collapseLong = true;
+            const maleVoice = getKoreanMaleVoice();
+            const isExplicitMale = isExplicitMaleVoice(maleVoice);
+
+            let pLow, pHigh, pEndHigh;
+
+            if (isExplicitMale) {
+                // 네이티브 남성 보이스(InJoon 등 ~120Hz)일 때
+                pLow = Math.max(0.68, Math.min(0.95, 0.82 * (params.lowPitch / 1.05)));
+                const gap = pLow * Math.max(0.48, (params.highPitch - 1.0) * 1.35);
+                pHigh = Math.min(1.95, pLow + gap);
+                pEndHigh = Math.min(2.00, Math.max(pHigh + 0.08, pHigh * Math.pow(2, Math.max(0.5, params.endBoostSemitones) / 12.0)));
+            } else {
+                // 기본 여성 보이스(Microsoft Heami 등 ~225Hz)를 남성 음역으로 하향: 평조 0.35, 고조 최대 1.15
+                pLow = Math.max(0.30, Math.min(0.42, 0.35 * (params.lowPitch / 1.05)));
+                const gap = pLow * Math.max(0.55, (params.highPitch - 1.0) * 1.45);
+                pHigh = Math.min(1.15, pLow + gap);
+                pEndHigh = Math.min(1.22, Math.max(pHigh + 0.06, pHigh * Math.pow(2, Math.max(0.5, params.endBoostSemitones) / 12.0)));
+            }
+
             window.speechSynthesis.cancel();
+            const utterances = [];
+
+            wordsList.forEach((words) => {
+                const phrases = groupWordsIntoProsodicPhrases(words);
+
+                phrases.forEach((phraseWords) => {
+                    const phraseText = phraseWords.map(w => {
+                        return w.syls.map(s => formatSyllableForSpeech(s, 'prosody', params, collapseLong)).join('');
+                    }).join(' ').trim();
+                    if (!phraseText) return;
+
+                    const u = new SpeechSynthesisUtterance(phraseText);
+                    u.lang = 'ko-KR';
+                    if (maleVoice) u.voice = maleVoice;
+
+                    let totalSyls = 0;
+                    let highSyls = 0;
+                    let longSyls = 0;
+                    let firstSylHigh = false;
+                    let lastSylHigh = false;
+
+                    phraseWords.forEach((pw, pwIdx) => {
+                        pw.syls.forEach((s, sIdx) => {
+                            totalSyls++;
+                            if (s.tone === 'H') highSyls++;
+                            if (s.isLong) longSyls++;
+                            if (pwIdx === 0 && sIdx === 0 && s.tone === 'H') firstSylHigh = true;
+                            if (pwIdx === phraseWords.length - 1 && sIdx === pw.syls.length - 1 && s.tone === 'H') lastSylHigh = true;
+                        });
+                    });
+
+                    const highDensity = totalSyls > 0 ? (highSyls / totalSyls) : 0;
+                    const isQuestionOrExclaim = /[\?\!]$/.test(phraseText.trim()) || /(애이가|인나|읻따|시더|디더|지요)[\.\?\!]*$/.test(phraseText.trim());
+
+                    // 호흡구 성조 비중에 따른 남성 피치 결정 (평조 pLow ~ 고조 pHigh ~ 어말고조 pEndHigh)
+                    let targetPitch = pLow;
+                    if (highSyls > 0) {
+                        const boostWeight = Math.min(1.0, 0.55 + highDensity * 0.55 + (firstSylHigh ? 0.15 : 0));
+                        targetPitch = pLow + (pHigh - pLow) * boostWeight;
+                        if (lastSylHigh || isQuestionOrExclaim) {
+                            targetPitch = Math.max(targetPitch, pEndHigh);
+                        }
+                    }
+                    u.pitch = Number(targetPitch.toFixed(2));
+
+                    // 장모음이 포함된 호흡구는 모음 3모라 확장(사아아, 초오온)과 더불어 발화 속도를 미세 감속하여 충분한 장음 길이 구현!
+                    let phraseRate = params.baseRate;
+                    if (longSyls > 0) {
+                        const longRatio = longSyls / Math.max(1, totalSyls);
+                        const slowFactor = 1.0 + (params.longStretch - 1.0) * (0.16 + longRatio * 0.14);
+                        phraseRate = params.baseRate / slowFactor;
+                    } else if (highSyls === 0) {
+                        // 평조 단모음 구간은 자연스러운 대화 속도로 경쾌하게 연결
+                        phraseRate = params.baseRate * 1.05;
+                    }
+                    u.rate = Number(Math.max(0.62, Math.min(1.30, phraseRate)).toFixed(2));
+
+                    utterances.push(u);
+                });
+            });
+
+            if (utterances.length === 0) return;
+
+            setTimeout(() => {
+                if (myToken !== skySpeakToken) return;
+                utterances.forEach(u => window.speechSynthesis.speak(u));
+            }, 50);
+        }
+
+        // 3. 2번 하늘색 스피커 발화 함수 (demo_prosody.html의 playContinuousSentence(sentId, 'prosody') 동일)
+        async function speakDialectWebSpeechQuestion(rawText) {
+            if (!rawText) return;
+            stopSkyProsodyAudio();
+            const myToken = skySpeakToken;
+
             // 1번(파란색) 오디오가 재생 중이면 겹치지 않게 정지
             if (window.currentAudio) {
                 try { window.currentAudio.pause(); } catch (e) {}
@@ -1867,106 +2257,39 @@
             text = text.replace(/<[^>]+>/g, '');
             text = text.replace(/°/g, '');
 
-            const learned = getLearnedProsodyProfile();
-            const voice = getKoreanMaleVoice();
+            const params = getSkyProsodyParams();
+            const collapseLong = true;
 
-            // 하단 [고저 간격(성조)] 조절바(#toneGapSlider, 기본 6.0반음 = 5~7반음의 정중앙)
-            // 6.0반음일 때 주파수 배율 = 2^(6/12) = 1.414배 (5반음=1.335배, 7반음=1.498배)
-            const gapSemitones = getEffectiveToneGap();
-            const semitoneRatio = Math.pow(2, gapSemitones / 12.0); // 6반음 -> 1.414x
-
-            // 여성 목소리 자연 음역대에 맞춘 평조(pLow) 및 강세(pHigh = 평조 대비 +5~7반음) 설정:
-            // 기존처럼 0.35로 억지로 낮추지 않고, 맑고 자연스러운 여성 기본 음역(0.94~0.96, 약 215Hz)을 평조로 고정!
-            const pLow = 0.95;
-            // 5~7반음 상승 시: 0.95 * 1.414 = 약 1.35 ~ 1.48 (약 300~320Hz 여성 고조 음역)
-            const pHigh = Math.min(1.85, Math.max(pLow, pLow * semitoneRatio * 1.03));
-
-            // '/'로 구분된 복수 발음 각각 처리
+            // '/'로 구분된 복수 발음 각각 파싱
             const parts = text.split('/').map(p => p.trim()).filter(Boolean);
-            const queue = [];
+            const wordsList = parts.map(p => parseDialectSentenceForSpeech(p)).filter(w => w.length > 0);
+            if (wordsList.length === 0) return;
 
-            parts.forEach(part => {
-                const rawWords = part.split(/\s+/).filter(Boolean);
-                const words = rawWords.map((rw, wIdx) => ({
-                    wordIndex: wIdx,
-                    raw: rw,
-                    syls: parseDialectWordForSpeech(rw)
-                })).filter(w => w.syls.length > 0);
+            // 1. 로컬 Praat edge_server.py 확인 (실행 중일 때 최우선 재생 + 무단절 WSOLA 장모음/성조 변조 적용)
+            try {
+                const allWords = wordsList.flat();
+                const wsolaText = allWords.map(w => w.syls.map(s => (collapseLong && s.isLong ? s.collapsedChar : s.rawPair) + s.punc).join('')).join(' ');
+                const baseBuffer = await fetchContinuousSentenceBuffer(wsolaText);
+                if (myToken !== skySpeakToken) return;
+                if (baseBuffer) {
+                    const { outBuffer } = synthesizeContinuousProsodyBuffer(baseBuffer, allWords, params);
+                    const ctx = getSkyAudioContext();
+                    const src = ctx.createBufferSource();
+                    src.buffer = outBuffer;
+                    src.connect(ctx.destination);
+                    skyCurrentSourceNode = src;
+                    src.onended = () => {
+                        if (skyCurrentSourceNode === src) skyCurrentSourceNode = null;
+                    };
+                    src.start();
+                    return;
+                }
+            } catch (e) {}
 
-                if (words.length === 0) return;
+            if (myToken !== skySpeakToken) return;
 
-                const phraseGroups = groupDialectWordsForSpeech(words);
-                phraseGroups.forEach(group => {
-                    const phraseWords = group.words;
-                    const pattern = group.pattern;
-
-                    let phraseText = phraseWords.map(w => {
-                        return w.syls.map((s, sIdx) => formatSylForSkyIntraWord(s, sIdx, w.syls.length, learned.longStretch)).join('');
-                    }).join(' ').trim();
-                    if (!phraseText) return;
-
-                    let totalSyls = 0;
-                    let longSyls = 0;
-                    phraseWords.forEach(pw => {
-                        pw.syls.forEach(s => {
-                            totalSyls++;
-                            if (s.isLong) longSyls++;
-                        });
-                    });
-
-                    // 어절 내 성조 위치 패턴별 5~7반음 차이 구현 (단어 쪼개기 없이 100% 한 숨으로 발화):
-                    // 1) 'FINAL_H' (어절 끝 강세, 예: 가새′, 갈꾸리′, 보소′):
-                    //    - 어절 끝에 '?' 의문 상승 억양을 걸어주고 베이스 피치를 여성 평조(pLow = 0.95)로 시작하면,
-                    //      앞의 평조 음절(가, 갈꾸)은 여성 평조(0.95, ~215Hz)로 읽히다가
-                    //      마지막 강세 음절(새′, 리′)만 한국어 여성 TTS의 의문 억양 곡선을 타고 정확히 +5~7반음(~310Hz) 솟구침!
-                    // 2) 'EARLY_H' (어절 앞/중간 강세, 예: 가′새, 사아′람, 어데′서):
-                    //    - 한국어 여성 TTS는 어절 첫/장음 음절에서 최고 피치를 찍고 어절 끝에서 5~6반음 자연 하강(Declination)하므로,
-                    //      의문부호 없이 마침 억양으로 두되 피치를 pHigh(1.38~1.48, +5~7반음)로 주면
-                    //      앞의 강세 음절(가′, 사아′)은 +6반음 고음으로 시작하고 뒤의 평조 음절(새, 람)은 자연 하강으로 평조(0.95)까지 내려와
-                    //      쪼개지 않고도 어절 내 H -> L (5~7반음) 낙차가 매끄럽게 형성됨!
-                    // 3) 'FLAT_L' (전체 평조):
-                    //    - 여성 평조(pLow = 0.95)로 차분하게 발화
-                    let targetPitch = pLow;
-                    if (pattern === 'FINAL_H') {
-                        if (gapSemitones >= 2.0 && !/[\?\!]$/.test(phraseText)) {
-                            phraseText = phraseText.replace(/[\.\,~]+$/, '').trim() + '?';
-                        }
-                        // 슬라이더가 6반음보다 더 높거나 낮을 때 미세 보정 (기본 6반음일 때는 0.98로 시작해 '?' 리프트로 끝 음절이 +6반음 상승)
-                        const finalBaseOffset = (gapSemitones - 6.0) * 0.035;
-                        targetPitch = Math.max(0.82, Math.min(1.45, pLow + 0.03 + finalBaseOffset));
-                    } else if (pattern === 'EARLY_H') {
-                        targetPitch = pHigh;
-                    } else {
-                        targetPitch = pLow;
-                    }
-
-                    const u = new SpeechSynthesisUtterance(phraseText);
-                    u.lang = 'ko-KR';
-                    if (voice) u.voice = voice;
-                    u.pitch = Number(Math.max(0.5, Math.min(2.0, targetPitch)).toFixed(2));
-
-                    let phraseRate = learned.baseRate;
-                    if (longSyls > 0) {
-                        const longRatio = longSyls / Math.max(1, totalSyls);
-                        const slowFactor = 1.0 + (learned.longStretch - 1.0) * (0.15 + longRatio * 0.12);
-                        phraseRate = learned.baseRate / slowFactor;
-                    } else if (pattern === 'FLAT_L') {
-                        phraseRate = learned.baseRate * 1.04;
-                    }
-                    u.rate = Number(Math.max(0.55, Math.min(1.40, phraseRate)).toFixed(2));
-
-                    queue.push(u);
-                });
-            });
-
-            if (queue.length === 0) return;
-
-            // Chrome에서 cancel() 직후 곧바로 speak()하면 첫 발화가 누락되는 버그가 있어 짧게 지연 후 큐잉
-            const myToken = ++skySpeakToken;
-            setTimeout(() => {
-                if (myToken !== skySpeakToken) return; // 그 사이 다른 버튼이 눌렸으면 무시
-                queue.forEach(u => window.speechSynthesis.speak(u));
-            }, 60);
+            // 2. 통합 브라우저 음성 합성 엔진 (통일 남성 저음역 + 장모음 3모라 연결 연장 + 내 학습 억양 100% 반영)
+            playUnifiedDialectSpeechForSky(wordsList, params, myToken);
         }
 
         // 표제어 전용 2번 발화
