@@ -733,7 +733,7 @@
                     </div>
                     <div class="speaker-btn speaker-btn-green" onclick="speakPronunciationGreen(event)"
                         oncontextmenu="event.preventDefault(); event.stopPropagation(); setGreenShortAccentStretch();"
-                        title="3번 TTS (초록색: 2번 엔진 + 어절 내 단음 강세 1.18배 연장 및 피치 보강 / 우클릭: 연장 배율 설정)">
+                        title="3번 TTS (초록색: 2번 엔진 + 어절 내 단음 강세 1.12배 연장 및 피치 보강 / 우클릭: 연장 배율 설정)">
                         <svg viewBox="0 0 24 24">
                             <path
                                 d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" />
@@ -1272,7 +1272,7 @@
             return word ? word.replace(/(\d+)/g, '<sup>$1</sup>') : "";
         }
 
-        // 예문 내 [ ] 텍스트 추출 및 스피커 버튼 삽입 함수 (1.기본TTS(파란색), 2.무단절WSOLA(하늘색), 3.단음강세1.18배연장(초록색))
+        // 예문 내 [ ] 텍스트 추출 및 스피커 버튼 삽입 함수 (1.기본TTS(파란색), 2.무단절WSOLA(하늘색), 3.단음강세1.12배연장(초록색))
         function processDialectTTS(text) {
             if (!text) return "";
             return text.replace(/\[(.*?)\]/g, (match, p1) => {
@@ -1280,11 +1280,11 @@
                 return `<b style="color:var(--point)">${p1}</b>` +
                     `<span class="speaker-btn" title="1번 TTS (원래 발음 기호)" data-pron="${encPron}" onclick="event.stopPropagation(); speakText(decodeURIComponent(this.dataset.pron), event)"><svg viewBox="0 0 24 24" style="width:20px; height:20px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg></span>` +
                     `<span class="speaker-btn speaker-btn-sky" title="2번 TTS (무단절 WSOLA 연속 사투리 합성)" data-pron="${encPron}" onclick="event.stopPropagation(); speakTextQuestion(decodeURIComponent(this.dataset.pron), event)"><svg viewBox="0 0 24 24" style="width:20px; height:20px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span>` +
-                    `<span class="speaker-btn speaker-btn-green" title="3번 TTS (2번 엔진 + 어절 내 단음 강세 1.18배 연장 보강)" data-pron="${encPron}" onclick="event.stopPropagation(); speakTextGreen(decodeURIComponent(this.dataset.pron), event)" oncontextmenu="event.preventDefault(); event.stopPropagation(); setGreenShortAccentStretch();"><svg viewBox="0 0 24 24" style="width:20px; height:20px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span>`;
+                    `<span class="speaker-btn speaker-btn-green" title="3번 TTS (2번 엔진 + 어절 내 단음 강세 1.12배 연장 보강)" data-pron="${encPron}" onclick="event.stopPropagation(); speakTextGreen(decodeURIComponent(this.dataset.pron), event)" oncontextmenu="event.preventDefault(); event.stopPropagation(); setGreenShortAccentStretch();"><svg viewBox="0 0 24 24" style="width:20px; height:20px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span>`;
             });
         }
 
-        // 관용구/속담 내 full text 렌더링 및 [ ] 발음 TTS 스피커 버튼 삽입 함수 (1.기본TTS(파란색), 2.무단절WSOLA(하늘색), 3.단음강세1.18배연장(초록색))
+        // 관용구/속담 내 full text 렌더링 및 [ ] 발음 TTS 스피커 버튼 삽입 함수 (1.기본TTS(파란색), 2.무단절WSOLA(하늘색), 3.단음강세1.12배연장(초록색))
         function processIdiomTTS(text) {
             if (!text) return "";
             let safeText = text.replace(/</g, "&lt;").replace(/>/g, "&gt;");
@@ -1293,7 +1293,7 @@
                 return `<b style="color:var(--point)">[${p1}]</b>` +
                     `<span class="speaker-btn" title="1번 TTS (원래 발음 기호)" data-pron="${encPron}" onclick="event.stopPropagation(); speakText(decodeURIComponent(this.dataset.pron), event)"><svg viewBox="0 0 24 24" style="width:20px; height:20px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg></span>` +
                     `<span class="speaker-btn speaker-btn-sky" title="2번 TTS (무단절 WSOLA 연속 사투리 합성)" data-pron="${encPron}" onclick="event.stopPropagation(); speakTextQuestion(decodeURIComponent(this.dataset.pron), event)"><svg viewBox="0 0 24 24" style="width:20px; height:20px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span>` +
-                    `<span class="speaker-btn speaker-btn-green" title="3번 TTS (2번 엔진 + 어절 내 단음 강세 1.18배 연장 보강)" data-pron="${encPron}" onclick="event.stopPropagation(); speakTextGreen(decodeURIComponent(this.dataset.pron), event)" oncontextmenu="event.preventDefault(); event.stopPropagation(); setGreenShortAccentStretch();"><svg viewBox="0 0 24 24" style="width:20px; height:20px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span>`;
+                    `<span class="speaker-btn speaker-btn-green" title="3번 TTS (2번 엔진 + 어절 내 단음 강세 1.12배 연장 보강)" data-pron="${encPron}" onclick="event.stopPropagation(); speakTextGreen(decodeURIComponent(this.dataset.pron), event)" oncontextmenu="event.preventDefault(); event.stopPropagation(); setGreenShortAccentStretch();"><svg viewBox="0 0 24 24" style="width:20px; height:20px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span>`;
             });
         }
 
@@ -1710,6 +1710,38 @@
             16: [20, 16], 17: [13, 17], 18: [18], 19: [20, 19], 20: [20]
         };
 
+        // 복모음(이중모음: ㅑ, ㅒ, ㅕ, ㅖ, ㅘ, ㅙ, ㅚ, ㅛ, ㅝ, ㅞ, ㅟ, ㅠ, ㅢ) 연장 시
+        // 반모음(j/w)이 재발음되어 "야야", "여여", "요요", "웨웨"처럼 들리는 현상을 막기 위해
+        // 복모음의 끝 단모음(ㅏ, ㅐ, ㅓ, ㅔ, ㅗ, ㅜ, ㅣ)으로 치환하는 매핑 테이블
+        const PURE_SUSTAIN_VOWEL_INDEX = {
+            0: 0,   // ㅏ -> ㅏ (아)
+            1: 1,   // ㅐ -> ㅐ (애)
+            2: 0,   // ㅑ -> ㅏ (야 -> 아)
+            3: 1,   // ㅒ -> ㅐ (얘 -> 애)
+            4: 4,   // ㅓ -> ㅓ (어)
+            5: 5,   // ㅔ -> ㅔ (에)
+            6: 4,   // ㅕ -> ㅓ (여 -> 어)
+            7: 5,   // ㅖ -> ㅔ (예 -> 에)
+            8: 8,   // ㅗ -> ㅗ (오)
+            9: 0,   // ㅘ -> ㅏ (와 -> 아)
+            10: 1,  // ㅙ -> ㅐ (왜 -> 애)
+            11: 5,  // ㅚ -> ㅔ (외 -> 에)
+            12: 8,  // ㅛ -> ㅗ (요 -> 오)
+            13: 13, // ㅜ -> ㅜ (우)
+            14: 4,  // ㅝ -> ㅓ (워 -> 어)
+            15: 5,  // ㅞ -> ㅔ (웨 -> 에)
+            16: 20, // ㅟ -> ㅣ (위 -> 이)
+            17: 13, // ㅠ -> ㅜ (유 -> 우)
+            18: 18, // ㅡ -> ㅡ (으)
+            19: 20, // ㅢ -> ㅣ (의 -> 이)
+            20: 20  // ㅣ -> ㅣ (이)
+        };
+
+        function getPureVowelSustainChar(jungIdx) {
+            const pureJung = PURE_SUSTAIN_VOWEL_INDEX[jungIdx] !== undefined ? PURE_SUSTAIN_VOWEL_INDEX[jungIdx] : jungIdx;
+            return composeHangulSyl(11, pureJung, 0);
+        }
+
         function collapseDialectLongPair(ch1, ch2) {
             const d1 = decomposeHangulSyl(ch1);
             const d2 = decomposeHangulSyl(ch2);
@@ -1758,7 +1790,7 @@
                     if (collapsed) {
                         const isH = (cur.tone === 'H' || nxt.tone === 'H');
                         const d2 = decomposeHangulSyl(nxt.char);
-                        const vowelTailChar = d2 ? composeHangulSyl(11, d2.jung, 0) : nxt.char;
+                        const vowelTailChar = d2 ? getPureVowelSustainChar(d2.jung) : nxt.char;
                         merged.push({
                             char: cur.char + nxt.char,
                             collapsedChar: collapsed,
@@ -1819,9 +1851,9 @@
         }
 
         // ========================================================
-        // [3번(초록색) 스피커 전용: 어절 내 단음 강세(′) 1.1~1.2배 길이 연장 헬퍼]
+        // [3번(초록색) 스피커 전용: 어절 내 단음 강세(′) 1.12배 길이 연장 헬퍼]
         // ========================================================
-        const DEFAULT_GREEN_SHORT_ACCENT_STRETCH = 1.18;
+        const DEFAULT_GREEN_SHORT_ACCENT_STRETCH = 1.12;
 
         function getGreenShortAccentStretch() {
             const saved = parseFloat(localStorage.getItem('web_tts_green_short_stretch'));
@@ -1832,10 +1864,10 @@
         function setGreenShortAccentStretch() {
             const cur = getGreenShortAccentStretch();
             const input = prompt(
-                "3번(초록색) TTS [단음 강세(′) 길이 연장 배율]을 설정하세요 (권장: 1.10 ~ 1.25):\n\n" +
-                "• 기본값: 1.18 (단음 강세 음절을 1.18배 늘려 고음 도달 시간 확보 및 피치 상승 유도)\n" +
-                "• 1.00에 가까울수록 2번(하늘색)과 비슷해지고, 1.20~1.25로 올릴수록 어절 내 강세 음절이 더 길고 높게 강조됩니다.\n\n" +
-                "(비워두고 확인을 누르면 기본값 1.18로 초기화됩니다)",
+                "3번(초록색) TTS [단음 강세(′) 길이 연장 배율]을 설정하세요 (권장: 1.08 ~ 1.25):\n\n" +
+                "• 기본값: 1.12 (단음 강세 음절을 1.12배 늘려 고음 도달 시간 확보 및 피치 상승 유도)\n" +
+                "• 1.00에 가까울수록 2번(하늘색)과 비슷해지고, 1.15~1.25로 올릴수록 어절 내 강세 음절이 더 길고 높게 강조됩니다.\n\n" +
+                "(비워두고 확인을 누르면 기본값 1.12로 초기화됩니다)",
                 String(cur)
             );
             if (input !== null) {
@@ -1853,18 +1885,34 @@
         }
 
         // 3번(초록색) 전용 음절 포맷터:
-        // - 장모음(isLong)은 2번과 동일하게 3모라로 연장
-        // - 단모음 강세(!s.isLong && s.tone === 'H')는 연장 배율(기본 1.18배 >= 1.12)일 때
-        //   받침 없는 개음절(예: 가′새, 어데′서, 꼬실라′)의 모음 핵을 미세 공명시켜
-        //   어절을 끊지 않고도 해당 강세 음절의 지속 시간을 약 1.15~1.20배 늘리고 TTS의 피치 피크를 높임!
-        function formatSyllableForGreenSpeech(s, params, collapseLong = true, shortAccentStretch = 1.18) {
+        // - 장모음(isLong)은 2번과 동일하게 3모라로 연장하되 복모음 꼬리는 단모음으로 매끄럽게 처리
+        // - 단모음 강세(!s.isLong && s.tone === 'H')는 연장 배율(기본 1.12배 >= 1.08)일 때
+        //   받침 없는 개음절의 모음 핵을 미세 공명시키되,
+        //   복모음(ㅑ, ㅕ, ㅛ, ㅠ, ㅞ, ㅘ, ㅝ 등)은 반드시 끝 단모음(ㅏ, ㅓ, ㅗ, ㅜ, ㅔ 등)을 붙여
+        //   "야야", "여여"가 아닌 "야아", "여어", "요오", "유우", "웨에"로 자연스럽게 이어지도록 처리!
+        function formatSyllableForGreenSpeech(s, params, collapseLong = true, shortAccentStretch = 1.12) {
             if (s.isLong) {
-                return formatSyllableForSpeech(s, 'prosody', params, collapseLong);
+                const c1 = s.rawPair[0];
+                const c2 = s.rawPair[1] || '';
+                const d1 = decomposeHangulSyl(c1);
+                const d2 = decomposeHangulSyl(c2);
+                const vTail = s.vowelTailChar || (d1 ? getPureVowelSustainChar(d1.jung) : c2);
+                // c2 자체도 복모음(예: 야+야)으로 적혀 있다면 단모음(아+받침)으로 교정하여 "야야" 발음 방지
+                const safeC2 = (d2 && d2.cho === 11 && PURE_SUSTAIN_VOWEL_INDEX[d2.jung] !== undefined)
+                    ? composeHangulSyl(11, PURE_SUSTAIN_VOWEL_INDEX[d2.jung], d2.jong)
+                    : c2;
+                const stretch = params ? params.longStretch : 1.68;
+                if (stretch >= 1.85) {
+                    return c1 + vTail + vTail + safeC2 + s.punc;
+                } else if (stretch >= 1.32) {
+                    return c1 + vTail + safeC2 + s.punc;
+                }
+                return c1 + safeC2 + s.punc;
             }
-            if (s.tone === 'H' && shortAccentStretch >= 1.12 && !s.punc) {
+            if (s.tone === 'H' && shortAccentStretch >= 1.08 && !s.punc) {
                 const dec = decomposeHangulSyl(s.char);
                 if (dec && dec.jong === 0) {
-                    const vTail = composeHangulSyl(11, dec.jung, 0);
+                    const vTail = getPureVowelSustainChar(dec.jung);
                     return s.char + vTail;
                 }
             }
