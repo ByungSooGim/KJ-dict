@@ -917,6 +917,9 @@
                 const choIdx = CHO_MAP[lastChar];
                 const firstOpt = opt[0];
                 const optRest = opt.slice(1);
+                if (firstOpt && firstOpt.charCodeAt(0) === 0x110B) { // NFD 초성 'ᄋ' (예: ㅋ{어ᇹ-어-애}다)
+                    return [preRest + String.fromCharCode(0x1100 + choIdx) + optRest];
+                }
                 const dec = decomposeHangulChar(firstOpt);
                 if (dec) {
                     if (dec.cho === 11) { // 초성이 'ㅇ' (예: 우, 오, 앟, 애, 아)
@@ -975,7 +978,7 @@
         // {}가 포함된 표제어를 모든 가능한 조합으로 확장하는 함수
         function expandCurlyWord(word) {
             if (!word || !word.includes('{')) return [];
-            const cleanWord = word.replace(/\([^)]*\)/g, '').replace(/\d+$/, '').trim();
+            const cleanWord = word.replace(/\(\{([^}]+)\}\)/g, '{$1-∅}').replace(/\([^)]*\)/g, '').replace(/\d+$/, '').trim();
 
             const m = cleanWord.match(/([^{}]*)\{([^{}]+)\}(.*)/);
             if (!m) return [];
@@ -1014,10 +1017,104 @@
             return Array.from(expandedSet);
         }
 
-        // 사전 데이터 전처리 (각 단어별 확장 단어 목록 생성)
+        // 표제어 원문(item.word)에서 옛한글 자모·PUA를 유실 없이 보존하며 검색/정렬용 문자열 생성
+        function normalizeWordPure(rawWord) {
+            if (!rawWord) return "";
+            let s = rawWord.replace(/\(\{([^}]+)\}\)/g, '{$1}');
+            s = s.replace(/\([^)]*\)/g, '');
+            return s.replace(/[^\u1100-\u11FF\u3131-\u318E\uA960-\uA97F\uD7B0-\uD7FF\uE000-\uF8FF가-힣a-zA-Z]/g, '');
+        }
+
+        // 옛한글 조합형 중성·종성 사전식 자모 순위표 (유니코드 자모 체계 + txt 사전순 일치)
+        const OLD_JUNG_RANK = { 0x119D: 215 }; // ᆝ(아래아+이): ㅣ(210) 직후
+        const OLD_JONG_RANK = {
+            0x11FE: 35,  // ᇾ(ㄱㅎ): ㄱ(10)~ㄳ(30) 뒤, ㄴ(40) 앞
+            0x11C5: 45,  // ᇅ(ㄴㄱ): ㄴ(40) 뒤, ㄵ(50) 앞
+            0x11D8: 145, // ᇘ(ㄹㅋ): ㄿ(140) 뒤, ㅀ(150) 앞
+            0x11D9: 148, // ᇙ(ㄹㆆ): ㅀ(150) 앞
+            0x11DA: 162, // ᇚ(ㅁㄱ): ㅁ(160) 뒤
+            0x11E1: 165, // ᇡ(ㅁㅎ): ㅁ(160) 뒤
+            0x11E5: 185, // ᇥ(ㅂㅎ): ㅄ(180) 뒤, ㅅ(190) 앞
+            0x11EC: 212, // ᇬ(ㅇㄱ): ㅇ(210) 뒤
+            0x11ED: 213, // ᇭ(ㅇㄲ): ㅇ(210) 뒤
+            0x11EF: 215, // ᇯ(ㅇㅋ): ㅇ(210) 뒤
+            0xD7F6: 217, // ퟶ(ㆁㅎ): ㅇ(210) 뒤, ㅈ(220) 앞
+            0x11F9: 268  // ᇹ(ㆆ): ㅎ(270) 앞
+        };
+
+        function getJamoSortKey(word) {
+            const s = normalizeWordPure(word || "");
+            const key = [];
+            let i = 0;
+            while (i < s.length) {
+                const cp = s.charCodeAt(i);
+                if (cp >= 0xAC00 && cp <= 0xD7A3) {
+                    const off = cp - 0xAC00;
+                    key.push((Math.floor(off / 588) + 1) * 10);
+                    key.push((Math.floor((off % 588) / 28) + 1) * 10);
+                    key.push((off % 28) * 10);
+                    i++;
+                } else if (cp >= 0x1100 && cp <= 0x1112) {
+                    key.push((cp - 0x1100 + 1) * 10);
+                    i++;
+                    let jungW = 0;
+                    if (i < s.length) {
+                        const cp2 = s.charCodeAt(i);
+                        if (cp2 >= 0x1161 && cp2 <= 0x1175) {
+                            jungW = (cp2 - 0x1161 + 1) * 10;
+                            i++;
+                        } else if (OLD_JUNG_RANK[cp2] !== undefined) {
+                            jungW = OLD_JUNG_RANK[cp2];
+                            i++;
+                        } else if ((cp2 >= 0x1176 && cp2 <= 0x11A7) || (cp2 >= 0xD7B0 && cp2 <= 0xD7C6)) {
+                            jungW = 220 + (cp2 & 0xFF);
+                            i++;
+                        }
+                    }
+                    let jongW = 0;
+                    if (i < s.length) {
+                        const cp3 = s.charCodeAt(i);
+                        if (cp3 >= 0x11A8 && cp3 <= 0x11C2) {
+                            jongW = (cp3 - 0x11A8 + 1) * 10;
+                            i++;
+                        } else if (OLD_JONG_RANK[cp3] !== undefined) {
+                            jongW = OLD_JONG_RANK[cp3];
+                            i++;
+                        } else if ((cp3 >= 0x11C3 && cp3 <= 0x11FF) || (cp3 >= 0xD7CB && cp3 <= 0xD7FF)) {
+                            jongW = 280 + (cp3 & 0xFF);
+                            i++;
+                        }
+                    }
+                    key.push(jungW, jongW);
+                } else if (cp >= 0x3131 && cp <= 0x314E && CHO_MAP[s[i]] !== undefined) {
+                    key.push((CHO_MAP[s[i]] + 1) * 10, 0, 0);
+                    i++;
+                } else {
+                    key.push(500 + cp, 0, 0);
+                    i++;
+                }
+            }
+            return key;
+        }
+
+        function compareHangulJamo(a, b) {
+            const ka = Array.isArray(a) ? a : getJamoSortKey(a);
+            const kb = Array.isArray(b) ? b : getJamoSortKey(b);
+            const len = Math.min(ka.length, kb.length);
+            for (let i = 0; i < len; i++) {
+                if (ka[i] !== kb[i]) return ka[i] - kb[i];
+            }
+            return ka.length - kb.length;
+        }
+
+        // 사전 데이터 전처리 (원본 색인 보존 + 옛한글 유실 복구 + 확장 단어 생성)
         function preprocessDictData(data) {
-            data.forEach(item => {
+            data.forEach((item, idx) => {
+                item._origIdx = idx;
                 const rawWord = item.word || item.word_pure || "";
+                if (item.word) {
+                    item.word_pure = normalizeWordPure(item.word);
+                }
                 if (rawWord.includes('{')) {
                     item.expanded_words = expandCurlyWord(rawWord);
                 } else {
@@ -2659,16 +2756,80 @@
         }
 
 
-        function getInitialConsonant(str) { if (!str) return ""; const code = str.charCodeAt(0) - 44032; return (code < 0 || code > 11171) ? str[0] : consonants[Math.floor(code / 588)]; }
+        function getInitialConsonant(str) {
+            if (!str) return "";
+            const code = str.charCodeAt(0);
+            if (code >= 0xAC00 && code <= 0xD7A3) {
+                return consonants[Math.floor((code - 0xAC00) / 588)];
+            }
+            if (code >= 0x1100 && code <= 0x1112) {
+                return consonants[code - 0x1100];
+            }
+            if ((code >= 0x1160 && code <= 0x11FF) || (code >= 0xD7B0 && code <= 0xD7FF)) {
+                return "";
+            }
+            if (code < 0x3131 && !/[a-zA-Z0-9]/.test(str[0])) {
+                return "";
+            }
+            return str[0];
+        }
+
+        function getWordInitialConsonant(word) {
+            if (!word) return "";
+            for (let i = 0; i < word.length; i++) {
+                const init = getInitialConsonant(word[i]);
+                if (init) return init;
+            }
+            return "";
+        }
+
         function searchByInitial(char) {
             const sets = { 'ㄱ': ['ㄱ', 'ㄲ'], 'ㄷ': ['ㄷ', 'ㄸ'], 'ㅂ': ['ㅂ', 'ㅃ'], 'ㅅ': ['ㅅ', 'ㅆ'], 'ㅈ': ['ㅈ', 'ㅉ'] };
-            displayList(dictData.filter(item => {
-                const words = [item.word_pure || item.word || "", ...(item.expanded_words || [])];
-                return words.some(w => {
-                    const initial = getInitialConsonant(w);
-                    return sets[char] ? sets[char].includes(initial) : initial === char;
+            const targets = sets[char] || [char];
+
+            const primaryMatches = [];
+            const variantMatches = [];
+
+            dictData.forEach(item => {
+                const mainWord = item.word_pure || item.word || "";
+                const mainInit = getWordInitialConsonant(mainWord);
+                if (targets.includes(mainInit)) {
+                    primaryMatches.push({ item });
+                    return;
+                }
+                const matchedVariant = (item.expanded_words || []).find(ew => targets.includes(getWordInitialConsonant(ew)));
+                if (matchedVariant) {
+                    variantMatches.push({ item, sortKey: getJamoSortKey(matchedVariant) });
+                }
+            });
+
+            if (variantMatches.length === 0) {
+                displayList(primaryMatches.map(m => m.item));
+                return;
+            }
+
+            // 주 표제어(primaryMatches)의 txt 사전순(_origIdx)은 그대로 유지하고,
+            // 다른 초성 {} 선택형에서 온 파생형만 옛한글 포함 자모순 위치에 삽입
+            const entries = primaryMatches.map((m, idx) => ({ item: m.item, order: idx * 1000 }));
+            const primaryKeys = primaryMatches.map(m => getJamoSortKey(m.item.word_pure || m.item.word || ""));
+
+            variantMatches.sort((a, b) => compareHangulJamo(a.sortKey, b.sortKey) || (a.item._origIdx - b.item._origIdx));
+
+            variantMatches.forEach((vm, vIdx) => {
+                let lo = 0, hi = primaryKeys.length;
+                while (lo < hi) {
+                    const mid = (lo + hi) >> 1;
+                    if (compareHangulJamo(primaryKeys[mid], vm.sortKey) <= 0) lo = mid + 1;
+                    else hi = mid;
+                }
+                entries.push({
+                    item: vm.item,
+                    order: lo * 1000 - 500 + (vIdx / (variantMatches.length + 1))
                 });
-            }));
+            });
+
+            entries.sort((a, b) => a.order - b.order);
+            displayList(entries.map(e => e.item));
         }
 
         function searchByPosGroup(symbols) { let filtered = dictData.filter(item => symbols.includes(item.pos_symbol)); filtered.sort(() => Math.random() - 0.5); displayList(filtered); }
