@@ -17,7 +17,7 @@
             background: var(--bg);
             margin: 0;
             padding: 8px;
-            font-family: 'Malgun Gothic', sans-serif;
+            font-family: 'Malgun Gothic', 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -136,6 +136,88 @@
             font-weight: bold;
             cursor: pointer;
             color: #444;
+        }
+
+        /* 2-1. 옛한글 빠른 필터 & 자모 팔레트 */
+        .old-hangul-bar {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 6px;
+        }
+
+        .old-bar-btn {
+            flex: 1;
+            padding: 6px 8px;
+            background: #fff;
+            border: 1px solid #e0d6cc;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: bold;
+            color: #5a4638;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+        }
+
+        .old-bar-btn.active {
+            background: var(--point);
+            border-color: var(--point);
+            color: #fff;
+        }
+
+        .old-jamo-palette {
+            background: #fff;
+            border: 1px solid #e6ddd3;
+            border-radius: 8px;
+            padding: 8px;
+            margin-bottom: 8px;
+        }
+
+        .old-palette-hint {
+            font-size: 12px;
+            color: #777;
+            margin-bottom: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .old-palette-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+
+        .old-jamo-chip {
+            padding: 5px 8px;
+            background: #faf6f1;
+            border: 1px solid #dfd5ca;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: bold;
+            color: #333;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .old-jamo-chip .chip-sub {
+            font-size: 11px;
+            font-weight: normal;
+            color: #777;
+        }
+
+        .old-jamo-chip.active {
+            background: var(--point);
+            border-color: var(--point);
+            color: #fff;
+        }
+
+        .old-jamo-chip.active .chip-sub {
+            color: #ffe8e8;
         }
 
         /* 3. 품사 버튼 */
@@ -660,6 +742,92 @@
             background: #872e2e;
         }
 
+        /* --- 예문 내 단어 클릭 & 표제어 미리보기 팝업 --- */
+        .ex-word-link {
+            cursor: pointer;
+            border-bottom: 1px dotted #c29b8e;
+            border-radius: 2px;
+            transition: background 0.15s, color 0.15s;
+        }
+
+        .ex-word-link:hover,
+        .ex-word-link:active {
+            background: #faece8;
+            color: var(--point);
+            border-bottom-color: var(--point);
+        }
+
+        .ex-popup-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-height: 55vh;
+            overflow-y: auto;
+        }
+
+        .ex-popup-item {
+            background: #fdfaf6;
+            border: 1px solid #e7ddd3;
+            border-radius: 10px;
+            padding: 11px 12px;
+        }
+
+        .ex-popup-head {
+            display: flex;
+            align-items: baseline;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 4px;
+        }
+
+        .ex-popup-word {
+            font-size: 18px;
+            font-weight: bold;
+            color: var(--point);
+        }
+
+        .ex-popup-word sup {
+            font-size: 0.65em;
+        }
+
+        .ex-popup-pos {
+            font-size: 11px;
+            background: #eee;
+            color: #555;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        .ex-popup-pron {
+            font-size: 13px;
+            color: #666;
+        }
+
+        .ex-popup-def {
+            font-size: 13.5px;
+            line-height: 1.5;
+            color: #333;
+            margin: 4px 0 8px 0;
+        }
+
+        .ex-popup-jump-btn {
+            width: 100%;
+            padding: 7px 10px;
+            background: #fff;
+            border: 1.5px solid var(--point);
+            color: var(--point);
+            border-radius: 7px;
+            font-size: 13px;
+            font-weight: bold;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .ex-popup-jump-btn:hover {
+            background: var(--point);
+            color: #fff;
+        }
+
         body {
             -webkit-user-select: none;
             -ms-user-select: none;
@@ -694,6 +862,11 @@
             <input type="text" id="diaSearch" placeholder="방언 표제어 검색 ">
             <input type="text" id="stdSearch" placeholder="표준어 검색">
         </div>
+        <div class="old-hangul-bar">
+            <button type="button" id="oldHangulAllBtn" class="old-bar-btn" onclick="searchByOldHangul()">📜 옛한글 전체</button>
+            <button type="button" id="oldJamoToggleBtn" class="old-bar-btn" onclick="toggleOldJamoPalette()">⌨ 옛자모 선택 ▾</button>
+        </div>
+        <div id="oldJamoPalette" class="old-jamo-palette" style="display:none;"></div>
         <div id="consonantNav" class="nav-grid"></div>
 
         <div id="searchList">
@@ -715,14 +888,6 @@
                     style="display:none; font-size:15px; color:var(--point); margin-top:4px; font-weight:bold;"></div>
                 <div id="v-pron-row" class="pron-row" style="display:none;">
                     <div id="v-pron" class="pron-area"></div>
-                    <div class="speaker-btn" onclick="speakPronunciation()"
-                        oncontextmenu="event.preventDefault(); event.stopPropagation(); setWebTTSPitch();"
-                        title="1번 TTS (파란색: 원래 발음, 마지막 음절 분할 피치 상향 / 우클릭: 피치 조절)">
-                        <svg viewBox="0 0 24 24">
-                            <path
-                                d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" />
-                        </svg>
-                    </div>
                     <div class="speaker-btn speaker-btn-sky" onclick="speakPronunciationQuestion(event)"
                         oncontextmenu="event.preventDefault(); event.stopPropagation(); setMaleVoiceChoice();"
                         title="2번 TTS (하늘색: 무단절 WSOLA 연속 사투리 합성 / 우클릭: 음성 선택)">
@@ -747,9 +912,14 @@
                 </div>
 
             </div>
-            <button onclick="goBackToList()"
-                style="margin-bottom:10px; padding:10px 14px; background:#eee; border:none; border-radius:6px; cursor:pointer; font-weight:bold; color:#555; font-size:15px;">←
-                목록으로 돌아가기</button>
+            <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:10px;">
+                <button onclick="goBackToList()"
+                    style="padding:10px 14px; background:#eee; border:none; border-radius:6px; cursor:pointer; font-weight:bold; color:#555; font-size:15px;">←
+                    목록으로 돌아가기</button>
+                <button id="prevWordBtn" onclick="goBackToPrevWord()"
+                    style="display:none; padding:10px 14px; background:#faece8; border:1px solid #e0c3ba; border-radius:6px; cursor:pointer; font-weight:bold; color:var(--point); font-size:15px;">←
+                    이전 단어</button>
+            </div>
 
         </div>
         <div class="pos-row">
@@ -796,7 +966,7 @@
                 </div>
                 <div class="guide-modal-body">
                     <p style="margin: 0 0 10px 0;">
-                        스피커 모양 파란 아이콘을 누르시면 휴대폰에서 어떻게 소리 나는지 들을 수 있어요.
+                        하늘색·초록색 스피커 아이콘을 누르시면 휴대폰에서 경주 사투리 발음으로 어떻게 소리 나는지 들을 수 있어요.
                     </p>
                     <p style="margin: 0 0 6px 0;">
                         휴대폰 설정에서 돋보기 기능 즉 찾기 실행해서
@@ -810,6 +980,18 @@
                     </p>
                 </div>
                 <button type="button" class="guide-modal-close-btn" onclick="togglePronGuideModal()">닫기</button>
+            </div>
+        </div>
+
+        <!-- 예문 단어 표제어 미리보기 모달 팝업 -->
+        <div id="exampleWordModalOverlay" class="guide-modal-overlay" onclick="closeExampleWordModal(event)">
+            <div class="guide-modal-card" onclick="event.stopPropagation()">
+                <div class="guide-modal-title" style="justify-content:space-between;">
+                    <span id="exModalTitle">예문 단어 찾기</span>
+                    <button type="button" onclick="closeExampleWordModal()" style="border:none;background:none;font-size:18px;cursor:pointer;color:#888;padding:0 4px;">✕</button>
+                </div>
+                <div id="exModalBody" class="guide-modal-body"></div>
+                <button type="button" class="guide-modal-close-btn" onclick="closeExampleWordModal()">닫기</button>
             </div>
         </div>
 
@@ -829,13 +1011,13 @@
                     <span id="speedValBadge" class="speed-val-badge">0.76x</span>
                 </div>
             </div>
-            <!-- 2번(하늘색) 스피커 전용: 강세(′) 고조 배율 조절 바 (demo_prosody.html 2번 버튼의 highPitchRatio 1.48x 연동) -->
-            <div class="speed-row" title="2번(하늘색) 스피커의 강세(′) 고조 피치 상승 배율을 조절합니다 (기본 1.48x = +6.8반음)">
+            <!-- 2·3번 스피커 공통: 평음·고음 구분 없이 통합 기본 피치 배율 조절 바 -->
+            <div class="speed-row" title="2·3번 스피커의 기본 음높이(피치) 배율을 조절합니다 (평음·고음 구분 없이 통합 적용, 기본 1.48x)">
                 <div class="speed-control-title">
                     <svg viewBox="0 0 24 24" style="width:16px; height:16px; fill:#00bcd4; vertical-align:-2px;">
                         <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
                     </svg>
-                    강세(′) 고조 배율
+                    기본 음높이 배율
                 </div>
                 <div class="speed-slider-wrap">
                     <span style="font-size:11.5px; color:#64748b;">평탄</span>
@@ -870,7 +1052,7 @@
         });
         /* --- [1. 변수 및 환경 설정] --- */
         let dictData = [], currentItem = null, searchTimer, currentPage = 1, filteredData = [];
-        const itemsPerPage = 50, DB_NAME = "GyeongjuDictDB", STORE_NAME = "dictionary", DATA_VERSION = "20261110_v13";
+        const itemsPerPage = 50, DB_NAME = "GyeongjuDictDB", STORE_NAME = "dictionary", DATA_VERSION = "20261112_v14";
         const posMap = { '󰃃': '명사', '󰂿': '동사', '󰃰': '형용사', '󰂽': '대명사', '󰃌': '부사', '󰃲': '활용어미', '󰃥': '접사', '󰃆': '어미', '󰂴': '관형사', '󰂳': '감탄사', '󰃓': '수사', '󰃫': '참고', '󰃩': '준말' };
         const consonants = ['ㄱ', 'ㄲ', 'ㄴ', 'ㄷ', 'ㄸ', 'ㄹ', 'ㅁ', 'ㅂ', 'ㅃ', 'ㅅ', 'ㅆ', 'ㅇ', 'ㅈ', 'ㅉ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ'];
         const CHOSUNG = ['ㄱ', 'ㄲ', 'ㄴ', 'ㄷ', 'ㄸ', 'ㄹ', 'ㅁ', 'ㅂ', 'ㅃ', 'ㅅ', 'ㅆ', 'ㅇ', 'ㅈ', 'ㅉ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ'];
@@ -1017,10 +1199,194 @@
             return Array.from(expandedSet);
         }
 
+        // 한양 PUA(U+E000..U+F8FF) -> 표준 유니코드 첫가끝 조합형 자모 변환표
+        const PUA_TO_UNICODE = {
+            '\uE0FF': '\u1100\u1165\u11F9', // 거ᇹ
+            '\uE141': '\u1100\u116E\u11EC', // 구ᇬ
+            '\uE216': '\u1102\u1161\u11EC', // 나ᇬ
+            '\uE235': '\u1102\u1167\u11C5', // 녀ᇅ
+            '\uE33C': '\u1103\u1169\u11D8', // 도ᇘ
+            '\uE43D': '\u1105\u116E\u11F9', // 루ᇹ
+            '\uE45E': '\u1105\u1175\u11F9', // 리ᇹ
+            '\uE519': '\u1106\u1169\u11D9', // 모ᇙ
+            '\uE61F': '\u1107\u116E\u11EF', // 부ᇯ
+            '\uE621': '\u1107\u116E\u11F9', // 부ᇹ
+            '\uE8D2': '\u1109\u1161\u11D9', // 사ᇙ
+            '\uE92D': '\u1109\u116E\u11F9', // 수ᇹ
+            '\uE967': '\u1109\u1175\u11D9', // 시ᇙ
+            '\uE969': '\u1109\u1175\u11E1', // 시ᇡ
+            '\uEDD0': '\u110B\u1165\u11DD', // 어ᇝ
+            '\uEE63': '\u110B\u1173\u11D9', // 으ᇙ
+            '\uEE79': '\u110B\u1175\u11D9', // 이ᇙ
+            '\uEEA4': '\u110B\u11A1',       // ᄋᆡ
+            '\uF149': '\u114C\u1173',       // ᅌᅳ
+            '\uF1B9': '\u110C\u116E\u11F9', // 주ᇹ
+            '\uF231': '\u110D\u1169\u11F9', // 쪼ᇹ
+            '\uF3A6': '\u110F\u1165\u11F9', // 커ᇹ
+            '\uF537': '\u1112\u119E',       // ᄒᆞ
+            '\uF788': '\u1102',             // ᄂ
+            '\uF7C2': '\u1109',             // ᄉ
+            '\uF7D9': '\u110B',             // ᄋ
+            '\uF7E8': '\u110C',             // ᄌ
+            '\uF807': '\u1161',             // ᅡ
+            '\uF816': '\u1167',             // ᅧ
+            '\uF84C': '\u1196',             // ᆖ
+            '\uF875': '\u11AB',             // ᆫ
+            '\uF8DF': '\uD7F6'              // ퟶ
+        };
+        const _PUA_REGEX = new RegExp(`[${Object.keys(PUA_TO_UNICODE).join('')}]`, 'g');
+        function convertPuaToUnicode(str) {
+            if (!str || typeof str !== 'string') return str;
+            return str.replace(_PUA_REGEX, ch => PUA_TO_UNICODE[ch] || ch);
+        }
+
+        // 옛한글 조합형 자모 보유 여부 확인 (NFC 정규화 후 조합되지 않는 첫가끝 자모)
+        function hasOldHangulJamo(str) {
+            if (!str) return false;
+            return /[\u1100-\u11FF\uA960-\uA97F\uD7B0-\uD7FF]/.test(str.normalize('NFC'));
+        }
+
+        function isArchaicJamoCode(cp) {
+            return (cp >= 0x1113 && cp <= 0x1160) ||
+                (cp >= 0x1176 && cp <= 0x11A7) ||
+                (cp >= 0x11C3 && cp <= 0x11FF) ||
+                (cp >= 0xA960 && cp <= 0xA97F) ||
+                (cp >= 0xD7B0 && cp <= 0xD7FF);
+        }
+
+        function extractOldJamoSet(str, targetSet) {
+            if (!str) return;
+            for (let i = 0; i < str.length; i++) {
+                if (isArchaicJamoCode(str.charCodeAt(i))) {
+                    targetSet.add(str[i]);
+                }
+            }
+        }
+
+        // 사전에 실제 쓰인 옛한글 자모 13종 팔레트 정의
+        const OLD_JAMO_PALETTE_ITEMS = [
+            { jamo: '\uD7F6', sample: '\u110B\u1161\uD7F6', label: 'ㆁㅎ' },
+            { jamo: '\u11F9', sample: '\u110B\u1161\u11F9', label: 'ㆆ' },
+            { jamo: '\u11EC', sample: '\u110B\u1161\u11EC', label: 'ㅇㄱ' },
+            { jamo: '\u11FE', sample: '\u110B\u1161\u11FE', label: 'ㄱㅎ' },
+            { jamo: '\u11E1', sample: '\u110B\u1161\u11E1', label: 'ㅁㅎ' },
+            { jamo: '\u11D8', sample: '\u110B\u1161\u11D8', label: 'ㄹㅋ' },
+            { jamo: '\u11D9', sample: '\u110B\u1161\u11D9', label: 'ㄹㆆ' },
+            { jamo: '\u11C5', sample: '\u110B\u1161\u11C5', label: 'ㄴㄱ' },
+            { jamo: '\u11EF', sample: '\u110B\u1161\u11EF', label: 'ㅇㅋ' },
+            { jamo: '\u11E5', sample: '\u110B\u1161\u11E5', label: 'ㅂㅎ' },
+            { jamo: '\u11DA', sample: '\u110B\u1161\u11DA', label: 'ㅁㄱ' },
+            { jamo: '\u11ED', sample: '\u110B\u1161\u11ED', label: 'ㅇㄲ' },
+            { jamo: '\u119D', sample: '\u110B\u119D', label: 'ㆍㅣ' }
+        ];
+
+        const COMPAT_JONG_EXPAND = {
+            'ㄳ': 'ㄱㅅ', 'ㄵ': 'ㄴㅈ', 'ㄶ': 'ㄴㅎ', 'ㄺ': 'ㄹㄱ', 'ㄻ': 'ㄹㅁ',
+            'ㄼ': 'ㄹㅂ', 'ㄽ': 'ㄹㅅ', 'ㄾ': 'ㄹㅌ', 'ㄿ': 'ㄹㅍ', 'ㅀ': 'ㄹㅎ', 'ㅄ': 'ㅂㅅ'
+        };
+
+        const OLD_JAMO_APPROX = {
+            '\u114C': ['ㅇ'],
+            '\u1196': ['ㅡ'],
+            '\u119D': ['ㅣ', 'ㅐ', 'ㅔ'],
+            '\u119E': ['ㅏ', 'ㅓ'],
+            '\u11A1': ['ㅢ', 'ㅔ'],
+            '\u11C5': ['ㄴㄱ', 'ㄴ', 'ㄱ'],
+            '\u11D8': ['ㄹㅋ', 'ㄹㄱ', 'ㄹ'],
+            '\u11D9': ['ㄹㅎ', 'ㄹㅇ', 'ㄹ'],
+            '\u11DA': ['ㅁㄱ', 'ㅁ', 'ㄱ'],
+            '\u11DD': ['ㅁㅅ', 'ㅁ'],
+            '\u11E1': ['ㅁㅎ', 'ㅁ', 'ㅎ'],
+            '\u11E5': ['ㅂㅎ', 'ㅂ'],
+            '\u11EC': ['ㅇㄱ', 'ㅇ', 'ㄱ'],
+            '\u11ED': ['ㅇㄲ', 'ㅇㄱ', 'ㅇ', 'ㄲ'],
+            '\u11EF': ['ㅇㅋ', 'ㅇ', 'ㅋ'],
+            '\u11F9': ['ㅎ', 'ㅇ', 'ㄷ', ''],
+            '\u11FE': ['ㄱㅎ', 'ㄱ', 'ㅋ', 'ㅎ'],
+            '\uD7F6': ['ㅇㅎ', 'ㅇ', 'ㅎ', '']
+        };
+
+        function singleCharToCompat(ch) {
+            const cp = ch.charCodeAt(0);
+            if (cp >= 0x1100 && cp <= 0x1112) return CHOSUNG[cp - 0x1100];
+            if (cp >= 0x1161 && cp <= 0x1175) return JUNGSUNG[cp - 0x1161];
+            if (cp >= 0x11A8 && cp <= 0x11C2) {
+                const j = JONGSUNG[cp - 0x11A7];
+                return COMPAT_JONG_EXPAND[j] || j;
+            }
+            if (cp >= 0x3131 && cp <= 0x3163) return COMPAT_JONG_EXPAND[ch] || ch;
+            return ch;
+        }
+
+        function toCompatJamoString(str) {
+            if (!str) return "";
+            const nfd = str.normalize('NFD');
+            let out = "";
+            for (let i = 0; i < nfd.length; i++) {
+                const ch = nfd[i];
+                const alt = OLD_JAMO_APPROX[ch];
+                out += alt ? alt[0] : singleCharToCompat(ch);
+            }
+            return out;
+        }
+
+        function buildApproxSearchForms(word) {
+            if (!word) return [];
+            const nfd = word.normalize('NFD');
+            let forms = [""];
+            for (let i = 0; i < nfd.length; i++) {
+                const ch = nfd[i];
+                const alts = OLD_JAMO_APPROX[ch];
+                if (alts) {
+                    const nextForms = [];
+                    for (const f of forms) {
+                        for (const a of alts) {
+                            nextForms.push(f + a);
+                            if (nextForms.length >= 32) break;
+                        }
+                        if (nextForms.length >= 32) break;
+                    }
+                    forms = nextForms;
+                } else {
+                    const c = singleCharToCompat(ch);
+                    forms = forms.map(f => f + c);
+                }
+            }
+            return [...new Set(forms)];
+        }
+
+        function convertEntryPua(item) {
+            item.word = convertPuaToUnicode(item.word);
+            if (item.word_clean) item.word_clean = convertPuaToUnicode(item.word_clean);
+            if (item.pronunciation) item.pronunciation = convertPuaToUnicode(item.pronunciation);
+            if (item.definition) item.definition = convertPuaToUnicode(item.definition);
+            if (Array.isArray(item.examples)) {
+                item.examples.forEach(ex => {
+                    if (ex.dialect) ex.dialect = convertPuaToUnicode(ex.dialect);
+                    if (ex.standard) ex.standard = convertPuaToUnicode(ex.standard);
+                });
+            }
+            if (Array.isArray(item.idioms)) {
+                for (let i = 0; i < item.idioms.length; i++) {
+                    const idm = item.idioms[i];
+                    if (typeof idm === 'string') {
+                        item.idioms[i] = convertPuaToUnicode(idm);
+                    } else if (idm && typeof idm === 'object') {
+                        if (idm.full) idm.full = convertPuaToUnicode(idm.full);
+                        if (idm.phrase) idm.phrase = convertPuaToUnicode(idm.phrase);
+                        if (idm.standard) idm.standard = convertPuaToUnicode(idm.standard);
+                        if (idm.meaning) idm.meaning = convertPuaToUnicode(idm.meaning);
+                    }
+                }
+            }
+        }
+
+        let activeOldHangulMode = null; // null | 'ALL' | '<jamo>'
+
         // 표제어 원문(item.word)에서 옛한글 자모·PUA를 유실 없이 보존하며 검색/정렬용 문자열 생성
         function normalizeWordPure(rawWord) {
             if (!rawWord) return "";
-            let s = rawWord.replace(/\(\{([^}]+)\}\)/g, '{$1}');
+            let s = convertPuaToUnicode(rawWord).replace(/\(\{([^}]+)\}\)/g, '{$1}');
             s = s.replace(/\([^)]*\)/g, '');
             return s.replace(/[^\u1100-\u11FF\u3131-\u318E\uA960-\uA97F\uD7B0-\uD7FF\uE000-\uF8FF가-힣a-zA-Z]/g, '');
         }
@@ -1107,10 +1473,31 @@
             return ka.length - kb.length;
         }
 
-        // 사전 데이터 전처리 (원본 색인 보존 + 옛한글 유실 복구 + 확장 단어 생성)
+        let wordExactIndex = new Map();
+        let wordNavHistory = [];
+        let currentPopupMatches = [];
+
+        function addWordIndexKey(key, item) {
+            if (!key) return;
+            [key, key.normalize('NFC')].forEach(k => {
+                if (!k) return;
+                let arr = wordExactIndex.get(k);
+                if (!arr) {
+                    arr = [];
+                    wordExactIndex.set(k, arr);
+                }
+                if (arr.length === 0 || arr[arr.length - 1] !== item) {
+                    if (!arr.includes(item)) arr.push(item);
+                }
+            });
+        }
+
+        // 사전 데이터 전처리 (원본 색인 보존 + PUA→UTF-8 변환 + 옛한글 검색 색인/확장 단어 생성)
         function preprocessDictData(data) {
+            wordExactIndex = new Map();
             data.forEach((item, idx) => {
                 item._origIdx = idx;
+                convertEntryPua(item);
                 const rawWord = item.word || item.word_pure || "";
                 if (item.word) {
                     item.word_pure = normalizeWordPure(item.word);
@@ -1120,7 +1507,32 @@
                 } else {
                     item.expanded_words = [];
                 }
+
+                addWordIndexKey(item.word_pure, item);
+                item.expanded_words.forEach(ew => addWordIndexKey(ew, item));
+
+                const wordsToCheck = [item.word, item.word_pure, ...item.expanded_words].filter(Boolean);
+                const oldSet = new Set();
+                let hasOld = false;
+                wordsToCheck.forEach(w => {
+                    if (hasOldHangulJamo(w)) {
+                        hasOld = true;
+                        extractOldJamoSet(w, oldSet);
+                    }
+                });
+                item._hasOldHangul = hasOld;
+                item._oldJamos = oldSet;
+                if (hasOld) {
+                    const approxSet = new Set();
+                    [item.word_pure || item.word, ...item.expanded_words].filter(Boolean).forEach(w => {
+                        buildApproxSearchForms(w).forEach(f => approxSet.add(f));
+                    });
+                    item._approxSearchKeys = [...approxSet];
+                } else {
+                    item._approxSearchKeys = null;
+                }
             });
+            initOldHangulUI();
         }
 
         async function init() {
@@ -1204,7 +1616,8 @@
         }
 
         /* --- [3. 검색 및 정렬 기능] --- */
-        function sortResults(results, query) {
+        function sortResults(results, query, searchDecomposed) {
+            const decQuery = searchDecomposed !== undefined ? searchDecomposed : decomposeHangul(query);
             return results.sort((a, b) => {
                 const aWords = [a.word_pure || a.word || "", ...(a.expanded_words || [])];
                 const bWords = [b.word_pure || b.word || "", ...(b.expanded_words || [])];
@@ -1219,9 +1632,15 @@
                 if (aStart && !bStart) return -1;
                 if (bStart && !aStart) return 1;
 
+                const aDirect = aWords.some(w => decomposeHangul(w).includes(decQuery));
+                const bDirect = bWords.some(w => decomposeHangul(w).includes(decQuery));
+                if (aDirect && !bDirect) return -1;
+                if (bDirect && !aDirect) return 1;
+
                 const aLen = Math.min(...aWords.map(w => w.length));
                 const bLen = Math.min(...bWords.map(w => w.length));
-                return aLen - bLen;
+                if (aLen !== bLen) return aLen - bLen;
+                return (a._origIdx || 0) - (b._origIdx || 0);
             });
         }
 
@@ -1244,63 +1663,79 @@
         function debounceSearch(type, val) {
             clearTimeout(searchTimer);
             searchTimer = setTimeout(() => {
-                if (!val) return;
+                if (type === 'std') {
+                    if (!val) return;
+                    clearOldHangulFilter();
+                    const res = dictData.filter(i => (i.definition || "").includes(val));
+                    displayList(res);
+                    return;
+                }
+
+                const pool = activeOldHangulMode === 'ALL'
+                    ? dictData.filter(i => i._hasOldHangul)
+                    : activeOldHangulMode
+                        ? dictData.filter(i => i._oldJamos && i._oldJamos.has(activeOldHangulMode))
+                        : dictData;
+
+                if (!val) {
+                    if (activeOldHangulMode) displayList(pool);
+                    return;
+                }
 
                 let res = [];
                 const isChosungOnly = /^[ㄱ-ㅎ]+$/.test(val); // 입력이 오직 초성으로만 구성되었는지 확인
 
-                if (type === 'dia') {
-                    if (isChosungOnly) {
-                        // 1. 초성만 입력했을 경우 (예: ㄱㄹㄷ, ㄲㄲㄷ) -> 초성 일치 검색
-                        res = dictData.filter(i => {
+                if (isChosungOnly) {
+                    // 1. 초성만 입력했을 경우 (예: ㄱㄹㄷ, ㄲㄲㄷ) -> 초성 일치 검색
+                    res = pool.filter(i => {
+                        const word = i.word_pure || i.word || "";
+                        const wordChosung = word.split('').map(char => getInitialConsonant(char)).join('');
+                        if (wordChosung.includes(val)) return true;
+                        if (i.expanded_words && i.expanded_words.length > 0) {
+                            return i.expanded_words.some(ew => {
+                                const ewChosung = ew.split('').map(char => getInitialConsonant(char)).join('');
+                                return ewChosung.includes(val);
+                            });
+                        }
+                        return false;
+                    });
+                } else {
+                    // 2. 일반 단어 입력 시 -> 포함 검색 (표제어, {} 조합 단어, 옛한글 현대자모 근사형 모두 매칭)
+                    const searchDecomposed = decomposeHangul(val);
+                    const searchCompat = toCompatJamoString(val);
+                    res = pool.filter(i => {
+                        const mainWord = i.word_pure || i.word || "";
+                        if (decomposeHangul(mainWord).includes(searchDecomposed)) return true;
+                        if (i.expanded_words && i.expanded_words.length > 0) {
+                            if (i.expanded_words.some(ew => decomposeHangul(ew).includes(searchDecomposed))) return true;
+                        }
+                        if (i._hasOldHangul && i._approxSearchKeys && searchCompat) {
+                            if (i._approxSearchKeys.some(k => k.includes(searchCompat))) return true;
+                        }
+                        return false;
+                    });
+                    res = sortResults(res, val, searchDecomposed);
+
+                    // 3. 일반 검색 결과가 0건일 때 -> 입력된 글자의 초성을 유지하는 유사어 검색
+                    if (res.length === 0) {
+                        const inputChosung = val.split('').map(char => getInitialConsonant(char)).join('');
+                        res = pool.filter(i => {
                             const word = i.word_pure || i.word || "";
                             const wordChosung = word.split('').map(char => getInitialConsonant(char)).join('');
-                            if (wordChosung.includes(val)) return true;
+                            if (wordChosung === inputChosung || wordChosung.includes(inputChosung)) return true;
                             if (i.expanded_words && i.expanded_words.length > 0) {
                                 return i.expanded_words.some(ew => {
                                     const ewChosung = ew.split('').map(char => getInitialConsonant(char)).join('');
-                                    return ewChosung.includes(val);
+                                    return ewChosung === inputChosung || ewChosung.includes(inputChosung);
                                 });
                             }
                             return false;
                         });
-                    } else {
-                        // 2. 일반 단어 입력 시 -> 포함 검색 (표제어 및 {} 조합 단어 모두 매칭)
-                        const searchDecomposed = decomposeHangul(val);
-                        res = dictData.filter(i => {
-                            const mainWord = i.word_pure || i.word || "";
-                            if (decomposeHangul(mainWord).includes(searchDecomposed)) return true;
-                            if (i.expanded_words && i.expanded_words.length > 0) {
-                                return i.expanded_words.some(ew => decomposeHangul(ew).includes(searchDecomposed));
-                            }
-                            return false;
-                        });
-                        res = sortResults(res, val);
 
-                        // 3. 일반 검색 결과가 0건일 때 -> 입력된 글자의 초성을 유지하는 유사어 검색
-                        if (res.length === 0) {
-                            const inputChosung = val.split('').map(char => getInitialConsonant(char)).join('');
-                            res = dictData.filter(i => {
-                                const word = i.word_pure || i.word || "";
-                                const wordChosung = word.split('').map(char => getInitialConsonant(char)).join('');
-                                if (wordChosung === inputChosung || wordChosung.includes(inputChosung)) return true;
-                                if (i.expanded_words && i.expanded_words.length > 0) {
-                                    return i.expanded_words.some(ew => {
-                                        const ewChosung = ew.split('').map(char => getInitialConsonant(char)).join('');
-                                        return ewChosung === inputChosung || ewChosung.includes(inputChosung);
-                                    });
-                                }
-                                return false;
-                            });
-
-                            if (res.length > 0) {
-                                console.log("일반 결과 없음: 초성 일치 단어로 대체 제안");
-                            }
+                        if (res.length > 0) {
+                            console.log("일반 결과 없음: 초성 일치 단어로 대체 제안");
                         }
                     }
-                } else {
-                    // 표준어(뜻풀이) 검색
-                    res = dictData.filter(i => (i.definition || "").includes(val));
                 }
 
                 displayList(res);
@@ -1361,7 +1796,7 @@
                 d.word_pure === word ||
                 (d.expanded_words && d.expanded_words.includes(word))
             );
-            if (item) displayDetail(item);
+            if (item) displayDetail(item, true);
         }
 
         function formatWordSuperscript(word) {
@@ -1369,29 +1804,265 @@
             return word ? word.replace(/(\d+)/g, '<sup>$1</sup>') : "";
         }
 
-        // 예문 내 [ ] 텍스트 추출 및 스피커 버튼 삽입 함수 (1.기본TTS(파란색), 2.무단절WSOLA(하늘색), 3.단음강세1.12배연장(초록색))
-        function processDialectTTS(text) {
-            if (!text) return "";
-            return text.replace(/\[(.*?)\]/g, (match, p1) => {
-                const encPron = encodeURIComponent(p1.trim());
-                return `<b style="color:var(--point)">${p1}</b>` +
-                    `<span class="speaker-btn" title="1번 TTS (원래 발음 기호)" data-pron="${encPron}" onclick="event.stopPropagation(); speakText(decodeURIComponent(this.dataset.pron), event)"><svg viewBox="0 0 24 24" style="width:20px; height:20px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg></span>` +
-                    `<span class="speaker-btn speaker-btn-sky" title="2번 TTS (무단절 WSOLA 연속 사투리 합성)" data-pron="${encPron}" onclick="event.stopPropagation(); speakTextQuestion(decodeURIComponent(this.dataset.pron), event)"><svg viewBox="0 0 24 24" style="width:20px; height:20px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span>` +
-                    `<span class="speaker-btn speaker-btn-green" title="3번 TTS (2번 엔진 + 어절 내 단음 강세 1.12배 연장 보강)" data-pron="${encPron}" onclick="event.stopPropagation(); speakTextGreen(decodeURIComponent(this.dataset.pron), event)" oncontextmenu="event.preventDefault(); event.stopPropagation(); setGreenShortAccentStretch();"><svg viewBox="0 0 24 24" style="width:20px; height:20px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span>`;
-            });
+        function escapeHtml(str) {
+            return String(str || '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;');
         }
 
-        // 관용구/속담 내 full text 렌더링 및 [ ] 발음 TTS 스피커 버튼 삽입 함수 (1.기본TTS(파란색), 2.무단절WSOLA(하늘색), 3.단음강세1.12배연장(초록색))
-        function processIdiomTTS(text) {
-            if (!text) return "";
-            let safeText = text.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-            return safeText.replace(/\[(.*?)\]/g, (match, p1) => {
-                const encPron = encodeURIComponent(p1.trim());
-                return `<b style="color:var(--point)">[${p1}]</b>` +
-                    `<span class="speaker-btn" title="1번 TTS (원래 발음 기호)" data-pron="${encPron}" onclick="event.stopPropagation(); speakText(decodeURIComponent(this.dataset.pron), event)"><svg viewBox="0 0 24 24" style="width:20px; height:20px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg></span>` +
-                    `<span class="speaker-btn speaker-btn-sky" title="2번 TTS (무단절 WSOLA 연속 사투리 합성)" data-pron="${encPron}" onclick="event.stopPropagation(); speakTextQuestion(decodeURIComponent(this.dataset.pron), event)"><svg viewBox="0 0 24 24" style="width:20px; height:20px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span>` +
-                    `<span class="speaker-btn speaker-btn-green" title="3번 TTS (2번 엔진 + 어절 내 단음 강세 1.12배 연장 보강)" data-pron="${encPron}" onclick="event.stopPropagation(); speakTextGreen(decodeURIComponent(this.dataset.pron), event)" oncontextmenu="event.preventDefault(); event.stopPropagation(); setGreenShortAccentStretch();"><svg viewBox="0 0 24 24" style="width:20px; height:20px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span>`;
+        function buildSpeakerButtonsHtml(pronText) {
+            const encPron = encodeURIComponent(String(pronText || '').trim());
+            return `<span class="speaker-btn speaker-btn-sky" title="2번 TTS (하늘색: 무단절 WSOLA 연속 사투리 합성)" data-pron="${encPron}" onclick="event.stopPropagation(); speakTextQuestion(decodeURIComponent(this.dataset.pron), event)"><svg viewBox="0 0 24 24" style="width:20px; height:20px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span>` +
+                `<span class="speaker-btn speaker-btn-green" title="3번 TTS (초록색: 2번 엔진 + 어절 내 단음 강세 1.12배 연장 보강)" data-pron="${encPron}" onclick="event.stopPropagation(); speakTextGreen(decodeURIComponent(this.dataset.pron), event)" oncontextmenu="event.preventDefault(); event.stopPropagation(); setGreenShortAccentStretch();"><svg viewBox="0 0 24 24" style="width:20px; height:20px;"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span>`;
+        }
+
+        function linkifyKoreanWords(plainSegment) {
+            if (!plainSegment) return "";
+            const wordRegex = /([\u1100-\u11FF\u3130-\u318F\uA960-\uA97F\uD7B0-\uD7FF가-힣]+(?:°)?)/g;
+            let out = "";
+            let lastIdx = 0;
+            let m;
+            while ((m = wordRegex.exec(plainSegment)) !== null) {
+                if (m.index > lastIdx) {
+                    out += escapeHtml(plainSegment.slice(lastIdx, m.index));
+                }
+                const tok = m[1];
+                const encTok = encodeURIComponent(tok);
+                out += `<span class="ex-word-link" title="눌러서 표제어 뜻 미리보기" onclick="event.stopPropagation(); openExampleWordPopup(decodeURIComponent('${encTok}'))">${escapeHtml(tok)}</span>`;
+                lastIdx = wordRegex.lastIndex;
+            }
+            if (lastIdx < plainSegment.length) {
+                out += escapeHtml(plainSegment.slice(lastIdx));
+            }
+            return out;
+        }
+
+        function linkifyExampleSegment(rawSegment, keepAngleBracketsAsPlain = false) {
+            if (!rawSegment) return "";
+            // 괄호 안 상황 설명(...) 및 관용구 표준어 풀이(<...>) 구간은 일반 텍스트로 유지
+            const guardRegex = keepAngleBracketsAsPlain ? /(\([^)]*\)|<[^>]*>)/g : /(\([^)]*\))/g;
+            return rawSegment.split(guardRegex).map(part => {
+                if (!part) return "";
+                if (part.startsWith('(') || (keepAngleBracketsAsPlain && part.startsWith('<'))) {
+                    return escapeHtml(part);
+                }
+                return linkifyKoreanWords(part);
+            }).join('');
+        }
+
+        const EX_PARTICLE_SUFFIXES = [
+            '에서러', '이라캐도', '이라고', '이라꼬', '이라도', '이나마', '마따나', '한테서', '한테로',
+            '으로', '에서', '에게', '한테', '자테', '서러', '부터', '버텅', '꺼지', '까지',
+            '마냥', '보다', '보담', '이랑', '하고', '이라', '에느', '에로', '에는', '에도',
+            '에사', '으느', '로는', '로도', '가아', '가', '이', '은', '는', '을', '를', '에',
+            '도', '만', '로', '와', '과', '의', '으', '캉', '사', '마', '야', '아', '라', '요'
+        ];
+
+        const EX_ENDING_SUFFIXES = [
+            '을라는강', '을라능강', '다는기요', '더라도', '더라니', '더냐고', '더니만',
+            '다커더라', '다컨다', '다캐야지', '다캐가아', '겟더라', '겠더라', '겟니더', '겠니더',
+            'ㅂ디더', 'ㅂ디까', 'ㅂ니더', '심니더', '십니더', '습니더', '심미더', '십미더',
+            '니이더', '시이더', '심더', '시더', '니더', '더라', '던데', '더니', '디이', '디더',
+            '디까', '디가', '는강', '능강', '는교', '능교', '던교', '는고', '는기요', '는기라',
+            '는거라', '는데', '는다', '는거', '거등', '거든', '거라', '겟나', '겠나', '겟다',
+            '겠다', '겟노', '겠노', '겟지', '겠지', '을라', 'ㄹ라', '이꺼네', '이까', '으이까',
+            '으머', '으며', '으니', '으나', '으면', '가아', '아가', '어가', '여가', '아여',
+            '어여', '지러', '지마는', '지만', '거나', '고도', '고로', '구로', '도록', '두룩',
+            '면서', '먼서', '자커자', '커자', '커고', '커지', '머', '고', '기', '지', '게',
+            '네', '나', '노', '니', '이', '가', '다', '어', '아', '여', '서'
+        ];
+
+        function stripPastSsTail(stem) {
+            if (!stem) return [];
+            const out = [];
+            const last = stem.slice(-1);
+            if (last === '햇' || last === '했') {
+                out.push(stem.slice(0, -1) + '하');
+            } else if (last === '해') {
+                out.push(stem.slice(0, -1) + '하');
+            } else if (last === '앗' || last === '엇' || last === '았' || last === '었') {
+                if (stem.length >= 2) out.push(stem.slice(0, -1));
+            }
+            const code = last.charCodeAt(0);
+            if (code >= 0xAC00 && code <= 0xD7A3 && ((code - 0xAC00) % 28) === 20) {
+                // 마지막 글자에 ㅆ 받침만 있는 경우 제거(예: 갓다 -> 가, 봣다 -> 보)
+                const base = String.fromCharCode(code - 20);
+                out.push(stem.slice(0, -1) + base);
+            }
+            return out;
+        }
+
+        function lookupExactCandidates(key) {
+            if (!key) return [];
+            return wordExactIndex.get(key) || wordExactIndex.get(key.normalize('NFC')) || [];
+        }
+
+        function findMatchingHeadwordsForToken(rawToken) {
+            const clean = String(rawToken || '').replace(/[°\-.,!?'"‘’“”]/g, '').trim();
+            if (!clean) return { clean: '', matches: [] };
+            const nfc = clean.normalize('NFC');
+            const seen = new Set();
+            const matches = [];
+
+            const addMatches = (list, reason) => {
+                if (!list || list.length === 0) return;
+                list.forEach(item => {
+                    if (seen.has(item._origIdx)) return;
+                    seen.add(item._origIdx);
+                    matches.push({ item, reason });
+                });
+            };
+
+            // 1. 정확 일치
+            addMatches(lookupExactCandidates(clean), '정확 일치');
+            if (nfc !== clean) addMatches(lookupExactCandidates(nfc), '정확 일치');
+
+            // 2. 조사/어미 분리 + 기본형(+다) 매칭
+            const stemCandidates = new Set();
+            EX_PARTICLE_SUFFIXES.forEach(suf => {
+                if (nfc.length > suf.length && nfc.endsWith(suf)) {
+                    const stem = nfc.slice(0, -suf.length);
+                    if (stem.length >= 1) {
+                        addMatches(lookupExactCandidates(stem), `조사 '${suf}' 분리`);
+                        stemCandidates.add(stem);
+                    }
+                }
             });
+
+            EX_ENDING_SUFFIXES.forEach(suf => {
+                if (nfc.length > suf.length && nfc.endsWith(suf)) {
+                    const stem = nfc.slice(0, -suf.length);
+                    if (stem.length >= 1) {
+                        stemCandidates.add(stem);
+                        stripPastSsTail(stem).forEach(s2 => stemCandidates.add(s2));
+                    }
+                }
+            });
+            stripPastSsTail(nfc).forEach(s2 => stemCandidates.add(s2));
+
+            // 2차 분리: 어간 후보에 대해 +다 / 그대로 / 추가 1음절 어미(-어/아/여/고/는) 제거 후 +다 조회
+            [...stemCandidates].sort((a, b) => b.length - a.length).forEach(stem => {
+                addMatches(lookupExactCandidates(stem + '다'), '용언 기본형 추정');
+                addMatches(lookupExactCandidates(stem), '어근 일치');
+                stripPastSsTail(stem).forEach(s2 => {
+                    if (s2.length >= 1) {
+                        addMatches(lookupExactCandidates(s2 + '다'), '시제/활용형 복원');
+                    }
+                });
+            });
+
+            // 3. 최장 앞부분(어간) 일치 보조 (위에서 1건도 못 찾았고 2음절 이상일 때만)
+            if (matches.length === 0 && nfc.length >= 2) {
+                for (let len = Math.min(nfc.length - 1, 5); len >= 2; len--) {
+                    const pref = nfc.slice(0, len);
+                    addMatches(lookupExactCandidates(pref + '다'), '어간 추정');
+                    addMatches(lookupExactCandidates(pref), '앞부분 일치');
+                    if (matches.length > 0) break;
+                }
+            }
+
+            return { clean: nfc, matches: matches.slice(0, 6) };
+        }
+
+        function openExampleWordPopup(rawToken) {
+            const modal = document.getElementById('exampleWordModalOverlay');
+            const titleEl = document.getElementById('exModalTitle');
+            const bodyEl = document.getElementById('exModalBody');
+            if (!modal || !titleEl || !bodyEl) return;
+
+            const { clean, matches } = findMatchingHeadwordsForToken(rawToken);
+            currentPopupMatches = matches.map(m => m.item);
+            titleEl.textContent = `예문 단어: ${clean || rawToken}`;
+
+            if (matches.length === 0) {
+                const encClean = encodeURIComponent(clean || rawToken);
+                bodyEl.innerHTML = `
+                    <p style="margin:0 0 10px 0; color:#555;">
+                        <b>"${escapeHtml(clean || rawToken)}"</b>에 바로 연결되는 표제어를 찾지 못했습니다.<br>
+                        <span style="font-size:12px; color:#888;">(활용형이 길거나 표준어/인명일 수 있습니다)</span>
+                    </p>
+                    <button type="button" class="ex-popup-jump-btn" onclick="searchFromPopupWord(decodeURIComponent('${encClean}'))">🔍 "${escapeHtml(clean || rawToken)}" 방언 검색하기</button>
+                `;
+            } else {
+                const cardsHtml = matches.map((m, idx) => {
+                    const it = m.item;
+                    const posText = posMap[it.pos_symbol] || it.pos_symbol || '';
+                    const cleanDef = replacePosSymbols(it.definition || '').replace(/<[^>]*>?/gm, '').trim();
+                    const snippet = cleanDef.length > 100 ? cleanDef.slice(0, 100) + '...' : cleanDef;
+                    const isSameCurrent = currentItem && currentItem._origIdx === it._origIdx;
+                    const badgeNote = isSameCurrent
+                        ? `<span style="font-size:11px; color:#888;">(현재 단어)</span>`
+                        : `<span style="font-size:11px; color:#999;">${escapeHtml(m.reason)}</span>`;
+                    return `
+                        <div class="ex-popup-item">
+                            <div class="ex-popup-head">
+                                <span class="ex-popup-word">${formatWordSuperscript(it.word || it.word_pure)}</span>
+                                ${posText ? `<span class="ex-popup-pos">${escapeHtml(posText)}</span>` : ''}
+                                ${it.pronunciation ? `<span class="ex-popup-pron">[${escapeHtml(it.pronunciation)}]</span>` : ''}
+                                ${badgeNote}
+                            </div>
+                            <div class="ex-popup-def">${escapeHtml(snippet)}</div>
+                            ${isSameCurrent ? '' : `<button type="button" class="ex-popup-jump-btn" onclick="jumpToPopupHeadword(${idx})">이 표제어로 이동 →</button>`}
+                        </div>
+                    `;
+                }).join('');
+                bodyEl.innerHTML = `<div class="ex-popup-list">${cardsHtml}</div>`;
+            }
+
+            modal.style.display = 'flex';
+        }
+
+        function closeExampleWordModal(ev) {
+            if (ev && ev.target && ev.target.id !== 'exampleWordModalOverlay') return;
+            const modal = document.getElementById('exampleWordModalOverlay');
+            if (modal) modal.style.display = 'none';
+        }
+
+        function jumpToPopupHeadword(idx) {
+            const target = currentPopupMatches[idx];
+            closeExampleWordModal();
+            if (target) displayDetail(target, true);
+        }
+
+        function searchFromPopupWord(word) {
+            closeExampleWordModal();
+            goBackToList();
+            clearOldHangulFilter();
+            const diaInput = document.getElementById('diaSearch');
+            if (diaInput) {
+                diaInput.value = word;
+                debounceSearch('dia', word);
+                diaInput.focus();
+            }
+        }
+
+        // 예문/관용구 내 [ ] 발음 표기를 본문에 유지하고, 2·3번 스피커 버튼은 문장 끝에 1번만 배치
+        function renderExampleWithEndSpeakers(text, withBrackets = false) {
+            if (!text) return "";
+            const parts = text.split(/(\[.*?\])/g);
+            const prons = [];
+            const bodyHtml = parts.map(part => {
+                if (!part) return "";
+                if (part.startsWith('[') && part.endsWith(']')) {
+                    const pron = part.slice(1, -1);
+                    if (pron.trim()) prons.push(pron.trim());
+                    const safePron = escapeHtml(pron);
+                    return `<b style="color:var(--point)">${withBrackets ? `[${safePron}]` : safePron}</b>`;
+                }
+                return linkifyExampleSegment(part, withBrackets);
+            }).join('');
+            return prons.length > 0 ? `${bodyHtml} ${buildSpeakerButtonsHtml(prons.join(' '))}` : bodyHtml;
+        }
+
+        // 예문 내 [ ] 발음 추출 및 끝부분 스피커 버튼 삽입 (2번 하늘색, 3번 초록색) + 어절 클릭 팝업
+        function processDialectTTS(text) {
+            return renderExampleWithEndSpeakers(text, false);
+        }
+
+        // 관용구/속담 내 [ ] 발음 추출 및 끝부분 스피커 버튼 삽입 (2번 하늘색, 3번 초록색) + 어절 클릭 팝업
+        function processIdiomTTS(text) {
+            return renderExampleWithEndSpeakers(text, true);
         }
 
         // 사전 생성된 오디오 인덱스 맵 (audio/audio_map.json)
@@ -2156,8 +2827,8 @@
             };
 
             const keyPoints = [];
-            const pLow = params.lowPitch;
             const pHigh = params.lowPitch * params.highPitch;
+            const pLow = pHigh; // 평음·고음 구분 없이 기존 고음 기본 피치로 통합
             const endBoostRatio = Math.pow(2, params.endBoostSemitones / 12.0);
 
             if (sylSpans.length > 0) {
@@ -2363,9 +3034,83 @@
         // - isGreenBoost = true  : 3번(초록색) 2번 엔진 + 어절 내 단음 강세 1.1~1.2배 연장 및 피치 보강
         // ========================================================
         const SKY_MAX_PHRASE_WORDS = 10;
+        const SKY_MIN_PHRASE_WORDS = 4;
+        const MODIFIER_NO_BREAK_WORDS = new Set([
+            '이', '그', '저', '요', '고', '조', '한', '두', '세', '네', '온', '새', '맨',
+            '참', '쫌', '좀', '더', '덜', '막', '다', '안', '앙', '못', '잘', '똑',
+            '그레', '이레', '저레', '요레', '아주', '보통', '젤', '매우', '별로', '항상'
+        ]);
+
+        function scoreProsodicBreakAfter(word) {
+            if (!word || !word.syls || word.syls.length === 0) return 0;
+            const lastSyl = word.syls[word.syls.length - 1];
+            const punc = (lastSyl && lastSyl.punc) || "";
+            const cleanWord = (word.raw || "").replace(/[^가-힣]/g, "");
+            const collapsedWord = word.syls.map(s => s.collapsedChar || s.char).join("");
+
+            let score = 0;
+            // 1순위: 문장 내 쉼표·휴지 구두점
+            if (/[,;…]/.test(punc)) {
+                score += 100;
+            } else if (/[~\)]/.test(punc)) {
+                score += 75;
+            }
+
+            // 2순위: 경주 방언 연결어미 / 절 경계 (수식어 회피와 구분)
+            if (/(니꺼네|니께네|지마는|거덩|거든|는데|은데|능데|니께|닝께|아가아|어가아|으머|면서|라꼬|다꼬|자꼬)$/.test(cleanWord) ||
+                /(니꺼네|니께네|지마는|거덩|거든|는데|은데|능데|니께|닝께|으머|면서|라꼬|다꼬|자꼬)$/.test(collapsedWord)) {
+                score += 65;
+            } else if (cleanWord.length >= 2 && (/(가아|머|므|고|꼬)$/.test(cleanWord) || /(머|므|고|꼬)$/.test(collapsedWord))) {
+                score += 45;
+            } else if (cleanWord.length >= 2 && /(은|는|도|만|에는|에서는|까지)$/.test(collapsedWord)) {
+                // 3순위: 긴 주어·부사구 뒤 조사 경계
+                score += 20;
+            }
+
+            // 수식어·단음절 부사 바로 뒤는 의미가 끊어지므로 감점
+            if (!punc && (MODIFIER_NO_BREAK_WORDS.has(collapsedWord) || MODIFIER_NO_BREAK_WORDS.has(cleanWord))) {
+                score -= 55;
+            }
+            return score;
+        }
+
+        function splitLongSentenceIntoBalancedPhrases(sentWords) {
+            const n = sentWords.length;
+            if (n <= SKY_MAX_PHRASE_WORDS) return [sentWords];
+
+            const numChunks = Math.ceil(n / SKY_MAX_PHRASE_WORDS);
+            const minChunk = Math.min(SKY_MIN_PHRASE_WORDS, Math.floor(n / numChunks));
+            const out = [];
+            let start = 0;
+
+            for (let c = 0; c < numChunks - 1; c++) {
+                const remChunksAfter = numChunks - 1 - c;
+                const minCut = Math.max(start + minChunk, n - remChunksAfter * SKY_MAX_PHRASE_WORDS);
+                const maxCut = Math.min(start + SKY_MAX_PHRASE_WORDS, n - remChunksAfter * minChunk);
+                const targetCut = start + (n - start) / (remChunksAfter + 1);
+
+                let bestCut = Math.round(targetCut);
+                bestCut = Math.max(minCut, Math.min(maxCut, bestCut));
+                let bestScore = -Infinity;
+
+                for (let cut = minCut; cut <= maxCut; cut++) {
+                    const boundaryScore = scoreProsodicBreakAfter(sentWords[cut - 1]);
+                    const balancePenalty = Math.abs(cut - targetCut) * 6;
+                    const total = boundaryScore - balancePenalty;
+                    if (total > bestScore) {
+                        bestScore = total;
+                        bestCut = cut;
+                    }
+                }
+                out.push(sentWords.slice(start, bestCut));
+                start = bestCut;
+            }
+            if (start < n) out.push(sentWords.slice(start));
+            return out;
+        }
 
         function groupWordsIntoProsodicPhrases(words) {
-            const phrases = [];
+            const sentences = [];
             let cur = [];
 
             for (let i = 0; i < words.length; i++) {
@@ -2373,15 +3118,21 @@
                 cur.push(w);
 
                 const lastSyl = w.syls[w.syls.length - 1];
-                const hasPunc = lastSyl && /[,.\?!~]/.test(lastSyl.punc || "");
+                const hasSentenceEnd = lastSyl && /[\.\?!]/.test(lastSyl.punc || "");
 
-                // 문장부호(, . ? ! ~)가 있거나 최대 10어절에 도달했거나 문장 끝일 때만 호흡구 분할 (중간 쉼 제거)
-                if (hasPunc || cur.length >= SKY_MAX_PHRASE_WORDS || i === words.length - 1) {
-                    phrases.push(cur);
+                // 1단계: 문장 종결부(. ? !) 단위로만 먼저 분리 (10어절 이하 문장은 통째로 유지)
+                if (hasSentenceEnd || i === words.length - 1) {
+                    sentences.push(cur);
                     cur = [];
                 }
             }
-            if (cur.length > 0) phrases.push(cur);
+            if (cur.length > 0) sentences.push(cur);
+
+            // 2단계: 10어절을 초과하는 문장만 균형 + 쉼표/방언 연결어미 우선 위치로 분할
+            const phrases = [];
+            sentences.forEach(sent => {
+                splitLongSentenceIntoBalancedPhrases(sent).forEach(p => phrases.push(p));
+            });
             return phrases;
         }
 
@@ -2396,16 +3147,18 @@
             let pLow, pHigh, pEndHigh;
 
             if (isExplicitMale) {
-                // 네이티브 남성 보이스(InJoon 등 ~120Hz)일 때
-                pLow = Math.max(0.68, Math.min(0.95, 0.82 * (params.lowPitch / 1.05)));
-                const gap = pLow * Math.max(0.48, (params.highPitch - 1.0) * 1.35);
-                pHigh = Math.min(1.95, pLow + gap);
+                // 네이티브 남성 보이스(InJoon 등 ~120Hz)일 때: 평음·고음 구분 없이 기존 고음 피치 적용
+                const pRefLow = Math.max(0.68, Math.min(0.95, 0.82 * (params.lowPitch / 1.05)));
+                const gap = pRefLow * Math.max(0.48, (params.highPitch - 1.0) * 1.35);
+                pHigh = Math.min(1.95, pRefLow + gap);
+                pLow = pHigh;
                 pEndHigh = Math.min(2.00, Math.max(pHigh + 0.08, pHigh * Math.pow(2, Math.max(0.5, params.endBoostSemitones) / 12.0)));
             } else {
-                // 기본 여성 보이스(Microsoft Heami 등 ~225Hz)를 남성 음역으로 하향: 평조 0.35, 고조 최대 1.15
-                pLow = Math.max(0.30, Math.min(0.42, 0.35 * (params.lowPitch / 1.05)));
-                const gap = pLow * Math.max(0.55, (params.highPitch - 1.0) * 1.45);
-                pHigh = Math.min(1.15, pLow + gap);
+                // 기본 여성 보이스(Microsoft Heami 등 ~225Hz): 평음·고음 구분 없이 기존 고음 피치 적용
+                const pRefLow = Math.max(0.30, Math.min(0.42, 0.35 * (params.lowPitch / 1.05)));
+                const gap = pRefLow * Math.max(0.55, (params.highPitch - 1.0) * 1.45);
+                pHigh = Math.min(1.15, pRefLow + gap);
+                pLow = pHigh;
                 pEndHigh = Math.min(1.22, Math.max(pHigh + 0.06, pHigh * Math.pow(2, Math.max(0.5, params.endBoostSemitones) / 12.0)));
             }
 
@@ -2453,18 +3206,14 @@
                     const shortHighRatio = totalSyls > 0 ? (shortHighSyls / totalSyls) : 0;
                     const isQuestionOrExclaim = /[\?\!]$/.test(phraseText.trim()) || /(애이가|인나|읻따|시더|디더|지요)[\.\?\!]*$/.test(phraseText.trim());
 
-                    // 호흡구 성조 비중에 따른 남성 피치 결정 (평조 pLow ~ 고조 pHigh ~ 어말고조 pEndHigh)
-                    let targetPitch = pLow;
-                    if (highSyls > 0) {
-                        // 3번(초록색)에서는 단음 강세 음절이 있을 때 피치 가중치(shortHighBoost)를 추가해 더 높게 타격
-                        const greenPitchExtra = (isGreenBoost && shortHighSyls > 0)
-                            ? Math.min(0.28, (shortAccentStretch - 1.0) * (0.95 + shortHighRatio * 0.5))
-                            : 0;
-                        const boostWeight = Math.min(1.12, 0.55 + highDensity * 0.55 + (firstSylHigh ? 0.15 : 0) + greenPitchExtra);
-                        targetPitch = pLow + (pHigh - pLow) * boostWeight;
-                        if (lastSylHigh || isQuestionOrExclaim) {
-                            targetPitch = Math.max(targetPitch, pEndHigh * (isGreenBoost ? 1.04 : 1.0));
-                        }
+                    // 평음·고음 구분 없이 기존 고음 기본 피치(pHigh)로 통합 적용
+                    let targetPitch = pHigh;
+                    if (isGreenBoost && shortHighSyls > 0) {
+                        const greenPitchExtra = Math.min(0.18, (shortAccentStretch - 1.0) * (0.65 + shortHighRatio * 0.35));
+                        targetPitch = pHigh + greenPitchExtra;
+                    }
+                    if (isQuestionOrExclaim) {
+                        targetPitch = Math.max(targetPitch, pEndHigh * (isGreenBoost ? 1.04 : 1.0));
                     }
                     u.pitch = Number(Math.max(0.2, Math.min(2.0, targetPitch)).toFixed(2));
 
@@ -2612,8 +3361,28 @@
         }
 
 
-        function displayDetail(item) {
+        function updatePrevWordButton() {
+            const btn = document.getElementById('prevWordBtn');
+            if (!btn) return;
+            if (wordNavHistory.length > 0) {
+                const prevItem = wordNavHistory[wordNavHistory.length - 1];
+                const label = prevItem.word_pure || prevItem.word || '이전 단어';
+                btn.textContent = `← 이전 단어 (${label})`;
+                btn.style.display = 'inline-block';
+            } else {
+                btn.style.display = 'none';
+            }
+        }
+
+        function displayDetail(item, pushHistory = false) {
+            if (pushHistory === true && currentItem && item && currentItem._origIdx !== item._origIdx) {
+                wordNavHistory.push(currentItem);
+            } else if (!pushHistory) {
+                wordNavHistory = [];
+            }
             currentItem = item;
+            closeExampleWordModal();
+            updatePrevWordButton();
             document.getElementById('searchList').style.display = 'none';
             document.getElementById('resultView').style.display = 'block';
             document.getElementById('v-word').innerHTML = formatWordSuperscript(item.word || item.word_pure);
@@ -2725,8 +3494,19 @@
             }
             document.getElementById('listItems').appendChild(nav);
         }
+        function goBackToPrevWord() {
+            if (wordNavHistory.length === 0) return;
+            const prevItem = wordNavHistory.pop();
+            if (prevItem) {
+                displayDetail(prevItem, 'back');
+            }
+        }
+
         /* --- [추가] 상세 보기에서 목록으로 돌아가는 기능 --- */
         function goBackToList() {
+            wordNavHistory = [];
+            updatePrevWordButton();
+            closeExampleWordModal();
             // 상세 보기 화면 숨기기
             document.getElementById('resultView').style.display = 'none';
             // 검색 결과 리스트 화면 다시 보이기
@@ -2784,6 +3564,7 @@
         }
 
         function searchByInitial(char) {
+            clearOldHangulFilter();
             const sets = { 'ㄱ': ['ㄱ', 'ㄲ'], 'ㄷ': ['ㄷ', 'ㄸ'], 'ㅂ': ['ㅂ', 'ㅃ'], 'ㅅ': ['ㅅ', 'ㅆ'], 'ㅈ': ['ㅈ', 'ㅉ'] };
             const targets = sets[char] || [char];
 
@@ -2832,9 +3613,102 @@
             displayList(entries.map(e => e.item));
         }
 
-        function searchByPosGroup(symbols) { let filtered = dictData.filter(item => symbols.includes(item.pos_symbol)); filtered.sort(() => Math.random() - 0.5); displayList(filtered); }
+        function searchByPosGroup(symbols) { clearOldHangulFilter(); let filtered = dictData.filter(item => symbols.includes(item.pos_symbol)); filtered.sort(() => Math.random() - 0.5); displayList(filtered); }
 
-        function searchByPosOther() { let filtered = dictData.filter(item => item.pos_symbol && !['󰃃', '󰂽', '󰃓', '󰂿', '󰃰'].includes(item.pos_symbol)); filtered.sort(() => Math.random() - 0.5); displayList(filtered); }
+        function searchByPosOther() { clearOldHangulFilter(); let filtered = dictData.filter(item => item.pos_symbol && !['󰃃', '󰂽', '󰃓', '󰂿', '󰃰'].includes(item.pos_symbol)); filtered.sort(() => Math.random() - 0.5); displayList(filtered); }
+
+        function updateOldHangulControls() {
+            const allBtn = document.getElementById('oldHangulAllBtn');
+            if (allBtn) allBtn.classList.toggle('active', activeOldHangulMode === 'ALL');
+            document.querySelectorAll('.old-jamo-chip').forEach(chip => {
+                chip.classList.toggle('active', chip.dataset.jamo === activeOldHangulMode);
+            });
+        }
+
+        function clearOldHangulFilter(refreshSearch = false) {
+            activeOldHangulMode = null;
+            updateOldHangulControls();
+            if (refreshSearch) {
+                const diaVal = (document.getElementById('diaSearch')?.value || '').trim();
+                if (diaVal) debounceSearch('dia', diaVal);
+            }
+        }
+
+        function applyOldHangulSearchView() {
+            const diaVal = (document.getElementById('diaSearch')?.value || '').trim();
+            if (diaVal) {
+                debounceSearch('dia', diaVal);
+                return;
+            }
+            const pool = activeOldHangulMode === 'ALL'
+                ? dictData.filter(i => i._hasOldHangul)
+                : activeOldHangulMode
+                    ? dictData.filter(i => i._oldJamos && i._oldJamos.has(activeOldHangulMode))
+                    : [];
+            displayList(pool);
+        }
+
+        function searchByOldHangul() {
+            const resultView = document.getElementById('resultView');
+            const isViewingList = !resultView || resultView.style.display === 'none';
+            if (activeOldHangulMode === 'ALL' && isViewingList) {
+                clearOldHangulFilter(true);
+                return;
+            }
+            activeOldHangulMode = 'ALL';
+            updateOldHangulControls();
+            applyOldHangulSearchView();
+        }
+
+        function selectOldJamoChip(jamo) {
+            const resultView = document.getElementById('resultView');
+            const isViewingList = !resultView || resultView.style.display === 'none';
+            if (activeOldHangulMode === jamo && isViewingList) {
+                clearOldHangulFilter(true);
+                return;
+            }
+            activeOldHangulMode = jamo;
+            updateOldHangulControls();
+            applyOldHangulSearchView();
+        }
+
+        function toggleOldJamoPalette() {
+            const palette = document.getElementById('oldJamoPalette');
+            const toggleBtn = document.getElementById('oldJamoToggleBtn');
+            if (!palette || !toggleBtn) return;
+            const willOpen = palette.style.display === 'none' || palette.style.display === '';
+            palette.style.display = willOpen ? 'block' : 'none';
+            toggleBtn.textContent = willOpen ? '⌨ 옛자모 선택 ▴' : '⌨ 옛자모 선택 ▾';
+            toggleBtn.classList.toggle('active', willOpen);
+        }
+
+        function initOldHangulUI() {
+            const allCount = dictData.filter(i => i._hasOldHangul).length;
+            const allBtn = document.getElementById('oldHangulAllBtn');
+            if (allBtn) {
+                allBtn.textContent = `📜 옛한글 전체 (${allCount})`;
+            }
+            const palette = document.getElementById('oldJamoPalette');
+            if (!palette) return;
+            const counts = {};
+            dictData.forEach(item => {
+                if (item._oldJamos) {
+                    item._oldJamos.forEach(j => { counts[j] = (counts[j] || 0) + 1; });
+                }
+            });
+            const chipsHtml = OLD_JAMO_PALETTE_ITEMS
+                .filter(entry => counts[entry.jamo] > 0)
+                .map(entry => `<button type="button" class="old-jamo-chip" data-jamo="${entry.jamo}" onclick="selectOldJamoChip(this.dataset.jamo)">${entry.sample}<span class="chip-sub">(${entry.label} · ${counts[entry.jamo]})</span></button>`)
+                .join('');
+            palette.innerHTML = `
+                <div class="old-palette-hint">
+                    <span>옛자모를 누르면 해당 표제어를 모아 봅니다 (검색창과 함께 좁혀 찾기 가능)</span>
+                    <button type="button" onclick="clearOldHangulFilter(true)" style="border:none;background:#eee;border-radius:4px;padding:2px 7px;font-size:11px;cursor:pointer;color:#555;">해제</button>
+                </div>
+                <div class="old-palette-chips">${chipsHtml}</div>
+            `;
+            updateOldHangulControls();
+        }
 
         // 첫 화면 랜덤 단어 3개 로드 / 다른 단어로 다시 로드
         function initRecommendations() {
