@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>경주시 설화 구술 말뭉치 · 발음 리더</title>
+    <style>
+        :root {
+            --bg: #f6f4ef;
+            --surface: #ffffff;
+            --surface-alt: #fbfaf7;
+            --border: #e3ded4;
+            --text: #22201d;
+            --muted: #6b665e;
+            --accent: #2b5b84;
+            --accent-soft: #eef4fa;
+            --pron-color: #1b4d3e;
+            --pron-bg: #f1f8f5;
+            --sky: #0ea5e9;
+            --green: #16a34a;
+            --highlight-bg: #fff8dc;
+            --highlight-border: #eab308;
+        }
+
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: "Pretendard", "Noto Sans KR", "Malgun Gothic", sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.65;
+            padding-bottom: 76px;
+        }
+
+        header {
+            background: #1f2937;
+            color: #fff;
+            padding: 14px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            position: sticky;
+            top: 0;
+            z-index: 30;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .menu-toggle-btn {
+            display: none;
+            background: rgba(255,255,255,0.12);
+            color: #fff;
+            border: 1px solid rgba(255,255,255,0.25);
+            border-radius: 6px;
+            padding: 6px 10px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        .header-badge {
+            font-size: 12px;
+            background: rgba(255,255,255,0.14);
+            padding: 4px 10px;
+            border-radius: 999px;
+            color: #e5e7eb;
+            white-space: nowrap;
+        }
+
+        .layout {
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            max-width: 1400px;
+            margin: 0 auto;
+            min-height: calc(100vh - 130px);
+        }
+
+        aside.sidebar {
+            background: var(--surface);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            height: calc(100vh - 54px);
+            position: sticky;
+            top: 54px;
+        }
+
+        .sidebar-search {
+            padding: 12px;
+            border-bottom: 1px solid var(--border);
+            background: var(--surface-alt);
+        }
+
+        .sidebar-search input {
+            width: 100%;
+            padding: 9px 12px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .sidebar-search input:focus {
+            border-color: var(--accent);
+        }
+
+        .sidebar-count {
+            font-size: 12px;
+            color: var(--muted);
+            margin-top: 6px;
+        }
+
+        .story-list {
+            overflow-y: auto;
+            flex: 1;
+            padding: 6px;
+        }
+
+        .story-item {
+            padding: 10px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            border: 1px solid transparent;
+            margin-bottom: 4px;
+            transition: background 0.15s;
+        }
+
+        .story-item:hover {
+            background: var(--surface-alt);
+        }
+
+        .story-item.active {
+            background: var(--accent-soft);
+            border-color: #bfd7ed;
+        }
+
+        .story-item-title {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 3px;
+            color: var(--text);
+        }
+
+        .story-item-meta {
+            font-size: 12px;
+            color: var(--muted);
+            display: flex;
+            justify-content: space-between;
+            gap: 8px;
+        }
+
+        main.reader {
+            padding: 24px 32px;
+            max-width: 920px;
+            width: 100%;
+        }
+
+        .story-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin-bottom: 18px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.03);
+        }
+
+        .story-title {
+            margin: 0 0 10px 0;
+            font-size: 24px;
+            font-weight: 700;
+            color: #111827;
+        }
+
+        .meta-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .chip {
+            font-size: 12px;
+            background: var(--surface-alt);
+            border: 1px solid var(--border);
+            padding: 3px 9px;
+            border-radius: 6px;
+            color: var(--muted);
+        }
+
+        .chip a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        .context-box {
+            background: var(--surface-alt);
+            border-left: 3px solid var(--accent);
+            padding: 10px 14px;
+            font-size: 13.5px;
+            color: #444;
+            border-radius: 0 6px 6px 0;
+            margin-top: 10px;
+        }
+
+        .controls-bar {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 12px 16px;
+            margin-bottom: 18px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            position: sticky;
+            top: 62px;
+            z-index: 20;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .btn-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .btn {
+            border: 1px solid var(--border);
+            background: var(--surface);
+            color: var(--text);
+            padding: 7px 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.15s;
+        }
+
+        .btn:hover { background: var(--surface-alt); }
+        .btn-sky { background: #e0f2fe; border-color: #7dd3fc; color: #0369a1; }
+        .btn-sky:hover { background: #bae6fd; }
+        .btn-green { background: #dcfce7; border-color: #86efac; color: #15803d; }
+        .btn-green:hover { background: #bbf7d0; }
+        .btn-stop { background: #fee2e2; border-color: #fca5a5; color: #b91c1c; }
+        .btn-stop:hover { background: #fecaca; }
+
+        .toggle-label {
+            font-size: 13px;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+            user-select: none;
+            color: #374151;
+        }
+
+        .paragraph-block {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin-bottom: 14px;
+        }
+
+        .sentence-row {
+            padding: 10px 12px;
+            border-radius: 8px;
+            border: 1px solid transparent;
+            margin-bottom: 8px;
+            transition: background 0.15s, border-color 0.15s;
+        }
+
+        .sentence-row:last-child { margin-bottom: 0; }
+        .sentence-row:hover { background: var(--surface-alt); }
+
+        .sentence-row.playing {
+            background: var(--highlight-bg);
+            border-color: var(--highlight-border);
+        }
+
+        .sentence-top {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .sentence-raw {
+            font-size: 16.5px;
+            line-height: 1.7;
+            flex: 1;
+        }
+
+        .inline-gloss {
+            color: #6b7280;
+            font-size: 0.9em;
+        }
+
+        body.hide-gloss .inline-gloss {
+            display: none;
+        }
+
+        .stage-badge {
+            display: inline-block;
+            font-size: 11.5px;
+            background: #f3f4f6;
+            color: #4b5563;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+            padding: 1px 6px;
+            margin-right: 6px;
+            vertical-align: middle;
+        }
+
+        .sentence-pron {
+            margin-top: 5px;
+            padding: 6px 10px;
+            background: var(--pron-bg);
+            color: var(--pron-color);
+            border-radius: 6px;
+            font-size: 14.5px;
+            line-height: 1.6;
+            font-family: "Noto Sans KR", "Malgun Gothic", sans-serif;
+        }
+
+        body.hide-pron .sentence-pron {
+            display: none;
+        }
+
+        .speaker-group {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            flex-shrink: 0;
+            margin-top: 3px;
+        }
+
+        .speaker-btn {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border: 1px solid transparent;
+            transition: transform 0.12s, background 0.12s;
+        }
+
+        .speaker-btn:hover { transform: scale(1.08); }
+        .speaker-btn svg { width: 15px; height: 15px; }
+
+        .speaker-btn-sky {
+            background: #e0f2fe;
+            color: #0284c7;
+            border-color: #bae6fd;
+        }
+
+        .speaker-btn-green {
+            background: #dcfce7;
+            color: #16a34a;
+            border-color: #bbf7d0;
+        }
+
+        .notes-card {
+            background: var(--surface-alt);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 14px 18px;
+            font-size: 13.5px;
+            color: #4b5563;
+            white-space: pre-wrap;
+        }
+
+        .notes-card h4 {
+            margin: 0 0 6px 0;
+            font-size: 14px;
+            color: var(--text);
+        }
+
+        .prosody-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #1f2937;
+            color: #f9fafb;
+            padding: 10px 20px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 24px;
+            z-index: 40;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.18);
+            font-size: 13px;
+        }
+
+        .slider-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .slider-item input[type="range"] {
+            width: 130px;
+            accent-color: #38bdf8;
+        }
+
+        .slider-badge {
+            background: rgba(255,255,255,0.14);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-variant-numeric: tabular-nums;
+            min-width: 48px;
+            text-align: center;
+        }
+
+        @media (max-width: 860px) {
+            .menu-toggle-btn { display: inline-block; }
+            .layout { grid-template-columns: 1fr; }
+            aside.sidebar {
+                position: fixed;
+                left: -100%;
+                top: 52px;
+                width: 85%;
+                max-width: 320px;
+                z-index: 35;
+                transition: left 0.2s ease;
+                box-shadow: 4px 0 16px rgba(0,0,0,0.18);
+            }
+            aside.sidebar.open { left: 0; }
+            main.reader { padding: 16px; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="header-left">
+        <button class="menu-toggle-btn" onclick="toggleSidebar()">☰ 목록</button>
+        <h1>경주시 설화 구술 말뭉치 · 발음 리더</h1>
+    </div>
+    <span class="header-badge" id="corpusBadge">로딩 중...</span>
+</header>
+
+<div class="layout">
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-search">
+            <input type="text" id="searchInput" placeholder="제목, 지역, 제보자, 본문 검색..." oninput="filterStories()">
+            <div class="sidebar-count" id="sidebarCount"></div>
+        </div>
+        <div class="story-list" id="storyList"></div>
+    </aside>
+
+    <main class="reader" id="reader">
+        <div class="story-card">
+            <p>설화 데이터를 불러오는 중입니다...</p>
+        </div>
+    </main>
+</div>
+
+<div class="prosody-bar">
+    <div class="slider-item">
+        <label for="speechRateSlider">발음 빠르기</label>
+        <input type="range" id="speechRateSlider" min="0.50" max="1.30" step="0.02" value="0.76" oninput="onSpeedSliderChange(this.value)">
+        <span class="slider-badge" id="speedValBadge">0.76x</span>
+    </div>
+    <div class="slider-item">
+        <label for="highPitchSlider">성조(′) 고조 배율</label>
+        <input type="range" id="highPitchSlider" min="1.00" max="2.00" step="0.02" value="1.48" oninput="onHighPitchSliderChange(this.value)">
+        <span class="slider-badge" id="highPitchBadge">1.48x</span>
+    </div>
+    <span style="color:#9ca3af; font-size:12px;">💡 하늘색(2번) / 초록색(3번) 우클릭 시 음성·강세 설정</span>
+</div>
+
+<script src="gubi_corpus/dialect_tts.js"></script>
+<script src="gubi_corpus/gyeongju_seolhwa_pron.js"></script>
+<script>
+    let corpusData = null;
+    let filteredStories = [];
+    let activeStoryIndex = 0;
+    let audiobookPlaying = false;
+    let audiobookToken = 0;
+
+    function toggleSidebar() {
+        document.getElementById('sidebar').classList.toggle('open');
+    }
+
+    function escapeHtml(str) {
+        return String(str || '')
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;');
+    }
+
+    function formatRawSentenceHtml(raw, stageList) {
+        let s = raw || '';
+        // Strip [stage] from text since we render badges separately
+        s = s.replace(/\[[^\]]+\]\s*/g, '').trim();
+        let html = escapeHtml(s);
+        // Highlight inline parenthetical glosses (excluding pure numbers like (1))
+        html = html.replace(/\(([^)]+)\)/g, (m, inner) => {
+            if (/^\d+$/.test(inner.trim())) {
+                return `<sup class="inline-gloss">(${inner})</sup>`;
+            }
+            return `<span class="inline-gloss">(${inner})</span>`;
+        });
+        const badges = (stageList || []).map(st => `<span class="stage-badge">${escapeHtml(st)}</span>`).join('');
+        return badges + html;
+    }
+
+    function buildSentenceSpeakers(pronText, sentIdx) {
+        const safePron = encodeURIComponent(pronText || '');
+        const svgIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path><path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path></svg>`;
+        return `
+            <div class="speaker-group">
+                <button class="speaker-btn speaker-btn-sky"
+                    title="2번 TTS (하늘색: 무단절 WSOLA / 우클릭: 음성 선택)"
+                    onclick="playSingleSentence(${sentIdx}, false, event)"
+                    oncontextmenu="event.preventDefault(); setMaleVoiceChoice();">${svgIcon}</button>
+                <button class="speaker-btn speaker-btn-green"
+                    title="3번 TTS (초록색: 단음 강세 보강 / 우클릭: 강세 배율 설정)"
+                    onclick="playSingleSentence(${sentIdx}, true, event)"
+                    oncontextmenu="event.preventDefault(); setGreenShortAccentStretch();">${svgIcon}</button>
+            </div>
+        `;
+    }
+
+    function stopAllPlayback() {
+        audiobookPlaying = false;
+        audiobookToken++;
+        stopSkyProsodyAudio();
+        document.querySelectorAll('.sentence-row.playing').forEach(el => el.classList.remove('playing'));
+        updatePlayButtons();
+    }
+
+    function updatePlayButtons() {
+        const stopBtn = document.getElementById('stopAllBtn');
+        if (stopBtn) stopBtn.style.display = audiobookPlaying ? 'inline-flex' : 'none';
+    }
+
+    async function playSingleSentence(sentIdx, isGreen, ev) {
+        if (ev) ev.stopPropagation();
+        stopAllPlayback();
+        const story = filteredStories[activeStoryIndex];
+        if (!story) return;
+        const sent = story.sentences[sentIdx];
+        if (!sent || !sent.pron) return;
+
+        const row = document.getElementById(`sent-row-${sentIdx}`);
+        if (row) row.classList.add('playing');
+        await speakDialectSentenceAsync(sent.pron, isGreen);
+        if (row) row.classList.remove('playing');
+    }
+
+    async function startAudiobook(isGreen = false) {
+        stopAllPlayback();
+        const story = filteredStories[activeStoryIndex];
+        if (!story) return;
+
+        audiobookPlaying = true;
+        const myAbToken = ++audiobookToken;
+        updatePlayButtons();
+
+        for (let i = 0; i < story.sentences.length; i++) {
+            if (!audiobookPlaying || myAbToken !== audiobookToken) break;
+            const sent = story.sentences[i];
+            if (!sent.pron) continue;
+
+            const row = document.getElementById(`sent-row-${i}`);
+            document.querySelectorAll('.sentence-row.playing').forEach(el => el.classList.remove('playing'));
+            if (row) {
+                row.classList.add('playing');
+                row.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+
+            const ok = await speakDialectSentenceAsync(sent.pron, isGreen);
+            if (!ok || !audiobookPlaying || myAbToken !== audiobookToken) break;
+        }
+
+        if (myAbToken === audiobookToken) {
+            audiobookPlaying = false;
+            document.querySelectorAll('.sentence-row.playing').forEach(el => el.classList.remove('playing'));
+            updatePlayButtons();
+        }
+    }
+
+    function renderStoryList() {
+        const listEl = document.getElementById('storyList');
+        const countEl = document.getElementById('sidebarCount');
+        countEl.textContent = `검색 결과: ${filteredStories.length}편`;
+
+        listEl.innerHTML = filteredStories.map((s, idx) => `
+            <div class="story-item ${idx === activeStoryIndex ? 'active' : ''}" onclick="selectStory(${idx})">
+                <div class="story-item-title">${idx + 1}. ${escapeHtml(s.title)}</div>
+                <div class="story-item-meta">
+                    <span>${escapeHtml(s.area.replace('경상북도/', ''))} · ${escapeHtml(s.informant || '제보자 미상')}</span>
+                    <span>${s.char_count.toLocaleString()}자</span>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    function selectStory(idx) {
+        stopAllPlayback();
+        activeStoryIndex = idx;
+        renderStoryList();
+        renderActiveStory();
+        document.getElementById('sidebar').classList.remove('open');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function filterStories() {
+        if (!corpusData) return;
+        const q = document.getElementById('searchInput').value.trim().toLowerCase();
+        if (!q) {
+            filteredStories = corpusData.stories;
+        } else {
+            filteredStories = corpusData.stories.filter(s => {
+                if ((s.title || '').toLowerCase().includes(q)) return true;
+                if ((s.area || '').toLowerCase().includes(q)) return true;
+                if ((s.informant || '').toLowerCase().includes(q)) return true;
+                return s.sentences.some(st => (st.raw || '').toLowerCase().includes(q));
+            });
+        }
+        activeStoryIndex = 0;
+        renderStoryList();
+        renderActiveStory();
+    }
+
+    function renderActiveStory() {
+        const reader = document.getElementById('reader');
+        const story = filteredStories[activeStoryIndex];
+        if (!story) {
+            reader.innerHTML = `<div class="story-card"><p>일치하는 설화가 없습니다.</p></div>`;
+            return;
+        }
+
+        // Group sentences by paragraph index `p`
+        const paraMap = new Map();
+        story.sentences.forEach((s, idx) => {
+            if (!paraMap.has(s.p)) paraMap.set(s.p, []);
+            paraMap.get(s.p).push({ ...s, idx });
+        });
+
+        const paragraphsHtml = Array.from(paraMap.values()).map(sents => {
+            const rows = sents.map(s => `
+                <div class="sentence-row" id="sent-row-${s.idx}">
+                    <div class="sentence-top">
+                        <div class="sentence-raw">${formatRawSentenceHtml(s.raw, s.stage)}</div>
+                        ${s.pron ? buildSentenceSpeakers(s.pron, s.idx) : ''}
+                    </div>
+                    ${s.pron ? `<div class="sentence-pron">[${escapeHtml(s.pron)}]</div>` : ''}
+                </div>
+            `).join('');
+            return `<div class="paragraph-block">${rows}</div>`;
+        }).join('');
+
+        const notesHtml = story.notes ? `
+            <div class="notes-card">
+                <h4>각주</h4>
+                <div>${escapeHtml(story.notes)}</div>
+            </div>
+        ` : '';
+
+        reader.innerHTML = `
+            <div class="story-card">
+                <h2 class="story-title">${escapeHtml(story.title)}</h2>
+                <div class="meta-chips">
+                    <span class="chip">📍 ${escapeHtml(story.area)} ${escapeHtml(story.place || '')}</span>
+                    ${story.informant ? `<span class="chip">🗣 제보자: ${escapeHtml(story.informant)}</span>` : ''}
+                    ${story.date ? `<span class="chip">📅 ${escapeHtml(story.date)}</span>` : ''}
+                    <span class="chip">📝 ${story.char_count.toLocaleString()}자 · ${story.sentences.length}문장</span>
+                    <span class="chip"><a href="${escapeHtml(story.url)}" target="_blank" rel="noopener">구비문학대계 원문 ↗</a></span>
+                </div>
+                ${story.context ? `<div class="context-box"><strong>구연상황:</strong> ${escapeHtml(story.context)}</div>` : ''}
+            </div>
+
+            <div class="controls-bar">
+                <div class="btn-group">
+                    <button class="btn btn-sky" onclick="startAudiobook(false)">▶ 전체 이어듣기 (2번 WSOLA)</button>
+                    <button class="btn btn-green" onclick="startAudiobook(true)">▶ 전체 이어듣기 (3번 단음강세)</button>
+                    <button class="btn btn-stop" id="stopAllBtn" style="display:none;" onclick="stopAllPlayback()">■ 정지</button>
+                </div>
+                <div class="btn-group">
+                    <label class="toggle-label">
+                        <input type="checkbox" checked onchange="document.body.classList.toggle('hide-pron', !this.checked)">
+                        발음 표기 [′]
+                    </label>
+                    <label class="toggle-label">
+                        <input type="checkbox" checked onchange="document.body.classList.toggle('hide-gloss', !this.checked)">
+                        괄호 뜻풀이 ( )
+                    </label>
+                </div>
+            </div>
+
+            ${paragraphsHtml}
+            ${notesHtml}
+        `;
+    }
+
+    async function initApp() {
+        initSpeedSlider();
+        if (window.SEOLHWA_DATA) {
+            corpusData = window.SEOLHWA_DATA;
+        } else {
+            try {
+                const res = await fetch('./gubi_corpus/gyeongju_seolhwa_pron.json');
+                corpusData = await res.json();
+            } catch (e) {
+                document.getElementById('reader').innerHTML = `
+                    <div class="story-card">
+                        <p>데이터 로드 실패: <code>gyeongju_seolhwa_pron.json</code>을 불러올 수 없습니다. 로컬 웹 서버로 실행해 주세요.</p>
+                    </div>`;
+                return;
+            }
+        }
+
+        document.getElementById('corpusBadge').textContent =
+            `${corpusData.story_count}편 · ${corpusData.total_transcript_chars.toLocaleString()}자 · ${corpusData.total_sentences.toLocaleString()}문장`;
+        filteredStories = corpusData.stories;
+        renderStoryList();
+        renderActiveStory();
+    }
+
+    window.addEventListener('DOMContentLoaded', initApp);
+</script>
+</body>
+</html>
