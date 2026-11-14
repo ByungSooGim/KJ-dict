@@ -1,0 +1,34 @@
+# Large dictionary source files & working drafts
+*.txt
+*.hwp
+*.jsonl
+*.zip
+*.tar.gz
+*.bin.bak
+gyeongju_dict_all.json
+
+# Backup / legacy HTML files (keep only index.html)
+index2*.html
+index_*.html
+index - *.html
+index+*.html
+new.html
+
+# Python cache & virtual environments
+__pycache__/
+*.pyc
+.env
+venv/
+
+# Local model & training datasets
+audio/
+data.json
+dialect_dataset/
+gyeongsang-dialect-tts/
+hf-edge-tts/
+20260430*
+20260905*
+
+# Exceptions: keep necessary files if needed
+!transcript_list.txt
+!ttah_entry.txt

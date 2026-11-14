@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>《신라수도 경주지역 사투리 사전》 상세 사용 설명서</title>
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> or <div class="page"></div> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="신라수도-경주지역-사투리-사전-상세-사용-설명서">《신라수도 경주지역 사투리 사전》 상세 사용 설명서</h1>
+<div style="display:flex; justify-content:space-between; align-items:center; background:#fdf2e9; border:1px solid #f5cba7; border-radius:8px; padding:10px 16px; margin:14px 0; flex-wrap:wrap; gap:8px;">
+  <span style="color:#b03a1a; font-weight:bold; font-size:14px;">📖 웹 버전 상세 설명서</span>
+  <div style="display:flex; gap:10px;">
+    <a href="index.html" style="color:#555; text-decoration:none; font-size:13px; font-weight:bold; padding:4px 8px; background:#fff; border:1px solid #ccc; border-radius:4px;">← 사전 메인으로</a>
+    <a href="경주방언사전_사용설명서.md" download style="color:#b03a1a; text-decoration:none; font-size:13px; font-weight:bold; padding:4px 8px; background:#fff; border:1px solid #f5cba7; border-radius:4px;">📥 마크다운(.md) 다운로드</a>
+  </div>
+</div>
+<blockquote>
+<p><strong>자료 출처 및 저작권</strong><br>
+편저자: 최명옥(서울대학교 명예교수) · 김주석<br>
+수록 어휘: 경주 지역 토박이 방언 표제어 41,005건 및 풍부한 구술 실생활 예문·관용구·속담<br>
+시스템: 웹 기반 실시간 반응형 방언 사전 &amp; 무단절 성조 음성 합성(TTS) 엔진</p>
+</blockquote>
+<hr>
+<h2 id="1-사전-소개-및-주요-특징">1. 사전 소개 및 주요 특징</h2>
+<p>《신라수도 경주지역 사투리 사전》은 신라의 천년 수도였던 경주 지역의 고유 언어 유산을 집대성한 디지털 웹 사전입니다. 15세기 훈민정음 창제 당시의 성조(평성·거성·상성) 체계와 옛한글 자모(순경음, 아래아, 복합 자음 등)를 고스란히 간직한 살아있는 경주 방언을 누구나 쉽게 검색하고 원음의 억양 그대로 귀로 들을 수 있도록 개발되었습니다.</p>
+<pre><code class="language-mermaid"><div class="mermaid">flowchart LR
+    A["검색 & 탐색<br/>(방언/표준어/초성/품사/옛한글)"] --> B["표제어 목록<br/>(41,005건 실시간 정렬)"]
+    B --> C["단어 상세 화면<br/>(뜻풀이 & 예문·속담)"]
+    C --> D["사투리 발음 듣기<br/>(2번 WSOLA / 3번 단음강세)"]
+    C --> E["예문 단어 클릭 팝업<br/>(표제어 점프 & 이전 단어 복귀)"]
+</div></code></pre>
+<h3 id="-핵심-특장점">🌟 핵심 특장점</h3>
+<ol>
+<li><strong>41,005건의 방대한 어휘 수록</strong>: 경주 지역 어르신들의 구술 채록과 문헌 자료를 망라한 정밀 사전</li>
+<li><strong>옛한글 완벽 보존 &amp; 3대 검색 지원</strong>: 표준 유니코드(UTF-8 NFD) 자모 체계로 옛한글 표제어를 구현하고, 원클릭 필터·옛자모 팔레트·현대어 유사 검색을 모두 지원</li>
+<li><strong>무단절 성조 사투리 음성 합성(TTS)</strong>: 로컬 WSOLA 및 웹 브라우저 음성 엔진을 통해 경주 방언 특유의 고저 성조(High/Low Pitch)와 장단모음을 자연스럽게 구현</li>
+<li><strong>상호 연결형 예문 학습</strong>: 예문이나 속담 속에 등장하는 모든 경주 사투리 단어를 클릭하면 원형 표제어와 뜻풀이가 팝업으로 즉시 뜨며 단어 간 점프 탐색 가능</li>
+<li><strong>하단 상시 조절 바</strong>: 발음 속도와 기본 음높이(피치) 조절 바가 화면 하단에 고정 노출되어 언제든 내 귀에 맞는 사투리 음조로 조절 가능</li>
+</ol>
+<hr>
+<h2 id="2-화면-구성-및-레이아웃-한눈에-보기">2. 화면 구성 및 레이아웃 한눈에 보기</h2>
+<p>사전은 모바일 스마트폰과 태블릿, PC 모니터 모든 환경에 최적화된 반응형 인터페이스를 갖추고 있습니다.</p>
+<p><img src="images/01_main_screen.png" alt="메인 화면"></p>
+<h3 id="-주요-화면-구역">📌 주요 화면 구역</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">구역</th>
+<th style="text-align:left">명칭</th>
+<th style="text-align:left">기능 설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>상단 헤더</strong></td>
+<td style="text-align:left">제목 및 로고</td>
+<td style="text-align:left">《신라수도 경주지역 사투리 사전》 성덕대왕신종 모티프 로고</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>검색창 행</strong></td>
+<td style="text-align:left">2중 입력창</td>
+<td style="text-align:left"><code>방언 표제어 검색</code>창과 <code>표준어 검색</code>창이 나란히 배치되어 양방향 검색 가능</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>옛한글 도구</strong></td>
+<td style="text-align:left"><code>📜 옛한글 전체</code> / <code>⌨ 옛자모 선택 ▾</code></td>
+<td style="text-align:left">옛한글 표제어 전체 모아보기 및 12종 옛받침 자모 입력 팔레트 열기</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>초성 색인</strong></td>
+<td style="text-align:left">초성 그리드 (<code>ㄱ</code> ~ <code>ㅎ</code>)</td>
+<td style="text-align:left">19개 현대 한글 자음 버튼으로 해당 초성의 표제어 사전순 정렬 목록 열람</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>품사 필터</strong></td>
+<td style="text-align:left"><code>체언</code> / <code>용언</code> / <code>기타</code></td>
+<td style="text-align:left">명사/대명사/수사, 동사/형용사, 부사/어미 등 문법 갈래별 필터링</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>추천 경주어</strong></td>
+<td style="text-align:left"><code>🎲 오늘의 추천 경주어</code></td>
+<td style="text-align:left">사전 속 흥미로운 방언 단어 3개를 무작위 추천 (<code>다른 단어로 로드</code> 버튼 제공)</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>하단 안내</strong></td>
+<td style="text-align:left">기능 안내 &amp; 실험실 링크</td>
+<td style="text-align:left"><code>발음 듣기 기능 안내</code> 모달 팝업 및 <code>억양 학습 실험실(demo_prosody.html)</code> 바로가기</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>상시 조절바</strong></td>
+<td style="text-align:left"><code>발음 빠르기</code> &amp; <code>기본 음높이 배율</code></td>
+<td style="text-align:left">저작권 바로 위 고정 영역으로, 메인과 상세 화면 모두에서 상시 조작 가능</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="3-표제어-검색-방법-5가지-탐색-경로">3. 표제어 검색 방법 (5가지 탐색 경로)</h2>
+<p>사용자는 자신이 알고 있는 단어의 형태나 목적에 따라 5가지 방식으로 자유롭게 어휘를 찾을 수 있습니다.</p>
+<pre><code class="language-mermaid"><div class="mermaid">flowchart TD
+    Start["단어 찾기 시작"] --> Q1{"어떤 단어를 아시나요?"}
+    Q1 -- "사투리 단어" --> S1["[사투리 검색] 입력창<br/>(예: '가꾸우다', '도라지')"]
+    Q1 -- "표준어 뜻" --> S2["[표준어 검색] 입력창<br/>(예: '재배하다', '가꾸다')"]
+    Q1 -- "첫 자음" --> S3["[초성 버튼] 클릭<br/>('ㄱ', 'ㄴ', 'ㄷ' ... 'ㅎ')"]
+    Q1 -- "문법 갈래" --> S4["[품사 버튼] 클릭<br/>(체언 / 용언 / 기타)"]
+    Q1 -- "옛한글 표기" --> S5["[옛한글 도구] 활용<br/>(전체 목록 / 자모 팔레트)"]
+</div></code></pre>
+<h3 id="31-사투리-검색-방언-표제어-입력">3.1. 사투리 검색 (방언 표제어 입력)</h3>
+<ul>
+<li><strong>입력창</strong>: 좌측 <code>방언 표제어 검색</code> 입력창에 찾고자 하는 사투리를 입력합니다.</li>
+<li><strong>실시간 자동 검색</strong>: 글자를 입력하는 즉시 0.2초 이내에 일치하는 표제어 목록이 하단에 나타납니다.</li>
+<li><strong>동의어/변이형 확장 검색</strong>: <code>{}</code> 중괄호 표기(예: <code>가꾸{우/ㅎ}다</code>)로 묶인 어간 변이형도 자동으로 분해 매칭되므로 어느 형태를 검색해도 정확히 찾아냅니다.</li>
+</ul>
+<h3 id="32-표준어-뜻풀이-검색-역방향-검색">3.2. 표준어 뜻풀이 검색 (역방향 검색)</h3>
+<ul>
+<li><strong>입력창</strong>: 우측 <code>표준어 검색</code> 입력창에 표준어 의미(예: <code>가꾸다</code>, <code>벼</code>, <code>호미</code>, <code>무덤</code>)를 입력합니다.</li>
+<li><strong>활용</strong>: 경주 사투리를 정확히 모르더라도 &quot;표준어로 '가꾸다'를 경주에서는 뭐라고 하지?&quot; 궁금할 때 표준어를 입력하면 대응하는 경주 방언 표제어들을 한눈에 비교할 수 있습니다.</li>
+</ul>
+<h3 id="33-초성-자음-탐색-ㄱ--ㅎ">3.3. 초성 자음 탐색 (ㄱ ~ ㅎ)</h3>
+<ul>
+<li>검색창 아래 19개 자음 박스(<code>ㄱ</code>, <code>ㄲ</code>, <code>ㄴ</code>, <code>ㄷ</code>, <code>ㄸ</code>, <code>ㄹ</code>, <code>ㅁ</code>, <code>ㅂ</code>, <code>ㅃ</code>, <code>ㅅ</code>, <code>ㅆ</code>, <code>ㅇ</code>, <code>ㅈ</code>, <code>ㅉ</code>, <code>ㅊ</code>, <code>ㅋ</code>, <code>ㅌ</code>, <code>ㅍ</code>, <code>ㅎ</code>) 중 하나를 터치/클릭합니다.</li>
+<li>해당 자음으로 시작하는 모든 단어가 정통 국어사전 순서(옛한글 조합 규칙 반영)로 나열됩니다.</li>
+</ul>
+<h3 id="34-품사별-모아보기-필터">3.4. 품사별 모아보기 필터</h3>
+<ul>
+<li><code>체언(대/명사,수사)</code>: 사물이나 사람, 수량을 나타내는 명사 중심 어휘 필터링</li>
+<li><code>용언(동/형용사)</code>: 동작이나 상태를 나타내는 동사 및 형용사 필터링</li>
+<li><code>기타(부사/어미 등)</code>: 경주 방언의 맛깔스러운 부사, 감탄사, 연결/종결 어미 필터링</li>
+</ul>
+<h3 id="35-오늘의-추천-경주어--무작위-새로고침">3.5. 오늘의 추천 경주어 &amp; 무작위 새로고침</h3>
+<ul>
+<li>메인 화면 하단의 <code>🎲 오늘의 추천 경주어</code> 카드 3장을 통해 매번 새로운 경주 고유어를 자연스럽게 접할 수 있습니다.</li>
+<li>우측의 <code>다른 단어로 로드</code> 버튼을 누르면 즉시 새로운 랜덤 단어 3개가 교체 로드됩니다.</li>
+</ul>
+<hr>
+<h2 id="4-옛한글-표제어-완벽-검색-가이드">4. 옛한글 표제어 완벽 검색 가이드</h2>
+<p>경주 방언에는 조선 전기 문헌에 남아있던 순경음, 아래아, 옛이응, 복합 받침 등이 실제 발음으로 살아있어 사전 표제어에도 옛한글이 그대로 표기되어 있습니다. 본 사전은 별도의 옛한글 키보드가 없는 스마트폰 사용자도 손쉽게 옛한글을 찾을 수 있는 3중 검색 시스템을 제공합니다.</p>
+<p><img src="images/02_old_hangul_palette.png" alt="옛한글 자모 팔레트"></p>
+<h3 id="41--옛한글-전체-원클릭-버튼">4.1. <code>📜 옛한글 전체</code> 원클릭 버튼</h3>
+<ul>
+<li>버튼을 한 번 누르면 사전에 수록된 모든 옛한글 표제어가 사전 자모 순서대로 즉시 필터링됩니다.</li>
+</ul>
+<h3 id="42--옛자모-선택--팔레트-입력">4.2. <code>⌨ 옛자모 선택 ▾</code> 팔레트 입력</h3>
+<ul>
+<li>버튼을 누르면 사전에 실제 빈출되는 <strong>12종 핵심 옛받침 자모 칩</strong>이 펼쳐집니다.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">자모 칩</th>
+<th style="text-align:center">조합 형태</th>
+<th style="text-align:left">대표 발음 예시 단어</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><strong>ᇅ</strong></td>
+<td style="text-align:center"><code>ㄴㄱ</code> 받침</td>
+<td style="text-align:left"><code>금녀ᇅ</code> (금녘, 서쪽)</td>
+</tr>
+<tr>
+<td style="text-align:center"><strong>ᇹ</strong></td>
+<td style="text-align:center"><code>ㆆ</code> (여린히읗) 받침</td>
+<td style="text-align:left"><code>들어부ᇹ다</code> (단숨에 들이붓다)</td>
+</tr>
+<tr>
+<td style="text-align:center"><strong>ᇾ</strong></td>
+<td style="text-align:center"><code>ㄱㅎ</code> 받침</td>
+<td style="text-align:left"><code>가ᇾ</code> (겉, 표면)</td>
+</tr>
+<tr>
+<td style="text-align:center"><strong>ᇬ</strong></td>
+<td style="text-align:center"><code>ㅇㄱ</code> 받침</td>
+<td style="text-align:left"><code>가죽나ᇬ</code> (가죽나무)</td>
+</tr>
+<tr>
+<td style="text-align:center"><strong>ᇡ</strong></td>
+<td style="text-align:center"><code>ㅁㅎ</code> 받침</td>
+<td style="text-align:left"><code>구ᇡ</code> (구멍)</td>
+</tr>
+<tr>
+<td style="text-align:center"><strong>ᇘ</strong></td>
+<td style="text-align:center"><code>ㄹㅋ</code> 받침</td>
+<td style="text-align:left"><code>부ᇘ다</code> (붉다)</td>
+</tr>
+<tr>
+<td style="text-align:center"><strong>ᇙ</strong></td>
+<td style="text-align:center"><code>ㄹㆆ</code> 받침</td>
+<td style="text-align:left"><code>이ᇙ</code> (일찍)</td>
+</tr>
+<tr>
+<td style="text-align:center"><strong>ᇯ</strong></td>
+<td style="text-align:center"><code>ㅇㅋ</code> 받침</td>
+<td style="text-align:left"><code>주ᇯ다</code> (죽다)</td>
+</tr>
+<tr>
+<td style="text-align:center"><strong>ᇥ</strong></td>
+<td style="text-align:center"><code>ㅂㅎ</code> 받침</td>
+<td style="text-align:left"><code>잡수ᇹ고</code> (잡수시고)</td>
+</tr>
+<tr>
+<td style="text-align:center"><strong>ᇚ</strong></td>
+<td style="text-align:center"><code>ㅁㄱ</code> 받침</td>
+<td style="text-align:left"><code>나ᇚ</code> (나무)</td>
+</tr>
+<tr>
+<td style="text-align:center"><strong>ᇭ</strong></td>
+<td style="text-align:center"><code>ㅇㄲ</code> 받침</td>
+<td style="text-align:left"><code>바ᇭ</code> (밖)</td>
+</tr>
+<tr>
+<td style="text-align:center"><strong>ퟶ</strong></td>
+<td style="text-align:center"><code>ㆁㅎ</code> 받침</td>
+<td style="text-align:left"><code>가ퟶ</code> (가장자리)</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>[!NOTE]<br>
+<strong>옛자모 팔레트 12종 정돈 및 '왕임ㅎ다' 오기 교정</strong><br>
+기존 원문의 '왕ᄋᆝᇡ다'(왕임하다의 축약형)에 포함되어 있던 '아래아+이'(<code>ᆝ</code>) 표기는 조사 결과 사전 전체에서 유일하게 나타난 '이' 모음(<code>ᅵ</code>)의 오기임이 확인되어 <code>왕이ᇡ다</code>로 바로잡았습니다. 이에 따라 사전에 실제로 쓰이는 고유 옛한글 자모는 12종의 옛받침 자모(종성)로 정돈되었으며, 팔레트에서도 불필요해진 'ㆍㅣ' 칩이 제외되었습니다.</p>
+</blockquote>
+<blockquote>
+<p>[!TIP]
+자모 칩을 터치하면 해당 옛자모가 자동으로 검색창에 입력되고, 해당 자모가 포함된 모든 단어 목록으로 즉시 필터링됩니다. 다시 버튼을 누르면 팔레트가 접힙니다.</p>
+</blockquote>
+<h3 id="43-현대-한글-자모-근사-검색-유사자모-매칭">4.3. 현대 한글 자모 근사 검색 (유사자모 매칭)</h3>
+<p>키보드에 옛한글이 없더라도 <strong>일반 현대 한글</strong>로 검색하면 내부 변환 엔진(<code>buildApproxSearchForms</code>)이 자동으로 유사 옛한글을 함께 찾아줍니다.</p>
+<ul>
+<li>예: <code>금녁</code> 또는 <code>금녕</code> 검색 시 → <code>금녀ᇅ</code> 자동 매칭</li>
+<li>예: <code>들어붓다</code> 검색 시 → <code>들어부ᇹ다</code> 자동 매칭</li>
+</ul>
+<h3 id="44-옛한글-사전식-정렬-원칙">4.4. 옛한글 사전식 정렬 원칙</h3>
+<ul>
+<li>본 사전은 국립국어원 옛한글 정렬 표준과 훈민정음 자모 체계에 맞춰 정렬됩니다.</li>
+<li>예: <code>ᇅ(ㄴㄱ)</code> 받침은 현대 <code>ㄴ</code>과 <code>ㄵ</code> 사이에 정확히 위치하며, <code>ᇹ(ㆆ)</code> 받침은 <code>ㅎ</code> 직전에 순서대로 배열되어 사전을 넘기듯 직관적으로 찾을 수 있습니다.</li>
+</ul>
+<hr>
+<h2 id="5-검색-결과-목록-탐색">5. 검색 결과 목록 탐색</h2>
+<p>검색창에 글자를 입력하거나 초성/옛한글 버튼을 누르면 목록 뷰가 열립니다.</p>
+<p><img src="images/03_search_results.png" alt="검색 결과 목록"></p>
+<ol>
+<li><strong>검색 건수 안내</strong>: 목록 상단에 <code>○건 (현재 1페이지)</code>로 총 검색된 어휘 수가 표시됩니다.</li>
+<li><strong>페이지네이션</strong>: 한 페이지당 50건씩 쾌적하게 로딩되며, 하단 번호 및 <code>이전</code>/<code>다음</code> 버튼으로 페이지를 넘길 수 있습니다.</li>
+<li><strong>표제어 카드 요약 정보</strong>:
+<ul>
+<li>표제어 명칭 및 동음이의어 번호(상첨자 <code>¹</code>, <code>²</code>)</li>
+<li>품사 구분 태그 (<code>󰃃 명사</code>, <code>󰂿 동사</code>, <code>󰃰 형용사</code> 등)</li>
+<li>간결한 대표 뜻풀이 미리보기</li>
+</ul>
+</li>
+<li><strong>상세 진입</strong>: 카드를 터치하면 해당 단어의 상세 정보 화면으로 전환됩니다.</li>
+</ol>
+<hr>
+<h2 id="6-단어-상세-화면-기능-상세">6. 단어 상세 화면 기능 상세</h2>
+<p>상세 화면에서는 표제어의 완벽한 문법 정보, 정밀 발음 표기, 단계별 뜻풀이, 실생활 예문과 관용구/속담을 집약해 보여줍니다.</p>
+<p><img src="images/04_word_detail.png" alt="단어 상세 페이지"></p>
+<h3 id="61-상단-표제어-및-품사-배지">6.1. 상단 표제어 및 품사 배지</h3>
+<ul>
+<li><strong>표제어명</strong>: 대형 폰트로 선명하게 노출되며, 옛한글 첫가끝 자모와 상첨자 숫자가 깔끔하게 렌더링됩니다.</li>
+<li><strong>품사 배지</strong>: 붉은색 포인트 배지로 품사 갈래를 직관적으로 명시합니다.</li>
+<li><strong>오류 제보 버튼</strong>: 우측 상단 <code>오류제보</code> 링크를 누르면 사전 편찬팀으로 수정 제안 이메일을 바로 발송할 수 있습니다.</li>
+</ul>
+<h3 id="62-발음-표시-및-23번-스피커-버튼">6.2. 발음 표시 및 2·3번 스피커 버튼</h3>
+<ul>
+<li><strong>발음 기호 구역</strong>: 음장(장모음 <code>ː</code> 또는 모음 연속)과 고조 성조(강세표 <code>′</code>)가 표시된 정밀 음성학적 발음 표기가 나타납니다.</li>
+<li><strong>2번 스피커 (하늘색)</strong>: 무단절 WSOLA 사투리 연속 합성 음성 재생</li>
+<li><strong>3번 스피커 (초록색)</strong>: 단음 강세 1.12배 연장 및 피치 타격 강화 음성 재생</li>
+</ul>
+<h3 id="63-상세-뜻풀이-구역">6.3. 상세 뜻풀이 구역</h3>
+<ul>
+<li>여러 의미를 지닌 다의어의 경우 <code>1.</code>, <code>2.</code>, <code>3.</code> 번호별로 상세 표준어 뜻풀이가 줄바꿈되어 정돈되어 제공됩니다.</li>
+</ul>
+<h3 id="64--예문-구절-보기-아코디언-토글">6.4. <code>📜 예문 구절 보기</code> 아코디언 토글</h3>
+<ul>
+<li>기본 상태에서는 화면을 깔끔하게 유지하기 위해 접혀 있으며, 버튼을 클릭하면 활성화되어 예문과 속담이 펼쳐집니다.</li>
+<li><strong>방언 구술 예문</strong>: 실제 경주 지역 방언 화자들의 자연스러운 구술 녹취 문장이 제공됩니다.</li>
+<li><strong>표준어 대역</strong>: 각 예문 하단에 회색 박스로 표준어 번역이 함께 제공되어 의미를 쉽게 대조할 수 있습니다.</li>
+<li><strong>스피커 버튼 단일 배치</strong>: 문장 중간에 쉼표나 마침표가 있어도 중간을 끊지 않고 <strong>예문 맨 끝에 1회만 스피커 버튼 쌍(2번·3번)이 배치</strong>되어 문장 전체를 통으로 유려하게 들을 수 있습니다.</li>
+</ul>
+<hr>
+<h2 id="7-사투리-발음-듣기tts-및-음성-엔진-가이드">7. 사투리 발음 듣기(TTS) 및 음성 엔진 가이드</h2>
+<p>본 사전의 백미는 단순한 텍스트 사전을 넘어 <strong>경주 방언의 억양과 성조를 소리로 직접 체득</strong>할 수 있다는 점입니다.</p>
+<pre><code class="language-mermaid"><div class="mermaid">flowchart TD
+    Click["스피커 버튼 클릭"] --> Choice{"스피커 종류 선택"}
+    Choice -- "2번 (하늘색 버튼)" --> Sky["WSOLA 무단절 사투리 합성<br/>(장모음 연결 + 성조 곡선 발화)"]
+    Choice -- "3번 (초록색 버튼)" --> Green["2번 엔진 + 단음 강세 보강<br/>(단음 강세 1.12배 연장 & 피치 타격)"]
+    Sky --> Speech["문장 종결 및 10어절 초과 균형 호흡구 분할 발화"]
+    Green --> Speech
+</div></code></pre>
+<h3 id="71-2번-스피커-하늘색-speaker-btn-sky">7.1. 2번 스피커 (하늘색, <code>.speaker-btn-sky</code>)</h3>
+<ul>
+<li><strong>엔진 특징</strong>: WSOLA(Waveform Similarity Overlap-Add) 무단절 연속 발화 알고리즘</li>
+<li><strong>피치 통일</strong>: 이전 버전에서 평음이 지나치게 낮게 가라앉던 현상을 완전히 개선하여, <strong>평음과 고음 구분 없이 안정적인 기존 고음 기준 피치를 기본 피치로 통일</strong>했습니다.</li>
+<li><strong>우클릭 부가 기능</strong>: PC에서 하늘색 버튼을 마우스 우클릭하면 브라우저 내 설치된 한국어 남성 음성 목록을 수동 선택할 수 있는 팝업이 뜹니다.</li>
+</ul>
+<h3 id="72-3번-스피커-초록색-speaker-btn-green">7.2. 3번 스피커 (초록색, <code>.speaker-btn-green</code>)</h3>
+<ul>
+<li><strong>엔진 특징</strong>: 2번 엔진의 자연스러운 음조 위에, <strong>어절 내 단음 강세(Accent) 음절을 약 1.12배 연장하고 피치 타격을 집중</strong>시키는 음성학적 보강 엔진</li>
+<li><strong>청취 효과</strong>: 경상도 방언 특유의 &quot;툭 치고 올라가는 억센 액센트&quot;를 귀로 훨씬 명확하게 포착할 수 있어 방언 학습에 이상적입니다.</li>
+<li><strong>우클릭 부가 기능</strong>: PC에서 초록색 버튼을 마우스 우클릭하면 단음 강세 연장 배율(기본 1.12배, 1.05배 ~ 1.35배)을 원하는 수치로 즉시 변경할 수 있습니다.</li>
+</ul>
+<h3 id="73-긴-문장10어절-초과-균형-호흡구-분할-로직">7.3. 긴 문장(10어절 초과) 균형 호흡구 분할 로직</h3>
+<ul>
+<li><strong>10어절 이하 문장</strong>: 쉼표(<code>,</code>)가 있더라도 문장을 쪼개지 않고 <strong>1개의 자연스러운 호흡구로 매끄럽게 발화</strong>합니다.</li>
+<li><strong>10어절 초과 장문</strong>: 기계적으로 10번째에서 잘라 꼬리를 남기지 않고, **문장 중앙 균형 지점 근처의 쉼표(<code>,</code>)나 경주 방언 연결어미(<code>-머</code>, <code>-가아</code>, <code>-고</code>, <code>-니꺼네</code>, <code>-는데</code>, <code>-거덩</code> 등)**를 스스로 찾아 6~8어절 단위로 숨을 고르며 균형 있게 나누어 읽어줍니다.</li>
+</ul>
+<h3 id="74-모바일-최적-음성-설정-팁">7.4. 모바일 최적 음성 설정 팁</h3>
+<p>스마트폰 기종에 따라 사투리가 어색한 기계음으로 들릴 경우, 스마트폰 설정에서 TTS 엔진을 Google 음성으로 변경하면 가장 유려한 억양을 들을 수 있습니다.</p>
+<p><img src="images/06_pron_guide_modal.png" alt="발음 듣기 안내 모달"></p>
+<ol>
+<li>휴대폰 [설정] 앱 실행</li>
+<li>상단 돋보기(검색)에서 <strong>&quot;글자 읽어주기&quot;</strong> 또는 <strong>&quot;TTS&quot;</strong> 검색</li>
+<li>[기본 엔진]을 **&quot;Google 음성 인식 및 합성&quot;**으로 선택</li>
+</ol>
+<hr>
+<h2 id="8-하단-상시-조절-바-활용법">8. 하단 상시 조절 바 활용법</h2>
+<p>화면 하단 저작권 표시 바로 위에는 슬라이더 조절 바 2종이 배치되어 있습니다. 이 조절 바는 <strong>메인 첫 화면뿐 아니라 개별 단어 상세 화면에서도 상시 노출</strong>됩니다.</p>
+<p><img src="images/07_sliders_view.png" alt="상시 조절바 화면"></p>
+<h3 id="81-발음-빠르기-조절-바">8.1. <code>발음 빠르기</code> 조절 바</h3>
+<ul>
+<li><strong>범위</strong>: <code>0.60x</code> (느림) ~ <code>1.30x</code> (빠름)</li>
+<li><strong>기본값</strong>: <code>0.76x</code> (경상도 특유의 음장과 성조를 또렷하게 음미하기에 가장 적합한 표준 속도)</li>
+<li>슬라이더를 좌우로 드래그하면 배율 배지가 실시간으로 갱신되며 즉시 모든 발화 속도에 적용됩니다.</li>
+</ul>
+<h3 id="82-기본-음높이-배율-조절-바">8.2. <code>기본 음높이 배율</code> 조절 바</h3>
+<ul>
+<li><strong>범위</strong>: <code>1.05x</code> (평탄) ~ <code>2.10x</code> (강하게)</li>
+<li><strong>기본값</strong>: <code>1.48x</code> (+6.8 반음 상승 대역)</li>
+<li><strong>특징</strong>: 평음과 고음 구분 없이 사전 전체 음성의 기본 피치 레벨을 일괄 조절합니다. 내 폰의 음성이 너무 가라앉거나 반대로 너무 가늘게 느껴질 때 내 귀에 편안한 높이로 자유롭게 미세 튜닝할 수 있습니다.</li>
+<li><strong>자동 저장</strong>: 설정한 속도와 피치 수치는 브라우저 저장소(<code>localStorage</code>)에 자동 기억되므로 사전을 다시 열어도 유지됩니다.</li>
+</ul>
+<hr>
+<h2 id="9-예문-단어-인터랙티브-팝업--표제어-내비게이션">9. 예문 단어 인터랙티브 팝업 &amp; 표제어 내비게이션</h2>
+<p>예문을 읽다가 모르는 사투리 어휘가 나왔을 때, 검색창으로 다시 돌아가 타이핑할 필요 없이 단어를 터치하는 것만으로 즉시 뜻을 확인하고 이동할 수 있습니다.</p>
+<p><img src="images/05_example_word_popup.png" alt="예문 단어 클릭 팝업"></p>
+<pre><code class="language-mermaid"><div class="mermaid">sequenceDiagram
+    autonumber
+    actor User as 사용자
+    participant Ex as 예문 화면 (가꾸우다)
+    participant Modal as 예문 단어 찾기 모달
+    participant Next as 점프한 단어 (도라지)
+
+    User->>Ex: 예문 속 점선 단어 터치 ('도라′지를')
+    Ex->>Modal: 활용형 어형 분석 후 원형 매칭 (도라지)
+    Modal-->>User: 팝업 카드 표시 (품사, 발음, 뜻 요약)
+    User->>Modal: [이 표제어로 이동 →] 버튼 클릭
+    Modal->>Next: '도라지' 상세 화면 열기
+    Note over Next: 상단에 [← 이전 단어] 복귀 버튼 자동 생성!
+    User->>Next: [← 이전 단어] 버튼 클릭
+    Next->>Ex: 원래 보던 '가꾸우다' 화면으로 완벽 복귀
+</div></code></pre>
+<h3 id="91-예문-속-단어-터치-ex-word-link">9.1. 예문 속 단어 터치 (<code>.ex-word-link</code>)</h3>
+<ul>
+<li>펼쳐진 예문 구절을 보면 단어 아래에 <strong>연한 점선</strong>이 그어져 있습니다.</li>
+<li>궁금한 단어를 마우스로 클릭하거나 스마트폰 화면에서 터치합니다.</li>
+</ul>
+<h3 id="92-예문-단어-찾기-미리보기-모달-팝업">9.2. <code>예문 단어 찾기</code> 미리보기 모달 팝업</h3>
+<ul>
+<li>터치 즉시 화면 중앙에 팝업창이 뜨며, 사투리 활용형(예: <code>가꽈′아라</code>, <code>도라′지를</code>, <code>대추가</code>, <code>심술이</code>)에서 조사와 어미를 분리 분석하여 매칭되는 <strong>원형 표제어 카드</strong>를 보여줍니다.</li>
+<li>카드에는 표제어, 품사, 발음, 핵심 뜻풀이가 깔끔하게 요약되어 있어 예문의 문맥을 바로 이해할 수 있습니다.</li>
+</ul>
+<h3 id="93-이-표제어로-이동--원클릭-점프">9.3. <code>[이 표제어로 이동 →]</code> 원클릭 점프</h3>
+<ul>
+<li>팝업 카드의 하단 <code>[이 표제어로 이동 →]</code> 버튼을 누르면 팝업이 닫히며 해당 단어의 정식 상세 페이지로 즉시 이동합니다.</li>
+</ul>
+<h3 id="94--이전-단어-뒤로가기-스택-복귀">9.4. <code>← 이전 단어</code> 뒤로가기 스택 복귀</h3>
+<ul>
+<li>예문 단어 링크를 타고 다른 단어로 점프하면, 상단 버튼 영역에 <strong><code>← 이전 단어</code></strong> 버튼이 자동으로 나타납니다.</li>
+<li>단어를 여러 번 타고 연속으로 이동하더라도 히스토리 스택이 유지되어, <code>← 이전 단어</code> 버튼을 누르면 이전에 읽던 단어로 한 단계씩 순서대로 완벽하게 되돌아올 수 있습니다.</li>
+<li>언제든 <code>← 목록으로 돌아가기</code>를 누르면 원래의 전체 검색 목록으로 복귀합니다.</li>
+</ul>
+<hr>
+<h2 id="10-단축키-및-제스처--보안-안내">10. 단축키 및 제스처 / 보안 안내</h2>
+<h3 id="101-데스크톱-단축키--제스처">10.1. 데스크톱 단축키 &amp; 제스처</h3>
+<ul>
+<li><strong>검색창 이동</strong>: 메인 화면에서 아무 키나 입력하기 시작하면 방언 검색창에 포커스가 들어옵니다.</li>
+<li><strong>스피커 좌클릭</strong>: 발음 재생 (2번: WSOLA / 3번: 단음강세 보강)</li>
+<li><strong>스피커 우클릭</strong>: 고급 음성 설정 (남성 음성 선택 / 강세 연장 배율 조정)</li>
+<li><strong>모달 닫기</strong>: 모달 바깥의 어두운 배경 영역을 클릭하거나 모달 우측 상단 <code>✕</code> 또는 하단 <code>닫기</code> 버튼 클릭</li>
+</ul>
+<h3 id="102-무단-복제-방지-및-저작권-보호">10.2. 무단 복제 방지 및 저작권 보호</h3>
+<ul>
+<li>본 사전은 편저자 선생님들의 평생에 걸친 구술 채록과 학술 연구 성과물입니다.</li>
+<li><strong>비영리 공개 원칙</strong>: 웹 브라우저를 통한 개인 학습 및 학술 연구 목적의 열람은 상시 자유롭게 허용됩니다.</li>
+<li><strong>불법 스크래핑 차단</strong>: 데이터 무단 크롤링, 상업적 대량 복제 및 소스 탈취를 방지하기 위해 마우스 우클릭 및 소스 검사 단축키가 기본 보호 처리되어 있습니다.</li>
+</ul>
+<hr>
+<h2 id="11-자주-묻는-질문-faq">11. 자주 묻는 질문 (FAQ)</h2>
+<h3 id="q1-스마트폰에서-스피커-버튼을-눌렀는데-소리가-나지-않거나-반응이-없어요">Q1. 스마트폰에서 스피커 버튼을 눌렀는데 소리가 나지 않거나 반응이 없어요.</h3>
+<ul>
+<li>스마트폰의 미디어 볼륨이 무음으로 설정되어 있는지 확인해 주세요.</li>
+<li>아이폰(iOS) 사파리 브라우저는 화면과의 첫 사용자 터치 인터랙션 이후에만 오디오 재생 권한이 부여되므로, 화면을 한 번 터치한 후 스피커 아이콘을 눌러주세요.</li>
+</ul>
+<h3 id="q2-2번-스피커와-3번-스피커의-소리가-어떻게-다른가요">Q2. 2번 스피커와 3번 스피커의 소리가 어떻게 다른가요?</h3>
+<ul>
+<li>**2번(하늘색)**은 문장 전체가 물 흐르듯 끊김 없이 이어지는 자연스러운 대화체 사투리입니다.</li>
+<li>**3번(초록색)**은 어절 속에 강세표(<code>′</code>)가 붙은 짧은 음절의 길이를 1.12배 늘려 높은 피치로 힘주어 때려주므로, 경상도 방언 특유의 액센트가 귀에 쏙쏙 박히듯 전달됩니다.</li>
+</ul>
+<h3 id="q3-안드로이드-기기에서-옛한글-받침이-네모로-깨져-보일-수-있나요">Q3. 안드로이드 기기에서 옛한글 받침이 네모(□)로 깨져 보일 수 있나요?</h3>
+<ul>
+<li>본 사전은 표준 유니코드 5.2 이상의 NFD 첫가끝 첫소리·가운뎃소리·끝소리 자모 결합 표준을 따르므로 최신 안드로이드 및 PC에서 완벽히 조합되어 보입니다. 만약 구형 폰에서 결합이 되지 않을 경우 최신 Chrome 브라우저를 이용하시면 완벽한 글꼴로 렌더링됩니다.</li>
+</ul>
+<h3 id="q4-내가-원하는-음색으로-발음을-더-조절하고-싶어요">Q4. 내가 원하는 음색으로 발음을 더 조절하고 싶어요.</h3>
+<ul>
+<li>메인 화면 하단의 <code>🌊 억양 학습 실험실 (demo_prosody.html)</code> 링크를 클릭하시면, 피치 상승폭과 장모음 연장 배율 등을 직접 실시간 슬라이더로 조작하며 내 목소리에 맞게 사투리 프로필을 커스터마이징할 수 있습니다.</li>
+</ul>
+<hr>
+<p><em>본 설명서는 《신라수도 경주지역 사투리 사전》의 2026 최신 웹 버전 인터페이스 및 음성 엔진 기준에 맞춰 제작되었습니다.</em></p>
+
+</body>
+</html>

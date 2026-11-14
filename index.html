@@ -942,7 +942,7 @@
 
 
 
-        <!-- 발음 듣기 기능 안내 버튼 및 억양 학습 실험실 바로가기 (첫 페이지 하단) -->
+        <!-- 발음 듣기 기능 안내 버튼 및 사용설명서, 억양 학습 실험실 바로가기 (첫 페이지 하단) -->
         <div id="guideSection" class="guide-btn-wrap" style="gap: 10px; flex-wrap: wrap;">
             <button type="button" class="guide-btn" onclick="togglePronGuideModal()">
                 <svg viewBox="0 0 24 24" style="width:16px; height:16px; fill:currentColor;">
@@ -950,6 +950,12 @@
                 </svg>
                 발음 듣기 기능 안내
             </button>
+            <a href="경주방언사전_사용설명서.html" target="_blank" class="guide-btn" style="text-decoration:none; background:#fdf2e9; color:#b03a1a; border-color:#f5cba7;" title="사전 전체 기능 상세 사용설명서 열기">
+                <svg viewBox="0 0 24 24" style="width:16px; height:16px; fill:currentColor;">
+                    <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
+                </svg>
+                📖 사전 사용설명서
+            </a>
             <a href="demo_prosody.html" class="guide-btn" style="text-decoration:none; background:#e3f2fd; color:#0d47a1; border-color:#90caf9;">
                 🌊 억양 학습 실험실 (내 목소리 보정)
             </a>
@@ -1052,7 +1058,7 @@
         });
         /* --- [1. 변수 및 환경 설정] --- */
         let dictData = [], currentItem = null, searchTimer, currentPage = 1, filteredData = [];
-        const itemsPerPage = 50, DB_NAME = "GyeongjuDictDB", STORE_NAME = "dictionary", DATA_VERSION = "20261112_v141";
+        const itemsPerPage = 50, DB_NAME = "GyeongjuDictDB", STORE_NAME = "dictionary", DATA_VERSION = "20261112_v142";
         const posMap = { '󰃃': '명사', '󰂿': '동사', '󰃰': '형용사', '󰂽': '대명사', '󰃌': '부사', '󰃲': '활용어미', '󰃥': '접사', '󰃆': '어미', '󰂴': '관형사', '󰂳': '감탄사', '󰃓': '수사', '󰃫': '참고', '󰃩': '준말' };
         const consonants = ['ㄱ', 'ㄲ', 'ㄴ', 'ㄷ', 'ㄸ', 'ㄹ', 'ㅁ', 'ㅂ', 'ㅃ', 'ㅅ', 'ㅆ', 'ㅇ', 'ㅈ', 'ㅉ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ'];
         const CHOSUNG = ['ㄱ', 'ㄲ', 'ㄴ', 'ㄷ', 'ㄸ', 'ㄹ', 'ㅁ', 'ㅂ', 'ㅃ', 'ㅅ', 'ㅆ', 'ㅇ', 'ㅈ', 'ㅉ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ'];
