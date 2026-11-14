@@ -858,8 +858,11 @@ function groupWordsIntoProsodicPhrases(words) {
     return phrases;
 }
 
-function playUnifiedDialectSpeechForSky(wordsList, params, myToken, isGreenBoost = false) {
-    if (!window.speechSynthesis) return;
+function playUnifiedDialectSpeechForSky(wordsList, params, myToken, isGreenBoost = false, onFinished = null) {
+    if (!window.speechSynthesis) {
+        if (onFinished) onFinished(false);
+        return;
+    }
 
     const collapseLong = true;
     const shortAccentStretch = isGreenBoost ? getGreenShortAccentStretch() : 1.0;
@@ -962,12 +965,44 @@ function playUnifiedDialectSpeechForSky(wordsList, params, myToken, isGreenBoost
         });
     });
 
-    if (utterances.length === 0) return;
+    if (utterances.length === 0) {
+        if (onFinished) onFinished(true);
+        return;
+    }
 
-    setTimeout(() => {
-        if (myToken !== skySpeakToken) return;
-        utterances.forEach(u => window.speechSynthesis.speak(u));
-    }, 50);
+    if (onFinished) {
+        let finished = false;
+        const done = (ok) => {
+            if (!finished) {
+                finished = true;
+                onFinished(ok);
+            }
+        };
+        utterances[utterances.length - 1].onend = () => done(myToken === skySpeakToken);
+        utterances[utterances.length - 1].onerror = () => done(false);
+
+        const watcher = setInterval(() => {
+            if (myToken !== skySpeakToken) {
+                clearInterval(watcher);
+                done(false);
+            } else if (finished) {
+                clearInterval(watcher);
+            }
+        }, 80);
+
+        setTimeout(() => {
+            if (myToken !== skySpeakToken) {
+                done(false);
+                return;
+            }
+            utterances.forEach(u => window.speechSynthesis.speak(u));
+        }, 30);
+    } else {
+        setTimeout(() => {
+            if (myToken !== skySpeakToken) return;
+            utterances.forEach(u => window.speechSynthesis.speak(u));
+        }, 50);
+    }
 }
 
 // 2번(하늘색) 및 3번(초록색) 공통 실행 파이프라인
@@ -1037,7 +1072,9 @@ async function speakDialectWebSpeechGreen(rawText) {
 }
 
 // [설화 리더 오디오북용 Promise 래퍼]
-// WSOLA 또는 Web Speech API 발화가 끝날 때까지 대기 (정지/토큰 변경 시 즉시 resolve(false))
+// index.html의 무단절 WSOLA 및 groupWordsIntoProsodicPhrases 부드러운 연결 로직 100% 동일 적용
+let skyLocalServerDownUntil = 0;
+
 function speakDialectSentenceAsync(rawText, isGreenBoost = false) {
     return new Promise((resolve) => {
         if (!rawText) { resolve(false); return; }
@@ -1048,8 +1085,8 @@ function speakDialectSentenceAsync(rawText, isGreenBoost = false) {
         if (text.startsWith('[') && text.endsWith(']')) {
             text = text.slice(1, -1).trim();
         }
-        text = text.replace(/\[(.*?)\]/g, '  ');
-        text = text.replace(/\{([^/>-]+)[/>-]+[^}]+\}/g, '');
+        text = text.replace(/\[(.*?)\]/g, ' $1 ');
+        text = text.replace(/\{([^/>-]+)[/>-]+[^}]+\}/g, '$1');
         text = text.replace(/<[^>]+>/g, '');
         text = text.replace(/°/g, '');
 
@@ -1060,106 +1097,37 @@ function speakDialectSentenceAsync(rawText, isGreenBoost = false) {
         if (wordsList.length === 0) { resolve(true); return; }
 
         (async () => {
-            try {
-                const allWords = wordsList.flat();
-                const wsolaText = allWords.map(w => w.syls.map(s => (collapseLong && s.isLong ? s.collapsedChar : s.rawPair) + s.punc).join('')).join(' ');
-                const baseBuffer = await fetchContinuousSentenceBuffer(wsolaText);
-                if (myToken !== skySpeakToken) { resolve(false); return; }
-                if (baseBuffer) {
-                    const { outBuffer } = synthesizeContinuousProsodyBuffer(baseBuffer, allWords, params, isGreenBoost);
-                    const ctx = getSkyAudioContext();
-                    const src = ctx.createBufferSource();
-                    src.buffer = outBuffer;
-                    src.connect(ctx.destination);
-                    skyCurrentSourceNode = src;
-                    src.onended = () => {
-                        if (skyCurrentSourceNode === src) skyCurrentSourceNode = null;
-                        resolve(myToken === skySpeakToken);
-                    };
-                    src.start();
-                    return;
+            if (Date.now() > skyLocalServerDownUntil) {
+                try {
+                    const allWords = wordsList.flat();
+                    const wsolaText = allWords.map(w => w.syls.map(s => (collapseLong && s.isLong ? s.collapsedChar : s.rawPair) + s.punc).join('')).join(' ');
+                    const baseBuffer = await fetchContinuousSentenceBuffer(wsolaText);
+                    if (myToken !== skySpeakToken) { resolve(false); return; }
+                    if (baseBuffer) {
+                        const { outBuffer } = synthesizeContinuousProsodyBuffer(baseBuffer, allWords, params, isGreenBoost);
+                        const ctx = getSkyAudioContext();
+                        const src = ctx.createBufferSource();
+                        src.buffer = outBuffer;
+                        src.connect(ctx.destination);
+                        skyCurrentSourceNode = src;
+                        src.onended = () => {
+                            if (skyCurrentSourceNode === src) skyCurrentSourceNode = null;
+                            resolve(myToken === skySpeakToken);
+                        };
+                        src.start();
+                        return;
+                    } else {
+                        skyLocalServerDownUntil = Date.now() + 10000;
+                    }
+                } catch (e) {
+                    skyLocalServerDownUntil = Date.now() + 10000;
                 }
-            } catch (e) {}
+            }
 
             if (myToken !== skySpeakToken) { resolve(false); return; }
 
-            // Web Speech fallback with completion tracking
-            if (!window.speechSynthesis) { resolve(false); return; }
-            window.speechSynthesis.cancel();
-            const maleVoice = getKoreanMaleVoice();
-            const isExplicitMale = isExplicitMaleVoice(maleVoice);
-            const pHigh = isExplicitMale ? 1.18 : 0.72;
-            const pEndHigh = isExplicitMale ? 1.24 : 0.78;
-            const shortAccentStretch = isGreenBoost ? getGreenShortAccentStretch() : 1.0;
-
-            const utterances = [];
-            wordsList.forEach((words) => {
-                words.forEach((w) => {
-                    const phrase = w.syls.map(s =>
-                        isGreenBoost
-                            ? formatSyllableForGreenSpeech(s, params, true, shortAccentStretch)
-                            : formatSyllableForSpeech(s, 'prosody', params, true)
-                    ).join('');
-                    const totalSyls = w.syls.length;
-                    const highSyls = w.syls.filter(s => s.tone === 'H').length;
-                    const longSyls = w.syls.filter(s => s.isLong).length;
-                    const shortHighSyls = w.syls.filter(s => !s.isLong && s.tone === 'H').length;
-                    const shortHighRatio = shortHighSyls / Math.max(1, totalSyls);
-                    const isQ = /[?!]/.test(phrase);
-
-                    const u = new SpeechSynthesisUtterance(phrase);
-                    u.lang = 'ko-KR';
-                    if (maleVoice) u.voice = maleVoice;
-
-                    let targetPitch = pHigh;
-                    if (isGreenBoost && shortHighSyls > 0) {
-                        targetPitch = pHigh + Math.min(0.18, (shortAccentStretch - 1.0) * (0.65 + shortHighRatio * 0.35));
-                    }
-                    if (isQ) targetPitch = Math.max(targetPitch, pEndHigh * (isGreenBoost ? 1.04 : 1.0));
-                    u.pitch = Number(Math.max(0.2, Math.min(2.0, targetPitch)).toFixed(2));
-
-                    let phraseRate = params.baseRate;
-                    if (longSyls > 0) {
-                        const longRatio = longSyls / Math.max(1, totalSyls);
-                        let slowFactor = 1.0 + (params.longStretch - 1.0) * (0.16 + longRatio * 0.14);
-                        if (isGreenBoost && shortHighSyls > 0) {
-                            slowFactor += Math.max(0, shortAccentStretch - 1.0) * (0.55 + shortHighRatio * 0.45);
-                        }
-                        phraseRate = params.baseRate / slowFactor;
-                    } else if (isGreenBoost && shortHighSyls > 0) {
-                        const shortSlowFactor = 1.0 + Math.max(0, shortAccentStretch - 1.0) * (0.75 + shortHighRatio * 0.45);
-                        phraseRate = params.baseRate / shortSlowFactor;
-                    } else if (highSyls === 0) {
-                        phraseRate = params.baseRate * 1.05;
-                    }
-                    u.rate = Number(Math.max(0.58, Math.min(1.30, phraseRate)).toFixed(2));
-                    utterances.push(u);
-                });
-            });
-
-            if (utterances.length === 0) { resolve(true); return; }
-
-            let finished = false;
-            const done = (ok) => {
-                if (!finished) { finished = true; resolve(ok); }
-            };
-            utterances[utterances.length - 1].onend = () => done(myToken === skySpeakToken);
-            utterances[utterances.length - 1].onerror = () => done(false);
-
-            // Token watcher in case user stops mid-sentence
-            const watcher = setInterval(() => {
-                if (myToken !== skySpeakToken) {
-                    clearInterval(watcher);
-                    done(false);
-                } else if (finished) {
-                    clearInterval(watcher);
-                }
-            }, 100);
-
-            setTimeout(() => {
-                if (myToken !== skySpeakToken) { done(false); return; }
-                utterances.forEach(u => window.speechSynthesis.speak(u));
-            }, 40);
+            // index.html과 100% 동일한 문장/구절 단위 부드러운 연결 엔진 호출
+            playUnifiedDialectSpeechForSky(wordsList, params, myToken, isGreenBoost, resolve);
         })();
     });
 }
