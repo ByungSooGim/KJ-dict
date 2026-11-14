@@ -1,3 +1,7 @@
+# Python source scripts & push batch/scripts (local only)
+*.py
+push_to*
+
 # Large dictionary source files & working drafts
 *.txt
 *.hwp
