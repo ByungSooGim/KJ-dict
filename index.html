@@ -1237,7 +1237,13 @@
         const _PUA_REGEX = new RegExp(`[${Object.keys(PUA_TO_UNICODE).join('')}]`, 'g');
         function convertPuaToUnicode(str) {
             if (!str || typeof str !== 'string') return str;
-            return str.replace(_PUA_REGEX, ch => PUA_TO_UNICODE[ch] || ch);
+            let s = str.replace(_PUA_REGEX, ch => PUA_TO_UNICODE[ch] || ch);
+            // '왕임ㅎ다' 축약형에서 '아래아+이'(ᆝ, U+119D)로 잘못 표기된 오탈자를 일반 '이'(ᅵ, U+1175)로 교정
+            if (s.includes('\u119D')) {
+                s = s.replace(/\u110B\u119D\u11E1/g, '\u110B\u1175\u11E1')
+                     .replace(/왕ᄋᆝᇡ다/g, '왕이ᇡ다');
+            }
+            return s;
         }
 
         // 옛한글 조합형 자모 보유 여부 확인 (NFC 정규화 후 조합되지 않는 첫가끝 자모)
@@ -1263,7 +1269,7 @@
             }
         }
 
-        // 사전에 실제 쓰인 옛한글 자모 13종 팔레트 정의
+        // 사전에 실제 쓰인 옛한글 자모 12종 팔레트 정의 (ᆝ(ㆍㅣ)는 '왕임ㅎ다'의 이 모음 오기 교정으로 제거)
         const OLD_JAMO_PALETTE_ITEMS = [
             { jamo: '\uD7F6', sample: '\u110B\u1161\uD7F6', label: 'ㆁㅎ' },
             { jamo: '\u11F9', sample: '\u110B\u1161\u11F9', label: 'ㆆ' },
@@ -1276,8 +1282,7 @@
             { jamo: '\u11EF', sample: '\u110B\u1161\u11EF', label: 'ㅇㅋ' },
             { jamo: '\u11E5', sample: '\u110B\u1161\u11E5', label: 'ㅂㅎ' },
             { jamo: '\u11DA', sample: '\u110B\u1161\u11DA', label: 'ㅁㄱ' },
-            { jamo: '\u11ED', sample: '\u110B\u1161\u11ED', label: 'ㅇㄲ' },
-            { jamo: '\u119D', sample: '\u110B\u119D', label: 'ㆍㅣ' }
+            { jamo: '\u11ED', sample: '\u110B\u1161\u11ED', label: 'ㅇㄲ' }
         ];
 
         const COMPAT_JONG_EXPAND = {
@@ -1392,7 +1397,7 @@
         }
 
         // 옛한글 조합형 중성·종성 사전식 자모 순위표 (유니코드 자모 체계 + txt 사전순 일치)
-        const OLD_JUNG_RANK = { 0x119D: 215 }; // ᆝ(아래아+이): ㅣ(210) 직후
+        const OLD_JUNG_RANK = {}; // 사전에 실제 쓰이는 옛한글 중성은 없으며 종성 12종만 사용됨
         const OLD_JONG_RANK = {
             0x11FE: 35,  // ᇾ(ㄱㅎ): ㄱ(10)~ㄳ(30) 뒤, ㄴ(40) 앞
             0x11C5: 45,  // ᇅ(ㄴㄱ): ㄴ(40) 뒤, ㄵ(50) 앞
